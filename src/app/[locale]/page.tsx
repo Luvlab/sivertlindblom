@@ -81,7 +81,7 @@ export default async function HomePage({
           }}>
             {dict.home?.tagline ?? settings.hero_tagline}
           </p>
-          <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+          <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', paddingBottom: '0.5rem' }}>
             <Link href={`/${locale}/portfolio`} className="btn btn-primary" style={{ fontSize: 'var(--fs-sm)' }}>
               {dict.home?.see_portfolio ?? 'Se portfolion'}
             </Link>
