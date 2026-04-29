@@ -129,8 +129,9 @@ export default function WatercolorsGallery({ locale }: Props) {
         className="page-pad"
         style={{
           paddingTop: '2rem',
+          paddingBottom: '3rem',
           display: 'grid',
-          gap: '4px',
+          gap: '1rem',
           gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 280px), 1fr))',
         }}
       >

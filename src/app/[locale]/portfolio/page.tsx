@@ -40,15 +40,15 @@ export default async function PortfolioPage({
       label: dict.portfolio?.cat_watercolors ?? 'Akvareller',
       sub: dict.portfolio?.sub_watercolors ?? '1975 – 2012',
       desc: dict.portfolio?.desc_watercolors ?? '',
-      image: null,
-      count: 50,
+      image: 'https://sivertlindblom.se/wp-content/uploads/2015/01/Sivert-Lindblom-akvarell-01-1507-2.jpg',
+      count: 49,
     },
     {
       key: 'scenography',
       label: dict.portfolio?.cat_scenography ?? 'Scenografi',
       sub: dict.portfolio?.sub_scenography ?? 'Teater & koreografi',
       desc: dict.portfolio?.desc_scenography ?? '',
-      image: null,
+      image: 'https://sivertlindblom.se/wp-content/uploads/2015/03/Sivert-Triumf-Paris.jpg',
       count: 6,
     },
   ]
