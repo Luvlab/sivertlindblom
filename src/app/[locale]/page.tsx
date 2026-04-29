@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { getDictionary } from '@/i18n/getDictionary'
 import { locales } from '@/i18n/config'
 import type { Locale } from '@/i18n/config'
-import { FALLBACK_SETTINGS, HIGHLIGHT_IMAGES } from '@/lib/db'
+import { FALLBACK_SETTINGS } from '@/lib/db'
 import HeroSlideshow from '@/components/hero/HeroSlideshow'
 
 export function generateStaticParams() {
@@ -96,62 +96,62 @@ export default async function HomePage({
       <section style={{
         background: 'var(--color-bg-surface)',
         borderBottom: '1px solid var(--color-border)',
-        padding: '3rem clamp(1rem,4vw,5rem)',
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 300px), 1fr))',
-        gap: '2rem',
-        alignItems: 'center',
+        padding: '4rem clamp(1rem,4vw,5rem)',
       }}>
-        <div>
-          <p style={{
-            fontSize: 'var(--fs-xs)',
-            letterSpacing: '0.12em',
-            textTransform: 'uppercase',
-            color: 'var(--color-accent)',
-            marginBottom: '0.5rem',
-          }}>{dict.home?.about_label ?? 'Om konstnären'}</p>
-          <h2 style={{ fontSize: 'var(--fs-2xl)', fontFamily: 'Georgia, serif', marginBottom: '1rem' }}>
-            {dict.home?.birth_year ?? 'f. 1931, Södermanland'}
-          </h2>
-        </div>
-        <p style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-base)', lineHeight: 1.8, maxWidth: '65ch' }}>
-          {dict.home?.about_text ?? settings.about_short}
-        </p>
-        <div style={{ display: 'flex', gap: '2rem', flexWrap: 'wrap' }}>
-          {[
-            { n: '60+', l: dict.home?.stat_active ?? 'År aktiv' },
-            { n: '50+', l: dict.home?.stat_public ?? 'Offentliga verk' },
-            { n: '30+', l: dict.home?.stat_countries ?? 'Länder' },
-            { n: '1931', l: dict.home?.stat_born ?? 'Födelseår' },
-          ].map((s) => (
-            <div key={s.l}>
-              <div style={{ fontSize: 'var(--fs-3xl)', fontFamily: 'Georgia, serif', color: 'var(--color-accent)', lineHeight: 1 }}>{s.n}</div>
-              <div style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', textTransform: 'uppercase', letterSpacing: '0.1em', marginTop: '0.25rem' }}>{s.l}</div>
-            </div>
-          ))}
-        </div>
-      </section>
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'minmax(0, 1fr)',
+          gap: '2.5rem',
+          maxWidth: '1200px',
+        }}>
+          {/* Top row: eyebrow + heading */}
+          <div>
+            <p style={{
+              fontSize: 'var(--fs-xs)',
+              letterSpacing: '0.12em',
+              textTransform: 'uppercase',
+              color: 'var(--color-accent)',
+              marginBottom: '0.5rem',
+            }}>{dict.home?.about_label ?? 'Om konstnären'}</p>
+            <h2 style={{
+              fontSize: 'var(--fs-2xl)',
+              fontFamily: 'Georgia, serif',
+              fontWeight: 400,
+              marginBottom: 0,
+            }}>
+              {dict.home?.birth_year ?? 'f. 1931, Södermanland'}
+            </h2>
+          </div>
 
-      {/* HIGHLIGHT images */}
-      <section className="section-gap" aria-label={dict.home?.selected_works ?? 'Utvalda verk'}>
-        <div className="page-pad" style={{ marginBottom: '2rem' }}>
-          <p style={{ fontSize: 'var(--fs-xs)', letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--color-accent)', marginBottom: '0.5rem' }}>
-            {dict.home?.selected_works ?? 'Utvalda verk'}
-          </p>
-          <h2 style={{ fontSize: 'var(--fs-3xl)', fontFamily: 'Georgia, serif' }}>Blasieholmstorg, Stockholm 1989</h2>
-        </div>
-        <div className="auto-grid" style={{ gap: '2px' }}>
-          {HIGHLIGHT_IMAGES.slice(0, 6).map((img, i) => (
-            <div key={i} style={{ aspectRatio: i === 0 ? '16/9' : '4/3', overflow: 'hidden', gridColumn: i === 0 ? 'span 2' : 'span 1' }}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={img.url}
-                alt={img.alt}
-                loading={i < 2 ? 'eager' : 'lazy'}
-                style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', transition: 'transform 0.5s ease' }}
-              />
+          {/* Bottom row: bio text left, stats right */}
+          <div className="about-bio-grid">
+            <p style={{
+              color: 'var(--color-muted)',
+              fontSize: 'var(--fs-base)',
+              lineHeight: 1.85,
+              margin: 0,
+            }}>
+              {dict.home?.about_text ?? settings.about_short}
+            </p>
+
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: '1fr 1fr',
+              gap: '2rem 1.5rem',
+            }}>
+              {[
+                { n: '60+',  l: dict.home?.stat_active    ?? 'År aktiv' },
+                { n: '50+',  l: dict.home?.stat_public    ?? 'Offentliga verk' },
+                { n: '30+',  l: dict.home?.stat_countries ?? 'Länder' },
+                { n: '1931', l: dict.home?.stat_born      ?? 'Födelseår' },
+              ].map((s) => (
+                <div key={s.l}>
+                  <div style={{ fontSize: 'var(--fs-3xl)', fontFamily: 'Georgia, serif', color: 'var(--color-accent)', lineHeight: 1 }}>{s.n}</div>
+                  <div style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', textTransform: 'uppercase', letterSpacing: '0.1em', marginTop: '0.4rem' }}>{s.l}</div>
+                </div>
+              ))}
             </div>
-          ))}
+          </div>
         </div>
       </section>
 

@@ -117,14 +117,14 @@ export default function Lightbox({ images, startIndex, onClose }: Props) {
         {index + 1} / {total}
       </div>
 
-      {/* Close button */}
+      {/* Close button — highest z-index so arrows never cover it */}
       <button
         aria-label="Stäng"
         onClick={onClose}
         style={{
           position: 'absolute',
-          top: '1rem',
-          right: '1.25rem',
+          top: '0.75rem',
+          right: '1rem',
           background: 'none',
           border: 'none',
           color: 'rgba(255,255,255,0.75)',
@@ -132,7 +132,7 @@ export default function Lightbox({ images, startIndex, onClose }: Props) {
           lineHeight: 1,
           cursor: 'pointer',
           padding: '0.5rem',
-          zIndex: 201,
+          zIndex: 203,
           transition: 'color 0.15s',
         }}
         onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.color = '#fff' }}
@@ -141,77 +141,75 @@ export default function Lightbox({ images, startIndex, onClose }: Props) {
         ×
       </button>
 
-      {/* Prev arrow */}
+      {/* Prev arrow — centered vertically, does not reach the top */}
       {total > 1 && (
         <button
           aria-label="Föregående"
           onClick={(e) => { e.stopPropagation(); prev() }}
           style={{
             position: 'absolute',
-            left: 0,
-            top: 0,
-            bottom: 0,
-            width: 'clamp(3rem, 8vw, 6rem)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            background: 'none',
-            border: 'none',
-            color: 'rgba(255,255,255,0.6)',
-            fontSize: 'clamp(1.5rem, 3vw, 2.5rem)',
+            left: '0.75rem',
+            top: '50%',
+            transform: 'translateY(-50%)',
+            background: 'rgba(255,255,255,0.07)',
+            border: '1px solid rgba(255,255,255,0.12)',
+            borderRadius: '2px',
+            color: 'rgba(255,255,255,0.8)',
+            fontSize: '1.8rem',
             cursor: 'pointer',
+            padding: '0.6rem 1rem',
+            lineHeight: 1,
             zIndex: 201,
-            transition: 'color 0.15s, background 0.15s',
+            transition: 'background 0.15s, color 0.15s',
           }}
           onMouseEnter={(e) => {
             const el = e.currentTarget as HTMLButtonElement
             el.style.color = 'var(--color-accent)'
-            el.style.background = 'rgba(255,255,255,0.05)'
+            el.style.background = 'rgba(255,255,255,0.14)'
           }}
           onMouseLeave={(e) => {
             const el = e.currentTarget as HTMLButtonElement
-            el.style.color = 'rgba(255,255,255,0.6)'
-            el.style.background = 'none'
+            el.style.color = 'rgba(255,255,255,0.8)'
+            el.style.background = 'rgba(255,255,255,0.07)'
           }}
         >
-          ←
+          ‹
         </button>
       )}
 
-      {/* Next arrow */}
+      {/* Next arrow — centered vertically, does not reach the top */}
       {total > 1 && (
         <button
           aria-label="Nästa"
           onClick={(e) => { e.stopPropagation(); next() }}
           style={{
             position: 'absolute',
-            right: 0,
-            top: 0,
-            bottom: 0,
-            width: 'clamp(3rem, 8vw, 6rem)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            background: 'none',
-            border: 'none',
-            color: 'rgba(255,255,255,0.6)',
-            fontSize: 'clamp(1.5rem, 3vw, 2.5rem)',
+            right: '0.75rem',
+            top: '50%',
+            transform: 'translateY(-50%)',
+            background: 'rgba(255,255,255,0.07)',
+            border: '1px solid rgba(255,255,255,0.12)',
+            borderRadius: '2px',
+            color: 'rgba(255,255,255,0.8)',
+            fontSize: '1.8rem',
             cursor: 'pointer',
+            padding: '0.6rem 1rem',
+            lineHeight: 1,
             zIndex: 201,
-            transition: 'color 0.15s, background 0.15s',
+            transition: 'background 0.15s, color 0.15s',
           }}
           onMouseEnter={(e) => {
             const el = e.currentTarget as HTMLButtonElement
             el.style.color = 'var(--color-accent)'
-            el.style.background = 'rgba(255,255,255,0.05)'
+            el.style.background = 'rgba(255,255,255,0.14)'
           }}
           onMouseLeave={(e) => {
             const el = e.currentTarget as HTMLButtonElement
-            el.style.color = 'rgba(255,255,255,0.6)'
-            el.style.background = 'none'
+            el.style.color = 'rgba(255,255,255,0.8)'
+            el.style.background = 'rgba(255,255,255,0.07)'
           }}
         >
-          →
+          ›
         </button>
       )}
 

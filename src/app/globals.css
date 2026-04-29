@@ -203,6 +203,15 @@ a:hover { opacity: 0.7; }
   display: block;
 }
 
+/* ─── Portfolio category grid — 2 cols mobile, 4 cols wide ──── */
+.portfolio-grid {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: 1fr;          /* 1 col < 480 px */
+}
+@media (min-width: 480px)  { .portfolio-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1100px) { .portfolio-grid { grid-template-columns: repeat(4, 1fr); } }
+
 /* ─── Gallery thumbnails — CSS hover avoids JS-handler INP cost ── */
 .gallery-thumb {
   display: block;
@@ -371,6 +380,20 @@ a:hover { opacity: 0.7; }
 /* ─── Gallery thumb hover (avoids INP from inline handlers) ─ */
 .gallery-thumb img { transition: transform 0.35s ease; }
 .gallery-thumb:hover img { transform: scale(1.04); }
+
+/* ─── About strip responsive ────────────────────────────── */
+.about-bio-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2.5rem;
+  align-items: start;
+}
+@media (min-width: 640px) {
+  .about-bio-grid {
+    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+    gap: 3rem;
+  }
+}
 
 /* ─── Utilities ──────────────────────────────────────────── */
 .truncate-2 {
