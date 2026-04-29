@@ -1,0 +1,123 @@
+{
+  "nav": {
+    "portfolio": "作品集",
+    "sculpture": "雕塑",
+    "texts": "文章",
+    "biography": "传记",
+    "contact": "联系",
+    "admin": "Admin"
+  },
+  "common": {
+    "year": "年份",
+    "location": "地点",
+    "works": "件作品",
+    "back": "←",
+    "show": "查看",
+    "published": "已发布",
+    "draft": "草稿",
+    "save": "保存",
+    "cancel": "取消",
+    "search": "搜索",
+    "filter": "筛选",
+    "all": "全部",
+    "language": "语言",
+    "close": "关闭",
+    "loading": "加载中..."
+  },
+  "home": {
+    "sculptor": "雕塑家 · 斯德哥尔摩",
+    "tagline": "自1963年起从事雕塑、公共艺术、水彩画及舞台设计",
+    "see_portfolio": "查看作品集",
+    "biography_btn": "传记",
+    "scroll": "Scroll",
+    "about_label": "关于艺术家",
+    "birth_year": "生于1931年，瑟德曼兰省",
+    "about_text": "西韦特·林德布洛姆（生于1931年）是瑞典最重要的雕塑家之一。他于1958至1963年就读于皇家美术学院，此后创作了大量雕塑、公共装置、水彩画和舞台设计作品。",
+    "stat_active": "创作年限",
+    "stat_public": "公共作品",
+    "stat_countries": "国家",
+    "stat_born": "出生年份",
+    "selected_works": "精选作品",
+    "explore": "探索网站",
+    "contact_title": "联系",
+    "contact_sub": "关于作品、借展或合作的咨询",
+    "contact_btn": "联系我们"
+  },
+  "portfolio": {
+    "title": "艺术创作 1961–2016",
+    "subtitle": "四十年艺术创作",
+    "intro": "四个类别记录了西韦特·林德布洛姆的艺术实践：展览、公共委托、水彩画和舞台设计。",
+    "cat_exhibitions": "展览",
+    "cat_public": "公共作品",
+    "cat_watercolors": "水彩画",
+    "cat_scenography": "舞台设计",
+    "sub_exhibitions": "1961–2016",
+    "sub_public": "室外与室内",
+    "sub_watercolors": "1975–2012",
+    "sub_scenography": "戏剧与编舞",
+    "desc_exhibitions": "在瑞典及国际上的个展和群展，从1963年布伦画廊到2016年VANDALORUM。",
+    "desc_public": "位于瑞典及世界各地广场、地铁站、大使馆和图书馆的雕塑与装置作品。",
+    "desc_watercolors": "约200幅水彩画——一个以神秘建筑几何为主题的'心理构成主义'项目。",
+    "desc_scenography": "为斯德哥尔摩市立剧院创作的舞台设计及与玛格丽塔·奥斯伯格等人的编舞合作。",
+    "count_works": "件作品",
+    "exteriors": "室外",
+    "interiors": "室内"
+  },
+  "watercolors": {
+    "title": "水彩画 1975–2012",
+    "description": "约200幅素描式水彩画，作为一种'心理构成主义'形式创作，描绘神秘的建筑景观。这些作品采用严格控制的图形技法，形成一种自由运用的轴测画法。",
+    "book_note": "五十件作品于2012年10月6日至11月4日在斯德哥尔摩皇家美术学院展出。书籍《西韦特·林德布洛姆水彩画等》（布尔芬奇出版社，2012年）对该系列进行了记录。"
+  },
+  "texts": {
+    "title": "批评、论文与访谈",
+    "subtitle": "文章",
+    "intro": "关于及由西韦特·林德布洛姆撰写的文章：批评论文、书评、访谈及本人著作，1963–2012年。",
+    "essay": "论文",
+    "preface": "序言",
+    "review": "书评",
+    "interview": "访谈",
+    "own_writing": "本人著作",
+    "translated": "译文"
+  },
+  "biography": {
+    "title": "西韦特·林德布洛姆",
+    "intro": "西韦特·林德布洛姆（1931年生于瑟德曼兰省胡斯比-雷卡内）是瑞典最重要的雕塑家之一。他于1958至1963年就读于斯德哥尔摩皇家美术学院，此后创作了大量雕塑、公共装置、水彩画和舞台设计作品。",
+    "timeline": "年表",
+    "public_commissions": "精选公共委托",
+    "group_exhibitions": "精选群展",
+    "education": "教育经历",
+    "position": "职务",
+    "award": "奖项",
+    "personal": "个人经历"
+  },
+  "contact": {
+    "title": "联系我们",
+    "intro": "关于作品、借展、展览或合作的问题——请填写以下表格。",
+    "info_title": "联系信息",
+    "message_title": "留言",
+    "name": "姓名",
+    "email": "电子邮箱",
+    "subject": "主题",
+    "message": "留言",
+    "name_ph": "您的姓名",
+    "email_ph": "您的邮箱",
+    "subject_ph": "关于...",
+    "message_ph": "您的留言...",
+    "send": "发送消息",
+    "sent_title": "感谢！",
+    "sent_body": "您的消息已发送。我们将尽快与您联系。",
+    "editor": "编辑"
+  },
+  "references": {
+    "title": "参考资料",
+    "subtitle": "雕塑与版画",
+    "intro": "记录西韦特·林德布洛姆艺术创作的雕塑系列、版画、影片和照片。",
+    "sculpture_series": "雕塑系列",
+    "film_tv": "电影与电视",
+    "director": "导演"
+  },
+  "footer": {
+    "rights": "版权所有。",
+    "editor": "编辑"
+  }
+}

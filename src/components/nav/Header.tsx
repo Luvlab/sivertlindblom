@@ -4,21 +4,29 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import FontSizeSlider from '../FontSizeSlider'
+import LanguageSwitcher from './LanguageSwitcher'
+import type { Locale } from '@/i18n/config'
 
-const NAV = [
-  { label: 'Portfolio',   href: '/portfolio' },
-  { label: 'Skulptur',    href: '/references' },
-  { label: 'Texter',      href: '/texts' },
-  { label: 'Biografi',    href: '/biography' },
-  { label: 'Kontakt',     href: '/contact' },
-]
+interface HeaderProps {
+  locale: Locale
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  dict: any
+}
 
-export default function Header() {
+export default function Header({ locale, dict }: HeaderProps) {
   const [open, setOpen] = useState(false)
   const pathname = usePathname()
 
   const isAdmin = pathname?.startsWith('/admin')
   if (isAdmin) return null
+
+  const NAV = [
+    { label: dict?.nav?.portfolio ?? 'Portfolio', href: `/${locale}/portfolio` },
+    { label: dict?.nav?.sculpture ?? 'Skulptur',  href: `/${locale}/references` },
+    { label: dict?.nav?.texts ?? 'Texter',        href: `/${locale}/texts` },
+    { label: dict?.nav?.biography ?? 'Biografi',  href: `/${locale}/biography` },
+    { label: dict?.nav?.contact ?? 'Kontakt',     href: `/${locale}/contact` },
+  ]
 
   return (
     <>
@@ -26,7 +34,7 @@ export default function Header() {
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
           {/* Logo / wordmark */}
           <Link
-            href="/"
+            href={`/${locale}`}
             style={{
               fontFamily: 'Georgia, serif',
               fontSize: 'var(--fs-lg)',
@@ -67,8 +75,9 @@ export default function Header() {
             ))}
           </nav>
 
-          {/* Right side: font slider + hamburger */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
+          {/* Right side: language switcher + font slider + hamburger */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+            <LanguageSwitcher locale={locale} />
             <FontSizeSlider />
 
             {/* Hamburger — mobile only */}
@@ -122,8 +131,16 @@ export default function Header() {
             </Link>
           ))}
 
+          {/* Language switcher in mobile menu */}
+          <div style={{ paddingTop: '1.5rem', paddingBottom: '0.5rem' }}>
+            <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '0.75rem' }}>
+              {dict?.common?.language ?? 'Språk'}
+            </p>
+            <LanguageSwitcher locale={locale} />
+          </div>
+
           {/* Font slider in mobile menu too */}
-          <div style={{ paddingTop: '2rem' }}>
+          <div style={{ paddingTop: '1.5rem' }}>
             <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '0.75rem' }}>
               Textstorlek
             </p>

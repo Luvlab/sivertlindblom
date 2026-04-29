@@ -1,0 +1,123 @@
+{
+  "nav": {
+    "portfolio": "포트폴리오",
+    "sculpture": "조각",
+    "texts": "텍스트",
+    "biography": "약력",
+    "contact": "연락처",
+    "admin": "Admin"
+  },
+  "common": {
+    "year": "연도",
+    "location": "장소",
+    "works": "작품",
+    "back": "←",
+    "show": "보기",
+    "published": "게시됨",
+    "draft": "초안",
+    "save": "저장",
+    "cancel": "취소",
+    "search": "검색",
+    "filter": "필터",
+    "all": "전체",
+    "language": "언어",
+    "close": "닫기",
+    "loading": "로딩 중..."
+  },
+  "home": {
+    "sculptor": "조각가 · 스톡홀름",
+    "tagline": "1963년부터 이어온 조각, 공공미술, 수채화 및 무대미술",
+    "see_portfolio": "포트폴리오 보기",
+    "biography_btn": "약력",
+    "scroll": "Scroll",
+    "about_label": "작가 소개",
+    "birth_year": "1931년생, 쇠데르만란드",
+    "about_text": "시베르트 린드블롬(1931년생)은 스웨덴에서 가장 중요한 조각가 중 한 명입니다. 1958년부터 1963년까지 왕립미술학교에서 수학하였으며, 이후 조각, 공공 설치미술, 수채화, 무대미술에 걸친 방대한 작품 세계를 구축해 왔습니다.",
+    "stat_active": "활동 연수",
+    "stat_public": "공공 작품 수",
+    "stat_countries": "활동 국가 수",
+    "stat_born": "출생 연도",
+    "selected_works": "대표 작품",
+    "explore": "사이트 탐색",
+    "contact_title": "연락처",
+    "contact_sub": "작품, 대여 또는 협업에 관한 문의",
+    "contact_btn": "연락하기"
+  },
+  "portfolio": {
+    "title": "예술 활동 1961–2016",
+    "subtitle": "사십 년간의 예술 활동",
+    "intro": "네 가지 카테고리로 시베르트 린드블롬의 예술 활동을 정리합니다: 전시, 공공 의뢰, 수채화, 무대미술.",
+    "cat_exhibitions": "전시",
+    "cat_public": "공공 작품",
+    "cat_watercolors": "수채화",
+    "cat_scenography": "무대미술",
+    "sub_exhibitions": "1961–2016",
+    "sub_public": "실외 및 실내",
+    "sub_watercolors": "1975–2012",
+    "sub_scenography": "연극 및 안무",
+    "desc_exhibitions": "스웨덴 및 해외에서의 개인전과 단체전. 1963년 갤러리 뷰렌부터 2016년 VANDALORUM까지.",
+    "desc_public": "스웨덴과 전 세계의 광장, 지하철역, 대사관, 도서관에 설치된 조각 및 설치 작품.",
+    "desc_watercolors": "약 200점의 수채화 — 은밀한 건축적 기하학을 특징으로 하는 '정신적 구성주의' 프로젝트.",
+    "desc_scenography": "스톡홀름 시립극장을 위한 무대 디자인과 마르가레타 오스베리 등과의 안무 협업.",
+    "count_works": "작품",
+    "exteriors": "실외",
+    "interiors": "실내"
+  },
+  "watercolors": {
+    "title": "수채화 1975–2012",
+    "description": "약 200점의 스케치풍 수채화로, '정신적 구성주의'의 한 형태로 제작되어 은밀한 건축적 풍경을 묘사합니다. 작품들은 엄격하게 제어된 그래픽 기법에 의해 형성되며, 이를 통해 자유롭게 적용된 축측투영법이 구현됩니다.",
+    "book_note": "2012년 10월 6일부터 11월 4일까지 스톡홀름 왕립미술학교에서 50점이 전시되었습니다. 《시베르트 린드블롬 수채화 외》(Bullfinch Publishing, 2012)가 이 컬렉션을 기록하고 있습니다."
+  },
+  "texts": {
+    "title": "비평, 에세이 및 인터뷰",
+    "subtitle": "텍스트",
+    "intro": "시베르트 린드블롬에 관한, 그리고 그가 직접 쓴 텍스트: 비평 에세이, 서평, 인터뷰, 자작 글, 1963–2012년.",
+    "essay": "에세이",
+    "preface": "서문",
+    "review": "서평",
+    "interview": "인터뷰",
+    "own_writing": "자작 글",
+    "translated": "번역"
+  },
+  "biography": {
+    "title": "시베르트 린드블롬",
+    "intro": "시베르트 린드블롬(1931년 쇠데르만란드 주 후스비-레카르네 출생)은 스웨덴에서 가장 중요한 조각가 중 한 명입니다. 1958년부터 1963년까지 스톡홀름 왕립미술학교에서 수학하였으며, 이후 조각, 공공 설치미술, 수채화, 무대미술에 걸친 방대한 작품 세계를 구축해 왔습니다.",
+    "timeline": "연보",
+    "public_commissions": "주요 공공 의뢰 작품",
+    "group_exhibitions": "주요 단체전",
+    "education": "학력",
+    "position": "직함",
+    "award": "수상",
+    "personal": "개인"
+  },
+  "contact": {
+    "title": "연락하기",
+    "intro": "작품, 대여, 전시 또는 협업에 관한 문의는 아래 양식을 작성해 주세요.",
+    "info_title": "연락처 정보",
+    "message_title": "메시지",
+    "name": "이름",
+    "email": "이메일 주소",
+    "subject": "제목",
+    "message": "메시지",
+    "name_ph": "성함",
+    "email_ph": "이메일@주소.com",
+    "subject_ph": "관련 내용...",
+    "message_ph": "메시지를 입력하세요...",
+    "send": "메시지 보내기",
+    "sent_title": "감사합니다!",
+    "sent_body": "메시지가 전송되었습니다. 최대한 빨리 연락드리겠습니다.",
+    "editor": "편집자"
+  },
+  "references": {
+    "title": "참고 자료",
+    "subtitle": "조각 및 판화",
+    "intro": "시베르트 린드블롬의 예술 활동을 기록한 조각 시리즈, 판화, 영상 및 사진.",
+    "sculpture_series": "조각 시리즈",
+    "film_tv": "영화 및 TV",
+    "director": "감독"
+  },
+  "footer": {
+    "rights": "All rights reserved.",
+    "editor": "편집자"
+  }
+}

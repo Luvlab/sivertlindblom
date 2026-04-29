@@ -1,0 +1,123 @@
+{
+  "nav": {
+    "portfolio": "Portfolio",
+    "sculpture": "Skulptur",
+    "texts": "Texter",
+    "biography": "Biografi",
+    "contact": "Kontakt",
+    "admin": "Admin"
+  },
+  "common": {
+    "year": "År",
+    "location": "Plats",
+    "works": "verk",
+    "back": "←",
+    "show": "Visa",
+    "published": "Publicerad",
+    "draft": "Utkast",
+    "save": "Spara",
+    "cancel": "Avbryt",
+    "search": "Sök",
+    "filter": "Filtrera",
+    "all": "Alla",
+    "language": "Språk",
+    "close": "Stäng",
+    "loading": "Laddar..."
+  },
+  "home": {
+    "sculptor": "Skulptör · Stockholm",
+    "tagline": "Skulptur, offentlig konst, akvareller och scenografi sedan 1963",
+    "see_portfolio": "Se portfolion",
+    "biography_btn": "Biografi",
+    "scroll": "Scroll",
+    "about_label": "Om konstnären",
+    "birth_year": "f. 1931, Södermanland",
+    "about_text": "Sivert Lindblom (f. 1931) är en av Sveriges mest betydande skulptörer. Han studerade vid Kungliga Konsthögskolan 1958–1963 och har sedan dess skapat ett omfattande verk av skulpturer, offentliga installationer, akvareller och scenografi.",
+    "stat_active": "År aktiv",
+    "stat_public": "Offentliga verk",
+    "stat_countries": "Länder",
+    "stat_born": "Födelseår",
+    "selected_works": "Utvalda verk",
+    "explore": "Utforska webbplatsen",
+    "contact_title": "Kontakt",
+    "contact_sub": "Frågor om verk, utlåning eller samarbeten",
+    "contact_btn": "Kontakta oss"
+  },
+  "portfolio": {
+    "title": "Konstnärskap 1961–2016",
+    "subtitle": "Fyra decennier av konstnärligt arbete",
+    "intro": "Fyra kategorier dokumenterar Sivert Lindbloms konstnärliga arbete: utställningar, offentliga uppdrag, akvareller och scenografi.",
+    "cat_exhibitions": "Utställningar",
+    "cat_public": "Offentliga arbeten",
+    "cat_watercolors": "Akvareller",
+    "cat_scenography": "Scenografi",
+    "sub_exhibitions": "1961–2016",
+    "sub_public": "Exteriörer & interiörer",
+    "sub_watercolors": "1975–2012",
+    "sub_scenography": "Teater & koreografi",
+    "desc_exhibitions": "Solo- och grupputställningar i Sverige och internationellt, från Galerie Buren 1963 till VANDALORUM 2016.",
+    "desc_public": "Skulpturer och installationer på torg, tunnelbanestationer, ambassader och bibliotek i Sverige och världen.",
+    "desc_watercolors": "Ca 200 akvarellerade bilder — ett 'mental konstruktivism'-projekt med hermetisk arkitektonisk geometri.",
+    "desc_scenography": "Scenografier för Stockholms Stadsteater, koreografier med Margareta Åsberg m.fl.",
+    "count_works": "verk",
+    "exteriors": "Exteriörer",
+    "interiors": "Interiörer"
+  },
+  "watercolors": {
+    "title": "Akvareller 1975–2012",
+    "description": "Ca 200 akvarellerade skissartade bilder skapade som ett slags 'mental konstruktivism', som visar ett hermetiskt arkitektoniskt landskap. Bilderna formas med en strängt styrd grafisk teknik som resulterar i en fritt tillämpad axonometri.",
+    "book_note": "Femtio verk visades på Konstakademien i Stockholm, 6 oktober – 4 november 2012. Boken Sivert Lindblom Akvareller m.m. (Bullfinch Publishing, 2012) dokumenterar samlingen."
+  },
+  "texts": {
+    "title": "Kritik, essays & intervjuer",
+    "subtitle": "Texter",
+    "intro": "Texter om och av Sivert Lindblom: kritiska essays, recensioner, intervjuer och egna skrifter, 1963–2012.",
+    "essay": "Essay",
+    "preface": "Förord",
+    "review": "Recension",
+    "interview": "Intervju",
+    "own_writing": "Egen text",
+    "translated": "Översatt"
+  },
+  "biography": {
+    "title": "Sivert Lindblom",
+    "intro": "Sivert Lindblom (f. 1931 i Husby-Rekarne, Södermanland) är en av Sveriges mest betydande skulptörer. Han studerade vid Kungliga Konsthögskolan i Stockholm 1958–1963 och har sedan dess skapat ett omfattande verk av skulpturer, offentliga installationer, akvareller och scenografi.",
+    "timeline": "Kronologi",
+    "public_commissions": "Offentliga uppdrag i urval",
+    "group_exhibitions": "Grupputställningar i urval",
+    "education": "Utbildning",
+    "position": "Befattning",
+    "award": "Utmärkelse",
+    "personal": "Personligt"
+  },
+  "contact": {
+    "title": "Ta kontakt",
+    "intro": "Frågor om verk, utlåning, utställningar eller samarbeten — fyll i formuläret nedan.",
+    "info_title": "Information",
+    "message_title": "Meddelande",
+    "name": "Namn",
+    "email": "E-postadress",
+    "subject": "Ämne",
+    "message": "Meddelande",
+    "name_ph": "Ditt namn",
+    "email_ph": "din@epost.se",
+    "subject_ph": "Angående...",
+    "message_ph": "Ditt meddelande...",
+    "send": "Skicka meddelande",
+    "sent_title": "Tack!",
+    "sent_body": "Ditt meddelande har skickats. Vi återkommer så snart som möjligt.",
+    "editor": "Redaktör"
+  },
+  "references": {
+    "title": "Referensmaterial",
+    "subtitle": "Skulptur & Grafik",
+    "intro": "Skulpturserier, grafik, film och fotografier som dokumenterar Sivert Lindbloms konstnärliga produktion.",
+    "sculpture_series": "Skulpturserier",
+    "film_tv": "Film & TV",
+    "director": "Regi"
+  },
+  "footer": {
+    "rights": "Alla rättigheter förbehållna.",
+    "editor": "Redaktör"
+  }
+}

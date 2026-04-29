@@ -1,0 +1,123 @@
+{
+  "nav": {
+    "portfolio": "Portfolio",
+    "sculpture": "Sculpture",
+    "texts": "Textes",
+    "biography": "Biographie",
+    "contact": "Contact",
+    "admin": "Admin"
+  },
+  "common": {
+    "year": "Année",
+    "location": "Lieu",
+    "works": "œuvres",
+    "back": "←",
+    "show": "Afficher",
+    "published": "Publié",
+    "draft": "Brouillon",
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "search": "Rechercher",
+    "filter": "Filtrer",
+    "all": "Tout",
+    "language": "Langue",
+    "close": "Fermer",
+    "loading": "Chargement..."
+  },
+  "home": {
+    "sculptor": "Sculpteur · Stockholm",
+    "tagline": "Sculpture, art public, aquarelles et scénographie depuis 1963",
+    "see_portfolio": "Voir le portfolio",
+    "biography_btn": "Biographie",
+    "scroll": "Scroll",
+    "about_label": "À propos de l'artiste",
+    "birth_year": "né en 1931, Södermanland",
+    "about_text": "Sivert Lindblom (né en 1931) est l'un des sculpteurs les plus importants de Suède. Il a étudié à l'Académie royale des beaux-arts de 1958 à 1963 et a depuis créé une œuvre extensive de sculptures, d'installations publiques, d'aquarelles et de scénographies.",
+    "stat_active": "Années d'activité",
+    "stat_public": "Œuvres publiques",
+    "stat_countries": "Pays",
+    "stat_born": "Année de naissance",
+    "selected_works": "Œuvres choisies",
+    "explore": "Explorer le site",
+    "contact_title": "Contact",
+    "contact_sub": "Questions sur les œuvres, prêts ou collaborations",
+    "contact_btn": "Nous contacter"
+  },
+  "portfolio": {
+    "title": "Œuvre artistique 1961–2016",
+    "subtitle": "Quatre décennies de travail artistique",
+    "intro": "Quatre catégories documentent la pratique artistique de Sivert Lindblom : expositions, commandes publiques, aquarelles et scénographie.",
+    "cat_exhibitions": "Expositions",
+    "cat_public": "Œuvres publiques",
+    "cat_watercolors": "Aquarelles",
+    "cat_scenography": "Scénographie",
+    "sub_exhibitions": "1961–2016",
+    "sub_public": "Extérieurs & intérieurs",
+    "sub_watercolors": "1975–2012",
+    "sub_scenography": "Théâtre & chorégraphie",
+    "desc_exhibitions": "Expositions individuelles et collectives en Suède et à l'international, de la Galerie Buren en 1963 à VANDALORUM en 2016.",
+    "desc_public": "Sculptures et installations sur des places, des stations de métro, des ambassades et des bibliothèques en Suède et dans le monde.",
+    "desc_watercolors": "Environ 200 aquarelles — un projet de 'constructivisme mental' présentant une géométrie architecturale hermétique.",
+    "desc_scenography": "Décors pour le Théâtre municipal de Stockholm et chorégraphies avec Margareta Åsberg et d'autres.",
+    "count_works": "œuvres",
+    "exteriors": "Extérieurs",
+    "interiors": "Intérieurs"
+  },
+  "watercolors": {
+    "title": "Aquarelles 1975–2012",
+    "description": "Environ 200 aquarelles esquissées créées comme une forme de 'constructivisme mental', représentant un paysage architectural hermétique. Les œuvres sont façonnées par une technique graphique rigoureusement contrôlée aboutissant à une axonométrie librement appliquée.",
+    "book_note": "Cinquante œuvres ont été exposées à l'Académie royale des beaux-arts de Stockholm, du 6 octobre au 4 novembre 2012. Le livre Sivert Lindblom Aquarelles etc. (Bullfinch Publishing, 2012) documente la collection."
+  },
+  "texts": {
+    "title": "Critique, essais & entretiens",
+    "subtitle": "Textes",
+    "intro": "Textes sur et par Sivert Lindblom : essais critiques, critiques, entretiens et ses propres écrits, 1963–2012.",
+    "essay": "Essai",
+    "preface": "Préface",
+    "review": "Critique",
+    "interview": "Entretien",
+    "own_writing": "Texte propre",
+    "translated": "Traduit"
+  },
+  "biography": {
+    "title": "Sivert Lindblom",
+    "intro": "Sivert Lindblom (né en 1931 à Husby-Rekarne, Södermanland) est l'un des sculpteurs les plus importants de Suède. Il a étudié à l'Académie royale des beaux-arts de Stockholm de 1958 à 1963 et a depuis créé une œuvre extensive de sculptures, d'installations publiques, d'aquarelles et de scénographies.",
+    "timeline": "Chronologie",
+    "public_commissions": "Commandes publiques choisies",
+    "group_exhibitions": "Expositions collectives choisies",
+    "education": "Formation",
+    "position": "Poste",
+    "award": "Récompense",
+    "personal": "Personnel"
+  },
+  "contact": {
+    "title": "Prendre contact",
+    "intro": "Questions sur les œuvres, prêts, expositions ou collaborations — veuillez remplir le formulaire ci-dessous.",
+    "info_title": "Informations",
+    "message_title": "Message",
+    "name": "Nom",
+    "email": "Adresse e-mail",
+    "subject": "Objet",
+    "message": "Message",
+    "name_ph": "Votre nom",
+    "email_ph": "votre@email.fr",
+    "subject_ph": "Concernant...",
+    "message_ph": "Votre message...",
+    "send": "Envoyer le message",
+    "sent_title": "Merci !",
+    "sent_body": "Votre message a été envoyé. Nous vous répondrons dans les meilleurs délais.",
+    "editor": "Éditeur"
+  },
+  "references": {
+    "title": "Matériel de référence",
+    "subtitle": "Sculpture & Graphisme",
+    "intro": "Séries de sculptures, graphismes, films et photographies documentant la production artistique de Sivert Lindblom.",
+    "sculpture_series": "Séries de sculptures",
+    "film_tv": "Film & TV",
+    "director": "Réalisateur"
+  },
+  "footer": {
+    "rights": "Tous droits réservés.",
+    "editor": "Éditeur"
+  }
+}

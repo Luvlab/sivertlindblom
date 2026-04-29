@@ -1,0 +1,123 @@
+{
+  "nav": {
+    "portfolio": "Portfolio",
+    "sculpture": "Rzeźba",
+    "texts": "Teksty",
+    "biography": "Biografia",
+    "contact": "Kontakt",
+    "admin": "Admin"
+  },
+  "common": {
+    "year": "Rok",
+    "location": "Miejsce",
+    "works": "prac",
+    "back": "←",
+    "show": "Pokaż",
+    "published": "Opublikowano",
+    "draft": "Szkic",
+    "save": "Zapisz",
+    "cancel": "Anuluj",
+    "search": "Szukaj",
+    "filter": "Filtruj",
+    "all": "Wszystkie",
+    "language": "Język",
+    "close": "Zamknij",
+    "loading": "Ładowanie..."
+  },
+  "home": {
+    "sculptor": "Rzeźbiarz · Sztokholm",
+    "tagline": "Rzeźba, sztuka publiczna, akwarele i scenografia od 1963 roku",
+    "see_portfolio": "Zobacz portfolio",
+    "biography_btn": "Biografia",
+    "scroll": "Scroll",
+    "about_label": "O artyście",
+    "birth_year": "ur. 1931, Södermanland",
+    "about_text": "Sivert Lindblom (ur. 1931) jest jednym z najważniejszych szwedzkich rzeźbiarzy. Studiował w Królewskiej Akademii Sztuk Pięknych w latach 1958–1963 i od tego czasu stworzył rozległy dorobek artystyczny: rzeźby, instalacje w przestrzeni publicznej, akwarele i scenografie.",
+    "stat_active": "Lata aktywności",
+    "stat_public": "Prace publiczne",
+    "stat_countries": "Kraje",
+    "stat_born": "Rok urodzenia",
+    "selected_works": "Wybrane prace",
+    "explore": "Przeglądaj stronę",
+    "contact_title": "Kontakt",
+    "contact_sub": "Pytania dotyczące prac, wypożyczeń lub współpracy",
+    "contact_btn": "Skontaktuj się"
+  },
+  "portfolio": {
+    "title": "Twórczość artystyczna 1961–2016",
+    "subtitle": "Cztery dekady pracy artystycznej",
+    "intro": "Cztery kategorie dokumentują praktykę artystyczną Siverta Lindbloma: wystawy, zamówienia publiczne, akwarele i scenografia.",
+    "cat_exhibitions": "Wystawy",
+    "cat_public": "Prace publiczne",
+    "cat_watercolors": "Akwarele",
+    "cat_scenography": "Scenografia",
+    "sub_exhibitions": "1961–2016",
+    "sub_public": "Zewnętrzne i wewnętrzne",
+    "sub_watercolors": "1975–2012",
+    "sub_scenography": "Teatr i choreografia",
+    "desc_exhibitions": "Wystawy indywidualne i zbiorowe w Szwecji i na świecie, od Galerie Buren w 1963 do VANDALORUM w 2016.",
+    "desc_public": "Rzeźby i instalacje na placach, stacjach metra, ambasadach i bibliotekach w Szwecji i na całym świecie.",
+    "desc_watercolors": "Ok. 200 akwareli — projekt 'mentalnego konstruktywizmu' o hermetycznej geometrii architektonicznej.",
+    "desc_scenography": "Scenografie dla Teatru Miejskiego w Sztokholmie i choreografie z Margaretą Åsberg i innymi.",
+    "count_works": "prac",
+    "exteriors": "Zewnętrzne",
+    "interiors": "Wewnętrzne"
+  },
+  "watercolors": {
+    "title": "Akwarele 1975–2012",
+    "description": "Około 200 szkicowych akwareli stworzonych jako forma 'mentalnego konstruktywizmu', przedstawiających hermetyczny krajobraz architektoniczny. Prace kształtuje ściśle kontrolowana technika graficzna, dająca w wyniku swobodnie stosowaną aksonometrię.",
+    "book_note": "Pięćdziesiąt prac było wystawionych w Królewskiej Akademii Sztuk Pięknych w Sztokholmie, od 6 października do 4 listopada 2012 r. Książka Sivert Lindblom Akwarele i inne (Bullfinch Publishing, 2012) dokumentuje tę kolekcję."
+  },
+  "texts": {
+    "title": "Krytyka, eseje i wywiady",
+    "subtitle": "Teksty",
+    "intro": "Teksty o Svercie Lindbliomie i przez niego samego: eseje krytyczne, recenzje, wywiady i własne pisma, 1963–2012.",
+    "essay": "Esej",
+    "preface": "Przedmowa",
+    "review": "Recenzja",
+    "interview": "Wywiad",
+    "own_writing": "Własny tekst",
+    "translated": "Przetłumaczony"
+  },
+  "biography": {
+    "title": "Sivert Lindblom",
+    "intro": "Sivert Lindblom (ur. 1931 w Husby-Rekarne, Södermanland) jest jednym z najważniejszych szwedzkich rzeźbiarzy. Studiował w Królewskiej Akademii Sztuk Pięknych w Sztokholmie w latach 1958–1963 i od tego czasu stworzył rozległy dorobek artystyczny: rzeźby, instalacje w przestrzeni publicznej, akwarele i scenografie.",
+    "timeline": "Chronologia",
+    "public_commissions": "Wybrane zamówienia publiczne",
+    "group_exhibitions": "Wybrane wystawy zbiorowe",
+    "education": "Wykształcenie",
+    "position": "Stanowisko",
+    "award": "Nagroda",
+    "personal": "Osobiste"
+  },
+  "contact": {
+    "title": "Skontaktuj się",
+    "intro": "Pytania dotyczące prac, wypożyczeń, wystaw lub współpracy — wypełnij poniższy formularz.",
+    "info_title": "Informacje kontaktowe",
+    "message_title": "Wiadomość",
+    "name": "Imię i nazwisko",
+    "email": "Adres e-mail",
+    "subject": "Temat",
+    "message": "Wiadomość",
+    "name_ph": "Twoje imię i nazwisko",
+    "email_ph": "twoj@email.pl",
+    "subject_ph": "W sprawie...",
+    "message_ph": "Twoja wiadomość...",
+    "send": "Wyślij wiadomość",
+    "sent_title": "Dziękujemy!",
+    "sent_body": "Twoja wiadomość została wysłana. Skontaktujemy się z Tobą tak szybko, jak to możliwe.",
+    "editor": "Redaktor"
+  },
+  "references": {
+    "title": "Materiały referencyjne",
+    "subtitle": "Rzeźba i Grafika",
+    "intro": "Serie rzeźb, grafika, filmy i fotografie dokumentujące twórczość artystyczną Siverta Lindbloma.",
+    "sculpture_series": "Serie rzeźb",
+    "film_tv": "Film i TV",
+    "director": "Reżyser"
+  },
+  "footer": {
+    "rights": "Wszelkie prawa zastrzeżone.",
+    "editor": "Redaktor"
+  }
+}

@@ -1,0 +1,123 @@
+{
+  "nav": {
+    "portfolio": "Portfolio",
+    "sculpture": "Sculpture",
+    "texts": "Texts",
+    "biography": "Biography",
+    "contact": "Contact",
+    "admin": "Admin"
+  },
+  "common": {
+    "year": "Year",
+    "location": "Location",
+    "works": "works",
+    "back": "←",
+    "show": "View",
+    "published": "Published",
+    "draft": "Draft",
+    "save": "Save",
+    "cancel": "Cancel",
+    "search": "Search",
+    "filter": "Filter",
+    "all": "All",
+    "language": "Language",
+    "close": "Close",
+    "loading": "Loading..."
+  },
+  "home": {
+    "sculptor": "Sculptor · Stockholm",
+    "tagline": "Sculpture, public art, watercolours and scenography since 1963",
+    "see_portfolio": "View portfolio",
+    "biography_btn": "Biography",
+    "scroll": "Scroll",
+    "about_label": "About the artist",
+    "birth_year": "b. 1931, Södermanland",
+    "about_text": "Sivert Lindblom (b. 1931) is one of Sweden's most significant sculptors. He studied at the Royal Academy of Fine Arts 1958–1963 and has since created an extensive body of sculptures, public installations, watercolours and scenography.",
+    "stat_active": "Years active",
+    "stat_public": "Public works",
+    "stat_countries": "Countries",
+    "stat_born": "Birth year",
+    "selected_works": "Selected works",
+    "explore": "Explore the site",
+    "contact_title": "Contact",
+    "contact_sub": "Questions about works, loans or collaborations",
+    "contact_btn": "Get in touch"
+  },
+  "portfolio": {
+    "title": "Artistic work 1961–2016",
+    "subtitle": "Four decades of artistic work",
+    "intro": "Four categories document Sivert Lindblom's artistic practice: exhibitions, public commissions, watercolours and scenography.",
+    "cat_exhibitions": "Exhibitions",
+    "cat_public": "Public works",
+    "cat_watercolors": "Watercolours",
+    "cat_scenography": "Scenography",
+    "sub_exhibitions": "1961–2016",
+    "sub_public": "Exteriors & interiors",
+    "sub_watercolors": "1975–2012",
+    "sub_scenography": "Theatre & choreography",
+    "desc_exhibitions": "Solo and group exhibitions in Sweden and internationally, from Galerie Buren 1963 to VANDALORUM 2016.",
+    "desc_public": "Sculptures and installations in public squares, metro stations, embassies and libraries in Sweden and around the world.",
+    "desc_watercolors": "Approx. 200 watercolour works — a 'mental constructivism' project featuring hermetic architectural geometry.",
+    "desc_scenography": "Set designs for Stockholms Stadsteater and choreographies with Margareta Åsberg and others.",
+    "count_works": "works",
+    "exteriors": "Exteriors",
+    "interiors": "Interiors"
+  },
+  "watercolors": {
+    "title": "Watercolours 1975–2012",
+    "description": "Approximately 200 sketch-like watercolour works created as a form of 'mental constructivism', depicting a hermetic architectural landscape. The works are shaped by a strictly controlled graphic technique resulting in a freely applied axonometry.",
+    "book_note": "Fifty works were exhibited at the Royal Academy of Fine Arts in Stockholm, 6 October – 4 November 2012. The book Sivert Lindblom Watercolours etc. (Bullfinch Publishing, 2012) documents the collection."
+  },
+  "texts": {
+    "title": "Criticism, essays & interviews",
+    "subtitle": "Texts",
+    "intro": "Texts about and by Sivert Lindblom: critical essays, reviews, interviews and his own writings, 1963–2012.",
+    "essay": "Essay",
+    "preface": "Preface",
+    "review": "Review",
+    "interview": "Interview",
+    "own_writing": "Own writing",
+    "translated": "Translated"
+  },
+  "biography": {
+    "title": "Sivert Lindblom",
+    "intro": "Sivert Lindblom (b. 1931 in Husby-Rekarne, Södermanland) is one of Sweden's most significant sculptors. He studied at the Royal Academy of Fine Arts in Stockholm 1958–1963 and has since created an extensive body of sculptures, public installations, watercolours and scenography.",
+    "timeline": "Timeline",
+    "public_commissions": "Selected public commissions",
+    "group_exhibitions": "Selected group exhibitions",
+    "education": "Education",
+    "position": "Position",
+    "award": "Award",
+    "personal": "Personal"
+  },
+  "contact": {
+    "title": "Get in touch",
+    "intro": "Questions about works, loans, exhibitions or collaborations — please fill in the form below.",
+    "info_title": "Information",
+    "message_title": "Message",
+    "name": "Name",
+    "email": "Email address",
+    "subject": "Subject",
+    "message": "Message",
+    "name_ph": "Your name",
+    "email_ph": "your@email.com",
+    "subject_ph": "Regarding...",
+    "message_ph": "Your message...",
+    "send": "Send message",
+    "sent_title": "Thank you!",
+    "sent_body": "Your message has been sent. We will get back to you as soon as possible.",
+    "editor": "Editor"
+  },
+  "references": {
+    "title": "Reference material",
+    "subtitle": "Sculpture & Graphics",
+    "intro": "Sculpture series, graphics, film and photographs documenting Sivert Lindblom's artistic production.",
+    "sculpture_series": "Sculpture series",
+    "film_tv": "Film & TV",
+    "director": "Director"
+  },
+  "footer": {
+    "rights": "All rights reserved.",
+    "editor": "Editor"
+  }
+}

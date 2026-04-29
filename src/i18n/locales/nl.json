@@ -1,0 +1,123 @@
+{
+  "nav": {
+    "portfolio": "Portfolio",
+    "sculpture": "Beeldhouwkunst",
+    "texts": "Teksten",
+    "biography": "Biografie",
+    "contact": "Contact",
+    "admin": "Admin"
+  },
+  "common": {
+    "year": "Jaar",
+    "location": "Locatie",
+    "works": "werken",
+    "back": "←",
+    "show": "Bekijken",
+    "published": "Gepubliceerd",
+    "draft": "Concept",
+    "save": "Opslaan",
+    "cancel": "Annuleren",
+    "search": "Zoeken",
+    "filter": "Filteren",
+    "all": "Alle",
+    "language": "Taal",
+    "close": "Sluiten",
+    "loading": "Laden..."
+  },
+  "home": {
+    "sculptor": "Beeldhouwer · Stockholm",
+    "tagline": "Beeldhouwkunst, publieke kunst, aquarellen en scenografie sinds 1963",
+    "see_portfolio": "Portfolio bekijken",
+    "biography_btn": "Biografie",
+    "scroll": "Scroll",
+    "about_label": "Over de kunstenaar",
+    "birth_year": "geb. 1931, Södermanland",
+    "about_text": "Sivert Lindblom (geb. 1931) is een van Zweden's meest vooraanstaande beeldhouwers. Hij studeerde aan de Koninklijke Academie voor Schone Kunsten van 1958 tot 1963 en heeft sindsdien een uitgebreid oeuvre gecreëerd van beeldhouwwerken, publieke installaties, aquarellen en scenografieën.",
+    "stat_active": "Jaren actief",
+    "stat_public": "Publieke werken",
+    "stat_countries": "Landen",
+    "stat_born": "Geboortejaar",
+    "selected_works": "Geselecteerde werken",
+    "explore": "Verken de website",
+    "contact_title": "Contact",
+    "contact_sub": "Vragen over werken, bruikleen of samenwerkingen",
+    "contact_btn": "Neem contact op"
+  },
+  "portfolio": {
+    "title": "Artistiek werk 1961–2016",
+    "subtitle": "Vier decennia artistiek werk",
+    "intro": "Vier categorieën documenteren de artistieke praktijk van Sivert Lindblom: tentoonstellingen, publieke opdrachten, aquarellen en scenografie.",
+    "cat_exhibitions": "Tentoonstellingen",
+    "cat_public": "Publieke werken",
+    "cat_watercolors": "Aquarellen",
+    "cat_scenography": "Scenografie",
+    "sub_exhibitions": "1961–2016",
+    "sub_public": "Buiten- & binnenruimtes",
+    "sub_watercolors": "1975–2012",
+    "sub_scenography": "Theater & choreografie",
+    "desc_exhibitions": "Solo- en groepstentoonstellingen in Zweden en internationaal, van Galerie Buren in 1963 tot VANDALORUM in 2016.",
+    "desc_public": "Beelden en installaties op pleinen, metrostations, ambassades en bibliotheken in Zweden en wereldwijd.",
+    "desc_watercolors": "Ca. 200 aquarellen — een project van 'mentaal constructivisme' met hermetische architectonische geometrie.",
+    "desc_scenography": "Decors voor het Stadstheater van Stockholm en choreografieën met Margareta Åsberg en anderen.",
+    "count_works": "werken",
+    "exteriors": "Buitenruimtes",
+    "interiors": "Binnenruimtes"
+  },
+  "watercolors": {
+    "title": "Aquarellen 1975–2012",
+    "description": "Circa 200 schetsmatige aquarellen gecreëerd als een vorm van 'mentaal constructivisme', die een hermetisch architectonisch landschap uitbeelden. De werken worden gevormd door een streng gecontroleerde grafische techniek die resulteert in een vrij toegepaste axonometrie.",
+    "book_note": "Vijftig werken werden tentoongesteld in de Koninklijke Academie voor Schone Kunsten in Stockholm, 6 oktober – 4 november 2012. Het boek Sivert Lindblom Aquarellen e.a. (Bullfinch Publishing, 2012) documenteert de collectie."
+  },
+  "texts": {
+    "title": "Kritiek, essays & interviews",
+    "subtitle": "Teksten",
+    "intro": "Teksten over en door Sivert Lindblom: kritische essays, recensies, interviews en eigen geschriften, 1963–2012.",
+    "essay": "Essay",
+    "preface": "Voorwoord",
+    "review": "Recensie",
+    "interview": "Interview",
+    "own_writing": "Eigen tekst",
+    "translated": "Vertaald"
+  },
+  "biography": {
+    "title": "Sivert Lindblom",
+    "intro": "Sivert Lindblom (geb. 1931 in Husby-Rekarne, Södermanland) is een van Zweden's meest vooraanstaande beeldhouwers. Hij studeerde aan de Koninklijke Academie voor Schone Kunsten in Stockholm van 1958 tot 1963 en heeft sindsdien een uitgebreid oeuvre gecreëerd van beeldhouwwerken, publieke installaties, aquarellen en scenografieën.",
+    "timeline": "Tijdlijn",
+    "public_commissions": "Geselecteerde publieke opdrachten",
+    "group_exhibitions": "Geselecteerde groepstentoonstellingen",
+    "education": "Opleiding",
+    "position": "Functie",
+    "award": "Onderscheiding",
+    "personal": "Persoonlijk"
+  },
+  "contact": {
+    "title": "Contact opnemen",
+    "intro": "Vragen over werken, bruikleen, tentoonstellingen of samenwerkingen — vul het onderstaande formulier in.",
+    "info_title": "Informatie",
+    "message_title": "Bericht",
+    "name": "Naam",
+    "email": "E-mailadres",
+    "subject": "Onderwerp",
+    "message": "Bericht",
+    "name_ph": "Uw naam",
+    "email_ph": "uw@email.nl",
+    "subject_ph": "Betreft...",
+    "message_ph": "Uw bericht...",
+    "send": "Bericht verzenden",
+    "sent_title": "Dank u wel!",
+    "sent_body": "Uw bericht is verzonden. Wij nemen zo spoedig mogelijk contact met u op.",
+    "editor": "Redacteur"
+  },
+  "references": {
+    "title": "Referentiemateriaal",
+    "subtitle": "Beeldhouwkunst & Grafiek",
+    "intro": "Beeldhouwreeksen, grafiek, films en foto's die de artistieke productie van Sivert Lindblom documenteren.",
+    "sculpture_series": "Beeldhouwreeksen",
+    "film_tv": "Film & TV",
+    "director": "Regisseur"
+  },
+  "footer": {
+    "rights": "Alle rechten voorbehouden.",
+    "editor": "Redacteur"
+  }
+}
