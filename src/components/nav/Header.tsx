@@ -57,18 +57,7 @@ export default function Header({ locale, dict }: HeaderProps) {
               <Link
                 key={item.href}
                 href={item.href}
-                style={{
-                  fontSize: 'var(--fs-sm)',
-                  letterSpacing: '0.08em',
-                  textTransform: 'uppercase',
-                  color: pathname?.startsWith(item.href) ? 'var(--color-accent)' : 'var(--color-muted)',
-                  transition: 'color 0.15s',
-                }}
-                onMouseEnter={(e) => { (e.target as HTMLElement).style.color = 'var(--color-text)' }}
-                onMouseLeave={(e) => {
-                  (e.target as HTMLElement).style.color =
-                    pathname?.startsWith(item.href) ? 'var(--color-accent)' : 'var(--color-muted)'
-                }}
+                className={`nav-link${pathname?.startsWith(item.href) ? ' active' : ''}`}
               >
                 {item.label}
               </Link>

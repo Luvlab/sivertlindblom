@@ -13,19 +13,53 @@ const inter = Inter({
   display: 'swap',
 })
 
+const OG_IMAGE =
+  'https://sivertlindblom.se/wp-content/uploads/2015/01/Sivert-Lindblom-Blasieholms-Torg-01.jpg'
+
 export const metadata: Metadata = {
+  metadataBase: new URL('https://sivertlindblom.se'),
   title: {
     default: 'Sivert Lindblom — Skulptör',
     template: '%s | Sivert Lindblom',
   },
   description:
-    'Official website of sculptor Sivert Lindblom (b. 1931). Sculpture, public art, watercolours and scenography since 1963.',
+    'Officiell webbplats för skulptören Sivert Lindblom (f. 1931). Skulptur, offentlig konst, akvareller och scenografi sedan 1963.',
+  keywords: [
+    'Sivert Lindblom', 'skulptör', 'sculptor', 'Stockholm', 'Blasieholmstorg',
+    'offentlig konst', 'public art', 'akvareller', 'watercolours', 'scenografi',
+  ],
+  authors: [{ name: 'Sivert Lindblom' }],
+  creator: 'Sivert Lindblom',
   openGraph: {
-    title: 'Sivert Lindblom — Sculptor',
-    description: 'Sculpture, public art, watercolours and scenography since 1963.',
+    title: 'Sivert Lindblom — Skulptör',
+    description:
+      'Skulptur, offentlig konst, akvareller och scenografi sedan 1963. Offentliga verk i Stockholm, New York, Malmö och Tokyo.',
     url: 'https://sivertlindblom.se',
     siteName: 'Sivert Lindblom',
     type: 'website',
+    locale: 'sv_SE',
+    alternateLocale: ['en_US', 'de_DE', 'fr_FR'],
+    images: [
+      {
+        url: OG_IMAGE,
+        width: 1200,
+        height: 800,
+        alt: 'Blasieholmstorg, Stockholm 1989 — Sivert Lindblom',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Sivert Lindblom — Skulptör',
+    description:
+      'Skulptur, offentlig konst, akvareller och scenografi sedan 1963.',
+    images: [OG_IMAGE],
+    creator: '@sivertlindblom',
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true },
   },
 }
 

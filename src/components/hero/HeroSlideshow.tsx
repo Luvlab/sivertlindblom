@@ -88,6 +88,26 @@ export default function HeroSlideshow({ children }: Props) {
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
   const fadeTimer   = useRef<ReturnType<typeof setTimeout> | null>(null)
 
+  // ── Preload images so the BACK layer is always ready before the fade ──────
+  // Fires once on mount: warm up the first 4 images immediately.
+  useEffect(() => {
+    images.slice(0, 4).forEach(({ url }) => {
+      const img = new window.Image()
+      img.src = url
+    })
+  }, [images])
+
+  // Fires whenever backIdx advances: preload the image coming 1 and 2 steps
+  // ahead so there are ~8–14 s to load before each is needed as the BACK layer.
+  useEffect(() => {
+    const one   = (backIdx + 1) % images.length
+    const two   = (backIdx + 2) % images.length
+    ;[one, two].forEach((i) => {
+      const img = new window.Image()
+      img.src = images[i].url
+    })
+  }, [backIdx, images])
+
   // Start the outgoing fade for the FRONT layer
   const startFade = useCallback(() => {
     setFading(true)
