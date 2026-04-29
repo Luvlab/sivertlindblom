@@ -10,57 +10,67 @@ export function generateStaticParams() {
   return locales.map((locale) => ({ locale }))
 }
 
-const EXTERIORS = [
-  { title: 'Blasieholmstorg — Hästar i brons', year: 1989, location: 'Stockholm' },
-  { title: 'Gustav Adolfs torg, fontäner', year: 2002, location: 'Malmö' },
-  { title: 'Nobelmonument', year: 2003, location: 'New York' },
-  { title: 'Sergels torg — Sergel monumentet', year: 1998, location: 'Stockholm' },
-  { title: 'Kungliga Biblioteket', year: 1998, location: 'Stockholm' },
-  { title: 'Synagoga — Förintelsenmonumentet', year: 1998, location: 'Stockholm' },
-  { title: 'Stockholms Universitet Campus', year: 1987, location: 'Stockholm' },
-  { title: 'SAS Huvudkontor, Frösundavik', year: 1988, location: 'Stockholm' },
-  { title: 'Skissernas Museum, fasad', year: 1988, location: 'Lund' },
-  { title: 'Haga Norra gångbro', year: 1993, location: 'Stockholm' },
-  { title: 'Cavallobrunnen, Resecentrum', year: 1995, location: 'Skövde' },
-  { title: 'Potatisåkern — Profilen', year: 2001, location: 'Malmö' },
-  { title: 'Eskilstuna rondellen — Profilen', year: 2002, location: 'Eskilstuna' },
-  { title: 'Bältesspännarparken', year: 2013, location: 'Göteborg' },
-  { title: 'SEB Banken Huvudkontor', year: 1992, location: 'Rissne' },
-  { title: 'Sveriges ambassad, entré', year: 1990, location: 'Tokyo' },
-  { title: 'Pharmacia entréplats', year: 1984, location: 'Uppsala' },
-  { title: 'Kungsträdgården, norra delen', year: 1997, location: 'Stockholm' },
+const EXTERIORS: Array<{ title: string; year: number; location: string; slug?: string }> = [
+  { title: 'Blasieholmstorg — Hästar i brons', year: 1989, location: 'Stockholm',            slug: 'blasieholmstorg-1989' },
+  { title: 'Gustav Adolfs torg, fontäner',      year: 2002, location: 'Malmö',               slug: 'gustav-adolfs-torg-2002' },
+  { title: 'Nobelmonument',                     year: 2003, location: 'New York',             slug: 'nobelmonument-new-york-2003' },
+  { title: 'Sergels torg — Sergel monumentet',  year: 1998, location: 'Stockholm' },
+  { title: 'Kungliga Biblioteket',              year: 1998, location: 'Stockholm' },
+  { title: 'Synagoga — Förintelsenmonumentet',  year: 1998, location: 'Stockholm' },
+  { title: 'Stockholms Universitet Campus',     year: 1987, location: 'Stockholm',            slug: 'frescati-1987' },
+  { title: 'SAS Huvudkontor, Frösundavik',      year: 1988, location: 'Stockholm' },
+  { title: 'Skissernas Museum, fasad',          year: 1988, location: 'Lund' },
+  { title: 'Haga Norra gångbro',                year: 1993, location: 'Stockholm' },
+  { title: 'Cavallobrunnen, Resecentrum',       year: 1995, location: 'Skövde' },
+  { title: 'Potatisåkern — Profilen',           year: 2001, location: 'Malmö' },
+  { title: 'Eskilstuna rondellen — Profilen',   year: 2002, location: 'Eskilstuna' },
+  { title: 'Bältesspännarparken',               year: 2013, location: 'Göteborg' },
+  { title: 'SEB Banken Huvudkontor',            year: 1992, location: 'Rissne' },
+  { title: 'Sveriges ambassad, entré',          year: 1990, location: 'Tokyo' },
+  { title: 'Pharmacia entréplats',              year: 1984, location: 'Uppsala' },
+  { title: 'Kungsträdgården, norra delen',      year: 1997, location: 'Stockholm' },
   { title: 'Fersenska Palatset, Handelsbanken', year: 1975, location: 'Stockholm' },
-  { title: 'Garnisonen', year: 1972, location: 'Stockholm' },
+  { title: 'Garnisonen',                        year: 1972, location: 'Stockholm' },
 ]
 
-const INTERIORS = [
-  { title: 'Nobel Forum', year: 1993, location: 'Solna' },
-  { title: 'Berns Ljusgård', year: 1991, location: 'Stockholm' },
-  { title: 'Västra skogen T-banestation', year: 1975, location: 'Stockholm' },
-  { title: 'Sveriges Riksbank', year: 1973, location: 'Stockholm' },
-  { title: 'Riksbyggen/Göta Ark, Medborgarplatsen', year: 1984, location: 'Stockholm' },
-  { title: 'Tetra Pak', year: 1984, location: 'Lausanne' },
-  { title: 'Göteborgs Universitetsbibliotek', year: 1985, location: 'Göteborg' },
-  { title: 'NK Ljusgård', year: 1968, location: 'Stockholm' },
-  { title: 'Stadsteatern Stockholm', year: 1970, location: 'Stockholm' },
+const INTERIORS: Array<{ title: string; year: number; location: string; slug?: string }> = [
+  { title: 'Nobel Forum',                              year: 1993, location: 'Solna' },
+  { title: 'Berns Ljusgård',                           year: 1991, location: 'Stockholm' },
+  { title: 'Västra skogen T-banestation',              year: 1975, location: 'Stockholm', slug: 'vastra-skogen-1975' },
+  { title: 'Sveriges Riksbank',                        year: 1973, location: 'Stockholm' },
+  { title: 'Riksbyggen/Göta Ark, Medborgarplatsen',    year: 1984, location: 'Stockholm' },
+  { title: 'Tetra Pak',                                year: 1984, location: 'Lausanne' },
+  { title: 'Göteborgs Universitetsbibliotek',          year: 1985, location: 'Göteborg' },
+  { title: 'NK Ljusgård',                              year: 1968, location: 'Stockholm' },
+  { title: 'Stadsteatern Stockholm',                   year: 1970, location: 'Stockholm' },
 ]
 
-function WorkRow({ title, year, location }: { title: string; year: number; location: string }) {
-  return (
-    <div
-      className="row-hover"
-      style={{
-        display: 'grid',
-        gridTemplateColumns: '5rem 1fr auto',
-        gap: '1.5rem',
-        alignItems: 'center',
-        padding: '1rem 0',
-        borderBottom: '1px solid var(--color-border)',
-      }}
-    >
+function WorkRow({ title, year, location, slug, locale }: { title: string; year: number; location: string; slug?: string; locale: string }) {
+  const rowStyle = {
+    display: 'grid',
+    gridTemplateColumns: '5rem 1fr auto',
+    gap: '1.5rem',
+    alignItems: 'center',
+    padding: '1rem 0',
+    borderBottom: '1px solid var(--color-border)',
+  } as const
+  const inner = (
+    <>
       <span style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-accent)', fontFamily: 'Georgia, serif' }}>{year}</span>
       <span style={{ fontSize: 'var(--fs-base)' }}>{title}</span>
       <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', textAlign: 'right' }}>{location}</span>
+    </>
+  )
+  if (slug) {
+    return (
+      <Link href={`/${locale}/portfolio/public-works/${slug}`} className="row-hover" style={rowStyle}>
+        {inner}
+      </Link>
+    )
+  }
+  return (
+    <div className="row-hover" style={rowStyle}>
+      {inner}
     </div>
   )
 }
@@ -129,7 +139,7 @@ export default async function PublicWorksPage({
             {dict.portfolio?.exteriors ?? 'Exteriörer'}
           </h2>
           {EXTERIORS.sort((a, b) => b.year - a.year).map((w) => (
-            <WorkRow key={w.title} {...w} />
+            <WorkRow key={w.title} {...w} locale={locale} />
           ))}
         </section>
 
@@ -139,7 +149,7 @@ export default async function PublicWorksPage({
             {dict.portfolio?.interiors ?? 'Interiörer'}
           </h2>
           {INTERIORS.sort((a, b) => b.year - a.year).map((w) => (
-            <WorkRow key={w.title} {...w} />
+            <WorkRow key={w.title} {...w} locale={locale} />
           ))}
         </section>
       </div>

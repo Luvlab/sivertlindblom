@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import type { Metadata } from 'next'
 import { getDictionary } from '@/i18n/getDictionary'
 import { locales } from '@/i18n/config'
@@ -14,12 +15,12 @@ const SCULPTURE_SERIES = [
   { key: 'metamorfoser', label: 'Metamorfoser — Sittare', desc: 'Sittande figurer i metamorfos.' },
   { key: 'monoliter', label: 'Monoliter & Blystoder', desc: 'Monolitiska former, inkl. Paris 1977.' },
   { key: 'azteker', label: 'Azteker', desc: 'Aztekiskt inspirerade skulpturer.' },
-  { key: 'tidiga', label: 'Tidiga skulpturer', desc: 'Verk från 1950- och 1960-talen.' },
+  { key: 'tidiga-skulpturer', label: 'Tidiga skulpturer', desc: 'Verk från 1950- och 1960-talen.' },
   { key: 'kofeser', label: 'Kofeser', desc: 'En serie om meningslös meningsfullhet.' },
   { key: 'blyplattor', label: 'Blyplattor', desc: 'Reliefverk i bly.' },
   { key: 'tradkonstruktioner', label: 'Trädkonstruktioner', desc: 'Skulpturer i trä.' },
   { key: 'tornmodeller', label: 'Tornmodeller', desc: 'Modeller och förslag för torn.' },
-  { key: 'arbetsmodeller', label: 'Arbetsmodeller & Förslag', desc: 'Tävlingsförslag och arbetsmodeller.' },
+  { key: 'grafik', label: 'Grafik i urval', desc: 'Teckningar, grafikblad och studier.' },
 ]
 
 const FILMS = [
@@ -62,10 +63,10 @@ export default async function ReferencesPage({
         </h2>
         <div className="auto-grid-wide">
           {SCULPTURE_SERIES.map((s) => (
-            <div key={s.key} className="card" style={{ padding: '1.5rem' }}>
+            <Link key={s.key} href={`/${locale}/references/${s.key}`} className="card card-hover" style={{ padding: '1.5rem', display: 'block' }}>
               <h3 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-lg)', marginBottom: '0.5rem' }}>{s.label}</h3>
               <p style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-sm)' }}>{s.desc}</p>
-            </div>
+            </Link>
           ))}
         </div>
       </section>
