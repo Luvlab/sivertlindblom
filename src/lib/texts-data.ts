@@ -21,11 +21,31 @@ const RAW_TEXTS_DATA: Omit<TextItem, 'bodies'>[] = [
     author: 'Peter Cornell',
     publication: 'Katalog Kungl. Konstakademien',
     lang: 'sv',
-    body: `Peter Cornell är professor i konstvetenskap och har skrivit om Sivert Lindbloms akvareller. Texten ingår i katalogen till utställningen "AKVARELLER – m.m." på Kungl. Konstakademien 2012.
+    body: `Ett flöde av sinnrika konstruktioner. Krafter som tynger, pressar, svävar. Allt är fakta som i den nya franska romanen; på en gång sakförhållanden och fiktion.
 
-Lindbloms akvareller är konstruktiva visioner — inte av något existerande utan av möjliga världar. Han bygger upp sina bilder med axonometriska perspektiv och omärkta pigment, en sorts mental konstruktivism som Peter Cornell beskriver som "hermetiskt arkitektoniskt landskap".
+Närmast oräkneliga löper de akvarellerade teckningarna som en fris genom utställningssalarna, ett ackompanjemang eller musikaliskt ledmotiv. I bildsviten pågår en o-uttröttlig verksamhet av byggen, konstruktioner och en aldrig sinande uppfinningsrikedom för att komma fram till den ideala lösningen. Föremålen – plank, stativ, trappor, stenar och klot – verkar alla hämtade ur samma förråd av rekvisita; element som ofta återkommer i Sivert Lindbloms konst. Träd och häckar påminner mer om artefakter och kulisser än levande natur och allt utspelar sig på en scen vars räfflade underlag liknar det väl krattade gruset i en zen-trädgård. Scenen är sedd snett uppifrån i ett skevt, axonometriskt perspektiv.
 
-De hundra verken som visades på Konstakademien 2012, över sjuttio löpmeter vägg, var resultatet av ett systematiskt arbete sedan 1975. Varje akvarell är ett unikt objekt som simultaneously är del av en serie — en rörelse genom ett imaginärt arkitektoniskt rum.`,
+Vem är byggherren? Är han en hotfull demiurg eller är allt bara på lek?
+
+Föremålen är spelpjäser i ett spel med givna regler som begränsar och tvingar men samtidigt är en paradoxal förutsättning för frihet; det går ju inte att leka utan regler! Ett sätt att leva, att parera nödvändighetens rike. Konstnären söker därför verktyg som begränsar valmöjligheterna och styr arbetet: ett tekniskt ritbord med linjaler och gradskiva, inte ett traditionellt staffli. Och spelreglerna för färg: alltid oblandade, direkt ur Winsor & Newtons färgkoppar.
+
+Det är sakligt och oromantiskt som hos Bauhaus. Inga måleriskt utstuderade effekter, ingen subjektivism. Det är samma objektiva exakthet som när minimalisterna använde sig av brädgårdarnas standardmått för sina vita boxar. Sivert Lindblom har tillämpat en motsvarande metod i sina offentliga arbeten, till exempel i den ornamentala kakelsviten i tunnelbanestationen Västra Skogens dunkla grotta: kakelplattornas mått och färg var redan givna och kakelsättarna bestämdes inte av andra överväganden än sina arbetsrutiner. Och Sivert Lindbloms bilder styrs på samma sätt av ritbordets utrustning och begränsningar. Men de objektiva reglerna utesluter inte en spontanitet i själva koncipieringen, för varje ny bildidé uppstår impulsivt och oöverlagt – där smyger sig trots allt ett romantiskt skapande in bakvägen, ett omedvetet skikt i gryningens dröm och psyke.
+
+Den tekniska ritningen har sin egen fiktion. Det noterade Roger Caillois, den franske idéhistorikern i surrealismens närhet: "Tekniska, dokumentära och vetenskapliga verk ställer oss inför en rad illustrationer där man i sökandet efter det verkliga möter det fantastiska." De ger oss mer att drömma om, de ställer fler problem, de överraskar eller oroar mer än de verk där konstnären uttryckligen spekulerar i känslan för det mystiska som han försöker få sina verk att förmedla. Och Sivert Lindblom använder sig just av den vetenskapliga fiktionens genre i sina akvareller.
+
+Här tycks allt utspela sig i en avlägsen park, en enslig plats eller locus solus; jag tänker på Raymond Roussels roman där uppfinnaren professor Canterel tar med sina besökare på en rundvandring i en parkanläggning för att visa sin samling sällsamma konstruktioner och apparater.
+
+Roussels patafysiska roman inspirerade den italienske arkitekten Carlo Scarpa i utformningen av den vidsträckta kyrkogårdsanläggningen Brion i Treviso – det är en estetik som står Sivert Lindblom nära.
+
+En outtröttlig verksamhet på en byggplats, otaliga utkast och förslag: det är snart fullbordat! Den utopiskt blå kvadraten! Men ändå inte; utopin glider alltid undan som den icke-plats som är utopins etymologiska mening. Det är som i de utopiska projekten av den franska revolutionens arkitekter Boullé och Ledoux; deras jakt på ett fulländat samhällsbygge är på en gång ett storslaget och melankoliskt projekt som pendlar mellan tvång och frihet.
+
+Svitens byggmästare är en Sisyfos där varje utkast får honom att börja på nytt och på nytt. Sisyfos är en tålmodig stoiker, inte olycklig; ett sinnestillstånd och en livshållning.
+
+Men något okänt tränger sig in i de välordnade ritningarna: en svart formlös fläck liksom en stor bläckplump saboterar ordningen, eller en oförklarlig störning av svarta, plangeometriska gestalter som ett slags korrigeringar av en okänd hand, ibland destruerande som ett metafysiskt virus. De skapar plötsliga, blixtsnabba och oroliga rörelser i bildrummet; kanske budbärare från en annan värld, från det Malevitj kallade en fjärde eller femte dimension, 'ett geometriskt paradis' bortom tiden och döden.
+
+Existens, samhällsbygge, teknologi – de drömda lösningarna gäller kanske till slut bildens egen byggnad: bildens outtömliga variationer och möjligheter.
+
+Peter Cornell`,
   },
   {
     slug: 'jan-oqvist-2012',
@@ -35,11 +55,48 @@ De hundra verken som visades på Konstakademien 2012, över sjuttio löpmeter v�
     author: 'Jan Öqvist',
     publication: 'Katalog Kungl. Konstakademien',
     lang: 'sv',
-    body: `Jan Öqvist har under lång tid dokumenterat Sivert Lindbloms konstnärskap. Denna text ingår i katalogen till utställningen "AKVARELLER – m.m." på Kungl. Konstakademien 2012.
+    body: `Ett inre rum med yttre gränser genom vilket tiden passerar
 
-Akvarellerna i serien 1975–2012 visar ett konsekvent undersökande av rumslighet och konstruktion. Det axonometriska perspektivet — utan flyktpunkt — ger bilderna en eigenartig kvalitet av planritning och drömbild på en gång.
+Alla känner vi skillnaden mellan upplevelsen av att se spåren av en händelse och att själva ha fått vara med om själva händelsen.
+Gestaltande konst försöker upphäva denna skillnad och få oss att bli en del av det som skapade verket.
+I Sivert Lindbloms till synes scenografiskt strama landskap tvingas vi att ta ställning till detta fenomen.
 
-Utställningen på Konstakademien var den mest fullständiga presentation av akvarellserien som gjorts: hundra verk, drygt sjuttio löpmeter vägg, en labyrint av imaginära rum.`,
+Skeendet, tidpunkten och platsen för händelserna i hans bilder är öppna för oss. Det vi ser verkar vara frusna ögonblick men samtidigt tecken på att något dramatiskt är på gång. Vi kan aldrig vara riktigt säkra på vilket – när, var och varför finns inte i hans bilder och objekt men ändå är det där med oss i betraktandet. När vi, åskådare, befinner oss granskande och ser ner i de rumsligheter han avbildat försöker vi identifiera det vi ser och ställa detta i relation till våra egna erfarenheter. Trots sin saklighet och frånvaron av visuella betoningar som reflexer och skuggor får dessa objekt stark innebörd.
+De tunna färgskikten på de statiska objekten blir en vibrerande hinna, en hud som andas omsorg. Vi skapar referensvärldar för att se vad iscensättningen står för. Varje delobjekt i hans bilder är precist och verkar överensstämma med det igenkännbara. Likheterna mellan barndomens byggklotsar och futuristiska arkitektvisioner färgar våra tolkningar.
+Vi försöker spåra orsakerna till dessa egensinniga världar och vad som där ska bli. Det börjar som en visuell lek med det sneda perspektivet men går snabbt över till att bli en mental uppgörelse med oss själva. Inte med det som finns avbildat utan med det som inte finns där.
+Vi är vana att en inre logik måste råda mellan det avbildade och det som sker i vårt medvetande, att det finns samband mellan tanke och handling och att detta även måste ligga till grund för konstnärliga manifestationer – att innehåll och upplevelse har ett uttryckt samband.
+
+Det enda tolkningsbara i Sivert Lindbloms bilder kommer från våra egna mentala bearbetningsprocesser.
+Sinnesstämningen blir den som uppstår i oss i när vi begrundar logiken i hans bilder – hur ogripbar den än syns vara. Här uppstår den svindlande tanken att vi står inför något som kanske är obegripligt men påtagligt närvarande i skapelseakten.
+
+Det avbildade tycks vara något mer än det synliggjorda, det väcker känslor – objekten – hela tiden på väg, framkallar energier genom sin temporära närvaro och sin fysiska utstrålning. Det är det till synes borttagna och det som inväntar åtgärder eller skeenden som framkallar meningen bortom det uppenbara. Vad får vi aldrig veta.
+
+Hans akvareller är i första hand inte avbildningar utan iscensättningar av mentala och pågående tillstånd.
+Objekten i Sivert Lindbloms bilder är som synteser av avlägsna och tidlösa kvarlevor i förhistorien. I denna bok (AKVARELLER m.m.) bjuder han oss på dessa impulser. Han gör dem till tidlösa kommentarer.
+De är minnesfragment med känslomässiga kopplingar: visuella impulser med plötslig närhet. En förkroppsligad inspiration som lett fram till ett eget form- och bildspråk. De är inte symboler – de blir redskap för självkännedom när vi förhåller oss till detta.
+En vanlig förklarande formel som vi brukar använda på oss själva är att vi är resultatet av våra upplevelser och produkten av våra handlingar. All konsts största utmaning ligger i avgränsandet från det oväsentliga.
+
+När man ser Sivert Lindbloms bilder är det som att försöka förstå naturlagarna men de är undflyende och behåller sina egna konstanter. Bilderna är sig själva och oberörda av sitt öde. Även om han överlämnat dem åt betraktaren kan han aldrig befria sig ifrån dem. Lika lite som hans bilder kan frikopplas från sin historia går det att utesluta att det även finns referenser till det som han ser som det mest sevärda.
+
+Han har efter ett långt livs avläsning av omvärldens formspråk gett oss ett sätt att se tillvaron bortom det uppenbara.
+
+Ser vi skulptören Sivert Lindbloms formvilja i bilderna som antyder hur hans materia kan genomgå transformationer? Är bläckplumparna, den svarta materian, molnen eller de svarta blixtarna som tränger sig in över och genom bilderna den obekanta mängden av möjligheter som söker sin form och sitt uttryck?
+Trots att något tycks ske i bilderna är det inte tydligt. De skildrar skapande förändringsprocesser, oavslutade och utan tydliga mål.
+
+Vi anar målmedvetna arbetsinsatser av något frånvarande som ämnar omvandla något utan ha ett egentligt uppdrag eller tydligt syfte. Detta beskriver förgängligheten i det som pågår.
+Vi ser de skyddande skikten. Vi ser skalen som formats av olika innehåll. Vi ser gjutformarna och hur dessa lämnats åt sitt öde. Även om vi anar de skapande processer som krävs för att omvandla en form till en annan så anger inte objektens tvetydighet någon början och heller inget slut. Betraktaren fyller objekten med innehåll eller frigör dem från ett innehåll.
+
+Vi anar människans försök att beskriva idéns närvaro och hennes försök att placera sig vid sidan om denna.
+Vi söker efter människan som del av sin egen skapande process.
+Vi vill kunna ställa oss inför detta som är mycket större än oss själva.
+Människan som har modet att se:
+det humoristiska och melankoliska i förgängelsen och i skapandet.
+
+Vi fyller formerna med idén om konsten och oss själva med innehåll eller vi bryter oss ur formen för att meddela vår närvaro i det vi tycker oss sakna. Sivert Lindblom är varken i början eller i slutet i denna process – han är i processen mellan bägge världarna.
+Konstnären som skapar för att berätta att vi finns.
+Vi ropar ut i universum och undrar: förutom det kända och det okända där ute, finns det något mer?
+
+— Jan Öqvist`,
   },
   {
     slug: 'catharina-gabrielsson-2012',
