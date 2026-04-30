@@ -106,11 +106,31 @@ Vi ropar ut i universum och undrar: förutom det kända och det okända där ute
     author: 'Catharina Gabrielsson',
     publication: 'Katalog Kungl. Konstakademien',
     lang: 'sv',
-    body: `Catharina Gabrielsson, arkitekturforskare och skribent, bidrar med en essä till katalogen "AKVARELLER – m.m." 2012.
+    body: `'Genom modeller och beskrivningar kan vi få verkligheten att framträda och vi har ingen rätt att väja för det som blir synligt.' Sivert Lindblom (1974)
 
-Sivert Lindbloms akvareller är varken arkitektoniska projekt eller rena bilder — de är något däremellan. Den axonometriska projektionen befriar bilden från betraktarens position: det finns inget centrum, inget utifrån-perspektiv. Man är alltid inuti, alltid omgiven av strukturen.
+En kall marsdag på vandring passerar jag en märklig, kritvit skulptur i skogen. Den är drygt en meter hög och består av en avbarkad trädstam, kluven längst upp och med en käpp nedstucken djupt i sprickan. Den släta vita ytan lyser i dunklet. Formen är fullständigt främmande sin omgivning, en vårvintrigt naken slyskog i utkanten av ett fält. Senare får jag veta att det rör sig om en anordning jägarna använder för att ge salt till rådjur och älg. Viltet har slickat i sig saltet som runnit ner och färgat stammen vit.
 
-Gabrielsson sätter akvarellerna i relation till en modernistisk tradition av konstruktiv tänkande, men betonar att Lindblom inte är konstruktivist i vanlig mening — hans konstruktioner är for omöjliga, for organiska, for fria.`,
+Vid mitt nästa besök är en ny saltsten på plats och den skulpturala effekten uteblir. När ändamålsenligheten blir visuellt fattbar blir objektet ett ting bland andra – visserligen en artefakt, skild från naturen, men inte längre en skulptur.
+
+Skulpturen har uppenbarligen med det främmande att göra, med avskiljandet från det vardagliga, men det är inte därför jag kommer att tänka på Sivert Lindblom. Inte heller för att vitmålade grenar är ett återkommande inslag i hans arbeten, grenar som surrats fast på ställningar och givits olika seriella placeringar i konstrummet, ute i skogen eller som bildmotiv; olika representationer och inplaceringar som givetvis också förändrar deras tingliga uttryck och meningskomplex. Men relationen mellan saltstoden i skogen och Lindbloms konstnärskap är inte primärt av visuell karaktär, inte heller är den speciellt intressant för att den närmast övertydligt pekar ut sammanhangets betydelse för att säkerställa konstens identitet och avsöndringsförmåga.
+
+Det jag kommer att tänka på är det som föregriper formen, dess förutsättningar och orsaker, formblivandet eller i en mera aktiv, konstnärlig mening – formgivandet.
+
+I Sivert Lindbloms formvärld framstår ofta objekten som en följd av en process, konsekvensen av en metod (gjuta, svarva, binda, mäta osv.) och ett visst material (trä, bly, lera, brons, rep osv.). Formen är det kvarvarande. Därmed uppstår en spänning mellan formens uttryck och dess bakomliggande villkor, dess tillblivelse, i vilken den konstnärliga viljan och förmågan endast utgör en komponent av ett (ur materiellt hänseende) oräkneligt antal formande faktorer: geologiska, biologiska, fysikaliska, kemiska, kulturella, maskinella, ekonomiska osv. Formen pekar därmed bortom sig själv, mot en rad rationella, slumpmässiga eller automatiska påverkande krafter som konstskaparen mer eller mindre medvetet har att förhålla sig till.
+
+Lindbloms påtagliga strävan att minimera eller isolera det konstnärligt subjektiva inslaget – det som kan uppfattas i termer av generalitet, neutralitet eller vetenskaplighet – kan på samma sätt förstås som ett sätt att framhålla omständigheter som föregriper formens uttryck och som avtäcks genom den. Därför behåller han till exempel det fabriksskurna papprets format i sina akvareller och låter färgerna vara rena och obrutna: de utgör faktiska, givna element i en utvidgad – och därför problematiserad – formgivning.
+
+Med detta perspektiv får begreppet saklighet en förnyad relevans. Historiskt sett har det sakliga – i framför allt 20-talets modernistiska arkitektur och industriformgivning – betecknat just strävan att 'få verkligheten att framträda' som är den unge Sivert Lindbloms avsiktsförklaring. Men här handlar det inte om avbildning, inte heller om ett slags teknisk-logisk nödvändighet, utan om en förståelse av formen som just formad – formen som en följd av omständigheter, som en konsekvens.
+
+'Undret är ej att tingen är sådana de är utan att de ej är helt annorlunda' är ett citat som återkommer i Lindbloms bibliografi. Det innebär att besattheten vid objektet (utmärkande för vår kultur) viker undan till förmån för tillblivandets villkor, bortom den antropocentriska tolkningsramen.
+
+Lindbloms konstskapande kan sägas vittna om ett evolutionärt förhållningssätt – i synnerhet om man bortser från den prägling av fulländning och framåtskridande som vidhänger begreppet, för vad Darwin ytterst visade var dynamiken i det organiska livets mångfald och slumpens oerhörda betydelse som formgivande element.
+
+Lindbloms konst har mycket riktigt kallats posthumanistisk i det att den använder den mänskliga figuren som ett avpersonifierat tecken, men jag tror att premisserna för en sådan förståelse måste nyanseras. Det posthumanistiska springer inte ur en negerad – och därför paradoxalt nog vidmakthållen – mänsklig centralitet, utan ur insikten att formen endast utgör en tillfällig och delvis slumpmässig materiell sammansättning; följden av en oändligt utsträckt och komplex naturlig eller kulturell process som varken avstannar eller avslutas med det vi konventionellt benämner skulptur.
+
+Vi ser inte längre en egyptisk pyramid, utan ett monument över slavsamhället; inte en ny mobiltelefon, utan den arktiska utvinningen av spårmetaller; inte längre ett par gymnastikskor, utan arbetsvillkoren i det så kallade post-industriella samhällets fabriker. Inte längre en skulptur, utan följden av en uppsättning bortträngda och immateriella villkor som endast konsten har kraft att framkalla.
+
+Catharina Gabrielsson`,
   },
   {
     slug: 'daniel-birnbaum-1993',
@@ -162,19 +182,59 @@ Die Arbeit von Sivert Lindblom, Björn Lövin und Ulrik Samuelson — drei schwe
     author: 'Beate Sydhoff',
     publication: 'Konstrevy nr 2, 1967',
     lang: 'sv',
-    body: `Beate Sydhoff intervjuade Sivert Lindblom för Konstrevy 1967, samma år som han återvänt från Locarno och undervisade i formteori på Arkitekturskolan (KTH).
+    body: `Samtal med Sivert Lindblom
+Beate Sydhoff, Konstrevy nr 2, 1967
 
-— Vad är det du söker med din skulptur?
+Beate Sydhoff: I vårt samtal om dina skulpturer har du fört fram begrepp som primära och sekundära känslor. Vad menar du med en form som inte är förknippad med vad du kallar sekundära känslor?
 
-— Jag söker något som är i rörelse men ändå stilla. En form som har potential — som ser ut att kunna röra sig men väljer att inte göra det. Det är skillnaden mellan en levande form och en död form.
+Sivert Lindblom: Först bör jag nog förklara vad jag menar med sekundära och primära känslor. Den sekundära känslan är baserad på våra direkta erfarenheter och är en konsekvens av dessa, den är rent subjektiv. Den primära känslan, den som är gemensam för alla kan kanske förklaras som en av biologiska faktorer präglad grundstruktur. Att den existerar är emellertid svårt att belägga. Denna primära känsla är säkerligen både mål och drivkraft i allt skapande men kan inte behandlas som medel.
+Den primära känslan är alltså inte direkt kommunikabel utan måste först objektiveras genom något medel och blir på så sätt kommunikabel indirekt.
+Att den sekundära känslan existerar är uppenbart men den är varken direkt eller indirekt kommunikabel därför att den inte är gemensam för alla.
+Om man ser formen som kommunikationsmedel så bör den alltså inte förknippas med den sekundära.
+Man måste koncentrera sig på själva språket, formen. Konstatera var i vilket plan formen som kommunikationsmedel fungerar och i detta plan söka distinkta och precisa formuleringar. Att i så hög grad som möjligt utnyttja det medvetna jaget, intellektet, för att med största tydlighet kunna objektivera sina upplevelser.
 
-— Hur påverkar arbetet med arkitekterna ditt eget konstnärskap?
+BS: Betyder detta att dina arbeten är "känslolösa"?
+SL: Beträffande de sekundära känslorna hoppas jag det. Om man undviker dessa relativa moment uppstår en för mig aktiv tomhet som närmar sig begreppet frihet. En tomhet som åskådaren själv kan "fylla" och därför verkligen uppleva. Kärlets form bestämmer innehållets.
 
-— Enormt. Arkitekturen tvingar dig att tänka i relation — relation till platsen, till kroppen, till staden. Du kan inte ha ett isolerat objekt i arkitektur. Det har format mitt sätt att tänka skulptur som platsspecifik, som relationell.
+BS: Vad var orsaken till att du kom fram till dessa idéer?
+SL: Orsaken var den inlärda formkonventionens begränsning. En situation uppstår då man inte kan komma vidare utan mycket krystade avsikter. En slags förlamning.
 
-— Du har nyligen återvänt från Locarno. Vad tog du med dig?
+BS: Du upplevde en frihet när du upptäckte att du helt kunde förkasta de sekundära känslorna som medel.
+SL: Att medvetet exploatera sina känslor är för mig en paradox. När konsekvensen av detta stod klart för mig upplevde jag verkligen en stor befrielse, känslan av maximala möjligheter. I en sådan situation blir iakttagelserna och observationerna möjliga, sentimentets godtycklighet försvinner, det är inte längre metafysik man sysslar med utan ett seende.
 
-— Distansen. Möjligheten att se det svenska konstnärliga klimatet utifrån. Och ljuset — det medelhavska ljuset är ett annat ljus, det bygger på en annan relation mellan kropp och skugga.`,
+BS: Kan man hitta något genomgående karakteristiskt i din idé om form?
+SL: Som jag nämnde tidigare försökte jag konstatera hur vi upplever den formala och den innehållsliga registreringen. Upptäckten av det tvådimensionella i såväl form som innehåll var avgörande för det fortsatta arbetet.
+
+BS: Vad menar du med tvådimensionalitet?
+SL: Våra visuella möjligheter. Jag menar att tvådimensionaliteten blir påtaglig vid en direkt iakttagelse av hur människans sinnen och intellekt fungerar när de uppfattar form och innehåll, t ex våra ögons oförmåga att registrera annat än formens yta.
+Om vi ser en kub uppfattar vi den som ett tredimensionellt ting, men vad vi ser är ytor förenade i givna positioner. En textur är bara ett mer komplicerat ytfenomen.
+För att skapa oss en uppfattning om vad som finns bakom ytorna kan vi tillfrå vår egen erfarenhet, även andras, men det är fortfarande omöjligt att med våra sinnen bevisa något, inte ens ett snitt i föremålet kan säga oss något utan ger oss enbart nya ytor. De innehållsliga formuleringarna står i ett liknande förhållande till sina mekanismer.
+
+BS: Om man för över resonemanget till din skulptur, vad blev konsekvensen?
+SL: Konsekvensen blev att jag kunde bestämma var mitt språk kan uppfattas och alltså kunde jag koncentrera mig på att arbeta där med största möjliga tydlighet. Så att innehållet låg i det synbara (så nära ytan som möjligt).
+
+BS: Vad betydde detta när det gällde valet av material?
+SL: Materialet blev plötsligt likgiltigt och fick endast en teknisk funktion som stöd åt ytan.
+
+BS: Hur fungerar färgen på dessa ytor?
+SL: Färgen som material används ju yrkesmässigt för att precisera ytan, den uppfattas alltså vanemässigt som tvådimensionell. De olika färgerna, kulörerna, är valda utan estetiska värderingar. Det gällde att finna färger som människan registrerar som saklig information, exempelvis som på trafikskyltar.
+
+BS: Du vill inte förmedla innehållsliga moment?
+SL: Det innehållsliga och det formala i mina arbeten är svårt att behandla var för sig. Det innehållsliga är det formala och det formala är det innehållsliga.
+Innehållet, den poetiska avsikten, har fått sin tydligaste formulering och jag kan här bara informera om läsarten, sättet att se.
+
+BS: Hur vill du att din skulptur skall uppfattas?
+SL: En ytterligare konsekvens av tvådimensionaliteten och den arbetsmetodik som kommit ur den iakttagelsen gör att föremålen blir "immateriella" och bör uppfattas som tankestyrda operationer, tankeregistreringar.
+Det viktiga är att få åskådaren delaktig i de intellektuella äventyren, ett slags medskapande i de spekulativa undersökningarna.
+
+BS: Hur ställer du dig till den nya "immateriella" skulpturen i England?
+SL: Tekniskt och formellt är jag nyfiken och känner mig något besläktad, men jag har mycket svårt att förstå meningen med deras arbeten. Dom har i mina ögon stannat på halva vägen. Där finns ett drag av konventionellt formtänkande som jag inte kan sympatisera med.
+
+BS: Du nämnde något tidigare spekulativa undersökningar. Har dessa något med Bauhaus att göra?
+SL: De har inget alls med Bauhaus att göra. Hela bakgrunden till Bauhaus' tro på formen och dess funktioner är inte längre aktuell för oss. Idé och avsikt kräver att vi väljer den form som är effektivast som kommunikationsmedel, vare sig den är enkel, sammansatt, klar eller oklar, ren eller oren.
+
+BS: Är din konst programmatisk? Har du avsikter som leder mot ett speciellt mål?
+SL: Jag önskar jag kunde deltaga i ett positivt och progressivt skapande som kan utveckla människans mekanismer och därigenom möjliggöra en mer nyanserad erfarenhet av tillvaron. Konstens sociala funktion.`,
   },
   {
     slug: 'sivert-lindblom-live-show-1974',
