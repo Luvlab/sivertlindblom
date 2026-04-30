@@ -23,13 +23,16 @@ const SCULPTURE_SERIES = [
   { key: 'grafik', label: 'Grafik i urval', desc: 'Teckningar, grafikblad och studier.' },
 ]
 
-const FILMS = [
+const FILMS: Array<{ year: number; title: string; director?: string; venue?: string; videoUrl?: string }> = [
   { year: 1967, title: 'Beskrivning av en tankes rörelse', director: 'Lasse Forsberg' },
-  { year: 1974, title: 'Vad var multikonst?', venue: 'SVT / Öppet Arkiv' },
+  { year: 1972, title: 'Ted Gärdestad sjunger "Helena"', venue: 'med Sivert Lindbloms skulpturer', videoUrl: 'https://youtu.be/TapuXHkrEQs' },
+  { year: 1974, title: 'Vad var Multikonst?', venue: 'SVT / Öppet Arkiv', videoUrl: 'https://www.oppetarkiv.se/video/10872733/multikonst-hela-sverige-gar-pa-utstallning' },
   { year: 1993, title: 'Sivert Lindblom visar modeller', venue: 'Skissernas Museum, Lund' },
+  { year: 1996, title: 'Poetic Cinema — Landscape After Verlaine', venue: 'Carl Henrik Svenstedt' },
   { year: 1996, title: 'TV-intervju med Sivert Lindblom', venue: 'TV Eskilstuna' },
+  { year: 1998, title: 'TV4-Uppland: kortintervju om skulptur', venue: 'TV4 Uppland' },
   { year: 2001, title: 'Resningen av Profilen, Potatisåkern', venue: 'Malmö' },
-  { year: 2002, title: 'Fontänerna på Gustav Adolfs torg', venue: 'Malmö' },
+  { year: 2002, title: 'Fontänerna på Gustav Adolfs torg', venue: 'Malmö', videoUrl: 'https://www.youtube.com/watch?v=-ba2Oq65qe4' },
 ]
 
 export default async function ReferencesPage({
@@ -83,11 +86,51 @@ export default async function ReferencesPage({
             <span style={{ color: 'var(--color-accent)', fontFamily: 'Georgia, serif', fontSize: 'var(--fs-sm)' }}>{f.year}</span>
             <div>
               <div style={{ fontSize: 'var(--fs-base)' }}>{f.title}</div>
-              {'director' in f && <div style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', marginTop: '0.2rem' }}>{dict.references?.director ?? 'Regi'}: {f.director}</div>}
-              {'venue' in f && <div style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', marginTop: '0.2rem' }}>{(f as { venue?: string }).venue}</div>}
+              {f.director && <div style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', marginTop: '0.2rem' }}>{dict.references?.director ?? 'Regi'}: {f.director}</div>}
+              {f.venue && <div style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', marginTop: '0.2rem' }}>{f.venue}</div>}
+              {f.videoUrl && (
+                <a
+                  href={f.videoUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ display: 'inline-block', marginTop: '0.4rem', fontSize: 'var(--fs-xs)', color: 'var(--color-accent)', letterSpacing: '0.06em', textTransform: 'uppercase', textDecoration: 'none', borderBottom: '1px solid var(--color-accent-dim)' }}
+                >
+                  ▶ {dict.references?.watch ?? 'Se filmen'} →
+                </a>
+              )}
             </div>
           </div>
         ))}
+      </section>
+
+      <hr className="divider" />
+
+      {/* Publicerat */}
+      <section className="page-pad" style={{ paddingTop: '3rem', paddingBottom: '3rem' }}>
+        <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-2xl)', marginBottom: '1rem' }}>
+          {dict.references?.publicerat ?? 'Publicerat'}
+        </h2>
+        <p style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-sm)', marginBottom: '2rem', maxWidth: '60ch' }}>
+          {dict.references?.publicerat_desc ?? 'Kataloger, tidskriftsartiklar och böcker med texter om Sivert Lindbloms konstnärskap.'}
+        </p>
+        <Link href={`/${locale}/references/publicerat`} className="btn">
+          {dict.references?.view_publicerat ?? 'Visa publikationer'} →
+        </Link>
+      </section>
+
+      <hr className="divider" />
+
+      {/* Fotografier & Inspiration */}
+      <section className="page-pad" style={{ paddingTop: '3rem', paddingBottom: '5rem' }}>
+        <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-2xl)', marginBottom: '1rem' }}>
+          {dict.references?.fotografier ?? 'Fotografier & Inspiration'}
+        </h2>
+        <p style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-sm)', marginBottom: '2rem', maxWidth: '60ch' }}>
+          {dict.references?.fotografier_desc ?? 'Bilder som på ett eller annat sätt berört och inspirerat Sivert Lindblom i sitt arbete.'}
+        </p>
+        <Link href={`/${locale}/references/fotografier`} className="btn">
+          {dict.references?.view_fotografier ?? 'Visa bildgalleri'} →
+        </Link>
       </section>
     </div>
   )
