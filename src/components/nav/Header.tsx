@@ -64,10 +64,11 @@ export default function Header({ locale, dict }: HeaderProps) {
             ))}
           </nav>
 
-          {/* Right side: language switcher + font slider + hamburger */}
+          {/* Right side: language switcher + font slider (desktop only) + hamburger */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
             <LanguageSwitcher locale={locale} />
-            <FontSizeSlider />
+            {/* Font slider hidden on mobile — accessible via the drawer instead */}
+            <span className="hidden-mobile"><FontSizeSlider /></span>
 
             {/* Hamburger — mobile only */}
             <button
