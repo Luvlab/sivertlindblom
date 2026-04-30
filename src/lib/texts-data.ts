@@ -133,6 +133,44 @@ Vi ser inte längre en egyptisk pyramid, utan ett monument över slavsamhället;
 Catharina Gabrielsson`,
   },
   {
+    slug: 'hakan-bull-2013',
+    type: 'essay',
+    year: 2013,
+    title: 'Akvarellen Nr 2 – 2013',
+    author: 'Håkan Bull',
+    publication: 'akvarellen Nr 2, 2013',
+    lang: 'sv',
+    body: `Sivert Lindblom är en av Sveriges intressantaste skulptörer. För en bredare allmänhet är hans konst framför allt synlig i ett stort antal offentliga konstverk runt om i Sverige. Senast en fontän i centrala Eskilstuna med en 20 meter hög obelisk och sex monumentala urnor samt en mängd skulpturala detaljer med anknytning till stadens historia.
+
+Han debuterade tillsammans med kollegan Ulrik Samuelsson på Norrköpings och Eskilstuna konstmuseer och i Stockholm på Galleri Burén år 1963. Deras kanske viktigaste utställningssamarbete skedde dock år 1974 med utställningen "Live Show" på Moderna Museet, där också Björn Lövin (1937-2009) deltog. Utställningen kom att få stor konsthistorisk betydelse eftersom det var den första större museiutställningen med installationer i Sverige. Den kom att ha stor betydelse för de svenska konstnärer, födda på fyrtio- och femtiotalen, som kom att intressera sig för installations- och konceptkonst. Redan på "Live Show" visade Sivert Lindblom skulpturer, objekt, konstruktioner och naturföremål samverkande i en uppbyggd miljöinstallation, som på varierande sätt varit hans kännemärke som konstnär framgent.
+
+Sivert Lindblom definierar sig främst som skulptör men faktum är att "akvarellmåleriet" har varit ett parallellt spår i hans konstnärskap ända sedan 1970-talet. Detta var också utgångspunkten för hans senaste separatutställning "AKVARELLER m.m." på Konstakademin i Stockholm. 6 oktober–4 november 2012 visade Sivert Lindblom ett hundratal akvareller ur en serie av totalt cirka tvåhundra bilder gjorda från 1970-talets början tills nu. Bilderna presenterades i en sjuttio meter lång obruten svit längs utställningssalarnas ytterväggar. På motstående väggar samt i rummet visades objekt och skulpturer. De flesta av de utställda tredimensionella konstverken återfinns i olika konstellationer inkorporerade och abstraherade i akvarellernas tvådimensionella scenerier.
+
+Akvarell är en betydelsefull del i dessa bilder som kanske borde kallas akvarellerade tuschteckningar, för teckningen är i dessa verk en lika viktig bildkomponent som färgen, kanske till och med den viktigaste, men först tillsammans bildar de den avsedda konstnärliga helheten.
+
+Sivert Lindbloms bilder präglas av en sträng teknisk metodik.
+
+Han arbetar på ett speciellt kraftigt akvarellpapper, Arches 640 gram med måtten 56×76 cm. Oftast i liggande format men ibland dubblerade på höjden. Teckningen först med blyertslinjer som sedan blir ifyllda till distinkta, svarta tuschlinjer. Ritningen utförs på ett ritbord i kavaljersperspektiv (parallellperspektiv). Material och teknik präglar bilden. Det fritt tillämpade parallellperspektivet bestämmer rummets uttryck.
+
+Sivert Lindblom använder Winsor & Newton akvarellfärger. Av fabrikatets 96 kulörer väljer han att begränsa sig till cirka 14 stycken i helkoppar. Kulörerna blandas nästan aldrig utan variationerna uppnås valörmässigt beroende på hur stor mängd vatten som förtunnar färgen. Konstnären arbetar på torrt papper för att uppnå den exakthet i avgränsningarna som han önskar. Valet av teknik har sin grund i den konstnärliga avsikten.
+
+Konstnären är skolad i en modernistisk tradition men är ej helt lätt att konstvetenskapligt etikettera. För mig representerar hans konst en slags avantgardistisk samtida klassicism, och en av många utgångspunkter för konstnärens bilder och installationer finns i renässansen. Rent allmänt kan man komma att associera till renässansen med anledning av bildspråkets tydliga och klara form. En mer specifik anknytning är till den italienska renässansens trädgårdskonst eller närmare bestämt till samtida ritningar och avbildningar av dessa trädgårdar eller parker. Men de klassicistiska dragen stannar inte vid renässansens. Associationerna till Giovanni Battista Piranesi (1720–1778), konstnär, arkitekt och arkeolog, ger en länk till nyklassicismen. Piranesis etsningar med dystopiska, obegripligt vindlande fängelsehålor och arkitekturbilder av romerska ruiner har på något sätt en nutida motsvarighet i Sivert Lindbloms svårdefinierbart oroande kulturlandskap. Men likheterna finns mer i innehållet än i formen, som bilder förmedlande en kulturkritik.
+
+Teaterns scenbilder och scenmaskinerier är en annan tänkbar parallellvärld till Sivert Lindbloms föreställningar. Ur ett lager av objekt formas på scenen olika världar. Scenmaskineriets dolda mekanik skjuter ut och drar in sättstycken styrt av regissörens, konstnärens, demiurgens eventuella plan.
+
+Både associationerna till renässansens symmetriska parker och dess kartbilder, teaterns scenmekaniska ingenjörskonst samt till arkitektur- och konstruktionsritningar konnoterar noggrann planläggning. Men Sivert Lindbloms ordning är delvis skenbar och avser snarare att framhålla motsatsen, det oordnade, gåtfulla och ologiska som kontrast till vetenskaplig objektivitet. Man kan säga att hans konst alltid innehåller en dualism eller kamp mellan två motsatta krafter i tillvaron. Under antiken associerade med gudarna Apollon och Dionysos. Solguden Apollon stod för klarhet, ordning och upplysthet medan vinguden Dionysos representerade den orgiastiska oordningen, utlevelsen och det oberäkneliga mörkret. Dessa kontraster framställs i Sivert Lindbloms bilder både direkt och indirekt. Det man först ser i bilderna är det välordnade. Men ser man noga efter så börjar ordningen gradvis krackelera för att avslöja ett antytt underliggande kaos.
+
+Det apolloniska draget i bilderna hänger främst ihop med teckningens parallellperspektiviska konstruktion. En axiometri som värjer sig för verklighetens komplexitet. Färgsättningen har också ett apolloniskt drag såtillvida att färgerna snarare används som tecken för material i stället för att ge sken av materialitet. Men akvarellfärgens poetiska ton, dess transparens och luftighet står ändå i en dionysisk kontrast till den exakta kyligheten hos teckningen.
+
+Konstnärens bilder refererar till ytterligare två bildvärldar som känns dionysiska eftersom de ingår i en österländsk andlig tradition i motsats till en västerländsk vetenskaplig. Den första av dessa är den japanska trädgårdskonsten, särskilt den zenbuddistiska trädgården. I Sivert Lindblom finns zen närvarande i det krattade gruset, ursprungligen ett tecken för havets vågor, och i stenarna, representerande öar i havet. Den andra är de japanska polykroma träsnitt vars kontrast mellan en exakt svart konturlinje och färgens transparens på rispapperet har uttrycksmässiga likheter med Sivert Lindbloms bilder.
+
+De intressantaste spåren av kampen mellan ordning och kaos finns i de bildelement jag väljer att kalla irritationer. Dessa avvikelser beror dels på teknikens inneboende felkällor, dels på konstnärliga val. När man tecknar med tusch eller målar med vattenmättad akvarellfärg så spiller man ibland.
+
+Oönskade fläckar, ibland svårborttagliga, uppstår från och till. Sivert Lindblom väljer i detta fall att bejaka slumpen. Om plumpen hamnar på den utsparad pappersytan runt om själva bildytan väljer han att desarmera misstaget genom att ringa in det i en cirkel och på så sätt både avgränsa och innefatta en felaktighet i bilden. Kaoset betvingas genom att erkännas.
+
+I andra fall, när färgplumpar hamnar inom bildytan, väljer han att måla över dem. Ibland döljs de av svarta cirkelrunda ytor ibland av kantiga svarta former. Men alla svarta former i målningarna är ej övermålade misstag. Misstagets svarta masker får utgöra ett från parallellperspektivet fristående bildplan som ibland är helt godtyckligt men som ibland smyger sig i närheten av perspektivrastrets ordning utan att helt inlemmas i det. I vissa av bilderna sprider irritationerna ut sig och blir till större organiskt formade ytor. Dionysiska sabotage som när som helst helt verkar kunna radera ut ordningen och orsaka den slutgiltiga bildstormen.`,
+  },
+  {
     slug: 'daniel-birnbaum-1993',
     type: 'preface',
     year: 1993,
@@ -478,11 +516,7 @@ LEON RAPPAPORT`,
     author: 'Stig Larsson',
     publication: 'Galeri Åsbaek, Köpenhamn',
     lang: 'sv',
-    body: `Stig Larsson skriver om Sivert Lindbloms utställning på Galeri Åsbaek i Köpenhamn 1981.
-
-Lindbloms skulpturer befinner sig i ett konstanttillstånd av potential. De är aldrig helt stilla — rörelsen är inbyggd i formen, i materialets spänning, i relationen till rummet och betraktaren.
-
-I Köpenhamn visade Lindblom främst monoliter och blyplattor — verk med en oväntad intimitet trots sina materiella egenskaper. Blyets tyngd ger en närvaro som sten inte har.`,
+    body: `På Galeri Asbæk, Köpenhamn 1981 ingick Sivert i utställningen "Fem svenske Kunstnere" tillsammans med Lennart Aschenbrenner, Ola Billgren, L.G. Lundberg och Carl Magnus.`,
   },
   {
     slug: 'stefan-alenius-1993',
@@ -565,6 +599,28 @@ Han genomför emellertid sina uppdrag med den självklara inriktningen på ny fo
 I Frescatis två tegelpelarplatser finns denna balansgång materialiserad. Det svårbestämbaras magnetiska lyskraft finns där samtidigt med en lågmäld samordning med landskapet, husen, ängarna och de lite knotiga träden.
 
 Stefan Alenius`,
+  },
+  {
+    slug: 'jan-torsten-ahlstrand-1993',
+    type: 'preface',
+    year: 1993,
+    title: 'Förord, Skulptur Arkitektur, Skissernas Museum',
+    author: 'Jan Torsten Ahlstrand',
+    publication: 'Katalog Skissernas Museum',
+    lang: 'sv',
+    body: `Sedan några år tillbaka har Skissernas Museum i samarbete med Lunds Konsthall planerat en retrospektiv dubbelutställning av Sivert Lindblom i Lund. Tillsamman blir dessa båda utställningar den största utställning han har haft. Medan konsthallen visar hans skulpturala arbete i en retrospektiv från 1950-talet och framåt, så belyser Skissernas Museum hans omfattande verksamhet som monumentalkonstnär genom ett urval av skisser, modeller, fotografier och andra dokument. Vår utställning blir därmed den första samlade dokumentationen av Sivert Lindbloms verksamhet inom detta område.
+
+Från min egen gymnasisttid i Borås minns jag Sivert Lindbloms första utsmyckning: tillsammans med Olle Adrin skapade Sivert en okonventionellt utformad tegelvägg med sneda skift i Gustav Adolfs församlingshem. Året var 1957, och sedan dess har det blivit ytterligare ett 35-tal uppdrag fram till det nuvarande arbetet med den skulpturala gestaltningen av en ny viadukt vid Haga Norra i Stockholm. Under dessa 35 år har Sivert Lindblom blivit känd som den konstnär i Sverige som mer än någon annan har arbetat med relationen mellan skulptur och arkitektur. Hans arkitektoniska intresse är förvisso ingen tillfällighet: i yngre år arbetade han en tid hos Sigurd Lewerentz, och han har blivit känd för sitt samarbete med Peter Celsing. Det var i början på 1970-talet som han på allvar började arbeta med egna konstnärliga gestaltningsuppdrag som Garnisonen, Riksbanken, T-banestationen Västra Skogen och Fersenska Palatset, alla i Stockholm. Bland de mest uppmärksammade uppdragen under de senaste åren är den skulpturala utsmyckningen av Frescati vid Stockholms Universitet och nygestaltningen av Blasieholmstorg i hjärtat av Stockholm.
+
+Var går gränsen mellan konst och arkitektur frågar man sig ibland inför Sivert Lindbloms stora gestaltningsuppdrag. För några år sedan ritade Sivert fasaden till Skissernas Museums tillbyggnad, invigd våren 1988. Här möter man alltså konstnären i en dubbelroll som konstnär och arkitekt – en kombination som inte är ovanlig i konsthistorien men sällsynt nu förtiden. Var slutar arkitekturen och var börjar konsten i detta helt integrerade verk?
+
+En uppdelning skulle bli helt konstlad i ett fall som detta: det handlar både om arkitektur och om en fasad som är ett offentligt konstverk i sig. Och fasaden är verkligen en fasad i ordets egentliga mening, ett ansikte, och som en estetisk och symbolisk bekräftelse härpå ser man en svarvad profil i dubbel bronsupplaga skjuta ut från fasaden. Det har talats om postmodernistisk klassicism i samband med denna fasad och andra verk av Sivert. Men det är i så fall en metod och ett uttryckssätt, som han har föregripit långt innan termen "postmodernism" började användas. Sivert Lindbloms konstnärskap utmärks av en ovanlig konsekvens och följdriktig inre utveckling.
+
+Uppdraget för Skissernas Museum omfattade ursprungligen också förslag och idéer till andra delar av museet, bl.a. till ny entré och skulpturallé, som skulle öppna museet även mot söder. Idéerna har blivit vilande men är inte inaktuella. Konstnären har skänkt alla dessa skisser till museet, och i en mindre sidoutställning visar vi ett urval av dem.
+
+Vi tackar Sivert och Marianne Lindblom både för donationen och för deras oförtröttliga arbete med att få utställningarna i Lund till stånd; Marianne Lindblom har f.ö. med verkat i flera av Siverts projekt. Ett varmt tack även till arkitekt Stefan Alenius, som har skrivit den personligt formulerade inledningen till katalogen, och ett särskilt tack till Peter och Birgitta Celsings stiftelse, som har lämnat ett generöst bidrag till katalogens tryckning. Till sist vill jag även tacka Lunds Konsthalls intendent Cecilia Nelson för gott samarbete.
+
+Lund i januari 1993`,
   },
   {
     slug: 'cecilia-nelson-1993',
@@ -791,6 +847,24 @@ Voici donc définitivement côte le contenu et la forme libérée et ambigue.
 
 Paris le 23 septembre 1980
 Lars Berquist`,
+  },
+  {
+    slug: 'torsten-ekbom-1980',
+    type: 'essay',
+    year: 1980,
+    title: 'Pour CCS Paris – texte critique',
+    author: 'Torsten Ekbom',
+    publication: 'Centre Culturel Suédois, Paris, 1980',
+    lang: 'fr',
+    body: `Dans la cabale, la divinité pure et infinie est définie En Soph, elle est symbolisée par la lettre Aleph le point qui renferme en lui l'univers entier. Celui qui regarde à l'intérieur d'Aleph voit tout l'univers tout ce qui existe.
+
+Dans la nouvelle "Aleph" José Luis Borges décrit le sentiment que l'on éprouve en contemplant le cosmos des cabalistes, la sensation de tout voir simultanément et sous tous les angles. Aleph était une petite sphère, couleur tournesol, au rayonnement quasi insoutenable, flottant dans l'air immobile au dessus de l'escalier de la cave d'une maison en ruine de Buenos Aires.
+
+J'ignorai si Sivert Lindblom lit la cabale ou s'il s'est plongé dans la mystique du nombre des alchimistes, mais l'espace qu'il construit me fait penser a la nouvelle de Borges.
+
+On s'attend, au bout d'un moment, à voir apparaître un Aleph dans un coin, un point incandescent renfermant toutes les tensions, tous les relations de nombre et toutes les connexions secrètes que l'on présent dans cet espace. On a l'impression d'entrer dans quelque observatoire occulte, aux dispositifs mystérieux et impénétrable où se mesure un autre ordre des choses.
+
+Des monolithes solennels aux proportions minutieusement calculées créent un champ de force magnétique composé de formes numériques et géométriques qui se rependent dans l'espace. L'une des formes est subitement matérialisée sur le mur, en plomb et dont la superficie est exactement donnée en millimètre carré. Est-ce cette composition qui fait jouer les serrures invisibles? Sivert Lindblom a signé l'espace de son autoportrait, une petite statue d'homme nu, concentré et réfléchissant intensément. Tel un moine dans une cellule de trappiste la structuration ascétique est rigoureusement exécutée dans l'espace, vibre de la même démarche intellectuelle. Lindblom introduit dans son espace des rapports cosmiques et créé à l'aide de moyens précis la sensation d'un univers monumental comme si les murs s'ouvraient vers l'infini. C'est de la magie à l'état pur, d'une beauté sublime qui confine au sacramental.`,
   },
   {
     slug: 'beate-sydhoff-italian-1967',
