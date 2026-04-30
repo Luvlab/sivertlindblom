@@ -384,6 +384,18 @@ a:hover { opacity: 0.7; }
 .gallery-thumb img { transition: transform 0.35s ease; }
 .gallery-thumb:hover img { transform: scale(1.04); }
 
+/* ─── Responsive show/hide helpers ─────────────────────── */
+/* These mirror the classes used in Header.tsx — defined here so they are
+   always in the stylesheet regardless of component hydration order.     */
+@media (min-width: 768px) {
+  .hidden-mobile { display: flex !important; }
+  .show-mobile   { display: none  !important; }
+}
+@media (max-width: 767px) {
+  .hidden-mobile { display: none  !important; }
+  .show-mobile   { display: flex  !important; }
+}
+
 /* ─── About strip responsive ────────────────────────────── */
 .about-bio-grid {
   display: grid;

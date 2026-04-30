@@ -139,16 +139,7 @@ export default function Header({ locale, dict }: HeaderProps) {
         </div>
       </nav>
 
-      <style>{`
-        @media (min-width: 768px) {
-          .hidden-mobile { display: flex !important; }
-          .show-mobile   { display: none !important; }
-        }
-        @media (max-width: 767px) {
-          .hidden-mobile { display: none !important; }
-          .show-mobile   { display: flex !important; }
-        }
-      `}</style>
+      {/* hidden-mobile / show-mobile defined in globals.css */}
     </>
   )
 }
