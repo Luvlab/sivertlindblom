@@ -739,15 +739,35 @@ Intervju med Sivert av Eva Eriksson`,
     author: 'Peter Cornell & Sivert Lindblom',
     publication: 'Gemensamma rum, 1998',
     lang: 'sv',
-    body: `Utdrag och citat ur "Gemensamma rum" (1998) — en bok i samtal om offentlig konst och arkitektur, skriven av konsthistorikern Peter Cornell och skulptören Sivert Lindblom.
+    body: `Reflektioner från samtalen med Sivert Lindblom nedtecknade av Peter Cornell och här några citat tagna ur deras bok
 
-"Det offentliga rummet är alltid ett sammansatt rum — det tillhör alla och ingen. Konsten som placeras där måste förhålla sig till denna dubbelhet: den måste vara privat nog att röra oss individuellt, och offentlig nog att fungera som ett gemensamt tecken."
+★ GEMENSAMMA RUM
+Bonnier essä 1998
+ISBN 91-3452034-1
 
-"Jag har alltid känt ett motstånd mot termen 'utsmyckning'. Det antyder att konsten är ett tillägg, ett ornament på något som redan är färdigt. Men det intressanta sker när konsten är med och definierar platsen från början — när skulptur och arkitektur växer fram ur samma ursprungliga tanke."
+Om Siverts syn på fotografi:
 
-"Vad är ett gemensamt rum? Det är ett rum där vi är samtidigt ensamma och tillsammans. Torget, stationen, biblioteket — platser där det privata och det kollektiva möts. Konsten i sådana rum får en unik funktion: den kan vara en gemensam referenspunkt, ett tecken som vi alla förhåller oss till på varsitt sätt."
+"I ett helt annat sammanhang nämnde Sivert Lindblom att han vill visa mig några fotografier som jag kanske kunde kommentera i en serie bildtexter. Det uppslaget visade sig rymma lösningen på den här bokens form. … Sivert Lindblom använder sig inte av fotografiet som ett konstfullt medium utan snarare som ett arbetsmaterial. Hans bilder är en dokumentation av något han lagt märke till och som senare kan ge honom impulser i hans skulptur." (sid. 1)
 
-"Det handlar om närvaro. Skulpturen ska vara så naturlig på sin plats att man undrar om den alltid funnits där — och ändå, när man stannar upp och tittar, ska man kunna se att den rymmer någonting mer."`,
+Om konstnärsrollen:
+
+"Sivert Lindblom har behållit en kritisk distans till det modernismens romantiska konstnärsroll. Hans självporträtt och återkommande signatur är den avindividualiserade, psykologiskt stumma, svarvade skulpturen – vi ser en variant i ateljéns förgrund. Han kallar sig helst skulptör, som han finner vara en sakligare yrkesbeteckning än den mer nebulösa titeln konstnär. Samtidigt står han utan tvivel nära modernismens formvärld som den framträder till exempel hos Arp, Schlemmer eller Brancusi. Men han har aldrig velat underkasta sig modernismens ortodoxi och förvånat sig över att samtidskonsten varit så ensidigt bunden till galleriet och avstått från det offentliga rum som upptagit konstnären i alla tider." (sid. 19)
+
+Om konst:
+
+"Traditionens konst är evig och anonym, opersonlig och objektiv och den lever kvar i folkkonsten och den utomeuropeiska konsten men präglade också den europeiska konsten fram till renässansen. I denna konst finns ingen distinktion mellan ren och tillämpad konst, mellan heligt och profant och den avskildes inte heller i särskilda museer. Den har religionen som sin källa men är inte religiös i så måtto att den använder sig av religiösa motiv eller en religiös ikonografi. Traditionens konst är mer allmängiltig och baserar sig på abstrakta mått, harmonier, rytmer och geometri. Den har till uppgift att både försköna tingen omkring oss och inbjuda till ett kontemplativt betraktande av metafysiken och philosophia perennis, i ett tillstånd Ivan Aguèli beskrev som en 'transcendental tanketomhet'." (sid. 27–28)
+
+Om verkets betydelse:
+
+"Sivert Lindblom arbetar i denna osynlighetens sfär utan någon rädsla att verket inte ska synas. Också här kan man göra en jämförelse med teaterns scenografi, där föremålen i pjäsen har flera roller: de används handgripligt om bruksföremål av skådespelarna på scenen, men är samtidigt konstföremål för publikens intresselösa och uppmärksamma betraktande." (sid. 39)
+
+Om offentlig konst:
+
+"Offentlig konst – vilken är dess plats i offentligheten, för till offentligheten hör ju också galleriet och museet eftersom de är tillgängliga för alla. … Med 'offentlig konst' brukar man istället avse konstverk på platser i stadsrummet som inte redan är inmutade som rum för konst. Sådana platser har inte, som museet och galleriet, den unika och mirakulösa förmågan att förvandla vad som helst, flasktorkare, pissoarer, skräp till konst. … Den offentliga konsten har i allmänhet en viss beständighet, men inte alltid …". (sid. 51)
+
+Om konstnärens uppdrag:
+
+"Konstnären ska inte komma till platsen som en främling, med ett färdigt koncept från ateljén, utan delta i traktens liv och avlyssna dess önskningar och bekymmer. Till platsens kontext hör de människor som bor och arbetar där. Publiken till detta slags offentliga konst är inte längre en anonym, abstrakt enhet utan deltar högst konkret i verket. Relationsestetiken anser sig inte bunden till något medium och det fysiska verket kan ibland upplösas till förmån för de sociala relationer som skapas." (sid. 57–58)`,
   },
   {
     slug: 'lars-bergquist-1980',
@@ -780,23 +800,89 @@ Lars Berquist`,
     author: 'Beate Sydhoff',
     publication: 'Konstrevy nr 2, 1967 (Italiano)',
     lang: 'it',
-    body: `Traduzione italiana dell'intervista di Beate Sydhoff con Sivert Lindblom, originariamente pubblicata su Konstrevy nr 2, 1967.
+    body: `Conversazione con Sivert Lindblom
 
-— Cosa cerca nella sua scultura?
+Beate Sydhoff: Nella nostra conversazione sulle tue sculture hai presentato concetti come sentimenti primari e secondari. Che cosa intendi con una forma che non è associata con ciò che tu chiami sentimenti secondari?
 
-— Qualcosa che sia in movimento eppure fermo. Una forma che abbia potenziale — che sembri potersi muovere ma scelga di non farlo. È la differenza tra una forma viva e una forma morta.
+Sivert Lindblom: In primo luogo devo spiegare ciò che intendo con sentimenti primari e secondari. Il sentimento secondario è basato sulle nostre dirette esperienze ed è una conseguenza di queste, è pienamente soggettivo.
 
-— Come influisce il lavoro con gli architetti sulla sua pratica artistica?
+Il sentimento primario, quello che è in comune a tutti, può forse spiegarsi come particolare struttura fondamentale di fattori biologici. Che esso esista è pertanto difficile da dimostrarsi.
 
-— Enormemente. L'architettura ti costringe a pensare in termini di relazione — relazione con il luogo, con il corpo, con la città. Non puoi avere un oggetto isolato nell'architettura. Ha plasmato il mio modo di pensare la scultura come site-specific, come relazionale.
+Questo sentimento primario è certamente sia meta sia forza motrice in tutto ciò che si crea, ma non può essere trattato come mezzo. Il sentimento primario non è dunque direttamente comunicabile, ma deve prima oggettivarsi attraverso qualche mezzo e diventare così indirettamente comunicabile.
 
-— È recentemente tornato da Locarno. Cosa ha portato con sé?
+Che il sentimento secondario esista è chiaro, ma non è né direttamente né indirettamente comunicabile perché non è comune a tutti.
 
-— La distanza. La possibilità di vedere il clima artistico svedese dall'esterno. E la luce — la luce mediterranea è una luce diversa, costruisce una diversa relazione tra corpo e ombra.
+Se si vede la forma come mezzo di comunicazione, non deve essere allora associata con il sentimento secondario. Ci si deve concentrare sul linguaggio stesso, sulla forma. Constatare su quale piano la forma funge come mezzo di comunicazione e su questo piano cercare formulazioni precise e distinte. Utilizzare al massimo possibile l'io consapevole, l'intelletto, per potere osservare obiettivamente, con la maggiore chiarezza, le proprie esperienze.
 
-— Come vede il rapporto tra scultura e spazio pubblico?
+BS: Questo significa che i tuoi lavori sono freddi, insensibili?
 
-— La scultura pubblica deve guadagnarsi il suo posto. Non può semplicemente essere collocata — deve crescere da una comprensione profonda del luogo. Il mio lavoro come docente alla Scuola di Architettura mi ha aiutato a capire questo: l'architettura e la scultura devono dialogare dall'inizio, non alla fine.`,
+SL: Per ciò che riguarda i sentimenti secondari, lo spero. Se si evitano questi momenti relativi, sorge in me un vuoto attivo che rasenta l'ideale di libertà. Un vuoto che l'osservatore stesso può "riempire" e perciò vivere realmente. La forma del recipiente decide il contenuto.
+
+BS: Qual è la causa per cui sei giunto a queste idee?
+
+SL: La causa fu la limitazione della radicata convenzione delle forme. Una situazione sorge quando non si può procedere senza intenzioni molto forzate. Una specie di paralisi.
+
+BS: Hai vissuto una libertà quando hai scoperto che potevi rigettare le sensazioni, i sentimenti secondari come mezzo?
+
+SL: Sfruttare coscientemente i propri sentimenti è per me un paradosso. Quando la conseguenza di ciò mi fu chiara, vissi veramente una grande liberazione, la sensazione delle massime possibilità. In tale situazione le considerazioni e le osservazioni diventano possibili, l'arbitrarietà del sentimento sparisce, non si ha più a che fare col sentimentalismo ma con un senso visivo.
+
+BS: Si può trovare nella tua idea della forma qualche caratteristica ricorrente?
+
+SL: Come ho già detto prima, ho cercato di constatare come noi viviamo la registrazione delle forme e del contenuto. La scoperta della bi-dimensione della forma e del contenuto fu decisiva per la continuazione del lavoro.
+
+BS: Che cosa intendi con bi-dimensionalità?
+
+SL: Le nostre possibilità visive. Intendo che la bi-dimensionalità diventa evidente da una diretta osservazione di come i sensi e l'intelletto dell'uomo funzionano quando capiscono forma e contenuto, per esempio, la capacità dei nostri occhi di registrare qualcosa altro oltre la superficie delle forme.
+
+Se noi guardiamo un cubo, lo intendiamo come un oggetto tri-dimensionale, ma quello che noi vediamo sono superfici riunite in date posizioni. Una "tessitura" è soltanto un fenomeno più complicato di superficie. Per farci un'opinione di ciò che si trova dietro le superfici possiamo chiederlo alla nostra esperienza, anche a quella degli altri, ma è pur sempre impossibile con i nostri sensi dimostrare qualcosa, nemmeno una sezione nell'oggetto può dirci qualcosa, ma soltanto ci dà nuove superfici. Le formulazioni sostanziali stanno in una relazione simile al proprio meccanismo.
+
+La formulazione è anche superficie e ciò che questa superficie rappresenta noi possiamo averne un concetto soltanto attraverso la nostra esperienza.
+
+BS: Se si trasporta il ragionamento alla tua scultura, quale sarebbe la conseguenza?
+
+SL: La conseguenza sarebbe questa — che potrei decidere dove il mio linguaggio può essere inteso ed inoltre potrei concentrarmi per lavorare con la maggiore chiarezza possibile. Così che il contenuto si troverebbe nel visibile (il più vicino possibile alla superficie).
+
+BS: Che cosa ha significato quando si è trattato della scelta del materiale?
+
+SL: Il materiale è diventato immediatamente indifferente e ha avuto soltanto funzione tecnica, come sostegno della superficie.
+
+BS: Come agisce il colore su queste superfici?
+
+SL: Il colore, come materiale, si usa professionalmente per precisare la superficie, lo si intende perciò abitualmente come bi-dimensionale. I diversi colori, le tinte, sono scelti senza valutazioni estetiche. Vale trovare colori che l'uomo registra come informazione reale, per esempio, come sulle insegne del traffico.
+
+BS: Non vuoi farti interprete di momenti significativi?
+
+SL: Il significativo e il formale nei miei lavori è difficile trattarli separatamente. Il significativo è il formale e il formale è il significativo. Il contenuto, l'intenzione poetica, ha avuto la sua formulazione più chiara e io posso qui soltanto informare sull'arte di leggere, sul modo di vedere.
+
+Per ciò che riguarda il colore devo constatare che metto questo risultato del lavoro davanti a un pubblico che, guidato dalla convenzione, mescola un contenuto caratterizzato dalla convenzione artistica; crede di vedere di più di ciò che veramente si vede. Per questa ragione devo perciò rinnovare il modo di vedere e di adoperare chiarificazioni, e in tali occasioni ho qualche volta preso aiuto dal colore.
+
+Vi sono però dettagli che esistono solamente per guidare il senso visivo.
+
+BS: Come vuoi che la tua scultura venga intesa?
+
+SL: Una ulteriore conseguenza della bi-dimensionalità e del metodo di lavoro che è uscito da questa affermazione fa sì che gli oggetti diventano "immateriali" e devono essere intesi come operazioni guidate dal pensiero, registrazioni mnemoniche. L'importante è di avere l'osservatore partecipe nelle avventure intellettuali, una specie di coproduzione nelle indagini speculative.
+
+BS: Che atteggiamento assumi nei confronti della nuova scultura "immateriale" in Inghilterra?
+
+SL: Tecnicamente e formalmente sono curioso e mi sento in qualche modo affine, ma ho molta difficoltà a capire il significato dei loro lavori. Ai miei occhi sono rimasti a mezza terra. Vi è una linea convenzionale nell'espressione della forma con la quale non posso simpatizzare.
+
+BS: Hai nominato poco fa indagini speculative. Hanno queste qualcosa con Bauhaus?
+
+SL: Non hanno nulla a che fare con Bauhaus. Tutto il fondo dell'idea di Bauhaus sulla forma e le sue funzioni non sono più attuali per noi.
+
+Ciò che è del tutto chiaro ora è che siamo completamente privi di convinzione su quello che Bauhaus intendeva con forma. Idea e intenzione richiede che scegliamo quella forma che è la più effettiva come mezzo di comunicazione, sia essa semplice, composta, chiara od oscura, pura od impura.
+
+BS: Bauhaus credeva in un mondo puro. La tua idea è contraria anche su questo punto?
+
+SL: La mia idea è diversa, non si tratta di qualche situazione di contrasto. Io non cerco di dimostrare qualcosa che esclude qualcos'altro. Tra l'altro, per questa ragione, la tesi di Bauhaus non è interessante per me. Il modo in cui io lavoro vale in primo luogo per me solo e le mie possibilità di comunicare.
+
+BS: La tua arte è programmatica? Hai intenzioni che portano a una méta speciale?
+
+SL: Desidero di potere partecipare a una creazione positiva e progressiva che possa sviluppare i meccanismi dell'uomo per rendere possibile una più sfumata esperienza dell'esistenza.
+
+La funzione sociale dell'arte.
+
+Konstrevy 2/1967`,
   },
   {
     slug: 'beate-sydhoff-english-1967',
@@ -806,19 +892,85 @@ Lars Berquist`,
     author: 'Beate Sydhoff',
     publication: 'Konstrevy nr 2, 1967 (English)',
     lang: 'en',
-    body: `Beate Sydhoff's interview with Sivert Lindblom, translated into English. Originally published in Konstrevy nr 2, 1967.
+    body: `Sivert Lindblom interviewed by Beate Sydhoff
 
-— What are you searching for in your sculpture?
+Beate Sydhoff: In our conversation about your sculptures, you have put forward the concepts of primary and secondary feeling. What do you mean by a form that is not associated with what you call secondary feelings?
 
-— Something in motion yet still. A form with potential — that appears to be able to move but chooses not to. That is the difference between a living form and a dead one.
+Sivert Lindblom: To begin with, I had better explain what I mean by secondary and primary feeling.
 
-— How does your work with architects affect your own practice?
+The secondary feeling is based on our direct experience and as a consequence of this, it is purely subjective. The primary feeling, that which is common to us all, can perhaps be explained as a basic structure stamped by biological factors. Its existence, however, is difficult to prove. This primary feeling is assuredly both the goal and the motive power of all creative activity, but it cannot be treated as a means. The primary feeling is thus not directly communicable; it must first be objectivized by some means so that it becomes indirectly communicable.
 
-— Enormously. Architecture forces you to think in relation — relation to place, to the body, to the city. You cannot have an isolated object in architecture. It has shaped my thinking of sculpture as site-specific, as relational.
+That the secondary feeling exists is obvious, but it is neither directly, nor indirectly communicable, because it is not common to all.
 
-— You recently returned from Locarno. What did you bring back?
+If we regard form as a means of communication, then it should not be associated at all with secondary feeling.
 
-— Distance. The possibility of seeing the Swedish artistic climate from outside. And the light — Mediterranean light is a different light, it builds on a different relationship between body and shadow.`,
+We have to concentrate on the actual language, the form. We have to establish in what plane the form as means of communication functions, and seek in this plane distinct and precise formulation. To exploit as much as possible the conscious ego, the intellect, in order to be able to objectivize one's experiences with the greatest clarity.
+
+BS: Does this mean that your work is "unfeeling"?
+
+SL: In the case of secondary feelings, I hope so. When one avoids these relative aspects, there emerges what is for me an active emptiness that approaches the concept of freedom.
+
+An emptiness that the spectator himself can "fill in" and therefore really be aware of himself. The form of the vessel determines the content.
+
+BS: How did you arrive at these ideas?
+
+SL: The reason was the limitations of the learned, formal conventions. A situation arises in which you can't get any further without extremely strained intentions. It's a sort of paralysis.
+
+BS: You experienced freedom when you discovered that you could utterly reject secondary feelings as a means.
+
+SL: The conscious exploitation of one's feelings is to me a paradox. When I realized the consequences of this, I really experienced an enormous sense of liberation, a feeling of maximum opportunity. In a situation like this, observations become possible, the arbitrariness of sentiment disappears, it is no longer metaphysics one is concerned with but with vision.
+
+BS: Can one find any re-occurring characteristic in your idea of form?
+
+SL: As I've already mentioned, I was trying to establish how we experience the registration of form and content. My discovery of the two-dimensional in both form and content was decisive for my subsequent work.
+
+BS: What do you mean by two-dimensionality?
+
+SL: Our visual opportunities. I believe that two-dimensionality becomes palpable in the direct observation of how man's senses and intellect function when they comprehend form and content, for instance the inability of our eyes to register other than the surface of the form. If we see a cube we understand it as a three-dimensional thing, but what we see is surfaces combined in given positions. A texture is simply a more complicated surface phenomenon. To create an idea of what is behind the surfaces, we can ask our own experience, and the experience of others, but it is still impossible to prove anything with our senses, not even a cut made in the object can tell us anything — it simply gives us new surfaces. The formulations of content stand in a similar relationship to their mechanisms. The formulation is also a surface, and what this surface represents is something we can only comprehend by our own experience.
+
+BS: And transferring this argument to your sculpture what was the consequence?
+
+SL: The consequence was that I could determine where my language can be understood, I could concentrate on working there with the greatest possible clarity, so that the content lay in the visible (as near the surface as possible).
+
+BS: What did this mean as regards choice of material?
+
+SL: The material suddenly didn't matter, it had only a technical function as support to the surface.
+
+BS: And how does colour function on these surfaces?
+
+SL: The colour, like the material, is used professionally to specify the surface, it is understood habitually as two-dimensional. The different colours are chosen without any aesthetic evaluation. The object is to find colours that people register as objective information, as with traffic signs for instance.
+
+BS: You are not concerned to communicate aspects that have to do with content?
+
+SL: What is content and what is form in my works are difficult to handle separately. The content is the form, and the form is the content. The content, the poetical intention, has been given its clearest possible formulation and I can only provide information on the reading, the way to see it.
+
+As regards colours, I should point out that I am exhibiting these results of my work to a public which by convention mixes together a content dictated by the artistic conventions, they think they are seeing more than one can see. For this reason I have to try to renew their way of seeing and use clarifications, and in this I've sometimes made use of colour; so there are details put in merely to steer the way people see.
+
+BS: How do you want your sculpture to be understood?
+
+SL: A further consequence of the two-dimensionality, and the working method arising from this observation, is that objects become "immaterial", they should be understood as thought-steered operations, registrations of thought.
+
+The important thing is to get the spectator to participate in the intellectual adventure, a sort of co-creation in these speculative investigations.
+
+BS: How do you feel about the new "immaterial" sculpture in England?
+
+SL: Technically and formally, I am curious and feel in a way related to it, but I find it very difficult to understand the meaning of their work; in my own view they have stopped half way. There is an aspect of conventional form there that I have no sympathy for.
+
+BS: You said something about speculative investigations. Have these anything to do with the Bauhaus?
+
+SL: Nothing to do with the Bauhaus at all.
+
+The whole background to the Bauhaus' belief in form and its functions is no longer in the picture. What is entirely obvious just now is that we have no faith in what the Bauhaus meant by form. Idea and intention demand that we should choose the form which is most effective as a means of communication, whether it is simple or composite, clear or unclear, clean or not clean.
+
+BS: The Bauhaus believed in a clean world. Is your idea opposed to them also on this point?
+
+SL: My idea is different, it's not a question of any opposition. I am not trying to prove anything which excludes anything else. This is one of the reasons why the Bauhaus belief has no interest for me. The way in which I work concerns primarily myself and my possibilities of communicating.
+
+BS: Is your art programmatical? Do you have intentions that lead to some specific goal?
+
+SL: I should like to be able to take part in a positive and progressive creation that can develop man's mechanisms and thus permit a more diversified experience of existence. The social function of art.
+
+Konstrevy Nr 2, 1967`,
   },
 ]
 
