@@ -215,8 +215,9 @@ export const SCULPTURE_PROJECTS: SculptureProject[] = [
     title: 'Blyplattor',
     years: '1975–1982',
     description: 'Reliefverk i bly med subtila ytbehandlingar.',
-    body: 'Blyplattorna är platta, reliefliknande verk som utnyttjar blyets mjukhet och mörkhet. År 1978 undersökte Sivert Lindblom två ytstrukturer inom ett definierat geometriskt ramverk — samma yta i olika format. Verken består av "blybeklädda plattor inom en tydligt definierad svartmålad ram", där varje platta bär en signatur med "exakt kvadratdecimetermåttet av det inre fältet". Dessa blyplattor ställdes ut på Doktor Glas i Kungsträdgården 1978 för första gången.',
+    body: '1978 undersökte Sivert Lindblom två ytstrukturer inom en given geometrisk utgångspunkt — samma yta i olika format.\n\nHan presenterade dessa för första gången på Doktor Glas i Kungsträdgården med en längre svit av infattade blyplattor, Stockholm.\n\nDessa var blytäckta plattor innanför en klart definierad svartmålad ram. Varje platta signerades med det inre fältets exakta kvadratdecimetermått.',
     images: [
+      { url: 'https://media.sivertlindblom.se/2015/03/Blyplattor-.jpg', alt: 'Blyplattor' },
       { url: 'https://media.sivertlindblom.se/2015/03/Blyplatta-150620028-.jpg', alt: 'Blyplatta' },
       { url: 'https://media.sivertlindblom.se/2015/03/Blyplatta-150620026-.jpg', alt: 'Blyplatta' },
       { url: 'https://media.sivertlindblom.se/2015/03/Blyplatta-150620030-.jpg', alt: 'Blyplatta' },
@@ -257,7 +258,27 @@ export const SCULPTURE_PROJECTS: SculptureProject[] = [
     title: 'Tornmodeller',
     years: '1985–1995',
     description: 'Modeller och tävlingsförslag för torn och höga strukturer.',
-    body: 'Tornmodellerna är en serie studier och tävlingsförslag för monumentala vertikala strukturer. Tornet representerar det stigande i förhållande till sin omgivning — en metafor för konstruktion i vid bemärkelse, med rötter i klassiska arkitekturprinciper om bas, mittparti och krön. De kombinerar skulpturens formspråk med arkitekturens skala och funktion.',
+    body: `Sivert Lindblom har sedan lång tid arbetat med tornbyggnation som en idé att undersöka.
+
+De torn som Sivert Lindblom undersökt representerar endast resningen i förhållande till sin omgivning.
+
+Tornet är om man så vill en större sinnebild för den mindre uppbyggnationen – sockeln.
+
+Sockeln kan ses som en symbolisk förbindelse mellan marken och det som ska bäras upp.
+
+Socklar i stadsrummen brukar bära upp byster av bemärkta personer eller skulpturer med och av dessa i imposanta ställningar.
+
+Den klassiska sockeln skriver Palladio, ur den första boken om arkitekturen: "Vi har ett utkragande nedersta led som eventuellt uttrycker förankring i marken och stabilitet. Vi har ett översta led som med en likaså utkragande gest som uttrycker bärande och utgör sockelns avslutning uppåt. Slutligen ett mellanled vars liv ligger något innanför det översta och nedersta. Mellanledet utgör sockelns bål, utgör dess majoritet av massa och ger helheten dess resning."
+
+Att visualisera förankring med marken, med moder jord, har högt symbolvärde och är något arketypiskt. Det gäller för hus-socklar såväl som för skulptur-socklar.
+
+I den klassiska antikens byggnader förekommer sockeln företrädesvis som byggnadsanknutet eller en del av tempelbyggnaden — kolonnerna med stylobatens tre trappsteg; överst bär arkitraven föremålet; frisen och arkitraven bildar visuellt underlag till de fullt ut skulpterade gudarna som placeras i tympanon.
+
+Sivert Lindbloms socklar eller torn framhäver inget annat än tornet i sig.
+
+Tidens konventioner påverkar seendet av ett torn. De skapar en förankring till platsen, marken runt tornet separerar skulpturen från omgivningen och bildar en rumsbildande gräns och samtidigt blir tornet eller sockeln en fokuseringspunkt i ett större sammanhang.
+
+Sockel — eller Socculus — betyder liten sko på latin.`,
     images: [
       { url: 'https://sivertlindblom.se/wp-content/uploads/2015/03/Sivert-Lindblom-Torn-A1-.jpg', alt: 'Tornmodell A1' },
       { url: 'https://sivertlindblom.se/wp-content/uploads/2015/03/Sivert-Lindblom-Torn-A2-.jpg', alt: 'Tornmodell A2' },
