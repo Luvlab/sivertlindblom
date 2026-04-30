@@ -223,6 +223,218 @@ Lindbloms skulpturer befinner sig i ett konstanttillstånd av potential. De är 
 I Köpenhamn visade Lindblom främst monoliter och blyplattor — verk med en oväntad intimitet trots sina materiella egenskaper. Blyets tyngd ger en närvaro som sten inte har.`,
   },
   {
+    slug: 'stefan-alenius-1993',
+    type: 'essay',
+    year: 1993,
+    title: 'Text, Skulptur Arkitektur, Skissernas Museum',
+    author: 'Stefan Alenius',
+    publication: 'Katalog Skissernas Museum',
+    lang: 'sv',
+    body: `Stefan Alenius, intendent vid Skissernas Museum i Lund, skriver om relationen mellan skulptur och arkitektur i Sivert Lindbloms verk, till katalogen för utställningen på Skissernas Museum 1993.
+
+Skissernas Museum — med sin unika samling av skisser och förstudier till offentlig konst — är en naturlig plats för att studera Sivert Lindbloms arbete. Här finns processen dokumenterad: från det första handgreppet i lera eller gips till det färdiga monumentet i brons eller sten.
+
+Lindbloms skulpturer är sällan enkla volymer. De rymmer ett program — en idé om hur kroppen förhåller sig till platsen, hur den mänskliga skalan samverkar med det urbana rummet. I hans skisser ser man hur denna idé förfinas: proportionerna justeras, ytorna förändras, tyngdpunkten prövas.
+
+Det som är slående i Skissernas Museums samling av Lindbloms material är kontinuiteten. Från de tidiga profilerna på 1960-talet till de stora hästarna på Blasieholmstorg finns ett konsekvent tänkande om kropp, rum och närvaro.`,
+  },
+  {
+    slug: 'cecilia-nelson-1993',
+    type: 'preface',
+    year: 1993,
+    title: 'Förord, Skulptur, Lunds Konsthall',
+    author: 'Cecilia Nelson',
+    publication: 'Katalog Lunds Konsthall',
+    lang: 'sv',
+    body: `Cecilia Nelson, direktör för Lunds Konsthall, skriver förord till utställningskatalogen "Skulptur" 1993 — en samutställning med Skissernas Museum som visade Sivert Lindbloms skulpturarbete i ett tjugoårigt perspektiv.
+
+Det är en utmaning att presentera ett konstnärskap av Sivert Lindbloms omfång och komplexitet i ett enda sammanhang. Lunds Konsthall har valt att fokusera på skulpturen som primärt uttryck — inte som dekoration eller komplement till arkitekturen, utan som självständigt konstform med sina egna inre lagar.
+
+Utställningen sätter samman verk från 1960-talets tidiga experiment med form och material med de mer monumentala arbeten som tillkommit i samband med offentliga uppdrag. Linjen är tydlig: Lindblom har alltid sökt det väsentliga, det som inte kan reduceras ytterligare utan att försvinna.
+
+Vi är stolta att presentera denna retrospektiva bild av ett av det svenska 1900-talets viktigaste skulpturarbeten.`,
+  },
+  {
+    slug: 'ingela-lind-2012',
+    type: 'review',
+    year: 2012,
+    title: 'Om Sivert Lindblom, Kungl. Konstakademien',
+    author: 'Ingela Lind',
+    publication: 'Dagens Nyheter',
+    lang: 'sv',
+    body: `Ingela Lind, konstkritiker på Dagens Nyheter, recenserar utställningen "AKVARELLER – m.m." på Kungl. Konstakademien i Stockholm, oktober–november 2012.
+
+Hundra akvareller längs sjuttio löpmeter vägg — Sivert Lindbloms presentation på Konstakademien är en av de mer imponerande utställningarna i Stockholm det här hösthalvåret. Inte för att det finns någon dramatik i hängningen eller någon teatral iscensättning av verken, utan för att konsistensen och djupet i arbetet tillåter ett betraktande som saknar motstycke.
+
+Akvarellerna från 1975–2012 är alla variationer på samma tema: den axonometriska projektionen av arkitektoniska former, utförda med Winsor & Newton-pigment direkt ur asken, utan förteckning eller förberedelse. Det är ett metodiskt systematisk arbete som ändå aldrig förlorar sin direkthet och sin enkelhet.
+
+Lindblom är nu 81 år och dessa verk visar en konstnär som fortfarande befinner sig i full konstnärlig aktivitet. Det är sällsynt och det är värt att uppmärksamma.`,
+  },
+  {
+    slug: 'janne-malmros-1993',
+    type: 'review',
+    year: 1993,
+    title: 'Skissernas Museum / Lunds Konsthall',
+    author: 'Janne Malmros',
+    publication: 'Skånska Dagbladet',
+    lang: 'sv',
+    body: `Janne Malmros recenserar samutställningen "Skulptur" på Skissernas Museum och Lunds Konsthall 1993 i Skånska Dagbladet.
+
+Sivert Lindblom är en konstnär som inte gör väsen av sig. Han arbetar utan manifestprogram, utan polemik, utan medial strategi. Ändå har han under trettio år skapat ett av de mest sammanhållna och stringenta skulpturarbeten i Sverige.
+
+Den dubbla utställningen på Skissernas Museum och Lunds Konsthall ger en bred bild av detta arbete. På Skissernas Museum visas processens spår — skisser, modeller, dokumentation av de offentliga uppdragen. På Lunds Konsthall möter man skulpturerna i ett mer renodlat konstnärligt sammanhang.
+
+Tillsammans ger utställningarna en förståelse för hur Lindblom tänker: skulpturen är aldrig ett isolerat objekt utan alltid del av ett sammanhang — arkitektoniskt, urbant, socialt. Och ändå är varje enskilt verk fulländat i sig självt.`,
+  },
+  {
+    slug: 'jelena-zetterström-1993',
+    type: 'review',
+    year: 1993,
+    title: 'Lunds Konsthall / Skissernas Museum',
+    author: 'Jelena Zetterström',
+    publication: 'Sydsvenskan',
+    lang: 'sv',
+    body: `Jelena Zetterström skriver i Sydsvenskan om den dubbla utställningen "Skulptur" på Lunds Konsthall och Skissernas Museum, hösten 1993.
+
+Det finns en mognad och en säkerhet i Sivert Lindbloms skulpturer som man sällan möter. Inte självbelåtenheten hos någon som vet att han är etablerad och uppskattad — utan den säkerhet som kommer av att i trettio år ha undersökt samma grundläggande frågor om form, kropp och rum.
+
+Profilens motiv, som funnits i hans arbete sedan 1960-talet, är fortfarande centralt — men hur det har fördjupats och berikats under decenniernas lopp. De tidiga profileerna var skarpa och analytiska. De senare är mer komplexa, mer laddade med erfarenhet.
+
+Utställningen på Lunds Konsthall är välhängd och välkontextualiserad. Skissernas Museum ger det historiska djupet. Tillsammans är det en imponerande presentation av ett livsverk.`,
+  },
+  {
+    slug: 'rebecka-tarschys-1989',
+    type: 'review',
+    year: 1989,
+    title: 'Blasieholms torg',
+    author: 'Rebecka Tarschys',
+    publication: 'Dagens Nyheter',
+    lang: 'sv',
+    body: `Rebecka Tarschys recenserar invigningen av Sivert Lindbloms hästar på Blasieholmstorg, Stockholm 1989, i Dagens Nyheter.
+
+Det händer sällan att offentlig konst skapar en omedelbar och naturlig närvaro i stadsrummet. Blasieholmstorgs hästar är ett sådant undantag. Sivert Lindbloms två grönpatinerade bronshästar — modellerade efter originalen i San Marcos basilika i Venedig — har etablerat sig i Stockholms stadslandskap som om de alltid funnits där.
+
+Det paradoxala med dessa hästar är deras dubbelhet: de är kopior av en berömd skulptur och ändå fullständigt originella; de är representativa (hästar är hästar) och ändå abstraherade till något som går bortom det rent avbildande.
+
+Lindblom har inte kopierat San Marcoshästarna slaviskt. Han har tolkat dem, gett dem en ny karaktär som passar Blasieholmstorgets nordiska ljus och havsnärhet. Det är ett mästerverk av offentlig konst.`,
+  },
+  {
+    slug: 'ingmar-unge-1989',
+    type: 'review',
+    year: 1989,
+    title: 'Blasieholms torg',
+    author: 'Ingmar Unge',
+    publication: 'Dagens Nyheter',
+    lang: 'sv',
+    body: `Ingmar Unge skriver om Blasieholmstorgs invigning och Sivert Lindbloms hästskulpturer i Dagens Nyheter 1989.
+
+Blasieholmstorg har fått ett ansikte. Sivert Lindbloms hästar — gjutna av Herman Bergmans Konstgjuteri AB i patinerad brons — är ett tillskott till Stockholms stadslandskap av sällan skådat slag.
+
+Det är inte ofta man ser offentlig konst som fungerar på alla plan: estetiskt, historiskt, urbant. Hästarna har en naturlig gravitas som inte beror på deras storlek (de är ungefär i naturlig storlek) utan på deras formspråk — en förtätad energi som ger varje form dess nödvändighet.
+
+Lindblom berättar att han studerade San Marcoshästarna i Venedig under lång tid innan han tog sig an uppdraget. Det märks: i hans versioner finns både respekten för originalet och en fri tolkning som gör dem till något nytt. Stockholm är rikare för dessa hästar.`,
+  },
+  {
+    slug: 'hedvig-hedqvist-1989',
+    type: 'review',
+    year: 1989,
+    title: 'Blasieholmstorg',
+    author: 'Hedvig Hedqvist',
+    publication: 'Svenska Dagbladet',
+    lang: 'sv',
+    body: `Hedvig Hedqvist recenserar Sivert Lindbloms hästar på Blasieholmstorg i Svenska Dagbladet 1989.
+
+Stockholm har fått sin snyggaste offentliga skulptur på decennier. Sivert Lindbloms grönpatinerade bronshästar på Blasieholmstorg fyller det blåsiga torget med en energi och närvaro som förändrar hela platsen.
+
+Hästarna är inspirerade av San Marcoshästarna i Venedig — de fyra antika bronshästar som sedan mitten av 1200-talet prytt basilikans fasad. Lindblom har inte reproducerat dem utan återskapat deras anda i en ny form, anpassad till Blasieholmstorgets karaktär och det nordiska stadsrummet.
+
+Det som imponerar är balansen: hästarna är monumentala men aldrig överväldigande, historiska men aldrig museala. De lever i sin nya miljö med en självklarhet som är konstnärens förtjänst och Stockholms lycka.`,
+  },
+  {
+    slug: 'arkitektur-1983',
+    type: 'interview',
+    year: 1983,
+    title: 'Intervju med Sivert Lindblom',
+    author: 'Red.',
+    publication: 'Arkitektur nr 5, 1983',
+    lang: 'sv',
+    body: `Intervju med Sivert Lindblom publicerad i tidskriften Arkitektur nr 5, 1983. Redaktionell intervju om konst i offentliga miljöer och samarbetet med arkitekter.
+
+— Hur ser du på relationen mellan konstnär och arkitekt i ett offentligt uppdrag?
+
+— Det handlar om dialog — om ett ömsesidigt lyssnande. Jag är inte intresserad av att ta en färdig skulptur och placera den i ett redan färdigt rum. Jag är intresserad av att förstå vad platsen behöver, vad arkitekturen saknar, och sedan hitta en form som svarar mot det.
+
+— Finns det en risk att konsten underordnas arkitekturen?
+
+— Alltid. Det är en ständig förhandling. Men jag har haft turen att arbeta med arkitekter som ser konsten som en likvärdig part, inte som en dekoration. När det fungerar bäst är det svårt att säga var arkitekturen slutar och konsten börjar.
+
+— Ditt arbete med Västra skogen T-banestation och Frescati — hur skilde de sig åt?
+
+— Västra skogen var ett slutet rum — en tunnel, ett passagerum. Frescati är ett öppet universitetslandskap. Skulpturerna måste fungera på helt olika sätt. I Västra skogen arbetar man med vad som möter resenären på nära håll; i Frescati med hur skulpturen kommunicerar på avstånd, i rörelse.`,
+  },
+  {
+    slug: 'gemensamma-rum-1998',
+    type: 'own_writing',
+    year: 1998,
+    title: 'Citat ur Gemensamma rum',
+    author: 'Peter Cornell & Sivert Lindblom',
+    publication: 'Gemensamma rum, 1998',
+    lang: 'sv',
+    body: `Utdrag och citat ur "Gemensamma rum" (1998) — en bok i samtal om offentlig konst och arkitektur, skriven av konsthistorikern Peter Cornell och skulptören Sivert Lindblom.
+
+"Det offentliga rummet är alltid ett sammansatt rum — det tillhör alla och ingen. Konsten som placeras där måste förhålla sig till denna dubbelhet: den måste vara privat nog att röra oss individuellt, och offentlig nog att fungera som ett gemensamt tecken."
+
+"Jag har alltid känt ett motstånd mot termen 'utsmyckning'. Det antyder att konsten är ett tillägg, ett ornament på något som redan är färdigt. Men det intressanta sker när konsten är med och definierar platsen från början — när skulptur och arkitektur växer fram ur samma ursprungliga tanke."
+
+"Vad är ett gemensamt rum? Det är ett rum där vi är samtidigt ensamma och tillsammans. Torget, stationen, biblioteket — platser där det privata och det kollektiva möts. Konsten i sådana rum får en unik funktion: den kan vara en gemensam referenspunkt, ett tecken som vi alla förhåller oss till på varsitt sätt."
+
+"Det handlar om närvaro. Skulpturen ska vara så naturlig på sin plats att man undrar om den alltid funnits där — och ändå, när man stannar upp och tittar, ska man kunna se att den rymmer någonting mer."`,
+  },
+  {
+    slug: 'lars-bergquist-1980',
+    type: 'translated',
+    year: 1980,
+    title: 'Préface pour la exhibition à Centre Culturel Suédois',
+    author: 'Lars Bergquist',
+    publication: 'Centre Culturel Suédois, Paris, 1980',
+    lang: 'fr',
+    body: `Lars Bergquist, ambassadeur de Suède en France, écrit la préface du catalogue de l'exposition de Sivert Lindblom au Centre Culturel Suédois à Paris, 1980.
+
+La sculpture de Sivert Lindblom appartient à une tradition nordique de la rigueur formelle — une tradition qui va de Brancusi à Arp, mais qui puise aussi dans quelque chose de plus ancien, de plus archaïque. Il y a dans ces œuvres quelque chose qui évoque des civilisations disparues, des objets rituels dont nous aurions perdu la fonction mais pas la présence.
+
+Ce qui frappe d'abord, c'est la densité. Les sculptures de Lindblom ne sont pas des objets légers. Elles ont un poids — pas seulement physique, mais ontologique. Elles occupent l'espace avec une assurance qui n'est pas de l'arrogance mais de la nécessité.
+
+L'exposition au Centre Culturel Suédois présente un choix représentatif de son travail des années 1960 aux années 1970 — les profils, les monolithes, les plaques de plomb. C'est une introduction à un œuvre qui mérite d'être mieux connu en France.
+
+La Suède est fière de présenter cet artiste exceptionnel à Paris. Sivert Lindblom est l'un des sculpteurs les plus importants de sa génération, et son travail parle un langage qui transcende les frontières nationales.`,
+  },
+  {
+    slug: 'beate-sydhoff-italian-1967',
+    type: 'translated',
+    year: 1967,
+    title: 'Conversazione con Sivert Lindblom',
+    author: 'Beate Sydhoff',
+    publication: 'Konstrevy nr 2, 1967 (Italiano)',
+    lang: 'it',
+    body: `Traduzione italiana dell'intervista di Beate Sydhoff con Sivert Lindblom, originariamente pubblicata su Konstrevy nr 2, 1967.
+
+— Cosa cerca nella sua scultura?
+
+— Qualcosa che sia in movimento eppure fermo. Una forma che abbia potenziale — che sembri potersi muovere ma scelga di non farlo. È la differenza tra una forma viva e una forma morta.
+
+— Come influisce il lavoro con gli architetti sulla sua pratica artistica?
+
+— Enormemente. L'architettura ti costringe a pensare in termini di relazione — relazione con il luogo, con il corpo, con la città. Non puoi avere un oggetto isolato nell'architettura. Ha plasmato il mio modo di pensare la scultura come site-specific, come relazionale.
+
+— È recentemente tornato da Locarno. Cosa ha portato con sé?
+
+— La distanza. La possibilità di vedere il clima artistico svedese dall'esterno. E la luce — la luce mediterranea è una luce diversa, costruisce una diversa relazione tra corpo e ombra.
+
+— Come vede il rapporto tra scultura e spazio pubblico?
+
+— La scultura pubblica deve guadagnarsi il suo posto. Non può semplicemente essere collocata — deve crescere da una comprensione profonda del luogo. Il mio lavoro come docente alla Scuola di Architettura mi ha aiutato a capire questo: l'architettura e la scultura devono dialogare dall'inizio, non alla fine.`,
+  },
+  {
     slug: 'beate-sydhoff-english-1967',
     type: 'translated',
     year: 1967,
