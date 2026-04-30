@@ -11,12 +11,11 @@ export function generateStaticParams() {
 }
 
 const WORKS = [
-  { year: 1970, title: 'Coriolanus', venue: 'Stockholms Stadsteater', type: 'Teaterscenogrfi' },
-  { year: 1974, title: 'Sand — 10 rörelsedikter', venue: 'Med koreograf Margareta Åsberg', type: 'Koreografi' },
-  { year: 1982, title: 'Falska Förtroenden av Marivaux', venue: 'Stockholms Stadsteater', type: 'Teaterscenogrfi' },
-  { year: 1989, title: 'Förbindelsegang, Kulturhuset–Stadsteaterns Stora Scen', venue: 'Stockholm', type: 'Interiör' },
-  { year: 1998, title: 'Fragment — Allvarsamma bagateller', venue: 'Med Margaretha Åsberg', type: 'Koreografi' },
-  { year: 2010, title: 'Drivved — Fragment ur tidigare koreografier', venue: 'Med Margareta Åsberg', type: 'Koreografi' },
+  { year: 1970, title: 'Coriolanus', venue: 'Dramaten, Stockholm. Regi: Alf Sjöberg', type: 'Teaterscenografi' },
+  { year: 1974, title: 'Sand — 10 rörelsedikter', venue: 'Koreografi: Margaretha Åsberg', type: 'Koreografi' },
+  { year: 1982, title: 'Falska Förtroenden av Marivaux', venue: 'Stockholms Stadsteater', type: 'Teaterscenografi' },
+  { year: 1987, title: 'Drivved — Fragment ur tidigare koreografier', venue: 'Koreografi: Margaretha Åsberg', type: 'Koreografi' },
+  { year: 1998, title: 'Fragment — Allvarsamma bagateller', venue: 'Koreografi: Margaretha Åsberg', type: 'Koreografi' },
 ]
 
 export default async function ScenographyPage({
@@ -30,8 +29,9 @@ export default async function ScenographyPage({
   return (
     <div className="section-gap">
       <div className="page-pad" style={{ marginBottom: '3rem' }}>
-        <Link href={`/${locale}/portfolio`} style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
-          {dict.common?.back ?? '←'} {dict.nav?.portfolio ?? 'Portfolio'}
+        <Link href={`/${locale}/portfolio`} className="back-link">
+          <span className="back-link-arrow">←</span>
+          <span className="back-link-label">{dict.nav?.portfolio ?? 'Portfolio'}</span>
         </Link>
         <h1 style={{ fontFamily: 'Georgia, serif', fontWeight: 400, fontSize: 'clamp(1.8rem,4vw,3rem)', marginTop: '1rem' }}>
           {dict.portfolio?.cat_scenography ?? 'Scenografi'}

@@ -94,8 +94,9 @@ export default async function PublicWorksPage({
         />
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, transparent 30%, rgba(10,10,10,0.95) 100%)' }} />
         <div className="page-pad" style={{ position: 'absolute', bottom: '2rem', left: 0, right: 0 }}>
-          <Link href={`/${locale}/portfolio`} style={{ fontSize: 'var(--fs-xs)', color: 'rgba(255,255,255,0.6)', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
-            {dict.common?.back ?? '←'} {dict.nav?.portfolio ?? 'Portfolio'}
+          <Link href={`/${locale}/portfolio`} className="back-link" style={{ color: 'rgba(255,255,255,0.6)' }}>
+            <span className="back-link-arrow">←</span>
+            <span className="back-link-label">{dict.nav?.portfolio ?? 'Portfolio'}</span>
           </Link>
           <h1 style={{ fontFamily: 'Georgia, serif', fontWeight: 400, fontSize: 'clamp(1.8rem,4vw,3rem)', marginTop: '0.5rem' }}>
             {dict.portfolio?.cat_public ?? 'Offentliga arbeten'}

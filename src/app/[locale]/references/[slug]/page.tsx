@@ -46,15 +46,12 @@ export default async function SculptureSeriesPage({
 
   return (
     <div className="section-gap">
-      {/* Breadcrumb */}
       <div className="page-pad" style={{ marginBottom: '2rem' }}>
-        <nav aria-label="Breadcrumb" style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '2rem' }}>
-          <Link href={`/${locale}/references`} style={{ color: 'var(--color-muted)' }}>
-            {dict.references?.title ?? 'Referensmaterial'}
-          </Link>
-          <span style={{ margin: '0 0.5rem' }}>›</span>
-          <span style={{ color: 'var(--color-text)' }}>{project.title}</span>
-        </nav>
+        {/* Back button */}
+        <Link href={`/${locale}/references`} className="back-link" style={{ marginBottom: '2rem', display: 'inline-flex' }}>
+          <span className="back-link-arrow">←</span>
+          <span className="back-link-label">{dict.references?.subtitle ?? 'Skulptur & Grafik'}</span>
+        </Link>
 
         {project.years && (
           <p style={{ fontSize: 'var(--fs-xs)', letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--color-accent)', marginBottom: '0.75rem' }}>

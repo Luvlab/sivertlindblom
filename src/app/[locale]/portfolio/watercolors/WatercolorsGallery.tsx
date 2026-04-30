@@ -100,11 +100,9 @@ export default function WatercolorsGallery({ locale }: Props) {
     <div className="section-gap">
       {/* Header */}
       <div className="page-pad" style={{ marginBottom: '3rem' }}>
-        <Link
-          href={`/${locale}/portfolio`}
-          style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', letterSpacing: '0.1em', textTransform: 'uppercase' }}
-        >
-          ← Portfolio
+        <Link href={`/${locale}/portfolio`} className="back-link">
+          <span className="back-link-arrow">←</span>
+          <span className="back-link-label">Portfolio</span>
         </Link>
         <h1 style={{ fontFamily: 'Georgia, serif', fontWeight: 400, fontSize: 'clamp(1.8rem,4vw,3rem)', marginTop: '1rem', marginBottom: '1rem' }}>
           Akvareller 1975–2012
