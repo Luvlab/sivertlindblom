@@ -75,6 +75,33 @@ export default async function SculptureSeriesPage({
               {para}
             </p>
           ))}
+          {project.links && project.links.length > 0 && (
+            <div style={{ marginTop: '2rem', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+              {project.links.map((link, i) => (
+                <a
+                  key={i}
+                  href={link.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.5rem',
+                    fontSize: 'var(--fs-sm)',
+                    color: 'var(--color-accent)',
+                    textDecoration: 'none',
+                    borderBottom: '1px solid var(--color-accent-dim)',
+                    paddingBottom: '0.2rem',
+                    width: 'fit-content',
+                  }}
+                >
+                  <span>LÄS HÄR</span>
+                  <span style={{ fontStyle: 'italic', color: 'var(--color-text)' }}>{link.label}</span>
+                  <span>→</span>
+                </a>
+              ))}
+            </div>
+          )}
         </div>
       </div>
 

@@ -10,6 +10,7 @@ export interface SculptureProject {
   description: string
   body: string
   images: SculptureImage[]
+  links?: Array<{ label: string; url: string }>
 }
 
 export const SCULPTURE_PROJECTS: SculptureProject[] = [
@@ -110,6 +111,9 @@ export const SCULPTURE_PROJECTS: SculptureProject[] = [
     years: '1980–1990',
     description: 'En serie skulpturer som undersöker meningslös meningsfullhet.',
     body: 'Kofeser är ett ord utan definition — en kofes kan vara vad som helst. Serien uppkom spontant, ur slumpen och omedvetna skapande ögonblick, jämförbart med improviserad jazz. Serien utforskar gränsen mellan objekt och skulptur, mellan det vardagliga och det konstnärliga. Birger Vikström har skrivit om vad en kofes egentligen är i "13 berättelser".',
+    links: [
+      { label: 'Birger Vikström — "Vad är en kofes?" ur 13 berättelser', url: 'https://sivertlindblom.se/texter/andras-texter/kofes-vad-ar-en-kofes-las-birger-vikstroms-berattelse-om-en-kofes-ur-hans-13-berattelser/' },
+    ],
     images: [
       { url: 'https://sivertlindblom.se/wp-content/uploads/2015/01/DSC01868-kopia.jpg', alt: 'Kofes' },
       { url: 'https://sivertlindblom.se/wp-content/uploads/2015/03/Kofeser-.jpg', alt: 'Kofeser' },
