@@ -70,7 +70,7 @@ export default async function PortfolioPage({
       <hr className="divider" />
 
       <div className="page-pad" style={{ paddingTop: '3rem' }}>
-        <div className="auto-grid-wide">
+        <div className="portfolio-grid">
           {CATEGORIES.map((cat) => (
             <Link key={cat.key} href={`/${locale}/portfolio/${cat.key}`} style={{ display: 'block' }}>
               <article className="card" style={{ overflow: 'hidden' }}>
@@ -104,6 +104,39 @@ export default async function PortfolioPage({
               </article>
             </Link>
           ))}
+        </div>
+
+        {/* Map callout */}
+        <div style={{
+          marginTop: '3rem',
+          padding: '2rem',
+          border: '1px solid var(--color-border)',
+          borderRadius: 2,
+          background: 'var(--color-bg-surface)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          gap: '2rem',
+          flexWrap: 'wrap',
+        }}>
+          <div>
+            <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-accent)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '0.25rem' }}>
+              {locale === 'sv' ? 'Karta' : locale === 'th' ? 'แผนที่' : 'Map'}
+            </p>
+            <h3 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-lg)', fontWeight: 400, marginBottom: '0.5rem' }}>
+              {locale === 'sv' ? 'Utforska skulpturer på karta' :
+               locale === 'th' ? 'สำรวจประติมากรรมบนแผนที่' :
+               'Explore sculptures on a map'}
+            </h3>
+            <p style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-muted)' }}>
+              {locale === 'sv' ? `${29} offentliga verk i ${5} länder` :
+               locale === 'th' ? `ผลงานสาธารณะ ${29} ชิ้นใน ${5} ประเทศ` :
+               `${29} public works across ${5} countries`}
+            </p>
+          </div>
+          <Link href={`/${locale}/portfolio/map`} className="btn" style={{ whiteSpace: 'nowrap' }}>
+            {locale === 'sv' ? 'Visa karta' : locale === 'th' ? 'ดูแผนที่' : 'View map'} →
+          </Link>
         </div>
       </div>
     </div>

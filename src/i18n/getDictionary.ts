@@ -16,6 +16,7 @@ const dictionaries: Record<Locale, () => Promise<Record<string, unknown>>> = {
   nl: () => import('./locales/nl.json').then((m) => m.default as Record<string, unknown>),
   pl: () => import('./locales/pl.json').then((m) => m.default as Record<string, unknown>),
   ko: () => import('./locales/ko.json').then((m) => m.default as Record<string, unknown>),
+  th: () => import('./locales/th.json').then((m) => m.default as Record<string, unknown>),
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

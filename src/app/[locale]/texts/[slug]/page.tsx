@@ -26,15 +26,6 @@ export async function generateMetadata({
   }
 }
 
-const TYPE_LABELS: Record<string, string> = {
-  essay:       'Essay',
-  preface:     'Förord',
-  review:      'Recension',
-  interview:   'Intervju',
-  own_writing: 'Egen text',
-  translated:  'Översatt',
-}
-
 const LANG_LABELS: Record<string, string> = {
   sv: 'SV', en: 'EN', de: 'DE', fr: 'FR', it: 'IT',
 }
@@ -50,20 +41,21 @@ export default async function TextDetailPage({
   const text = TEXTS_DATA.find((t) => t.slug === slug)
   if (!text) notFound()
 
-  const typeLabel = (dict.texts as Record<string, string> | undefined)?.[text.type] ?? TYPE_LABELS[text.type] ?? text.type
+  // Use locale-specific translation when available, fall back to original
+  const body = text.bodies?.[locale] ?? text.body
+  const isTranslated = text.bodies?.[locale] !== undefined && locale !== text.lang
+
+  const typeLabel = (dict.texts as Record<string, string> | undefined)?.[text.type] ?? text.type
   const langLabel = LANG_LABELS[text.lang] || text.lang.toUpperCase()
 
   return (
     <div className="section-gap">
       <div className="page-pad" style={{ maxWidth: '80ch' }}>
-        {/* Breadcrumb */}
-        <nav aria-label="Breadcrumb" style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '2rem' }}>
-          <Link href={`/${locale}/texts`} style={{ color: 'var(--color-muted)' }}>
-            {dict.texts?.title ?? 'Texter'}
-          </Link>
-          <span style={{ margin: '0 0.5rem' }}>›</span>
-          <span style={{ color: 'var(--color-text)' }}>{text.title}</span>
-        </nav>
+        {/* Back button */}
+        <Link href={`/${locale}/texts`} className="back-link" style={{ marginBottom: '2rem', display: 'inline-flex' }}>
+          <span className="back-link-arrow">←</span>
+          <span className="back-link-label">{dict.texts?.title ?? 'Texter'}</span>
+        </Link>
 
         {/* Eyebrow: type label + year + lang badge */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap', marginBottom: '0.75rem' }}>
@@ -95,9 +87,24 @@ export default async function TextDetailPage({
 
         <hr className="divider" style={{ marginBottom: '2.5rem' }} />
 
+        {/* Original-language notice when no translation available */}
+        {!isTranslated && locale !== text.lang && (
+          <p style={{
+            fontSize: 'var(--fs-xs)',
+            letterSpacing: '0.08em',
+            color: 'var(--color-muted)',
+            background: 'var(--color-bg-surface)',
+            border: '1px solid var(--color-border)',
+            padding: '0.6rem 1rem',
+            marginBottom: '2rem',
+          }}>
+            {langLabel} — {dict.common?.loading ? '' : 'Original language'}
+          </p>
+        )}
+
         {/* Body */}
         <div>
-          {text.body.split('\n\n').map((para, i) => (
+          {body.split('\n\n').map((para, i) => (
             <p key={i} style={{ fontSize: 'var(--fs-base)', lineHeight: 1.8, marginBottom: '1.5em', color: 'var(--color-text)' }}>
               {para}
             </p>
@@ -106,8 +113,9 @@ export default async function TextDetailPage({
 
         {/* Back link */}
         <div style={{ marginTop: '4rem', paddingTop: '2rem', borderTop: '1px solid var(--color-border)' }}>
-          <Link href={`/${locale}/texts`} style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
-            ← {dict.texts?.title ?? 'Texter'}
+          <Link href={`/${locale}/texts`} className="back-link">
+            <span className="back-link-arrow">←</span>
+            <span className="back-link-label">{dict.texts?.title ?? 'Texter'}</span>
           </Link>
         </div>
       </div>

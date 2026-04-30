@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 
 const NAV_ITEMS = [
   { href: '/admin',            label: 'Dashboard',     icon: '◈' },
@@ -14,6 +14,13 @@ const NAV_ITEMS = [
 
 export default function AdminSidebar() {
   const pathname = usePathname()
+  const router = useRouter()
+
+  async function handleLogout() {
+    await fetch('/api/admin/auth', { method: 'DELETE' })
+    router.push('/admin-login')
+    router.refresh()
+  }
 
   return (
     <aside style={{
@@ -58,13 +65,29 @@ export default function AdminSidebar() {
         })}
       </nav>
 
-      <div style={{ padding: '1.5rem', borderTop: '1px solid var(--color-border)' }}>
+      <div style={{ padding: '1.5rem', borderTop: '1px solid var(--color-border)', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
         <Link
-          href="/"
+          href="/sv"
           style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', textTransform: 'uppercase', letterSpacing: '0.08em' }}
         >
           ← Tillbaka till sajten
         </Link>
+        <button
+          onClick={handleLogout}
+          style={{
+            fontSize: 'var(--fs-xs)',
+            color: '#888',
+            textTransform: 'uppercase',
+            letterSpacing: '0.08em',
+            background: 'none',
+            border: 'none',
+            cursor: 'pointer',
+            textAlign: 'left',
+            padding: 0,
+          }}
+        >
+          Logga ut
+        </button>
       </div>
     </aside>
   )

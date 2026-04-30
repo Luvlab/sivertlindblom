@@ -1,3 +1,5 @@
+import { TEXT_TRANSLATIONS } from './text-translations'
+
 export interface TextItem {
   slug: string
   type: 'essay' | 'preface' | 'review' | 'interview' | 'own_writing' | 'translated'
@@ -6,10 +8,11 @@ export interface TextItem {
   author: string
   publication: string
   lang: 'sv' | 'en' | 'de' | 'fr' | 'it'
-  body: string  // plain text paragraphs separated by \n\n
+  body: string                              // original-language body (always present)
+  bodies?: Partial<Record<string, string>>  // locale → translated body
 }
 
-export const TEXTS_DATA: TextItem[] = [
+const RAW_TEXTS_DATA: Omit<TextItem, 'bodies'>[] = [
   {
     slug: 'peter-cornell-2012',
     type: 'essay',
@@ -457,3 +460,8 @@ La Suède est fière de présenter cet artiste exceptionnel à Paris. Sivert Lin
 — Distance. The possibility of seeing the Swedish artistic climate from outside. And the light — Mediterranean light is a different light, it builds on a different relationship between body and shadow.`,
   },
 ]
+
+export const TEXTS_DATA: TextItem[] = RAW_TEXTS_DATA.map(item => ({
+  ...item,
+  bodies: TEXT_TRANSLATIONS[item.slug],
+}))
