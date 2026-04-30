@@ -140,11 +140,35 @@ Catharina Gabrielsson`,
     author: 'Daniel Birnbaum',
     publication: 'Katalog Lunds Konsthall',
     lang: 'sv',
-    body: `Daniel Birnbaum, konstkritiker och senare chef för Moderna Museet, skriver förord till utställningskatalogen "Skulptur" på Lunds konsthall 1993.
+    body: `"Den mänskliga kroppens yta är gränsen mellan inre och yttre. Finns det en liknande yta i tänkandets rike, som skiljer tankens insida från dess utsida, från det icke tänkta?" I Paul Valérys Cahiers finner man en serie reflektioner som utvecklar föreställningen om en abstrakt yta som föregår det mänskliga medvetandet, en yta som kan veckas och böjas tillbaka över sig själv, och på så vis skapa den mänskliga tankens inre rymd.
 
-Sivert Lindbloms skulpturer rör sig i gränslandet mellan det arkeologiska och det utopiska. De ser ut som om de alltid funnits, som om de grävts fram ur en sedan länge försvunnen civilisation — och ändå är de fullständigt moderna, fullständigt nutida.
+Att få tillgång till denna yta, skriver Valéry, är tanken att tänka bortom människan – att tänka det omänskliga.
 
-Utställningen på Lunds konsthall 1993 presenterade en retrospektiv bild av Lindbloms skulpturarbete från 1960-talets tidiga verk till de stora offentliga monumenten.`,
+Är det denna yta som ger sig tillkänna i Sivert Lindbloms skulpturer från 60-talet, dessa svarvade gestalter som likt schackpjäser tycks röra sig i ett abstrakt rum bortom det mänskliga? Det personliga, konstnärens egen profil, har i dessa skulpturer generaliserats till en överallt närvarande form – den egna kroppens signatur har blivit en figur utan relation till det unika jaget. Detta är en konst som befriats från traditionella föreställningar om ursprung och originalitet; det unika har lämnat plats åt serier utan absolut början eller slut.
+
+"Vi kan idag inte annat än tänka i det vakuum som lämnats efter människans försvinnande", lyder en sats av Michel Foucault som Lindblom sätter som motto för sin utställning på Biennalen i Venedig 1968.
+
+Människan, så som hon studeras av de moderna humanvetenskaperna, är enligt Foucault en tillfällig kristallisering av krafter, som ett slags knut som i framtiden kommer att lösas upp för att lämna plats åt nya former av liv. Det är innebörden i den profetiska avslutningen av Les mots et les choses: "Som vårt tänkandes arkeologi visat är människan en uppfinning av sent datum. Och kanske en som närmar sig sitt slut."
+
+Människan, skriver Foucault, är en formation som snart kommer att "suddas ut, likt ett ansikte som ritats i sanden vid havets rand."
+
+Vad är den egna profilen, eller handens unika signatur, i ett sådant posthumanistiskt rum?
+
+Lindbloms konst undersöker själva spänningen mellan det unika och det generella – mellan det egna och den maskinella reproduktionen. Redan i de tidiga arbetena i brons finns, trots närheten till Rodin och den klassiska skulpturen, denna spänning. Lindblom arbetar med repetitiva moment – verken skrivs in i serier, vilket ruckar på deras status som unika. Det singulära uttrycket försvinner in i en mer omfattande rörelse.
+
+Ingenstans är denna försvinnandets rörelse, som också Foucault intresserade sig för, tydligare än i de svarvade arbetena från 60-talet. Men avhumaniseringen drivs ännu längre under de kommande åren: här handlar det inte längre om den mänskliga kroppens förvandling till generaliserad form, utan om en fullständig frånvaro av det mänskliga. Själva motsättningen mellan människa och värld har lämnat plats åt ett slags artificiell natur, ett landskap som förenar det organiska med abstrakta konstruktioner: grenar fogas till enkla arkitektoniska element, väldiga stenblock förbinds av grova kättingar. Ingenstans skymtar mänskliga former.
+
+Väsentligare än det enstaka verket är den modell som förmår generera en form – en gång eller oändligt många gånger. Lindbloms arbeten innefattar inte sällan en redovisning av själva den konstnärliga metoden: mallen, gjutformen, mätredskapen. Här finns en närhet till vetenskapen. Ingenting lämnas dolt; ingenting är hemligt.
+
+Upprepningen har sin plats i detta utforskande av modellens möjligheter: en form kan repeteras och varieras i ändlösa material och tekniker. När människan åter introduceras i Lindbloms landskap är det som en sådan variabel.
+
+Avgjutningen av den egna kroppen återges i olika storlekar och utföranden; det handlar inte om något återupprättande av en humanistisk kropp, utan om ett laborerande med en form som mångfaldigas och inordnas i en större logik. Likt ornamentet, som följer upprepningens och de små förskjutningarnas princip, arbetar sig denna konst igenom formens alla möjligheter.
+
+Men ornamentiken sluts aldrig, mönstret förblir öppet. På utställningen Ibid sitter de två små gestalterna ihopkrupna på olika höjd – runtomkring dem på väggen ett slags ornament i gips. "Ornament ist Verbrechen", skriver Adolf Loos. Brottet bestraffas: ornamentiken bryts sönder, faller i bitar.
+
+Gipsfragmenten ligger strödda över golvet.
+
+Daniel Birnbaum`,
   },
   {
     slug: 'stig-larsson-1993',
@@ -154,11 +178,29 @@ Utställningen på Lunds konsthall 1993 presenterade en retrospektiv bild av Lin
     author: 'Stig Larsson',
     publication: 'Katalog Lunds Konsthall',
     lang: 'sv',
-    body: `Stig Larsson, författare och konstkritiker, skriver om Sivert Lindbloms skulptur i katalogen till Lunds konsthall 1993.
+    body: `Det är inte en slump att Sivert Lindblom benämner det mesta i sin produktion Utan titel. Det finns en vägran i honom att närma sig en betydelse, en tidigare existerad värld hans verk skulle kunna hänföras till. Denna vägran ser vi också genomgående hos minimalismen och delar av den abstrakta expressionismen.
 
-Det finns en gåtfullhet i Lindbloms skulpturer som inte låter sig förklaras bort. De är igenkänliga och främmande på samma gång — profiler, ansikten, kropp, men transformerade till något som inte är direkt avbildning utan strukturell analys av det mänskliga.
+Men hos honom är inte denna vägran till betydelse entydigt kopplad med en reduktion av former, med en enkelhet.
 
-Larsson pekar på Lindbloms förmåga att arbeta med det arketypiska utan att falla in i det dekorativa — skulpturerna bär på något väsentligt utan att vara allegoriska.`,
+Det är snarare ett försök att tala aldrig talade ord, att genom tingen äska ett adamiskt språk, där tingen och namnen är ett, där det inte finns denna ursprungliga klyvnad, ett språk där det moraliska omdömet inte trätt in. Att skapa former där estetiska och religiösa konnotationer inte bortbleknat – de har aldrig funnits. Där den högstämdhet som vilar över tingen kan locka åskådaren att frammana bakomliggande gåtor (kanske från Kabbala, kanske från mayafolkens ritualer) men där allt sådant arbete är förgäves. Det finns ingen gåta, ingenting bakomliggande hos Lindbloms skulpturer. Det som finns är en slät eller veckad yta innan eller efter, den mänskliga kulturen: en röst som inte kommer från ett struphuvud. Det är ting som aldrig varit invävda i de språkliga system som utgör den objektivitet som vi som subjekt förhåller oss till när vi tänker och ser våra liv.
+
+Dessa språkliga system som alltid utgör ett Där, som vi aldrig helt kan göra till ett Här, som vi inte kan tänka, göra genomskinliga för vår blick, eftersom de bildar ett Före, en gräns för vår egen subjektivitet – vilket gör att man inte kan "förstå" konstverk. När Lindblom undviker betydelsen, ännu som anad betydelse, är han en del av de strömningar i vårt århundrades konst som försökt ställa sig utanför, bortom, ett språkligt system inom vilket allting redan tycks ha uttryckts. Känslan av senhet är säkert incitamentet till dessa önskningar om ett otalat språk.
+
+Hos Lindblom utgör motsättningen mellan detta absoluta krav och det första intryck som stöter emot oss, intryck av en avlägsen, en gång oerhörd magi, den spänning som gör att hans verk inte sällar sig till raden av sisyfosförsök att skapa ett nytt språk. Det finns ingenting bakom, absolut ingenting, och det att vi verkligen trott på ett obetydligt, svagt glimmande, men ändå ett svar, gör att vi inför detta ingenting ser den avgrund som tomheten, den icke meningsbärande gesten och tinget har, den tomhet, den icke-mänsklighet, som vidlåder naturen.
+
+De små gjutna människofigurerna som är uppsatta på en vägg utgår från en avgjutning av den egna kroppen Lindblom gjorde under sextitalet. De är exakta kopior av den ursprungliga modellen, skalenligt förminskad i en verkstad i Paris, varje detalj, t.o.m. en ring han hade på sig under avgjutningen, finns kvar. Men trots att den är ytterst människolik, vi skulle kunna vänta oss att den skulle resa sig på sina små ben, finns det inget mänskligt över den, ingenting subjektivt. Upprepningen och förminskningen av den mänskliga kroppen gör att dess främsta konstituent, dess unicitet, kroppen, lever i skillnaden från andra kroppar, bräcks sönder, kroppen, det mänskliga, avhumaniseras i grunden. Den blå, röda och svarta färg som kastats över figurerna, som "skändat" dem, är ytterligare en förstärkning av denna rörelse. Färgerna är oss något främmande, vi är inga färger.
+
+De lister av brons som är placerade i ögonhöjd i lokalen, kraftigt patinerade i grönt, är Lindbloms senaste arbete. Även de är avskalade all funktion, all betydelse. De skulle kunna vara stavar i en uråldrig indiansk ritual, men de refererar inte till någon tro, bortom deras materialitet finns ingenting. Det är i materialen, bly, päronträ, plast, här brons, vi möter den totalt stumma naturen.
+
+Lindbloms verk existerar i större utsträckning inuti sig själva, en kvadratcentimeter brons omgärdad av brons, ett universum av materialitet, en luftlös och blicklös punkt av ickemänsklighet. De är placerade i ögonhöjd, mot irisens och blickens kanske gröna köttslighet står hårdheten, ouppbrytbarheten i bronsets gröna materialitet. Den horisontella linjen av käppar som omsluter rummet har sin pendang i en annan materialitet, de gröna ögonens, blickarnas, de som ibland hejdar sig mot varandra – lika omöjliga att genomtränga som bronsen.
+
+Vi ser hellre ett Efter än ett Före språken hos Lindblom, hellre en ny inte inlöst stavelse, än drömmen om en en gång uttalad, nu glömd sedan miljoner år. Inte drömmen om en ursprunglighet, inga drömmar alls, det vakna tillståndet i en kommande värld där tingen och namnen är ett. Man skulle kunna likna Lindbloms arbeten med en apné, den indiska tekniken för medvetet hjärtstillestånd, en sista ansträngning för att träda ut ur det mänskliga.
+
+Kanske dödens former, förruttnelsen, skelettets hårdhet, bär en mer pregnant bild av oss som människor, där vi inte längre är mänskliga, "humana", utan helt försänkta i naturens tystnad. Alltifrån de egyptiska gravritualerna har en sådan aning funnits.
+
+Lindblom är ännu ett vittne till denna livets avstängning.
+
+Stig Larsson`,
   },
   {
     slug: 'jean-christophe-ammann-1977',
@@ -168,11 +210,20 @@ Larsson pekar på Lindbloms förmåga att arbeta med det arketypiska utan att fa
     author: 'Jean-Christophe Ammann',
     publication: 'Katalog Kunstmuseum Luzern',
     lang: 'de',
-    body: `Jean-Christophe Ammann war Direktor des Kunstmuseums Luzern und kuratierte die Ausstellung "Live Show II" 1977, an der Sivert Lindblom, Björn Lövin und Ulrik Samuelson teilnahmen.
+    body: `SIVERT LINDBLOM
 
-Die Arbeit von Sivert Lindblom, Björn Lövin und Ulrik Samuelson — drei schwedische Künstler, die seit den frühen 1970er Jahren zusammenarbeiten — stellt eine einzigartige Verbindung von Skulptur, Performance und Environment dar.
+Sivert Lindblom, geboren am 1.11.1931, ist Bildhauer. Zu Beginn der sechziger Jahre schuf er Skulpturen in Holz und Kunststoff. Sie sahen u.a. aus wie die Balustradenstützen einer Renaissanceterrasse: er schuf ganze Serien davon, einerseits in einer Reihe geordnet, alternierend zwischen einem schmalen und einem breiten Element.
 
-"Live Show" ist kein Spektakel im traditionellen Sinne — es ist eine Untersuchung der Bedingungen, unter denen Kunst entsteht und erfahren wird. Die drei Künstler bauen, manipulieren, verändern ihre Umgebung in Echtzeit, vor den Augen des Publikums.`,
+Bei genauerer Betrachtung konnte man feststellen, dass die isolierten Gebilde ein menschliches Profil zeigten, in den Reihenskulpturen dagegen wurde der Umriss des menschlichen Körpers durch den Zwischenraum gebildet. Es handelte sich stets um sein eigenes Profil, um seinen eigenen Körperumriss. Die Skulpturen waren anonym, glatt und abweisend. Sie waren eine perfekte Metapher für die 'Kälte' seiner Ideen, für eine Art von angereichertem Leer-Zustand, der nicht von innen her zu erläutern, nur von aussen zu umreissen war: durch eine Form, die a) nichts Originäres im Sinne der Erfindung offenbarte, b) mechanisch hergestellt wurde und sich c) durch eine ebenso lapidare Farbigkeit charakterisierte. Entsprechend dem Zeitgeist wurden diese Arbeiten allzu rasch als Ausdruck der Kunststoffeuphorie gesehen, etwa in der Perspektive der damaligen englischen Skulptur.
+
+Als Lindblom Ende 1960 seinen Blick ausdehnte, wurde plötzlich klar, was die „Kälte" seiner Ideen beinhaltete. Es schien, als blickte er in eine Welt, die er sehr genau registrierte, ohne sie zu verstehen. Es schien, als sähe er Gegenstände, ohne deren Bedeutung zu erkennen. Er entleerte nicht den Gegenstand seiner Bedeutung, er sah ihn ohne Bedeutung. Seiner in Einzelmomente entsprach gleichzeitig die Neutralisierung des durch das Wissen voreingenommenen Blickes. Liegt hier eine Methode (strukturalistischer Natur) vor oder macht den Zusammenhang bedeutungslos? Mir scheint, dass beide Seiten ineinanderwirken.
+
+In dem Masse wie Lindblom die Welt der Dinge ihrer Bedeutung entkleidet sieht, in dem Masse lädt er sie (re)konstruierend mit Bedeutung auf. Aber dieses bedeutungsschaffende In-Verbindungsetzen erscheint denkbar hilflos. Sind die mit Seilen an Vierkantbalken geschnürten Äste — Teil seines Vokabulars seit Anfang 1970 — nicht allzu einsichtige Metaphern? Sie sind es dann, wenn man eingleisige Schlüsse daraus zieht: die Erkenntnis gleichsam vorausnimmt, ohne die Querverbindungen miteinzubeziehen, welche diese Erkenntnis relativieren.
+
+Die sinn-losen Verbindungen und Beziehungen sind nur im Vergleich zu sinn-vollen relevant. Das heisst, sie sind in dem Masse sinn-los, als die sinn-vollen, entsprechend ihrer Ideologie, zum Spielball einer Rhetorik der Bedeutungen um ihrer selbst willen geworden sind. Lindblom deckt nichts auf, er schafft die äquivalente Gegenwelt. Assoziatives findet nicht statt. Denn die Objekte werden nicht inhaltlich als Gegensatz miteinander verbunden; die bedeutungsschaffende Verknüpfung ist in sich selbst gegensätzlich, weil sie den Zusammenhang der im Wahrnehmungsprozess negiert. Ein solches Vorgehen scheint dem Zufall jede Möglichkeit offen zu lassen. Deshalb hat Lindblom eine Art Vokabular geschaffen: Grundelemente, Situationen, Perspektiven, welche den Ausgangspunkt für die Konstituierung einer 'Welt' darstellen. Sie erscheinen in und als Landschaftsausschnitte in immer neuen Konstellationen. Die Natur der Ausschnitte verweist auf eine unendliche Landschaft. Die Präzision, mit der seine Aquarelle und räumlichen Objekte geschaffen sind, ist weniger ein ästhetisches Moment als vielmehr Handhabe für Artikulation, Zusammenfügen, In-Beziehung-setzen von Gebilden, Situationen, Perspektiven. Die Präzision ist die Realität des Blickes, der die Realität der Gebilde und Verbände konstituiert. — Anlässlich der Ausstellung "Live Show" (1974, Moderna Museet, Stockholm) zeigte die Skulptur eines sitzenden Mannes mit angezogenen Beinen und geschlossenen Augen (der Künstler selbst) den mentalen Charakter des Environments.
+
+Jean-Christophe Ammann.
+Ausstellungen: Gal. Burén, Stockholm 1963/66/68; 34.Biennale Venedig (schwedischer Pavillon) 1968; Kunsthalle Nürnberg, Kunsthalle Düsseldorf, Kunstverein Stuttgart, 1970; Gal. Gimpel & Hannover, Zürich 1971`,
   },
   {
     slug: 'beate-sydhoff-1967',
@@ -221,7 +272,7 @@ SL: Färgen som material används ju yrkesmässigt för att precisera ytan, den 
 
 BS: Du vill inte förmedla innehållsliga moment?
 SL: Det innehållsliga och det formala i mina arbeten är svårt att behandla var för sig. Det innehållsliga är det formala och det formala är det innehållsliga.
-Innehållet, den poetiska avsikten, har fått sin tydligaste formulering och jag kan här bara informera om läsarten, sättet att se.
+Innehållet, den poetiska avsikten, har fått sin tydligaste formulering och jag kan här bara informera om läsarten, sättet att se. Beträffande färgen måste jag konstatera att jag ställer dessa arbetsresultat inför en publik som av konvention blandar ihop ett av konstkonventionen präglat innehåll, man tror att man ser mer än man kan se. Av den orsaken måste jag alltså försöka förnya sättet att se och använda förtydliganden och därvid har jag ibland tagit färgen till hjälp. Det finns alltså detaljer som enbart är till för att styra seendet.
 
 BS: Hur vill du att din skulptur skall uppfattas?
 SL: En ytterligare konsekvens av tvådimensionaliteten och den arbetsmetodik som kommit ur den iakttagelsen gör att föremålen blir "immateriella" och bör uppfattas som tankestyrda operationer, tankeregistreringar.
@@ -231,7 +282,10 @@ BS: Hur ställer du dig till den nya "immateriella" skulpturen i England?
 SL: Tekniskt och formellt är jag nyfiken och känner mig något besläktad, men jag har mycket svårt att förstå meningen med deras arbeten. Dom har i mina ögon stannat på halva vägen. Där finns ett drag av konventionellt formtänkande som jag inte kan sympatisera med.
 
 BS: Du nämnde något tidigare spekulativa undersökningar. Har dessa något med Bauhaus att göra?
-SL: De har inget alls med Bauhaus att göra. Hela bakgrunden till Bauhaus' tro på formen och dess funktioner är inte längre aktuell för oss. Idé och avsikt kräver att vi väljer den form som är effektivast som kommunikationsmedel, vare sig den är enkel, sammansatt, klar eller oklar, ren eller oren.
+SL: De har inget alls med Bauhaus att göra. Hela bakgrunden till Bauhaus' tro på formen och dess funktioner är inte längre aktuell för oss. Vad som är alldeles uppenbart just nu är att vi är helt trolösa mot vad Bauhaus menade med form. Idé och avsikt kräver att vi väljer den form som är effektivast som kommunikationsmedel, vare sig den är enkel, sammansatt, klar eller oklar, ren eller oren.
+
+BS: Bauhaus trodde på en ren värld. Är din idé motsatt också på den punkten?
+SL: Min idé är annorlunda, det är inte fråga om något motsatsförhållande. Jag försöker inte bevisa något som utesluter något annat. Bl.a. av den orsaken är Bauhaus' tro ointressant för mig. Det sätt jag arbetar på gäller i första hand mig själv och mina möjligheter att kommunicera.
 
 BS: Är din konst programmatisk? Har du avsikter som leder mot ett speciellt mål?
 SL: Jag önskar jag kunde deltaga i ett positivt och progressivt skapande som kan utveckla människans mekanismer och därigenom möjliggöra en mer nyanserad erfarenhet av tillvaron. Konstens sociala funktion.`,
@@ -244,13 +298,32 @@ SL: Jag önskar jag kunde deltaga i ett positivt och progressivt skapande som ka
     author: 'Sivert Lindblom',
     publication: 'Moderna Museet, Stockholm',
     lang: 'sv',
-    body: `Skriven av Sivert Lindblom till utställningskatalogen för Live Show, Moderna Museet, Stockholm 4 maj – 3 juni 1974.
+    body: `… kanske beror det på det okändas ständiga närvaro, kanske förklaringen finns i vår omedvetna oro för att föremålen i vår omgivning plötsligt skall omgrupperas till stridslinjer eller förrädiska bakhåll.
+Varifrån kommer egentligen alla dessa materialiserade förslag och åtgärder som vi möter överallt. Beklagar att jag inte kan lita till de självklara förklaringar som så prompt och tjänstvilligt förmedlas.
+Jag ber dig, när du lämnar mig och återgår till ordningen, att vara på din vakt och rapportera alla förändringar.
+Vi, du och jag måste vara vaksamma.
+Men akta dig för pessimism, eventuella hot skall mötas med optimism.
+Optimismen finns i viljan att se allt. Låt oss lära oss att se och jag menar då även den form vars innehåll är okänt eller rättare sagt vars innehåll är det okända.
+Alla former är former för möten mellan oss och i dessa möten tar du och jag form. Det är denna form som är avgörande. Det är den som våra ansträngningar gäller.
+Du förstår plötsligt upptäcker man att det hela tiden varit samma avsikt som präglat ens arbete under alla år. Som om riktning, hastighet och tid var förutbestämd och att man hela tiden bara utfört de rörelser som jämvikten krävt.
+Slumpen har styrt men inte bestämt riktningen.
+Det låter ju inte bra för konsten är ju fri säger man. Men jag försäkrar dig, inte heller konsten är fri, men den har ett mål.
+Genom modeller och beskrivningar kan vi få verkligheten att framträda och vi har ingen rätt att väja för det som blir synligt.
+Det är alltså vår gemensamma livssituation som ger form och innehåll.
 
-Live Show är ett experiment i gränslandet mellan skulptur, performance och arkitektur. Vi — Björn Lövin, Ulrik Samuelson och jag — arbetar utan förutbestämt resultat. Utställningsrummet är vår arbetsplats, publiken är vittnen.
+Konsten bestämmer verkligheten, utan konst ingen verklighet inget liv ingen död.
+Varför ser mina bilder ut som dom gör?
+Jag skall försöka förklara:
+Samhället innehåller en mängd funktioner som producerar dess bilder och ger föremålen dess form. Dessa bilder och former, ingenjörens, sociologens, arkitektens, biologens, matematikerns, tar vi till oss på olika sätt med olika reservationer, positivt eller negativt med ett register av olika känslor.
+Vi kan tala om en mängd präglade beteenden i förhållande till bild och form.
+Det finns också en prägling till konstens form och metoder som för mig känns besvärande. Man låter sig inte beröras, konsten är ofarlig den hänger på sin krok; konsten gör det outhärdliga uthärdligt.
+Denna prägling är säkert nyttig för försäljningen men var det verkligen avsikten. Avsikten väljer bildmetod och är avsikten att göra en tavla eller skulptur så finns det inga skäl att bråka men är avsikten att bestämma verkligheten så är alla metoder lediga och därmed alla präglingar.
+Det känns därför inte självklart att ovillkorligen låsa sin bild eller form i relation till konstens bilder och former.
+Det gäller istället att hitta den metod som ger avsikten den bästa hjälpen och då menar jag att valet står mellan verklighetens alla uttryck, språkformer, bildmetoder, material och tekniker.
+Det bekymrar mig inte att mina bilder därigenom kan vara svåra att bestämma i förhållande till konstens bilder, inte heller är det något problem att mina former inte alltid ser ut som skulpturer. Det viktigaste är inte bildernas egenskaper utan deras relation till verkligheten.
+I mina rum finns inga solitärer, allt bevakar samma verklighet.
 
-Det handlar om att göra arbetsprocessen synlig. Inte konsten som färdigt objekt utan konsten som händelse, som tid, som förändring.
-
-Vi arbetar med material som trä, rep, tyg, metall — enkla ting som transformeras genom handling och intention. Resultatet är alltid oförutsett och aldrig definitivt.`,
+Ps. Hur är det egentligen finns det en god och en ond form eller är verklighetens form en oskuld som var morgon återfår sin mödom. Eller tar det onda resp. goda säte i närmast tillgängliga form och gör den ond eller god. Eller är det så kanske att det onda kan producera god form och det goda ond form. Hur är det egentligen? Är vi inte offer för en formmagi som visserligen är bekväm men ödesdigert falsk. En form kan lätt avlägsnas men avlägsnar vi verkligen det onda med den. Ds.`,
   },
   {
     slug: 'sivert-lindblom-bra-konst-1986',
@@ -260,7 +333,13 @@ Vi arbetar med material som trä, rep, tyg, metall — enkla ting som transforme
     author: 'Sivert Lindblom',
     publication: 'KRO Distrikt 17 & SAR MSA symposium, 1986',
     lang: 'sv',
-    body: `Föredrag hållet av Sivert Lindblom vid KRO Distrikt 17 och SAR MSA:s symposium 1986.
+    body: `I samband med utställningarna 'Bra konst i bra arkitektur' och 'Konst är bra' genomfördes debatter och symposium rörande samarbetet mellan konstnärer och arkitekter i regi av KRO Västmanland och SAR-MSA Västerås.
+
+Målsättningen var att inspirera till ett ökat samarbete mellan yrkesgrupperna och väcka debatt om orsakerna till att konstnärernas kunskaper i så liten utsträckning utnyttjas i bostadsbyggnationen.
+
+Utställningarna och symposium genomfördes tack vare generösa bidrag från Västerås kommuns kultur- och fritidsförvaltning och Statens kulturråd samt från sekretariatet för Konstens vecka.
+
+I en skrift dit ett antal konstnärer inbjudits till att formulera sina synpunkter i frågan skrev Sivert Lindblom följande inlägg (ur en intervju med Peder Alton, KRO-Konstnären 4/85):
 
 Relationen mellan konst och arkitektur är inte en relation mellan dekoration och funktion. Det är en relation mellan två sätt att forma rum — det ena (arkitekturen) primärt funktionellt, det andra (skulpturen) primärt perceptuellt.
 
@@ -278,13 +357,19 @@ Mina erfarenheter från Blasieholmstorg, Stockholms Universitet (Frescati) och V
     author: 'Ulf Linde',
     publication: 'Galerie Gimpel, 1971',
     lang: 'en',
-    body: `Text by Ulf Linde to accompany the exhibition at Galerie Gimpel Hanover Zurich, 1971.
+    body: `Sivert Lindblom
 
-Sivert Lindblom's sculptures have a paradoxical quality: they appear both archaic and completely contemporary. They seem to come from a civilization that never existed — or rather, from a civilization that exists only in the imagination.
+Lindblom has been concerned to assert the fact that the only thing visible in a sculpture is a complicated, curved surface. His new sculptures are surfaces that conceal masses, densities. This concealment of mass eliminates the impression of gravity of balanced shifts in weight. The perpendiculars of these sculptures are "dead" – entirely neutral in their mechanical precision; simple by-products of the process of turning. These sculptures, in other words, are neither light nor heavy – they lack all "imaginary" relationship to the force of gravity. One's imagination cannot seize on any specific weight or density.
 
-The profiles, those abstracted human presences, are not portraits. They do not depict specific persons. They depict the condition of being a person — having a face, a side, a presence in space.
+We are faced, quite simply, with a turned and painted "knob". Then suddenly we discover that the profile of the knob is that of a face. As we realize this, it feels as if a head had suddenly turned inside the sculpture – like a sort of futuristic shiver …
 
-Lindblom works with stone and bronze as if they were the natural language of these forms — not materials he has chosen but materials the forms themselves demand.`,
+These sculptures thus have a figurative content. We have a sort of reversed painting – since if a painting is a flat surface portraying curved surfaces in imaginary space, we see here a curved surface portraying a flat profile or projection. When our imagination made a cut in his earlier sculptures, it met matter, a mass of given consistency. It now encounters instead the projection of a face, a form. Only in a few cases has Sivert Lindblom made such a cut in "reality", in the actual sculpture. In the majority of cases, the spectator himself must "in spirit" saw in two the sculpture to find the picture, the silhouette. It is customarily said that sculpture is a more "realistic" art than painting, since it retains the third dimension of reality — which is dispensed with in painting. To me this has always seemed a dubious proposition — it may, perhaps, have been valid for Mme Tussaud, who was in fact concerned with the unreal, with illusion. In Sivert Lindblom's case, it is utter nonsense to speak of the "realistic" status of sculpture.
+
+In his sculptures, it is not only the third dimension of the object portrayed that becomes imaginary. The two other dimensions – those of the plane — are also imaginary. In his most interesting and complete works, the profile is completely overshadowed by the curved surface that the sculpture comprises. The actually visible form and the interpreted "cerebral" form are as unlike each other as they could be.
+
+If I understand his work aright, it is precisely this disparity that he wishes to achieve. The profile — the self-portrait — is in itself of no great interest; he could just as well have taken the profile of Caesar, or a bottle, or a Chevrolet. It is of the gap between the seen and the comprehended, between sensual impression and conception, that this entire exhibition treats – he has filled the premises with a mysterious mental vacuum: that from which our every thought flashes.
+
+Ulf Linde`,
   },
   {
     slug: 'beate-sydhoff-galerie-buren-1973',
@@ -366,13 +451,21 @@ Det som är slående i Skissernas Museums samling av Lindbloms material är kont
     author: 'Cecilia Nelson',
     publication: 'Katalog Lunds Konsthall',
     lang: 'sv',
-    body: `Cecilia Nelson, direktör för Lunds Konsthall, skriver förord till utställningskatalogen "Skulptur" 1993 — en samutställning med Skissernas Museum som visade Sivert Lindbloms skulpturarbete i ett tjugoårigt perspektiv.
+    body: `Du måste se med dina ögon
+Ta del om du vill delta
 
-Det är en utmaning att presentera ett konstnärskap av Sivert Lindbloms omfång och komplexitet i ett enda sammanhang. Lunds Konsthall har valt att fokusera på skulpturen som primärt uttryck — inte som dekoration eller komplement till arkitekturen, utan som självständigt konstform med sina egna inre lagar.
+Sivert Lindblom i Lunds Konsthall – ett länge efterlängtat möte har blivit verklighet.
+I det mötet kommer mycket att bli synligt: två konstarter, arkitekturen och skulpturen, kommer med var sitt distinkta språk både att samspela och att tydliggöra det egna uttrycket.
+Skulpturer från 30 års arbete visas på utställningen. För publiken innebär det en möjlighet att för första gången få en överblick över Sivert Lindbloms konstnärskap och därmed att bli medveten om hans plats i det svenska samtida konstlivet.
+En presentation av Sivert Lindbloms konstnärliga arbete vore ofullständig om inte också skisserna till hans omfattande offentliga verk visades. I Lund blir nu detta möjligt genom ett samarbete med Skissernas Museum och deras utställning Skulptur – Arkitektur. Den en gång använda utställningstiteln IBID skulle därför kunna användas igen, IBID "på samma plats".
+Må det tillåtas mig att bli en smula personlig. Upplevelser som man får just när man tar klivet in i vuxenlivet kan få en särskild intensitet och styrka som aldrig lämnar en. Det är en styrka som bara kan jämföras med ett barns förstagångsupplevelser. Mötet med Sivert Lindbloms konst blev så för mig. Under ett sorgearbete gav skulpturerna mig möjligheten att se det närvarande i det frånvarande.
+Det är med största glädje vi hälsar Sivert Lindblom välkommen till Lunds Konsthall. Sivert har tillsammans med sin hustru Marianne utfört ett enastående insamlingsarbete, både inför utställning och inför katalog. För allt gott samarbete ett varmt tack!
+Ett varmt tack vill vi också rikta till alla dem, institutioner och privata ägare, som med sin generositet ställt sina verk till förfogande.
+Samarbetet med chefen för Skissernas Museum Jan Torsten Ahlstrand har varit mycket gott.
+Det är därför vi nu gemensamt kan visa Sivert Lindblom som en av våra mest betydande skulptörer – genom de två utställningarna och genom de båda katalogerna, vilka för första gången sammanfattar hans konstnärskap.
 
-Utställningen sätter samman verk från 1960-talets tidiga experiment med form och material med de mer monumentala arbeten som tillkommit i samband med offentliga uppdrag. Linjen är tydlig: Lindblom har alltid sökt det väsentliga, det som inte kan reduceras ytterligare utan att försvinna.
-
-Vi är stolta att presentera denna retrospektiva bild av ett av det svenska 1900-talets viktigaste skulpturarbeten.`,
+Lund i januari 1993
+Cecilia Nelson`,
   },
   {
     slug: 'ingela-lind-2012',
@@ -478,19 +571,42 @@ Det som imponerar är balansen: hästarna är monumentala men aldrig överväldi
     author: 'Red.',
     publication: 'Arkitektur nr 5, 1983',
     lang: 'sv',
-    body: `Intervju med Sivert Lindblom publicerad i tidskriften Arkitektur nr 5, 1983. Redaktionell intervju om konst i offentliga miljöer och samarbetet med arkitekter.
+    body: `"att ge det verkliga rummet sitt uttryck"
 
-— Hur ser du på relationen mellan konstnär och arkitekt i ett offentligt uppdrag?
+Sivert Lindblom hör till det fåtal svenska konstnärer som har en lång erfarenhet av samarbete med arkitekter. I ett samtal med Arkitekturs redaktion talade han om sin syn på konst och arkitektur med Eva Eriksson.
 
-— Det handlar om dialog — om ett ömsesidigt lyssnande. Jag är inte intresserad av att ta en färdig skulptur och placera den i ett redan färdigt rum. Jag är intresserad av att förstå vad platsen behöver, vad arkitekturen saknar, och sedan hitta en form som svarar mot det.
+– Arkitektur som begrepp innehåller för mig en generell, formal kod, som utgår från människans mått och sociala funktion och som därför inte bör utnyttjas för någon total individuell utlevelse. En situation som konsten kan försätta sig i, i sina desperata försök att bevisa sin frihet. Här finns en motsättning som jag måste ta ställning till när jag som skulptör skall delta i arkitektonisk gestaltning.
 
-— Finns det en risk att konsten underordnas arkitekturen?
+– Den arbetsmetod som jag hamnat i är kanske alltför personlig för att vara förebildlig. Man blir ju någon slags bastard, hälften skulptör, hälften arkitekt.
+Det uppstår en konflikt i den tudelning som verksamheten som skulptör och skulptörarkitekt innebär. När jag som skulptör gör mina utställningar är jag suverän och behöver inte ta hänsyn. Det sökta uttrycket är det primära och allt får underordna sig detta. Den som vill kan ta del, men har sin frihet att avstå. Den form som uppstår har inte det dekorativa som mål. Det fula bär också ett uttryck. När jag sysslar med arkitektur handlar det om det sociala rummet, som vi alla delar och detta måste få sina konsekvenser. Det är inte tillfället för någon hänsynslös personlig utlevelse utan man försöker skapa det rum som positivt aktiverar det sociala liv som skall rymmas där.
+Trots denna motsättning har utbytet mellan dessa två delar av mitt arbete varit stort. Den konceptuella sidan av arkitekturen, metod och teknik, att formens uttryck inte ovillkorligen är beroende av ett intimt knådande med materialet m.m. Och omvänt den fria verksamhetens koncentration på det visuella uttrycket, sökandet, där alla former är utnyttjbara.
 
-— Alltid. Det är en ständig förhandling. Men jag har haft turen att arbeta med arkitekter som ser konsten som en likvärdig part, inte som en dekoration. När det fungerar bäst är det svårt att säga var arkitekturen slutar och konsten börjar.
+— Vissa konstnärer gör bilder som motsäger eller förändrar rummets ursprungliga form och uttryck. Är det skillnad på detta sätt att jobba och ditt?
 
-— Ditt arbete med Västra skogen T-banestation och Frescati — hur skilde de sig åt?
+– Jag ser nog deras insats mer som en komplettering av arkitekturen och inte som arkitektonisk gestaltning. Jag tror det är ett naturligt synsätt för målare som är vana att manipulera med yta och illusion. Som skulptör är jag mer intresserad av rum och struktur, att ge det verkliga rummet sitt uttryck.
+Skulpturen lever i samme rum som vi, därför ser jag också mina utställningar som en form av rumsgestaltning, ett slags scenografi.
+Varje detalj i en byggnad är delaktig i det totala uttrycket. Dekor är bara ytterligare en detalj som bör delta i denna samverkan. Detta betyder inte att man nödvändigtvis skall underordna sig, utan uttryckets intensitet skall naturligtvis stegras så att arkitekturens totala uttryck blir maximalt.
 
-— Västra skogen var ett slutet rum — en tunnel, ett passagerum. Frescati är ett öppet universitetslandskap. Skulpturerna måste fungera på helt olika sätt. I Västra skogen arbetar man med vad som möter resenären på nära håll; i Frescati med hur skulpturen kommunicerar på avstånd, i rörelse.`,
+— Vilken är skillnaden mellan ditt sätt att se på hus som konstnär och arkitektens sätt att se?
+
+– Arkitekter har en tendens att intellektualisera, söka stöd i verbala analyser för att på så sätt komma fram till en "riktig" lösning. Detta är säkert nödvändigt i många skeden av arbetet, men när det gäller den formala gestaltningen måste man lita på sina sinnen och sin intuition, då är det fråga om bra eller dålig form. Är den dålig måste något ändras på samme sätt som när man som skulptör arbetar sig fram till ett visst uttryck. Den direkta visuella upplevelsen är avgörande.
+En av orsakerna till att konstnären ofta har svårt att samarbeta med arkitekten är att han gärna biter sig fast i sin idé och när någon ifrågasätter den blir han störd, kanske i rädsla att inte hitta något alternativ. Som konstnär är han suverän med sin bild och behöver inte ta hänsyn. Han har svårt att inse att kritik och motargument skapar nya förutsättningar och möjligheter till nya idéer och därmed nya lösningar som han annars aldrig upptäckt.
+Den traditionella skulpturen försöker envist upprepa vad BRANCUSI, ARP, GIACOMETTI … redan för 50 år sedan hade fört till fulländning. Om man i stället kunde se längre än till denna "konstnärliga" period så skulle man finna de skulpturala kvaliteterna i helt andra sammanhang. Där det skulpturala uttrycket omfattar den totala helheten.
+Den konceptionella konsten innehåller i en del fall en sådan inriktning och där finns kanske en möjlighet att skulptur och arkitektur närmar sig varandra.
+
+– Just nu talar man bara om "postmodernism". En ny beteckning gör plötsligt en existerande företeelse synlig för teoretikern, trots att formen har präglats av hårt arbete i femton, tjugo år. Ett dåligt orienterat kulturliv inbillar sig att det "nya" föds när begreppet dyker upp. Vad som sker är i stället en allmän exploatering och tyvärr också vulgarisering.
+Jag hoppas ändå att det seriösa ska tränga fram och medverka till en humanisering av vår miljö. Att man inte bara förvandlar postmodernismen till stil och mode, utan förstår att det är ett seriöst försök att återknyta kontakt med sin egen tradition för att kunna utnyttja de kvaliteter som visat sig oemotsägliga.
+
+— Nämn några av de projekt du jobbat med?
+
+– Riksbanken. Där arbetade jag tillsammans med Ulrik Samuelson och vi gjorde också Motala Folkets Hus gemensamt. Dessutom har jag gjort Handelsbankens gård i Fersenska palatset och tunnelbanestationen Västra Skogen samt några scenografier. Och nu senast Medelhavsmuseet.
+Sedan har jag deltagit i en rad arkitekturprojekt i samband med tävlingar, vilket kanske är intressantare i detta sammanhang. Dit hör Vällingby kyrka, Enskilda bankens huvudkontor, Stadsgården, Kulturhuset, Halmstads bibliotek, Södra Stationsområdet, Kvarteret Ormsaltaren vid Slussen, ett eget förslag för Vasamuseet och slutligen överdäckningen av spårområdet vid Centralstationen.
+
+– Garnisonens gårdar gjorde jag tillsammans med tre kollegor från konstakademin. Man skulle jobba kollektivt på den tiden, så vi formade tillsammans en helhet.
+
+– Den ursprungliga bankhallen har en slags blekmesig klassicism, som egentligen inte har någon som helst kontakt med det som är ursprunget till klassicismen. Därför ville jag använda ett litet råare och kraftfullare formspråk för att få en riktigare kontakt med de föremål som skulle ställas ut. Jag tittade mycket på pompejanska miljöer t ex. Det var ju samhällen som inte hade så långt ut till lergölarna och jag tyckte det var viktigt att få med det. Jag försökte fånga upp färgerna och den arkitektoniska karaktären. Där fanns ju mycket fräckhet och friskhet i uttrycken.
+
+Intervju med Sivert av Eva Eriksson`,
   },
   {
     slug: 'gemensamma-rum-1998',
@@ -518,15 +634,20 @@ Det som imponerar är balansen: hästarna är monumentala men aldrig överväldi
     author: 'Lars Bergquist',
     publication: 'Centre Culturel Suédois, Paris, 1980',
     lang: 'fr',
-    body: `Lars Bergquist, ambassadeur de Suède en France, écrit la préface du catalogue de l'exposition de Sivert Lindblom au Centre Culturel Suédois à Paris, 1980.
+    body: `Le rapport entre la forme et le contenu n'est-il pas un problème majeur dans notre société?
 
-La sculpture de Sivert Lindblom appartient à une tradition nordique de la rigueur formelle — une tradition qui va de Brancusi à Arp, mais qui puise aussi dans quelque chose de plus ancien, de plus archaïque. Il y a dans ces œuvres quelque chose qui évoque des civilisations disparues, des objets rituels dont nous aurions perdu la fonction mais pas la présence.
+La même interrogation s'est naturellement emparée des arts plastiques et de l'image.
 
-Ce qui frappe d'abord, c'est la densité. Les sculptures de Lindblom ne sont pas des objets légers. Elles ont un poids — pas seulement physique, mais ontologique. Elles occupent l'espace avec une assurance qui n'est pas de l'arrogance mais de la nécessité.
+On peut considérer les travaux de Sivert Lindblom comme une recherche continue de la vie propre de la forme: une tentative de mettre à nu les structures qui se trouvent derrière le quotidien tel que nous le voyons, déterminée, une qui auquel nous donnons une signification bien chair, un sang, un nom aux références claires et avec des ramifications étendues.
 
-L'exposition au Centre Culturel Suédois présente un choix représentatif de son travail des années 1960 aux années 1970 — les profils, les monolithes, les plaques de plomb. C'est une introduction à un œuvre qui mérite d'être mieux connu en France.
+Une tentative dans cette direction a été présentée au Moderna Museet de Stockholm en 1974 et au Konstmuseum de Lucerne en 1977.
 
-La Suède est fière de présenter cet artiste exceptionnel à Paris. Sivert Lindblom est l'un des sculpteurs les plus importants de sa génération, et son travail parle un langage qui transcende les frontières nationales.`,
+L'intérêt qu'il porte à la 'surface' le conduit sans cesse vers de nouvelles cherchera.
+
+Voici donc définitivement côte le contenu et la forme libérée et ambigue.
+
+Paris le 23 septembre 1980
+Lars Berquist`,
   },
   {
     slug: 'beate-sydhoff-italian-1967',
