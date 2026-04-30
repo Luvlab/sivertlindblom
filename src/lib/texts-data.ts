@@ -407,11 +407,68 @@ Sivert Lindblom, Björn Lövin och Ulrik Samuelson skapade ett slags konstnärli
     author: 'Leon Rappaport',
     publication: 'Galerie Buren, Stockholm',
     lang: 'sv',
-    body: `Leon Rappaport skriver förord till Sivert Lindbloms första separatutställning på Galerie Buren, Stockholm 1963.
+    body: `NÅGRA REFLEXIONER OM KONST
 
-Sivert Lindblom är en konstnär som arbetar med tystnad. Hans skulpturer säger inte mer än de måste säga — de är ekonomiska, precisa, nödvändiga.
+I det moderna samhället spelar en människas mellanindividuella relationer en avgörande roll i hennes liv. Dessa relationer går i grund och botten ut på att människor jämför sig med varandra och deras verksamhet är ägnad att försvara deras positioner relativt varandra eller att få övertag över andra. Av den anledningen kan de mellanindividuella relationerna alltid interpreteras med hjälp av ett ojämviktssystem.
 
-Redan i dessa tidiga arbeten finns den karaktär som definierar konstnärskapet: förmågan att ge form åt det som saknar form, att hitta det väsentliga i materialet och lyfta fram det utan överflöd.`,
+Vi kan utföra ett tankeexperiment och föreställa oss ett samhälle där de mellanindividuella relationerna inte längre existerar. En människas situation i ett sådant samhälle skulle te sig något egendomlig för oss, vi kan inte riktigt tänka oss vad denna människa skulle fylla sitt liv med, vart hon skulle rikta den aktivitet som nu riktas mot andra människor. Men av omständigheten att vi inte kan finna någon lösning i en sådan situation, att vår fantasi inte räcker så långt, följer ju inte att det inte skulle finnas något mål för aktiviteten i detta fantastiska samhälle: vårt tankeexperiment är långtifrån meningslöst.
+
+I dagens samhälle består en människas liv till sin största del av att hon kontinuerligt jämför sig själv med andra. Men en sådan aktivitet fordrar något slags referenssystem, några jämförelseskalor, något värdesystem. Vad består dessa skalor av? Vad utgör deras källa?
+
+Det finns jämförelseskalor som bygger på konventioner vilka inte har stöd i omedelbara reaktioner, sådana som tillhandahålles av till exempel det exakt vetenskapliga tänkandet, musiken, litteraturen, konsten eller religionen.
+
+Samhällssystemet utgör ett exempel på system byggt på sådana obetingade konventioner.
+
+Detta samhällssystem bildar ett fält där människorna kan jämföra sig med varandra och stimulerar därigenom den mellanindividuella aktiviteten. Olika samhällssystem är givetvis byggda på olika jämförelseskalor. Men hur de än skulle vara konstruerade äger de alltid en determinantiv aspekt.
+
+I samhället existerar också jämförelseskalor som inte är godtyckliga utan har grundval i konventioner vilka betingas av människans omedelbara reaktioner. Man kan ha olika åsikter beträffande problemet vad dessa reaktioner i grund och botten är exempelvis inom tänkandet, musiken eller konsten. Det finns sådana som hävdar deras objektiva karaktär och påstår att de motsvaras av bestämda retningar i yttervärlden. Andra åter tycker att de är subjektiva, att de inte har någon motsvarighet i yttervärlden och att de påstådda retningarna är åskådarens skapelser.
+
+Varje människa bär inom sig summan av sitt livs erfarenheter i form av "det glömdas massa". Denna massa existerar hos varje människa latent, men vid varje konfrontation med verkligheten blir vissa av dess områden aktiverade.
+
+"Det glömdas massa" är olika hos olika människor, den kan skilja sig väsentligt hos vissa individer. Om sådana människor konfronteras med en retning, blir deras reaktioner delvis olika, följaktligen i viss mån subjektiva, ty deras olika latenta erfarenheter assimilerar retningen på olika sätt. Detta resonemang leder i sin extrema form till slutsatsen att olika människors reaktioner på en och samma retning kan vara helt olika, följaktligen helt subjektiva. Men om det i reaktionen på retningen inte längre finns någon objektiv sektor, innebär detta att de latenta erfarenheterna har under assimileringsprocessen helt och hållet transformerat retningen.
+
+På så sätt "skapar" åskådaren, i det han reagerar, en "subjektiv" retning som sedan i sin tur påverkar honom. Detta resonemang bygger på ett missförstånd, ty det förbigår kommunikabilitetsproblemet.
+
+En människas upplevelser kan inte meddelas direkt. När två människor skådar en röd fläck är de överens om dess namn, de accepterar också villigt antagandet att den röda fläcken hos dem framkallar analoga upplevelser. De kan dock aldrig övertyga sig om att deras upplevelser verkligen är lika.
+
+En icke objektiverad upplevelse hos en människa saknar mening ur en annan människas synvinkel. Om, enligt det anförda resonemanget reaktionen på retningen innehåller åtminstone en viss objektiv sektor, så har den därigenom blivit objektiverad endast delvis och följaktligen felaktigt, men vi kan ändå tillskriva den en viss mening ur en annan människas synvinkel. Om den däremot inte har någon objektiv sektor och således är helt subjektiv, har den inte blivit objektiverad alls och vi kan inte tillskriva den någon mening.
+
+Det förefaller som vore också de artistiska upplevelserna inom konsten reaktioner på något slags yttre retningar. En sådan åsikt kan motiveras på följande sätt.
+
+Dessa reaktioner är, oberoende av deras objektiva eller subjektiva karaktär, omedelbara reaktioner hos människan. Om dessa reaktioner tagits till grundval för jämförelseskalor och system av konventioner, måste dessa konventioner vara betingade av något. Samhället har på dessa reaktioner konstruerat Konstens Institution med dess organisation, system av befattningar, titlar och hierarkier; en mängd av riktningar, kotterier och stilar. Och dessutom människornas jämförande sig med varandra med hjälp av dessa riktningar och stilar, deras ständiga bekämpande av varandra, intensiva polemiker och kamper. Konsten har blivit till ett fält för mellanindividuella kraftmätningar och förlänats en determinantiv aspekt.
+
+Låt oss anta att reaktioner inför konst är subjektiva. I så fall vore det av samhället på grundval av dessa reaktioner konstruerade fältet för mellanindividuella aktiviteter i dubbel bemärkelse meningslöst ur detta samhälles synvinkel. För det första på grund av att vi inte vore i stånd att tillskriva dessa subjektiva reaktioner någon mening, ty de vore ju principiellt inkommunikabla; för det andra på grund av att vi inte kunde bygga några jämförelseskalor med inkommunikabla processer som grundval och följaktligen inte kunde tillskriva de mellanindividuella aktiviteterna inom konsten någon mening, inte heller till fältet för dessa aktiviteter, ty detta vore ju berövat sitt referenssystem.
+
+Denna åsikt kan av allt att döma formuleras på ett mera allmänt sätt.
+
+Varje gång samhället skapar ett system av konventioner betingat av omedelbara reaktioner hos människan, och med stöd i dessa konventioner bygger en institution samt inom dess ram skapar ett fält för mellanindividuella aktiviteter — har dessa reaktioner sin källa i retningar i yttervärlden. Den determinantiva aspekten hos en institution som vilar på de omedelbara reaktionerna utgör på samma gång en garanti och ett bevis för att källan till dessa reaktioner är retningar i yttervärlden.
+
+Om våra estetiska upplevelser inom konsten utgör reaktioner på retningar i yttervärlden, vad är då dessa retningar för något?
+
+Det vet jag naturligtvis inte. Jag vet inte ens hur man skulle kunna besvara denna fråga.
+
+Vi har vårt vanliga språk. Musiken har sin. Förmodligen har också konsten sitt eget språk.
+
+Att inom konsten utpeka en retning, att säga vad denna retning är, är likvärdigt med att objektivera den. Men det är just målningen, teckningen, skulpturen eller byggnaden som utgör objektiveringen av sådana retningar. En på så sätt objektiverad retning är beskriven med hjälp av konstens språk, medan vi gärna vill ha en beskrivning med hjälp av vårt vanliga språk. För att en sådan beskrivning överhuvud vore möjlig, måste vi ha tillgång till en vokabulär som översätter det ena språket till det andra. Det är inte bara så att vi inte äger en sådan vokabulär, vi vet i grund och botten inte ens hur konstens eget språk ser ut och hur man skall uppfatta det.
+
+Låt oss då i stället anföra några analogier med andra yttringar av människans skapande förmåga.
+
+I naturen existerar i allmänhet inga linjer — kanske endast i undantagsfall: allt som når oss via vårt synsinne är ljusvågor — kombinationer av färger. Varje avbildning av verkligheten med hjälp av linjer är likvärdig med verklighetens modellerande; varje teckning utgör en modell. Just därför är alltid teckningen mer eller mindre en upptäckt, på samma sätt som varje modell av verkligheten är det, i högre eller lägre grad. En teckning av ett människoansikte gjord med hjälp av några få streck som skalar fram ett väsentligt karaktärsdrag hos människan i fråga; en teckning som fångar en specifik rörelse hos en människa eller ett djur; en teckning som presenterar tingen för oss utifrån ett helt nytt och hittills okänt perspektiv — överallt spårar vi ett överraskningsmoment, som påminner om de tankesprång inom det exakta tänkandet, som oväntat leder till en lösning.
+
+Det som utmärker konstens utveckling under den sista tiden är tendensen till ifrågasättande. Man ifrågasätter allt möjligt på alla möjliga sätt: uttrycksmedlen, perspektiven, proportionerna, den figurativa aspekten o.s.v. I princip borde ifrågasättandet vara fruktbart. Inom de exakta vetenskaperna utgör det en skapande faktor i utvecklingen. Men ifrågasättandet måste vara motiverat, det måste orsakas av en situation som inte lämnar något annat alternativ. Det utgör ett kraftigt, radikalt medel som inom vetenskapen i allmänhet leder till banbrytande upptäckter. Inom konsten däremot tycks man ofta ifrågasätta för ifrågasättandets egen skull, ibland för att motivera en teoretisk tes, inte sällan för effektens skull. För det mesta är detta resultatet av den determinantiva aktivitetens infiltration i konstnärens skapande. Det orsakar av allt att döma en mängd oreda, missförstånd, misslyckade experiment och dödsdömda riktningar.
+
+Etologerna har upptäckt att den retning som hos ett djur framkallar en serie av instinktiva rörelser, ibland organiserade till ett komplicerat och långvarigt handlingsmönster, kan förenklas. Med hjälp av en successiv förenkling kom de till sist fram till den enklaste modell som ännu har förmågan att utlösa ett sådant mönster.
+
+De kallade denna modell för nyckelretning. Hanen av en viss fiskart, till exempel, som under parningsperioden försvarar sitt revir, kan i stället för en riktig rival anfalla en pappbit som undertill blivit målad med röd färg. Man kan tänka sig att konstnärer ofta beter sig på ett sätt som liknar etologernas metoder. Bland mångfalden av de intryck som våra sinnesorgan förmedlar söker de det väsentliga, det som stimulerar den estetiska känsligheten och samtidigt — med hjälp av eventuellt överraskningsmoment — också den intellektuella.
+
+Vad är sanning i ett konstverk, vad är det reella i det? Enligt vissa åsikter kan det vara den fotograferade verkligheten eller verkligheten som människan verkligen varseblir den, eller den varseblivna verkligheten, deformerad genom störningar i perspektivet, proportionerna och ljuset; enligt andra åter är den konst sann som överhuvudtaget inte avbildar den yttre verkligheten utan ur sig själv hämtar sitt innehåll och skapar ett eget språk som utvecklas oberoende av yttervärlden. Men det är kanske så att "sanning", "realism", "verklighet" inte alls är begrepp som kan återge konstens tendenser?
+
+Vilka är då de begrepp som skulle kunna beskriva dess tendenser?
+
+Eller, vilket går på ett ut: vilken är den "nyckelretning" som hos människan framkallar upplevelsen av ett konstverk? Det är rätt oviktigt om konsten någonsin kommer att finna den. Det är inte heller väsentligt om något sådant överhuvudtaget existerar. Det väsentliga är själva sökandet. Just där, i konstnärernas mentalitet, i deras oändliga försök, penetreringar och teoretiseranden, i detta psykiska smekande av ett konstverk i vardande, i den emotionella aura som omger den skapande processen, är det lätt att spåra ett djupgående släktskap med sökandet inom de exakta vetenskaperna. Däri finns ingenting konstigt och det vore tvärtom egendomligt om det förhöll sig annorlunda. Det finns blott en människa och endast ett universum som hon försöker genomtränga.
+
+Sigtuna den 1 november 1963
+LEON RAPPAPORT`,
   },
   {
     slug: 'stig-larsson-1981',
@@ -435,13 +492,79 @@ I Köpenhamn visade Lindblom främst monoliter och blyplattor — verk med en ov
     author: 'Stefan Alenius',
     publication: 'Katalog Skissernas Museum',
     lang: 'sv',
-    body: `Stefan Alenius, intendent vid Skissernas Museum i Lund, skriver om relationen mellan skulptur och arkitektur i Sivert Lindbloms verk, till katalogen för utställningen på Skissernas Museum 1993.
+    body: `Med tiden som yta
 
-Skissernas Museum — med sin unika samling av skisser och förstudier till offentlig konst — är en naturlig plats för att studera Sivert Lindbloms arbete. Här finns processen dokumenterad: från det första handgreppet i lera eller gips till det färdiga monumentet i brons eller sten.
+Något om Sivert Lindbloms skulpturer
 
-Lindbloms skulpturer är sällan enkla volymer. De rymmer ett program — en idé om hur kroppen förhåller sig till platsen, hur den mänskliga skalan samverkar med det urbana rummet. I hans skisser ser man hur denna idé förfinas: proportionerna justeras, ytorna förändras, tyngdpunkten prövas.
+I Sivert Lindbloms skulpturer är tiden tvådimensionell. Jag vet inte genast vad jag menar med det, men det förefaller mig att tiden, i den mån den alls kan sägas finnas i skulpturer, i Siverts fall åtminstone inte uppträder som den framåtriktade pil, som vi ofta ser framför oss då tiden kommer på tal. Nej, den uppträder som tvådimensionell eller plan som en yta.
 
-Det som är slående i Skissernas Museums samling av Lindbloms material är kontinuiteten. Från de tidiga profilerna på 1960-talet till de stora hästarna på Blasieholmstorg finns ett konsekvent tänkande om kropp, rum och närvaro.`,
+När jag satte mig ner för att skriva ned något om mina upplevelser av den skulpturala formvärld som Sivert håller fram, så kom den här formuleringen för mig först av allt. I sin oklarhet kan den vara något att följa eller utreda. I Sivert Lindbloms skulpturer är således tiden tvådimensionell.
+
+Det rör sig om ett formspråk som söker sig till det tidlösa. En sådan formulering har något träffande i sig men den är inte riktigt den rätta. Visserligen kan väl den stränga rymdgeometri som tycks bo i alla dessa urnor, pelare, friser, pyramider och allt vad föremålen nu är, ha kunnat trivas lika väl i ting och byggnader från den egyptiska, grekiska eller romerska antiken. Men det vore fel att säga att någonting är på något mer direkt sätt hämtat därifrån. Ingenting i det färdiga hos formerna och ytorna eller hos själva gestalterna är lån från dessa eller någon av de andra klassiska perioderna i konsthistorien. Däremot verkar föremålen bekanta med dessa tiders konst. Där finns ingredienser som kan föra våra tankar till tider långt bakom oss.
+
+I den mån vi kan tänka på ett motsvarande sätt om tiden som ligger framför oss, så tycks det mig att Siverts skulpturer uppför sig på samma sätt då. Det är väl uppenbart att det är ny form vi står inför. Brons, kakel, gjutjärn, tegel, plast och trä fyller upp disciplinerade rymdgeometriska regelverk på ett sådant sätt att dessa "formgivna" ting känns som nya. Oberoende av det verkliga tidsschemat för när det ena eller andra har kommit till, vill man säga att de här sakerna inte ser ut som det vi gjorde alldeles nyss. Inte heller ser de ut som det andra vi gör just nu. Det är snarare så att Sivert Lindbloms skulpturer tycks söka samband med eller kanske upprätta relationer till en tid som ligger framför oss.
+
+Således tyr sig dessa föremål till tid såväl framför som bakom oss. Samtidigt är de ju gjorda nu och det är vi som lever nu, som kan tänka så om urnaföremålet, tegelpelarspiralen eller profilkroppen.
+
+Så blir det till sist så att tiden breder ut sig tvådimensionellt under föremålen. Du vill sätta ner formerna någonstans på tidytan men likt magnetiskt repellerande ting vill de flyta iväg till någon annan plats på spelbordet. Framför, bakom, mitt i eller kanske åt sidan.
+
+Nå, men vad ska nu detta betydas? Hur uppstår en sådan oro eller obeslutsamhet hos betraktaren av dessa skulpturer?
+
+Låt mig börja med en annan reflektion. Som jag antytt präglas Siverts skulpturer oftast, och i synnerhet i den senare produktionen, av en påfallande stränghet i rymdgeometrin. På de ritningar som förekommer vid tillkomsten av flera av dessa ting uppträder formspråket som cirklar, kvadrater och rektanglar eller som sammanläggningar och sammansättningar av sådana enheter eller delar av dem.
+
+Ofta finner vi snittytor av kristallklar art som uppkommit genom sönderskärningar av de ursprungliga enkla eller enkelt uppbyggda formerna. Lägg så skulpturens tre dimensioner till detta och formspråket har samma stränghet i rymden.
+
+I detta påminner Sivert om Brancusi. Eller för den delen om Peter Celsing. Arkitekturen är ju aldrig långt borta i Sivert Lindbloms arbeten så varför inte tänka på Ragnar Östbergs formvärld. Låt denna i sin sirlighet utsättas för Brancusis såg eller Celsings ritstift och vi har ytterligare en liknelse!
+
+Jämförelsen med arkitektoniskt språk är inte dum. Ofta går det till så att Sivert först ritar med ingenjörsmässig exakthet. Efter ritningarna tillverkar sedan en modellsnickare en gjutmodell med största precision och på den tillverkar i sin tur gjuterier sina gjutformar. Därefter kan originalet gjutas.
+
+Det är i Siverts fall således sällan som konstnärens egen hand visar avtryck i verken. De gånger det ändå förekommer — som i de tidiga bronsavgjutna lerorna — så är det inte handens möda eller hantverket som vi läser i första hand. Det är i stället brottyta i leran, gjutskarv, polering eller oxidlyster som vi lägger märke till, så som dessa materialkvaliteter spelar mot den föreställande associationen, uppbyggandets balansnummer eller formens förlopp.
+
+På just detta sätt — i avsaknaden av tumavtryck, huggjärnets bett eller sågens drag — är Sivert plötsligt Brancusis motsats. Det är som om han inte ville låta sin egen kropps tillfälliga närvaro störa det allmängiltigt begreppsliga i framställningen. Tingen står fria från människans beröring. Ting har form.
+
+I allt detta ligger en självpåtagen stränghet. En stränghet som således visar sig i formurvalsprinciper men också i spelregler för hur helhetsgestalterna får byggas upp. Vilka grundformer får vara med, hur får grundformernas delar sättas samman till ny sammansatt form? Hur får delen upprepat adderas till sig själv för att utfylla helhetsgestaltens uttryck av exempelvis uppbyggnad eller resning?
+
+Man kan i Siverts tidiga arbeten ana att denna stränga återhållsamhet är just självpåtagen. Medvetet påtagen som en disciplinerande arbetsmetod. Den starka formvilja de tidiga bronserna visar, och som just där ändå tyglas av det abrupt avbrutna, söker för den fortsatta framställningen en än tydligare motvikt av begränsande regel, en ram av matematiserande kyla eller beräknad geometrisk precision. Jämför någon av de tidiga bronserna med tegelspiralerna i Frescati och du ska finna samma obändiga kärna av formlust bakom den matematiskt ordergivna tegelspiralen med sitt gjutjärnskrön av urskuren cylindrisk addition som bakom gjutskarv, bronsoxid och lerbrott.
+
+I denna spänning mellan den expansiva formviljan och den samtidigt läsbara återhållsamheten ligger en del av förklaringen till den oro som vi kan uppleva i dessa skulpturer. Stämningsläget är inte olikt det vi förknippar med den s.k. manieristiska 1500-talskonsten i Italien men här är naturligtvis medlen och tiden en annan.
+
+Men här finns mer att säga om orsaken till denna känsla av osäkerhet eller oro som vi kan erfara i mötet med Sivert Lindbloms skulpturer. Jag tror att det rör sig om den oro som kommer av samtidighet mellan det uppmanande och det ouppklarade. Och då är vi tillbaka där vi startade med den tvådimensionella tiden och sökandet efter ny form.
+
+Under modernismen gjordes konst som drev in i det helt abstrakta. Den blev sitt eget språk och sin egen slutenhet. Sådana saker som rytmer och färgklanger blev de enda fästpunkterna på verkligheten och all mera normal avbildning var borta. Det föreställande i vardagsspråklig mening förekom inte.
+
+Sivert kommer ur denna konsttradition, men som jag uppfattar det tar han redan från början ett drastiskt steg tillbaka, eller fram, in i det föreställande. Han tycks riva åt sig ett stycke föreställande moment i varje sak han gör. En skärv på sin höjd men någon gång mer. Denna skärv stannar så kvar i knådandet av det abstraktas dominans så att den finns kvar även i den färdiga gestalten. Och under formlustens upptäcktsfärd med alla de självpåtagna reglerna och kreerande hämningarna har ny form uppstått!
+
+Här står vi således inför något som vi inte sett tidigare men som innehåller en föreställande skärv.
+
+Jag känner igen Nike på något sätt! Detta är väl ändå en vinge, ett ben, en som springer? Senare frågar vi: är inte det här något slag av giljotinställning och det här är väl ett träd eller en trädymp i alla fall? Och ytterligare senare: jag ser precis hur tegelstenarna är lagda till spiraler i pelarna och nog bildar de tillsammans något som påminner om ett Stonehenge?
+
+Just så. Men vad föreställer då egentligen detta nya? Inlockade av den föreställande skärven blir vi uppmanade av det ouppklarades helhet att ta ställning till den nya formen. Att ge det nya formspråket innebörd eller att sätta ned föremålet på tidsytans planhet där det hör hemma.
+
+Det jag hittills talat om rör själva formspråket i Sivert Lindbloms skulpturer. Jag har försökt ringa in vad jag uppfattar vara den för hela produktionen sammanhållande kärnan. Föremålen ser ju olika ut i olika perioder men de tar alla del i samma formproblematik.
+
+Men att ge sig in i att med ord söka visa fram denna formproblematik är egentligen att samtidigt börja ange skulpturernas ämne. Som i all god konst kan formspråket inte heller denna gång skiljas från ämnet. Nike är naturligtvis Nike i någon viss mening. Och anges titeln på en annan skulptur vara Adam eller kanske Eva så behandlar den skulpturen naturligtvis just det ämnet, på något sätt.
+
+Men, för att säga det igen, ämnesbehandlingen genomförs aldrig med föreställande medel mer än vad gäller den lockande skärven. Till och med i den stora gipsavgjutningen, där Sivert själv sitter i en egyptiskt klassisk geometriserande ställning, är det massivt föreställande bara en utgångspunkt för behandling av sådan formproblematik.
+
+Och problematiken är den som behandlar skulpturarten själv! Vad förmår skulptur, hur blir skulptural form till? Formviljans upptäckarglädje startar på nytt sin färd genom verket.
+
+Jag tror att jag nu blir förstådd om jag säger att även titlarna, eller låt oss säga de föreställande delarna av verken, är självpåtagna och därmed disciplinerande gränser inom vilka prövandet av det skulpturalas egenart och förmåga sker.
+
+Sivert söker gång på gång ny skulptural form genom att med sin abstraherande formarlust attackera en av honom själv uppritad ämnesgräns. Så kan man kanske säga det som sammanfattning.
+
+Med en sådan attityd kommer skulpturerna att bli resultat av undersökningar av skulpturkonstens "abstrakta" språkförmåga. Kvaliteter som tyngd, resning, vilande, balans, riktning eller uppbyggnad blir det som undersöks på nytt och på nytt.
+
+I avvägda möten mellan sådana kvaliteter, fortfarande inom det abstraktas register, kan så karaktärer och temperament uppträda. En byggnad kan sägas ha fått en karaktär av stränghet, tyngd, spänstighet eller något liknande. Eller kanske rent av något mer komplext som "önskandes sig upp" eller "längtande till". Men dessa karaktärer har då framställts enbart med arkitektoniskt språk — genom arkitektur. På samma sätt som arkitektur är arkitektur och inget annat, så är skulptur skulptur och handhar bara skulpturens medel. Men dessa medel kan hanteras likartat och så att samma slags allmänna eller "abstrakta" kvaliteter eller karaktärer uppstår.
+
+Arkitekturen är som sagt aldrig långt borta i Sivert Lindbloms skulpturer. Det är därför inte förvånande att han kommit att ägna en så stor del av sitt arbete åt sådant som kallas offentlig utsmyckning.
+
+Jag föreställer mig att idén om den tvådimensionella tiden är tillämplig även i det här avseendet. Sivert Lindblom tycks mig ha en attityd som hämtats ur en tid som ligger bakom oss. En tid då arkitekturen var konsternas moder och då alla konstsarterna integrerades med denna moder i gemensam berättelse.
+
+Han genomför emellertid sina uppdrag med den självklara inriktningen på ny form på ett sådant sätt, att resultaten tycks säga att framtiden kan återskapa ett sådant samspel mellan konsterna.
+
+I Frescatis två tegelpelarplatser finns denna balansgång materialiserad. Det svårbestämbaras magnetiska lyskraft finns där samtidigt med en lågmäld samordning med landskapet, husen, ängarna och de lite knotiga träden.
+
+Stefan Alenius`,
   },
   {
     slug: 'cecilia-nelson-1993',
