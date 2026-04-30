@@ -100,7 +100,7 @@ export default async function LocaleLayout({
             padding: '2rem clamp(1rem,4vw,5rem)',
             display: 'flex',
             flexWrap: 'wrap',
-            gap: '1rem',
+            gap: '0.75rem 2rem',
             justifyContent: 'space-between',
             alignItems: 'center',
             fontSize: 'var(--fs-xs)',
@@ -111,8 +111,19 @@ export default async function LocaleLayout({
           <span>
             © {new Date().getFullYear()} Sivert Lindblom. {dict.footer?.rights}
           </span>
-          <span>
-            {dict.footer?.editor}: Jan Öqvist
+          <span style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', flexWrap: 'wrap', justifyContent: 'flex-end' }}>
+            <span>{dict.footer?.editor}: Jan Öqvist</span>
+            <span style={{ opacity: 0.55 }}>
+              web app by{' '}
+              <a
+                href="https://luvlab.io"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ color: 'var(--color-muted)', textDecoration: 'underline', textDecorationColor: 'rgba(136,136,128,0.35)', textUnderlineOffset: '3px' }}
+              >
+                luvlab.io
+              </a>
+            </span>
           </span>
         </footer>
       </body>

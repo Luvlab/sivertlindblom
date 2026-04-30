@@ -234,7 +234,7 @@ export default function HeroSlideshow({ children }: Props) {
         style={{
           position:    'absolute',
           bottom:      '3rem',
-          right:       '2rem',
+          right:       'clamp(1rem, 4vw, 2rem)',
           fontSize:    'var(--fs-xs)',
           letterSpacing: '0.12em',
           textTransform: 'uppercase',
