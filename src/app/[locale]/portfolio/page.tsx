@@ -24,7 +24,7 @@ export default async function PortfolioPage({
       label: dict.portfolio?.cat_exhibitions ?? 'Utställningar',
       sub: dict.portfolio?.sub_exhibitions ?? '1961 – 2016',
       desc: dict.portfolio?.desc_exhibitions ?? '',
-      image: 'https://sivertlindblom.se/wp-content/uploads/2015/01/Sivert-Lindblom-Blasieholms-Torg-01.jpg',
+      image: 'https://sivertlindblom.se/wp-content/uploads/2015/01/Siverts-exit.jpg',
       count: 28,
     },
     {

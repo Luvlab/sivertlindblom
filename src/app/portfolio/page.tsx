@@ -9,7 +9,7 @@ const CATEGORIES = [
     label: 'Utställningar',
     sub: '1961 – 2016',
     desc: 'Solo- och grupputställningar i Sverige och internationellt, från Galerie Buren 1963 till VANDALORUM 2016.',
-    image: 'https://sivertlindblom.se/wp-content/uploads/2015/01/Sivert-Lindblom-Blasieholms-Torg-01.jpg',
+    image: 'https://sivertlindblom.se/wp-content/uploads/2015/01/Siverts-exit.jpg',
     count: 28,
   },
   {

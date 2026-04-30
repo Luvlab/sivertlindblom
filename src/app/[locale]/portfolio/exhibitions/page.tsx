@@ -69,17 +69,27 @@ export default async function ExhibitionsPage({
 
   return (
     <div className="section-gap">
-      <div className="page-pad" style={{ marginBottom: '3rem' }}>
-        <Link href={`/${locale}/portfolio`} className="back-link">
-          <span className="back-link-arrow">←</span>
-          <span className="back-link-label">{dict.nav?.portfolio ?? 'Portfolio'}</span>
-        </Link>
-        <h1 style={{ fontFamily: 'Georgia, serif', fontWeight: 400, fontSize: 'clamp(1.8rem,3vw,3rem)', marginTop: '1rem', marginBottom: '0.5rem' }}>
-          {dict.portfolio?.cat_exhibitions ?? 'Utställningar'}
-        </h1>
-        <p style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-sm)' }}>
-          {EXHIBITIONS.length} {dict.portfolio?.cat_exhibitions?.toLowerCase() ?? 'utställningar'}, 1963–2016
-        </p>
+      {/* Hero image — Sivert entering exhibition space */}
+      <div style={{ position: 'relative', height: '55vh', minHeight: 300, overflow: 'hidden', marginBottom: '4rem' }}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="https://sivertlindblom.se/wp-content/uploads/2015/01/Siverts-exit.jpg"
+          alt="Sivert Lindblom"
+          style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 30%' }}
+        />
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, transparent 30%, rgba(10,10,10,0.9) 100%)' }} />
+        <div className="page-pad" style={{ position: 'absolute', bottom: '2.5rem', left: 0, right: 0 }}>
+          <Link href={`/${locale}/portfolio`} className="back-link" style={{ color: 'rgba(255,255,255,0.6)' }}>
+            <span className="back-link-arrow">←</span>
+            <span className="back-link-label">{dict.nav?.portfolio ?? 'Portfolio'}</span>
+          </Link>
+          <h1 style={{ fontFamily: 'Georgia, serif', fontWeight: 400, fontSize: 'clamp(1.8rem,3vw,3rem)', marginTop: '0.5rem', marginBottom: '0.25rem' }}>
+            {dict.portfolio?.cat_exhibitions ?? 'Utställningar'}
+          </h1>
+          <p style={{ color: 'rgba(255,255,255,0.55)', fontSize: 'var(--fs-sm)' }}>
+            {EXHIBITIONS.length} {dict.portfolio?.cat_exhibitions?.toLowerCase() ?? 'utställningar'}, 1963–2016
+          </p>
+        </div>
       </div>
 
       <hr className="divider" />

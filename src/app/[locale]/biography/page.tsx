@@ -128,7 +128,7 @@ export default async function BiographyPage({
       <hr className="divider" style={{ margin: '4rem 0' }} />
 
       {/* Public commissions */}
-      <section className="page-pad" style={{ paddingBottom: '5rem' }}>
+      <section className="page-pad" style={{ paddingBottom: '3rem' }}>
         <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-2xl)', marginBottom: '2rem' }}>
           {dict.biography?.public_commissions ?? 'Offentliga uppdrag i urval'}
         </h2>
@@ -141,6 +141,51 @@ export default async function BiographyPage({
             </div>
           ))}
         </div>
+      </section>
+
+      <hr className="divider" style={{ margin: '0 0 4rem' }} />
+
+      {/* Photographs of Sivert */}
+      <section className="page-pad" style={{ paddingBottom: '5rem' }}>
+        <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-2xl)', marginBottom: '2rem' }}>
+          {dict.biography?.photographs ?? 'Fotografier'}
+        </h2>
+        <div className="bio-photo-grid">
+          {[
+            { url: 'https://sivertlindblom.se/wp-content/uploads/2012/12/Sivert-skulptör.jpg',        caption: 'Sivert Lindblom, skulptör' },
+            { url: 'https://sivertlindblom.se/wp-content/uploads/2015/01/Porträtt-SivertMattias.jpg', caption: 'Porträtt. Foto: Mathias Johansson' },
+            { url: 'https://sivertlindblom.se/wp-content/uploads/2015/01/20121028_135427.jpg',         caption: 'Konstakademien 2012. Foto: Jan Öqvist' },
+            { url: 'https://sivertlindblom.se/wp-content/uploads/2015/01/Sivert-sten-kopia.jpg',       caption: 'Sivert med sten. Foto: Jan Öqvist' },
+            { url: 'https://sivertlindblom.se/wp-content/uploads/2015/01/20130308_101452.jpg',         caption: 'Bergmans Konstgjuteri, Enskede 2013. Foto: Jan Öqvist' },
+            { url: 'https://sivertlindblom.se/wp-content/uploads/2015/01/Sivert571-kopia.jpg',         caption: 'Sivert vid Kejsar Konstantins hand, Capitolium museet, Rom' },
+            { url: 'https://sivertlindblom.se/wp-content/uploads/2012/12/Sivert-skulpterar-1.jpg',     caption: 'Sivert skulpterar' },
+            { url: 'https://sivertlindblom.se/wp-content/uploads/2015/01/20121101_151438.jpg',         caption: 'Ateljén. Foto: Jan Öqvist' },
+            { url: 'https://sivertlindblom.se/wp-content/uploads/2015/01/fotokarta-1963.jpg',          caption: 'Fotokort, 1963' },
+            { url: 'https://sivertlindblom.se/wp-content/uploads/2015/01/Eskilstuna-91.jpg',           caption: 'Eskilstuna. Foto: Lasse Larsson' },
+            { url: 'https://sivertlindblom.se/wp-content/uploads/2015/01/Eskilstuna-arb-161.jpg',      caption: 'I arbete, Eskilstuna. Foto: Lasse Larsson' },
+            { url: 'https://sivertlindblom.se/wp-content/uploads/2015/01/DSC01888-kopia.jpg',          caption: 'Sivert Lindblom' },
+            { url: 'https://sivertlindblom.se/wp-content/uploads/2015/01/20120614_173855-kopia.jpg',   caption: 'Foto: Jan Öqvist' },
+            { url: 'https://sivertlindblom.se/wp-content/uploads/2015/01/SAM_7961.jpg',                caption: 'Foto: Jan Öqvist' },
+            { url: 'https://sivertlindblom.se/wp-content/uploads/2015/01/Siverts-exit.jpg',            caption: 'Siverts exit' },
+            { url: 'https://sivertlindblom.se/wp-content/uploads/2015/01/20130308_103958.jpg',         caption: 'Gjuteriet 2013. Foto: Jan Öqvist' },
+          ].map((photo, i) => (
+            <div key={i} style={{ marginBottom: '6px', breakInside: 'avoid', lineHeight: 0 }}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={photo.url}
+                alt={photo.caption}
+                loading={i < 8 ? 'eager' : 'lazy'}
+                title={photo.caption}
+                style={{ width: '100%', height: 'auto', display: 'block' }}
+              />
+            </div>
+          ))}
+        </div>
+        <style>{`
+          .bio-photo-grid { columns: 4; column-gap: 6px; }
+          @media (max-width: 480px)  { .bio-photo-grid { columns: 2; } }
+          @media (min-width: 481px) and (max-width: 768px) { .bio-photo-grid { columns: 3; } }
+        `}</style>
       </section>
     </div>
   )
