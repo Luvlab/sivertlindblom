@@ -30,24 +30,25 @@ function getLocaleFromRequest(request: NextRequest): string {
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
 
-  // --- Admin auth guard ---
-  if (pathname.startsWith('/admin')) {
+  // --- Always allow login page and API routes through ---
+  if (
+    pathname === '/admin-login' ||
+    pathname.startsWith('/admin-login/') ||
+    pathname.startsWith('/api/') ||
+    pathname.startsWith('/_next') ||
+    /\.(svg|png|jpg|jpeg|gif|webp|ico|css|js)$/.test(pathname)
+  ) {
+    return NextResponse.next()
+  }
+
+  // --- Admin auth guard (only /admin/* routes, NOT /admin-login) ---
+  if (pathname === '/admin' || pathname.startsWith('/admin/')) {
     const token = request.cookies.get(ADMIN_TOKEN_NAME)?.value
     if (token !== 'authenticated') {
       const loginUrl = request.nextUrl.clone()
       loginUrl.pathname = '/admin-login'
       return NextResponse.redirect(loginUrl)
     }
-    return NextResponse.next()
-  }
-
-  // --- Skip API routes, admin-login, and static files ---
-  if (
-    pathname.startsWith('/api') ||
-    pathname.startsWith('/admin-login') ||
-    pathname.startsWith('/_next') ||
-    /\.(svg|png|jpg|jpeg|gif|webp|ico|css|js)$/.test(pathname)
-  ) {
     return NextResponse.next()
   }
 
