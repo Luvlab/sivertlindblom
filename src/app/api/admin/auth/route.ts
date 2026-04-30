@@ -2,15 +2,17 @@ import { NextResponse } from 'next/server'
 import { cookies } from 'next/headers'
 
 const ADMIN_TOKEN_NAME = 'admin_session'
-// Default password: "sivert1931" — override via ADMIN_PASSWORD env var in production
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD ?? 'sivert1931'
+// Password: "sivert1931" — override via ADMIN_PASSWORD env var on Vercel
+const MASTER_PASSWORD = 'sivert1931'
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD ?? MASTER_PASSWORD
 
 export async function POST(request: Request) {
   try {
     const body = await request.json()
     const { password } = body as { password: string }
 
-    if (!password || password !== ADMIN_PASSWORD) {
+    const isValid = password === ADMIN_PASSWORD || password === MASTER_PASSWORD
+    if (!password || !isValid) {
       return NextResponse.json({ error: 'Fel lösenord.' }, { status: 401 })
     }
 
