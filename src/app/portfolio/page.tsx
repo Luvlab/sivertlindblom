@@ -61,10 +61,17 @@ export default function PortfolioPage() {
             <Link key={cat.key} href={`/portfolio/${cat.key}`} style={{ display: 'block' }}>
               <article className="card" style={{ overflow: 'hidden' }}>
                 {cat.image ? (
-                  <div className="img-zoom" style={{ aspectRatio: '16/9' }}>
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={cat.image} alt={cat.label} loading="lazy" />
-                  </div>
+                  cat.key === 'watercolors' ? (
+                    <div style={{ aspectRatio: '16/9', background: '#ede9e2', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', padding: '1.5rem' }}>
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={cat.image} alt={cat.label} loading="lazy" style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain', display: 'block' }} />
+                    </div>
+                  ) : (
+                    <div className="img-zoom" style={{ aspectRatio: '16/9' }}>
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={cat.image} alt={cat.label} loading="lazy" />
+                    </div>
+                  )
                 ) : (
                   <div style={{
                     aspectRatio: '16/9',

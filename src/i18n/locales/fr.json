@@ -32,7 +32,7 @@
     "scroll": "Scroll",
     "about_label": "À propos de l'artiste",
     "birth_year": "né en 1931, Södermanland",
-    "about_text": "Sivert Lindblom (né en 1931) est l'un des sculpteurs les plus importants de Suède. Il a étudié à l'Académie royale des beaux-arts de 1958 à 1963 et a depuis créé une œuvre extensive de sculptures, d'installations publiques, d'aquarelles et de scénographies.",
+    "about_text": "Sivert Lindblom est un sculpteur et artiste suédois qui a achevé ses études à l'Académie royale des beaux-arts de Stockholm en 1963. Au début de sa carrière, il s'est inspiré d'Auguste Rodin, avant de s'orienter vers un travail abstrait et conceptuel intégrant des installations et des éléments architecturaux. Il a enseigné à l'École d'architecture à la fin des années 1960, est membre de l'Académie royale des beaux-arts et du Conseil national de l'art, et a été professeur de sculpture à l'École des arts de Stockholm. Il a réalisé un grand nombre de commandes publiques en collaboration avec des architectes de renom et a reçu le prix Sergel de l'Académie en 1995.",
     "stat_active": "Années d'activité",
     "stat_public": "Œuvres publiques",
     "stat_countries": "Pays",
@@ -81,7 +81,7 @@
   },
   "biography": {
     "title": "Sivert Lindblom",
-    "intro": "Sivert Lindblom (né en 1931 à Husby-Rekarne, Södermanland) est l'un des sculpteurs les plus importants de Suède. Il a étudié à l'Académie royale des beaux-arts de Stockholm de 1958 à 1963 et a depuis créé une œuvre extensive de sculptures, d'installations publiques, d'aquarelles et de scénographies.",
+    "intro": "Sivert Lindblom (né en 1931 à Husby-Rekarne, Södermanland) est l'un des sculpteurs les plus importants de Suède. Il a étudié à l'Académie royale des beaux-arts de Stockholm de 1958 à 1963. Au début de sa carrière, il s'est inspiré d'Auguste Rodin, avant de s'orienter vers un travail abstrait et conceptuel intégrant des installations et des éléments architecturaux. Il a enseigné à l'École d'architecture à la fin des années 1960, est membre de l'Académie royale des beaux-arts et du Conseil national de l'art, et a été professeur de sculpture à l'École des arts de Stockholm. Il a réalisé un grand nombre de commandes publiques en collaboration avec des architectes de renom et a reçu le prix Sergel de l'Académie en 1995.",
     "timeline": "Chronologie",
     "public_commissions": "Commandes publiques choisies",
     "group_exhibitions": "Expositions collectives choisies",

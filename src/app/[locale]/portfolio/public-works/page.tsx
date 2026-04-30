@@ -24,7 +24,7 @@ const EXTERIORS: Array<{ title: string; year: number; location: string; slug?: s
   { title: 'Cavallobrunnen, Resecentrum',       year: 1995, location: 'Skövde' },
   { title: 'Potatisåkern — Profilen',           year: 2001, location: 'Malmö' },
   { title: 'Eskilstuna rondellen — Profilen',   year: 2002, location: 'Eskilstuna' },
-  { title: 'Bältesspännarparken',               year: 2013, location: 'Göteborg' },
+  { title: 'Bältesspännarparken',               year: 2013, location: 'Göteborg',            slug: 'baltesspaennarparken-2013' },
   { title: 'SEB Banken Huvudkontor',            year: 1992, location: 'Rissne' },
   { title: 'Sveriges ambassad, entré',          year: 1990, location: 'Tokyo' },
   { title: 'Pharmacia entréplats',              year: 1984, location: 'Uppsala' },

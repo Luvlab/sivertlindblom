@@ -122,30 +122,61 @@ export default function WatercolorsGallery({ locale }: Props) {
 
       <hr className="divider" />
 
-      {/* 3:2 landscape grid */}
-      <div
-        className="page-pad"
-        style={{
-          paddingTop: '2rem',
-          paddingBottom: '3rem',
-          display: 'grid',
-          gap: '1rem',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 280px), 1fr))',
-        }}
-      >
-        {WATERCOLOR_IMAGES.map((img, i) => (
-          <button
-            key={i}
-            onClick={() => open(i)}
-            className="gallery-thumb"
-            aria-label={img.alt}
-            style={{ aspectRatio: '3/2', border: 'none', padding: 0 }}
-          >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={img.url} alt={img.alt} loading={i < 9 ? 'eager' : 'lazy'} />
-          </button>
-        ))}
+      {/*
+        ── MASONRY / MOSAIC LAYOUT ──────────────────────────────────────────
+        CSS columns gives each image its natural aspect ratio with tight packing.
+        Images flow top-to-bottom within columns; no forced uniform height.
+        5px gap between images — tight and economic.
+      */}
+      <div className="page-pad" style={{ paddingTop: '2rem', paddingBottom: '3rem' }}>
+        <div className="wc-mosaic">
+          {WATERCOLOR_IMAGES.map((img, i) => (
+            <button
+              key={i}
+              onClick={() => open(i)}
+              aria-label={img.alt}
+              className="wc-thumb"
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={img.url}
+                alt={img.alt}
+                loading={i < 12 ? 'eager' : 'lazy'}
+              />
+            </button>
+          ))}
+        </div>
       </div>
+
+      <style>{`
+        .wc-mosaic {
+          columns: 5;
+          column-gap: 5px;
+        }
+        .wc-thumb {
+          display: block;
+          width: 100%;
+          padding: 6px;
+          border: none;
+          background: #f0ede8;
+          cursor: pointer;
+          margin-bottom: 5px;
+          break-inside: avoid;
+          line-height: 0;
+          box-sizing: border-box;
+        }
+        .wc-thumb img {
+          width: 100%;
+          height: auto;
+          display: block;
+          transition: opacity 0.15s;
+        }
+        .wc-thumb:hover img { opacity: 0.82; }
+        @media (max-width: 480px)  { .wc-mosaic { columns: 2; } }
+        @media (min-width: 481px) and (max-width: 768px)  { .wc-mosaic { columns: 3; } }
+        @media (min-width: 769px) and (max-width: 1100px) { .wc-mosaic { columns: 4; } }
+        @media (min-width: 1101px) { .wc-mosaic { columns: 5; } }
+      `}</style>
 
       {/* ── Fullscreen lightbox ── */}
       {current && (
