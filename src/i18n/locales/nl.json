@@ -22,7 +22,12 @@
     "all": "Alle",
     "language": "Taal",
     "close": "Sluiten",
-    "loading": "Laden..."
+    "loading": "Laden...",
+    "font_size": "Tekstgrootte",
+    "open_menu": "Menu openen",
+    "close_menu": "Menu sluiten",
+    "play_slideshow": "Diashow starten",
+    "pause_slideshow": "Diashow pauzeren"
   },
   "home": {
     "sculptor": "Beeldhouwer · Stockholm",
@@ -61,12 +66,26 @@
     "desc_scenography": "Decors voor het Stadstheater van Stockholm en choreografieën met Margareta Åsberg en anderen.",
     "count_works": "werken",
     "exteriors": "Buitenruimtes",
-    "interiors": "Binnenruimtes"
+    "interiors": "Binnenruimtes",
+    "no_images": "Momenteel geen afbeeldingen beschikbaar.",
+    "blasieholmstorg_desc": "Twee groen gepatineerde bronzen paarden, gemodelleerd naar de originelen in de Basiliek van San Marco in Venetië. Gegoten door Herman Bergmans Konstgjuteri AB.",
+    "map_label": "Kaart",
+    "map_title": "Verken sculpturen op de kaart",
+    "map_works": "publieke werken in",
+    "map_countries": "landen",
+    "map_view": "Kaart bekijken",
+    "type_theater": "Theaterszenografie",
+    "type_choreography": "Choreografie"
   },
   "watercolors": {
     "title": "Aquarellen 1975–2012",
     "description": "Circa 200 schetsmatige aquarellen gecreëerd als een vorm van 'mentaal constructivisme', die een hermetisch architectonisch landschap uitbeelden. De werken worden gevormd door een streng gecontroleerde grafische techniek die resulteert in een vrij toegepaste axonometrie.",
-    "book_note": "Vijftig werken werden tentoongesteld in de Koninklijke Academie voor Schone Kunsten in Stockholm, 6 oktober – 4 november 2012. Het boek Sivert Lindblom Aquarellen e.a. (Bullfinch Publishing, 2012) documenteert de collectie."
+    "book_note": "Vijftig werken werden tentoongesteld in de Koninklijke Academie voor Schone Kunsten in Stockholm, 6 oktober – 4 november 2012. Het boek Sivert Lindblom Aquarellen e.a. (Bullfinch Publishing, 2012) documenteert de collectie.",
+    "gallery_count": "werken",
+    "click_hint": "klik voor diashow",
+    "short_description": "Een serie axonometrische architectonische visioenen geschilderd met ongelabelde Winsor & Newton-pigmenten direct uit de doos. Peter Cornell beschrijft ze als \"een stroom van geniale constructies\" — een hermetisch architectonisch landschap.",
+    "context_1": "Honderd werken werden in hun geheel getoond in de Kungl. Konstakademien, Stockholm, oktober–november 2012 (70 strekkende meter wand).",
+    "context_2": "Catalogus met teksten van Peter Cornell, Jan Öqvist en Catharina Gabrielsson."
   },
   "texts": {
     "title": "Kritiek, essays & interviews",
@@ -88,7 +107,22 @@
     "education": "Opleiding",
     "position": "Functie",
     "award": "Onderscheiding",
-    "personal": "Persoonlijk"
+    "personal": "Persoonlijk",
+    "photographs": "Foto's",
+    "timeline_0": "Geboren in Husby-Rekarne, Södermanland",
+    "timeline_1": "Technische opleiding, Eskilstuna",
+    "timeline_2": "Leerlingplaats bij architect Sigurd Lewerentz",
+    "timeline_3": "Tekenleraarsopleiding, Stockholm",
+    "timeline_4": "Kungliga Konsthögskolan, Stockholm",
+    "timeline_5": "Samenwerking met architect Peter Celsing",
+    "timeline_6": "Woonachtig in Locarno, Zwitserland",
+    "timeline_7": "Docent vormtheorie, KTH Architectuurschool",
+    "timeline_8": "Lid, Koninklijke Academie voor Schone Kunsten",
+    "timeline_9": "Lid, Statens konstråd",
+    "timeline_10": "Steenprijs, Zweedse Steenindusitrievederatie",
+    "timeline_11": "Lid, Schoonheidsraad van de Nationale Wegenbeheerorganisatie",
+    "timeline_12": "Professor beeldhouwkunst, Kungliga Konsthögskolan",
+    "timeline_13": "Sergelpriset, Stockholm"
   },
   "contact": {
     "title": "Contact opnemen",
@@ -114,7 +148,13 @@
     "intro": "Beeldhouwreeksen, grafiek, films en foto's die de artistieke productie van Sivert Lindblom documenteren.",
     "sculpture_series": "Beeldhouwreeksen",
     "film_tv": "Film & TV",
-    "director": "Regisseur"
+    "director": "Regisseur",
+    "no_images": "Momenteel geen afbeeldingen beschikbaar.",
+    "read_here": "LEES HIER",
+    "fotografier": "Foto's & Inspiratie",
+    "fotografier_intro": "Deze galerie bevat afbeeldingen die Sivert Lindblom op de een of andere manier hebben geraakt en geïnspireerd in zijn werk. Zijn werken, hoe geschiedloos ze ook mogen lijken, zijn voortgekomen uit een lange traditie van zinnebeelden die kunstenaars in alle tijden en culturen hebben gezocht om de aanwezigheid van de mens te manifesteren.",
+    "publicerat": "Gepubliceerd",
+    "publicerat_intro": "Catalogi, tijdschriftartikelen en boeken met teksten die betrekking hebben op Siverts kunstenaarschap."
   },
   "footer": {
     "rights": "Alle rechten voorbehouden.",

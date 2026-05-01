@@ -14,16 +14,31 @@ interface Props {
   onClose: () => void
 }
 
+const INTERVAL_MS = 5000
+
 export default function Lightbox({ images, startIndex, onClose }: Props) {
   const [index, setIndex] = useState(startIndex)
+  const [isPlaying, setIsPlaying] = useState(images.length > 1)
   const touchStartX = useRef<number | null>(null)
   const total = images.length
 
+  // Auto-advance — only runs when isPlaying; pauses automatically via cleanup
+  useEffect(() => {
+    if (!isPlaying || total <= 1) return
+    const id = setInterval(() => {
+      setIndex((i) => (i + 1) % total)
+    }, INTERVAL_MS)
+    return () => clearInterval(id)
+  }, [isPlaying, total])
+
+  // Manual navigation — pause autoplay
   const prev = useCallback(() => {
+    setIsPlaying(false)
     setIndex((i) => (i - 1 + total) % total)
   }, [total])
 
   const next = useCallback(() => {
+    setIsPlaying(false)
     setIndex((i) => (i + 1) % total)
   }, [total])
 
@@ -42,6 +57,10 @@ export default function Lightbox({ images, startIndex, onClose }: Props) {
       if (e.key === 'ArrowLeft') prev()
       else if (e.key === 'ArrowRight') next()
       else if (e.key === 'Escape') onClose()
+      else if (e.key === ' ') {
+        e.preventDefault()
+        setIsPlaying((p) => !p)
+      }
     }
     window.addEventListener('keydown', handleKey)
     return () => window.removeEventListener('keydown', handleKey)
@@ -62,7 +81,6 @@ export default function Lightbox({ images, startIndex, onClose }: Props) {
   const current = images[index]
 
   function handleBackdropClick(e: React.MouseEvent<HTMLDivElement>) {
-    // Only close if clicking the backdrop itself, not the image or controls
     if (e.target === e.currentTarget) onClose()
   }
 
@@ -74,8 +92,11 @@ export default function Lightbox({ images, startIndex, onClose }: Props) {
     if (touchStartX.current === null) return
     const dx = e.changedTouches[0].clientX - touchStartX.current
     touchStartX.current = null
-    if (dx < -50) next()
-    else if (dx > 50) prev()
+    if (Math.abs(dx) > 50) {
+      setIsPlaying(false)
+      if (dx < 0) setIndex((i) => (i + 1) % total)
+      else setIndex((i) => (i - 1 + total) % total)
+    }
   }
 
   if (!current) return null
@@ -117,9 +138,9 @@ export default function Lightbox({ images, startIndex, onClose }: Props) {
         {index + 1} / {total}
       </div>
 
-      {/* Close button — highest z-index so arrows never cover it */}
+      {/* Close button */}
       <button
-        aria-label="Stäng"
+        aria-label="Close"
         onClick={onClose}
         style={{
           position: 'absolute',
@@ -141,10 +162,76 @@ export default function Lightbox({ images, startIndex, onClose }: Props) {
         ×
       </button>
 
-      {/* Prev arrow — centered vertically, does not reach the top */}
+      {/* Play / Pause button — only shown when multiple images */}
       {total > 1 && (
         <button
-          aria-label="Föregående"
+          aria-label={isPlaying ? 'Pause slideshow' : 'Play slideshow'}
+          onClick={(e) => { e.stopPropagation(); setIsPlaying((p) => !p) }}
+          style={{
+            position: 'absolute',
+            top: '0.85rem',
+            left: '1rem',
+            background: 'none',
+            border: 'none',
+            color: isPlaying ? 'rgba(255,255,255,0.75)' : 'var(--color-accent)',
+            fontSize: '1.1rem',
+            lineHeight: 1,
+            cursor: 'pointer',
+            padding: '0.4rem 0.5rem',
+            zIndex: 203,
+            transition: 'color 0.15s',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.4rem',
+          }}
+          title={isPlaying ? 'Pause (Space)' : 'Play (Space)'}
+        >
+          {isPlaying ? (
+            /* Pause icon — two vertical bars */
+            <svg width="14" height="16" viewBox="0 0 14 16" fill="currentColor">
+              <rect x="0" y="0" width="4" height="16" rx="1"/>
+              <rect x="10" y="0" width="4" height="16" rx="1"/>
+            </svg>
+          ) : (
+            /* Play icon — triangle */
+            <svg width="14" height="16" viewBox="0 0 14 16" fill="currentColor">
+              <polygon points="0,0 14,8 0,16"/>
+            </svg>
+          )}
+          {/* Progress bar under the icon when playing */}
+          {isPlaying && (
+            <span
+              key={`${index}-${isPlaying}`}
+              style={{
+                display: 'block',
+                height: '2px',
+                width: '32px',
+                background: 'rgba(255,255,255,0.2)',
+                borderRadius: '1px',
+                overflow: 'hidden',
+                position: 'relative',
+              }}
+            >
+              <span
+                style={{
+                  display: 'block',
+                  height: '100%',
+                  width: '100%',
+                  background: 'var(--color-accent)',
+                  borderRadius: '1px',
+                  transformOrigin: 'left center',
+                  animation: `lightbox-progress ${INTERVAL_MS}ms linear forwards`,
+                }}
+              />
+            </span>
+          )}
+        </button>
+      )}
+
+      {/* Prev arrow */}
+      {total > 1 && (
+        <button
+          aria-label="Previous"
           onClick={(e) => { e.stopPropagation(); prev() }}
           style={{
             position: 'absolute',
@@ -177,10 +264,10 @@ export default function Lightbox({ images, startIndex, onClose }: Props) {
         </button>
       )}
 
-      {/* Next arrow — centered vertically, does not reach the top */}
+      {/* Next arrow */}
       {total > 1 && (
         <button
-          aria-label="Nästa"
+          aria-label="Next"
           onClick={(e) => { e.stopPropagation(); next() }}
           style={{
             position: 'absolute',
@@ -249,6 +336,14 @@ export default function Lightbox({ images, startIndex, onClose }: Props) {
           {current.caption}
         </p>
       )}
+
+      {/* Progress bar keyframe animation */}
+      <style>{`
+        @keyframes lightbox-progress {
+          from { transform: scaleX(0); }
+          to   { transform: scaleX(1); }
+        }
+      `}</style>
     </div>
   )
 }

@@ -22,7 +22,12 @@
     "all": "Todos",
     "language": "Idioma",
     "close": "Fechar",
-    "loading": "A carregar..."
+    "loading": "A carregar...",
+    "font_size": "Tamanho do texto",
+    "open_menu": "Abrir menu",
+    "close_menu": "Fechar menu",
+    "play_slideshow": "Iniciar apresentação",
+    "pause_slideshow": "Pausar apresentação"
   },
   "home": {
     "sculptor": "Escultor · Estocolmo",
@@ -61,12 +66,26 @@
     "desc_scenography": "Cenografias para o Teatro Municipal de Estocolmo e coreografias com Margareta Åsberg e outros.",
     "count_works": "obras",
     "exteriors": "Exteriores",
-    "interiors": "Interiores"
+    "interiors": "Interiores",
+    "no_images": "Nenhuma imagem disponível de momento.",
+    "blasieholmstorg_desc": "Dois cavalos de bronze com pátina verde, modelados a partir dos originais da Basílica de São Marcos em Veneza. Fundidos pela Herman Bergmans Konstgjuteri AB.",
+    "map_label": "Mapa",
+    "map_title": "Explorar esculturas no mapa",
+    "map_works": "obras públicas em",
+    "map_countries": "países",
+    "map_view": "Ver mapa",
+    "type_theater": "Cenografia teatral",
+    "type_choreography": "Coreografia"
   },
   "watercolors": {
     "title": "Aguarelas 1975–2012",
     "description": "Aproximadamente 200 aguarelas de carácter esquemático criadas como uma forma de 'construtivismo mental', representando uma paisagem arquitectónica hermética. As obras são moldadas por uma técnica gráfica rigorosamente controlada que resulta numa axonometria livremente aplicada.",
-    "book_note": "Cinquenta obras foram expostas na Academia Real de Belas Artes de Estocolmo, de 6 de outubro a 4 de novembro de 2012. O livro Sivert Lindblom Aguarelas etc. (Bullfinch Publishing, 2012) documenta a coleção."
+    "book_note": "Cinquenta obras foram expostas na Academia Real de Belas Artes de Estocolmo, de 6 de outubro a 4 de novembro de 2012. O livro Sivert Lindblom Aguarelas etc. (Bullfinch Publishing, 2012) documenta a coleção.",
+    "gallery_count": "obras",
+    "click_hint": "clicar para apresentação",
+    "short_description": "Uma série de visões arquitectónicas axonométricas pintadas com pigmentos Winsor & Newton sem etiqueta diretamente da caixa. Peter Cornell descreve-as como \"um fluxo de construções geniais\" — uma paisagem arquitectónica hermética.",
+    "context_1": "Cem obras foram apresentadas na íntegra na Kungl. Konstakademien, Stockholm, outubro–novembro de 2012 (70 metros lineares de parede).",
+    "context_2": "Catálogo com textos de Peter Cornell, Jan Öqvist e Catharina Gabrielsson."
   },
   "texts": {
     "title": "Crítica, ensaios e entrevistas",
@@ -88,7 +107,22 @@
     "education": "Formação",
     "position": "Cargo",
     "award": "Prémio",
-    "personal": "Pessoal"
+    "personal": "Pessoal",
+    "photographs": "Fotografias",
+    "timeline_0": "Nascido em Husby-Rekarne, Södermanland",
+    "timeline_1": "Formação técnica, Eskilstuna",
+    "timeline_2": "Aprendizagem com o arquitecto Sigurd Lewerentz",
+    "timeline_3": "Seminário de formação de professores de desenho, Stockholm",
+    "timeline_4": "Kungliga Konsthögskolan, Stockholm",
+    "timeline_5": "Colaboração com o arquitecto Peter Celsing",
+    "timeline_6": "Residente em Locarno, Suíça",
+    "timeline_7": "Professor de teoria da forma, Escola de Arquitectura KTH",
+    "timeline_8": "Membro, Academia Real de Belas Artes",
+    "timeline_9": "Membro, Statens konstråd",
+    "timeline_10": "Prémio da Pedra, Federação Sueca da Indústria da Pedra",
+    "timeline_11": "Membro, Conselho de Estética da Administração Nacional de Estradas",
+    "timeline_12": "Professor de escultura, Kungliga Konsthögskolan",
+    "timeline_13": "Sergelpriset, Stockholm"
   },
   "contact": {
     "title": "Entrar em contato",
@@ -114,7 +148,13 @@
     "intro": "Séries de esculturas, gráficas, filmes e fotografias que documentam a produção artística de Sivert Lindblom.",
     "sculpture_series": "Séries de esculturas",
     "film_tv": "Cinema e TV",
-    "director": "Realizador"
+    "director": "Realizador",
+    "no_images": "Nenhuma imagem disponível de momento.",
+    "read_here": "LER AQUI",
+    "fotografier": "Fotografias e Inspiração",
+    "fotografier_intro": "Esta galeria contém imagens que de uma forma ou de outra tocaram e inspiraram Sivert Lindblom no seu trabalho. As suas obras, por mais ahistóricas que possam parecer, emanam de uma longa tradição de imagens simbólicas que artistas de todos os tempos e culturas procuraram para manifestar a presença da humanidade.",
+    "publicerat": "Publicado",
+    "publicerat_intro": "Catálogos, artigos de revistas e livros com textos relacionados com a prática artística de Sivert."
   },
   "footer": {
     "rights": "Todos os direitos reservados.",

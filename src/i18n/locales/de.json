@@ -22,7 +22,12 @@
     "all": "Alle",
     "language": "Sprache",
     "close": "Schließen",
-    "loading": "Wird geladen..."
+    "loading": "Wird geladen...",
+    "font_size": "Schriftgröße",
+    "open_menu": "Menü öffnen",
+    "close_menu": "Menü schließen",
+    "play_slideshow": "Diashow starten",
+    "pause_slideshow": "Diashow pausieren"
   },
   "home": {
     "sculptor": "Bildhauer · Stockholm",
@@ -61,12 +66,26 @@
     "desc_scenography": "Bühnenbilder für das Stockholmer Stadttheater und Choreografien mit Margareta Åsberg u.a.",
     "count_works": "Werke",
     "exteriors": "Außenräume",
-    "interiors": "Innenräume"
+    "interiors": "Innenräume",
+    "no_images": "Derzeit keine Bilder verfügbar.",
+    "blasieholmstorg_desc": "Zwei grünpatinierte Bronzepferde, die nach den Originalen der Markusbasilika in Venedig modelliert wurden. Gegossen von Herman Bergmans Konstgjuteri AB.",
+    "map_label": "Karte",
+    "map_title": "Skulpturen auf der Karte erkunden",
+    "map_works": "öffentliche Werke in",
+    "map_countries": "Ländern",
+    "map_view": "Karte anzeigen",
+    "type_theater": "Theaterszenografie",
+    "type_choreography": "Choreografie"
   },
   "watercolors": {
     "title": "Aquarelle 1975–2012",
     "description": "Etwa 200 skizzenartige Aquarelle, geschaffen als eine Art 'mentaler Konstruktivismus', die eine hermetische architektonische Landschaft darstellen. Die Werke entstehen durch eine streng kontrollierte grafische Technik, die zu einer frei angewandten Axonometrie führt.",
-    "book_note": "Fünfzig Werke wurden in der Königlichen Akademie der freien Künste in Stockholm, 6. Oktober – 4. November 2012, ausgestellt. Das Buch Sivert Lindblom Aquarelle u.a. (Bullfinch Publishing, 2012) dokumentiert die Sammlung."
+    "book_note": "Fünfzig Werke wurden in der Königlichen Akademie der freien Künste in Stockholm, 6. Oktober – 4. November 2012, ausgestellt. Das Buch Sivert Lindblom Aquarelle u.a. (Bullfinch Publishing, 2012) dokumentiert die Sammlung.",
+    "gallery_count": "Werke",
+    "click_hint": "klicken für Diashow",
+    "short_description": "Eine Serie axonometrischer architektonischer Visionen, gemalt mit unbeschrifteten Winsor & Newton-Pigmenten direkt aus der Schachtel. Peter Cornell beschreibt sie als \"ein Strömen genialer Konstruktionen\" — eine hermetische architektonische Landschaft.",
+    "context_1": "Hundert Werke wurden vollständig in der Kungl. Konstakademien, Stockholm, Oktober–November 2012 gezeigt (70 laufende Meter Wand).",
+    "context_2": "Katalog mit Texten von Peter Cornell, Jan Öqvist und Catharina Gabrielsson."
   },
   "texts": {
     "title": "Kritik, Essays & Interviews",
@@ -88,7 +107,22 @@
     "education": "Ausbildung",
     "position": "Position",
     "award": "Auszeichnung",
-    "personal": "Persönliches"
+    "personal": "Persönliches",
+    "photographs": "Fotografien",
+    "timeline_0": "Geboren in Husby-Rekarne, Södermanland",
+    "timeline_1": "Technische Ausbildung, Eskilstuna",
+    "timeline_2": "Lehrzeit beim Architekten Sigurd Lewerentz",
+    "timeline_3": "Zeichenlehrerseminar, Stockholm",
+    "timeline_4": "Kungliga Konsthögskolan, Stockholm",
+    "timeline_5": "Zusammenarbeit mit dem Architekten Peter Celsing",
+    "timeline_6": "Wohnhaft in Locarno, Schweiz",
+    "timeline_7": "Lehrer für Formtheorie, KTH Architekturschule",
+    "timeline_8": "Mitglied, Königliche Akademie der freien Künste",
+    "timeline_9": "Mitglied, Statens konstråd",
+    "timeline_10": "Steinpreis, Schwedischer Steinindustrieverband",
+    "timeline_11": "Mitglied, Schönheitsrat der Straßenbauverwaltung",
+    "timeline_12": "Professor für Bildhauerei, Kungliga Konsthögskolan",
+    "timeline_13": "Sergelpriset, Stockholm"
   },
   "contact": {
     "title": "Kontakt aufnehmen",
@@ -114,7 +148,13 @@
     "intro": "Skulpturreihen, Grafiken, Filme und Fotografien, die Sivert Lindbloms künstlerische Produktion dokumentieren.",
     "sculpture_series": "Skulpturreihen",
     "film_tv": "Film & TV",
-    "director": "Regie"
+    "director": "Regie",
+    "no_images": "Derzeit keine Bilder verfügbar.",
+    "read_here": "HIER LESEN",
+    "fotografier": "Fotografien & Inspiration",
+    "fotografier_intro": "Diese Galerie enthält Bilder, die Sivert Lindblom in seiner Arbeit auf die eine oder andere Weise berührt und inspiriert haben. Seine Werke, so geschichtslos sie auch erscheinen mögen, entstammen einer langen Tradition von Sinnbildern, die Künstler aller Zeiten und Kulturen gesucht haben, um die Gegenwart des Menschen zu manifestieren.",
+    "publicerat": "Veröffentlicht",
+    "publicerat_intro": "Kataloge, Zeitschriftenartikel und Bücher mit Texten, die sich auf Siverts Künstlerschaft beziehen."
   },
   "footer": {
     "rights": "Alle Rechte vorbehalten.",

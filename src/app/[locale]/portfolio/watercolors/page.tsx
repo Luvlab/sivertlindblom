@@ -1,5 +1,7 @@
 import type { Metadata } from 'next'
 import { locales } from '@/i18n/config'
+import type { Locale } from '@/i18n/config'
+import { getDictionary } from '@/i18n/getDictionary'
 import WatercolorsGallery from './WatercolorsGallery'
 
 export const metadata: Metadata = {
@@ -31,5 +33,6 @@ export default async function WatercolorsPage({
   params: Promise<{ locale: string }>
 }) {
   const { locale } = await params
-  return <WatercolorsGallery locale={locale} />
+  const dict = await getDictionary(locale as Locale)
+  return <WatercolorsGallery locale={locale} dict={dict} />
 }

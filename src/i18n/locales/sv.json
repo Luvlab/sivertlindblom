@@ -22,7 +22,12 @@
     "all": "Alla",
     "language": "Språk",
     "close": "Stäng",
-    "loading": "Laddar..."
+    "loading": "Laddar...",
+    "font_size": "Textstorlek",
+    "open_menu": "Öppna meny",
+    "close_menu": "Stäng meny",
+    "play_slideshow": "Starta bildspel",
+    "pause_slideshow": "Pausa bildspel"
   },
   "home": {
     "sculptor": "Skulptör · Stockholm",
@@ -61,12 +66,26 @@
     "desc_scenography": "Scenografier för Stockholms Stadsteater, koreografier med Margareta Åsberg m.fl.",
     "count_works": "verk",
     "exteriors": "Exteriörer",
-    "interiors": "Interiörer"
+    "interiors": "Interiörer",
+    "no_images": "Inga bilder tillgängliga för tillfället.",
+    "blasieholmstorg_desc": "Två grönpatinerade bronshästar modellerade efter originalen på San Marcos basilika i Venedig. Gjutna av Herman Bergmans Konstgjuteri AB.",
+    "map_label": "Karta",
+    "map_title": "Utforska skulpturer på karta",
+    "map_works": "offentliga verk i",
+    "map_countries": "länder",
+    "map_view": "Visa karta",
+    "type_theater": "Teaterscenografi",
+    "type_choreography": "Koreografi"
   },
   "watercolors": {
     "title": "Akvareller 1975–2012",
     "description": "Ca 200 akvarellerade skissartade bilder skapade som ett slags 'mental konstruktivism', som visar ett hermetiskt arkitektoniskt landskap. Bilderna formas med en strängt styrd grafisk teknik som resulterar i en fritt tillämpad axonometri.",
-    "book_note": "Femtio verk visades på Konstakademien i Stockholm, 6 oktober – 4 november 2012. Boken Sivert Lindblom Akvareller m.m. (Bullfinch Publishing, 2012) dokumenterar samlingen."
+    "book_note": "Femtio verk visades på Konstakademien i Stockholm, 6 oktober – 4 november 2012. Boken Sivert Lindblom Akvareller m.m. (Bullfinch Publishing, 2012) dokumenterar samlingen.",
+    "gallery_count": "verk",
+    "click_hint": "klicka för bildspel",
+    "short_description": "En serie axonometriska arkitektoniska visioner målade med omärkta Winsor & Newton-pigment direkt från asken. Peter Cornell beskriver dem som \"ett strömmande av geniala konstruktioner\" — ett hermetiskt arkitektoniskt landskap.",
+    "context_1": "Hundra verk visades i sin helhet på Kungl. Konstakademien, Stockholm, oktober–november 2012 (70 löpmeter vägg).",
+    "context_2": "Katalog med texter av Peter Cornell, Jan Öqvist och Catharina Gabrielsson."
   },
   "texts": {
     "title": "Kritik, essays & intervjuer",
@@ -88,7 +107,22 @@
     "education": "Utbildning",
     "position": "Befattning",
     "award": "Utmärkelse",
-    "personal": "Personligt"
+    "personal": "Personligt",
+    "photographs": "Fotografier",
+    "timeline_0": "Född i Husby-Rekarne, Södermanland",
+    "timeline_1": "Teknisk utbildning, Eskilstuna",
+    "timeline_2": "Lärlingsplats hos arkitekt Sigurd Lewerentz",
+    "timeline_3": "Teckningslärarseminarium, Stockholm",
+    "timeline_4": "Kungliga Konsthögskolan, Stockholm",
+    "timeline_5": "Samarbete med arkitekt Peter Celsing",
+    "timeline_6": "Bosatt i Locarno, Schweiz",
+    "timeline_7": "Lärare i formteori, KTH Arkitekturskolan",
+    "timeline_8": "Ledamot, Kungliga Akademien för de fria konsterna",
+    "timeline_9": "Ledamot, Statens konstråd",
+    "timeline_10": "Stenpriset, Sveriges Stenindustrifförbund",
+    "timeline_11": "Ledamot, Vägverkets skönhetsråd",
+    "timeline_12": "Professor i skulptur, Kungliga Konsthögskolan",
+    "timeline_13": "Sergelpriset, Stockholm"
   },
   "contact": {
     "title": "Ta kontakt",
@@ -114,7 +148,13 @@
     "intro": "Skulpturserier, grafik, film och fotografier som dokumenterar Sivert Lindbloms konstnärliga produktion.",
     "sculpture_series": "Skulpturserier",
     "film_tv": "Film & TV",
-    "director": "Regi"
+    "director": "Regi",
+    "no_images": "Inga bilder tillgängliga för tillfället.",
+    "read_here": "LÄS HÄR",
+    "fotografier": "Fotografier & Inspiration",
+    "fotografier_intro": "I detta galleri finns bilder som på ett eller annat sätt berört och inspirerat Sivert Lindblom i sitt arbete. Hans verk, hur historielösa de än kan verka, är emanerade ur en lång tradition av sinnebilder som konstnärer i alla tider och kulturer har sökt för att manifestera människans närvaro.",
+    "publicerat": "Publicerat",
+    "publicerat_intro": "Kataloger, tidskriftsartiklar och böcker med texter som anknyter till Siverts konstnärskap."
   },
   "footer": {
     "rights": "Alla rättigheter förbehållna.",

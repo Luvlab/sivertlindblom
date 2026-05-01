@@ -49,7 +49,11 @@ export default async function ScenographyPage({
               <div style={{ fontSize: 'var(--fs-base)', marginBottom: '0.25rem' }}>{w.title}</div>
               <div style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)' }}>{w.venue}</div>
             </div>
-            <span className="badge">{w.type}</span>
+            <span className="badge">
+              {w.type === 'Teaterscenografi'
+                ? (dict.portfolio?.type_theater ?? w.type)
+                : (dict.portfolio?.type_choreography ?? w.type)}
+            </span>
           </div>
         ))}
       </div>

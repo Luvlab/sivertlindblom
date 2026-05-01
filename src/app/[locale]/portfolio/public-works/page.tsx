@@ -3,6 +3,8 @@ import type { Metadata } from 'next'
 import { getDictionary } from '@/i18n/getDictionary'
 import { locales } from '@/i18n/config'
 import type { Locale } from '@/i18n/config'
+import GalleryGrid from '@/components/gallery/GalleryGrid'
+import type { LightboxImage } from '@/components/gallery/Lightbox'
 
 export const metadata: Metadata = { title: 'Public Works' }
 
@@ -109,10 +111,10 @@ export default async function PublicWorksPage({
         <section style={{ marginBottom: '5rem' }}>
           <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-2xl)', marginBottom: '0.5rem' }}>Blasieholmstorg, Stockholm 1989</h2>
           <p style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-sm)', marginBottom: '2rem', maxWidth: '60ch' }}>
-            Två grönpatinerade bronshästar modellerade efter originalen på San Marcos basilika i Venedig. Gjutna av Herman Bergmans Konstgjuteri AB.
+            {dict.portfolio?.blasieholmstorg_desc ?? 'Två grönpatinerade bronshästar modellerade efter originalen på San Marcos basilika i Venedig. Gjutna av Herman Bergmans Konstgjuteri AB.'}
           </p>
-          <div className="auto-grid" style={{ gap: '2px' }}>
-            {[
+          <GalleryGrid
+            images={([
               'https://sivertlindblom.se/wp-content/uploads/2015/01/Sivert-Lindblom-Blasieholms-Torg-01.jpg',
               'https://sivertlindblom.se/wp-content/uploads/2015/01/Sivert-Lindblom-Blasieholms-Torg-31.jpg',
               'https://sivertlindblom.se/wp-content/uploads/2015/01/Sivert-Lindblom-Blasieholms-Torg-48.jpg',
@@ -125,13 +127,10 @@ export default async function PublicWorksPage({
               'https://sivertlindblom.se/wp-content/uploads/2015/01/Sivert-Lindblom-Blasieholms-Torg-02.jpg',
               'https://sivertlindblom.se/wp-content/uploads/2015/01/Sivert-Lindblom-Blasieholms-Torg-57.jpg',
               'https://sivertlindblom.se/wp-content/uploads/2015/01/Sivert-Lindblom-Blasieholms-Torg-60.jpg',
-            ].map((url, i) => (
-              <div key={i} className="img-zoom" style={{ aspectRatio: '4/3' }}>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={url} alt={`Blasieholmstorg ${i + 1}`} loading="lazy" />
-              </div>
-            ))}
-          </div>
+            ] as string[]).map((url, i): LightboxImage => ({ url, alt: `Blasieholmstorg ${i + 1}` }))}
+            aspectRatio="4/3"
+            columns="sm"
+          />
         </section>
 
         {/* Exteriors list */}

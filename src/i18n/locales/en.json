@@ -22,7 +22,12 @@
     "all": "All",
     "language": "Language",
     "close": "Close",
-    "loading": "Loading..."
+    "loading": "Loading...",
+    "font_size": "Font size",
+    "open_menu": "Open menu",
+    "close_menu": "Close menu",
+    "play_slideshow": "Play slideshow",
+    "pause_slideshow": "Pause slideshow"
   },
   "home": {
     "sculptor": "Sculptor · Stockholm",
@@ -61,12 +66,26 @@
     "desc_scenography": "Set designs for Stockholms Stadsteater and choreographies with Margareta Åsberg and others.",
     "count_works": "works",
     "exteriors": "Exteriors",
-    "interiors": "Interiors"
+    "interiors": "Interiors",
+    "no_images": "No images available at this time.",
+    "blasieholmstorg_desc": "Two green-patinated bronze horses modelled after the originals at the Basilica of San Marco in Venice. Cast by Herman Bergmans Konstgjuteri AB.",
+    "map_label": "Map",
+    "map_title": "Explore sculptures on map",
+    "map_works": "public works in",
+    "map_countries": "countries",
+    "map_view": "View map",
+    "type_theater": "Theatre scenography",
+    "type_choreography": "Choreography"
   },
   "watercolors": {
     "title": "Watercolours 1975–2012",
     "description": "Approximately 200 sketch-like watercolour works created as a form of 'mental constructivism', depicting a hermetic architectural landscape. The works are shaped by a strictly controlled graphic technique resulting in a freely applied axonometry.",
-    "book_note": "Fifty works were exhibited at the Royal Academy of Fine Arts in Stockholm, 6 October – 4 November 2012. The book Sivert Lindblom Watercolours etc. (Bullfinch Publishing, 2012) documents the collection."
+    "book_note": "Fifty works were exhibited at the Royal Academy of Fine Arts in Stockholm, 6 October – 4 November 2012. The book Sivert Lindblom Watercolours etc. (Bullfinch Publishing, 2012) documents the collection.",
+    "gallery_count": "works",
+    "click_hint": "click for slideshow",
+    "short_description": "A series of axonometric architectural visions painted with unmarked Winsor & Newton pigments directly from the box. Peter Cornell describes them as \"a flow of ingenious constructions\" — a hermetic architectural landscape.",
+    "context_1": "One hundred works were shown in their entirety at Kungl. Konstakademien, Stockholm, October–November 2012 (70 running metres of wall).",
+    "context_2": "Catalogue with texts by Peter Cornell, Jan Öqvist and Catharina Gabrielsson."
   },
   "texts": {
     "title": "Criticism, essays & interviews",
@@ -88,7 +107,22 @@
     "education": "Education",
     "position": "Position",
     "award": "Award",
-    "personal": "Personal"
+    "personal": "Personal",
+    "photographs": "Photographs",
+    "timeline_0": "Born in Husby-Rekarne, Södermanland",
+    "timeline_1": "Technical training, Eskilstuna",
+    "timeline_2": "Apprenticeship with architect Sigurd Lewerentz",
+    "timeline_3": "Drawing teacher training, Stockholm",
+    "timeline_4": "Royal Academy of Fine Arts, Stockholm",
+    "timeline_5": "Collaboration with architect Peter Celsing",
+    "timeline_6": "Resident in Locarno, Switzerland",
+    "timeline_7": "Teacher of form theory, KTH School of Architecture",
+    "timeline_8": "Member, Royal Academy of Fine Arts",
+    "timeline_9": "Member, Statens konstråd",
+    "timeline_10": "Stone Prize, Swedish Stone Industry Federation",
+    "timeline_11": "Member, National Road Administration Beauty Council",
+    "timeline_12": "Professor of Sculpture, Royal Academy of Fine Arts",
+    "timeline_13": "Sergelpriset, Stockholm"
   },
   "contact": {
     "title": "Get in touch",
@@ -114,7 +148,13 @@
     "intro": "Sculpture series, graphics, film and photographs documenting Sivert Lindblom's artistic production.",
     "sculpture_series": "Sculpture series",
     "film_tv": "Film & TV",
-    "director": "Director"
+    "director": "Director",
+    "no_images": "No images available at this time.",
+    "read_here": "READ HERE",
+    "fotografier": "Photographs & Inspiration",
+    "fotografier_intro": "This gallery contains images that in one way or another have touched and inspired Sivert Lindblom in his work. His works, however apparently ahistorical, emanate from a long tradition of symbols that artists throughout all ages and cultures have sought in order to manifest the presence of humanity.",
+    "publicerat": "Published",
+    "publicerat_intro": "Catalogues, journal articles and books with texts relating to Sivert's artistic practice."
   },
   "footer": {
     "rights": "All rights reserved.",

@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { getDictionary } from '@/i18n/getDictionary'
 import { locales } from '@/i18n/config'
 import type { Locale } from '@/i18n/config'
+import MasonryGallery from '@/components/gallery/MasonryGallery'
 
 export const metadata: Metadata = { title: 'Biography' }
 
@@ -104,7 +105,8 @@ export default async function BiographyPage({
             {TIMELINE.map((t, i) => (
               <div key={i} style={{ display: 'grid', gridTemplateColumns: '7rem 1fr', gap: '1rem', padding: '0.9rem 0', borderBottom: '1px solid var(--color-border)' }}>
                 <span style={{ color: 'var(--color-accent)', fontFamily: 'Georgia, serif', fontSize: 'var(--fs-sm)', flexShrink: 0 }}>{t.year}</span>
-                <span style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-text)' }}>{t.label}</span>
+                {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+                <span style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-text)' }}>{(dict.biography as any)?.[`timeline_${i}`] ?? t.label}</span>
               </div>
             ))}
           </section>
@@ -150,8 +152,9 @@ export default async function BiographyPage({
         <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-2xl)', marginBottom: '2rem' }}>
           {dict.biography?.photographs ?? 'Fotografier'}
         </h2>
-        <div className="bio-photo-grid">
-          {[
+        <MasonryGallery
+          columns="4"
+          images={[
             { url: 'https://sivertlindblom.se/wp-content/uploads/2012/12/Sivert-skulptör.jpg',        caption: 'Sivert Lindblom, skulptör' },
             { url: 'https://sivertlindblom.se/wp-content/uploads/2015/01/Porträtt-SivertMattias.jpg', caption: 'Porträtt. Foto: Mathias Johansson' },
             { url: 'https://sivertlindblom.se/wp-content/uploads/2015/01/20121028_135427.jpg',         caption: 'Konstakademien 2012. Foto: Jan Öqvist' },
@@ -168,24 +171,8 @@ export default async function BiographyPage({
             { url: 'https://sivertlindblom.se/wp-content/uploads/2015/01/SAM_7961.jpg',                caption: 'Foto: Jan Öqvist' },
             { url: 'https://sivertlindblom.se/wp-content/uploads/2015/01/Siverts-exit.jpg',            caption: 'Siverts exit' },
             { url: 'https://sivertlindblom.se/wp-content/uploads/2015/01/20130308_103958.jpg',         caption: 'Gjuteriet 2013. Foto: Jan Öqvist' },
-          ].map((photo, i) => (
-            <div key={i} style={{ marginBottom: '6px', breakInside: 'avoid', lineHeight: 0 }}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={photo.url}
-                alt={photo.caption}
-                loading={i < 8 ? 'eager' : 'lazy'}
-                title={photo.caption}
-                style={{ width: '100%', height: 'auto', display: 'block' }}
-              />
-            </div>
-          ))}
-        </div>
-        <style>{`
-          .bio-photo-grid { columns: 4; column-gap: 6px; }
-          @media (max-width: 480px)  { .bio-photo-grid { columns: 2; } }
-          @media (min-width: 481px) and (max-width: 768px) { .bio-photo-grid { columns: 3; } }
-        `}</style>
+          ]}
+        />
       </section>
     </div>
   )

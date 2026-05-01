@@ -22,7 +22,12 @@
     "all": "Tutto",
     "language": "Lingua",
     "close": "Chiudi",
-    "loading": "Caricamento..."
+    "loading": "Caricamento...",
+    "font_size": "Dimensione del testo",
+    "open_menu": "Apri menu",
+    "close_menu": "Chiudi menu",
+    "play_slideshow": "Avvia presentazione",
+    "pause_slideshow": "Pausa presentazione"
   },
   "home": {
     "sculptor": "Scultore · Stoccolma",
@@ -61,12 +66,26 @@
     "desc_scenography": "Scenografie per il Teatro Comunale di Stoccolma e coreografie con Margareta Åsberg e altri.",
     "count_works": "opere",
     "exteriors": "Esterni",
-    "interiors": "Interni"
+    "interiors": "Interni",
+    "no_images": "Nessuna immagine disponibile al momento.",
+    "blasieholmstorg_desc": "Due cavalli in bronzo con patina verde, modellati sugli originali della Basilica di San Marco a Venezia. Fusi da Herman Bergmans Konstgjuteri AB.",
+    "map_label": "Mappa",
+    "map_title": "Esplora le sculture sulla mappa",
+    "map_works": "opere pubbliche in",
+    "map_countries": "paesi",
+    "map_view": "Visualizza mappa",
+    "type_theater": "Scenografia teatrale",
+    "type_choreography": "Coreografia"
   },
   "watercolors": {
     "title": "Acquerelli 1975–2012",
     "description": "Circa 200 acquerelli dall'aspetto schizzato creati come una forma di 'costruttivismo mentale', che rappresentano un paesaggio architettonico ermetico. Le opere sono modellate da una tecnica grafica rigorosamente controllata che si traduce in un'assonometria applicata liberamente.",
-    "book_note": "Cinquanta opere sono state esposte presso la Reale Accademia di Belle Arti di Stoccolma, dal 6 ottobre al 4 novembre 2012. Il libro Sivert Lindblom Acquerelli ecc. (Bullfinch Publishing, 2012) documenta la collezione."
+    "book_note": "Cinquanta opere sono state esposte presso la Reale Accademia di Belle Arti di Stoccolma, dal 6 ottobre al 4 novembre 2012. Il libro Sivert Lindblom Acquerelli ecc. (Bullfinch Publishing, 2012) documenta la collezione.",
+    "gallery_count": "opere",
+    "click_hint": "clicca per la presentazione",
+    "short_description": "Una serie di visioni architettoniche assonometriche dipinte con pigmenti Winsor & Newton non etichettati direttamente dalla scatola. Peter Cornell li descrive come \"un fluire di costruzioni geniali\" — un paesaggio architettonico ermetico.",
+    "context_1": "Cento opere sono state esposte nella loro interezza alla Kungl. Konstakademien, Stockholm, ottobre–novembre 2012 (70 metri lineari di parete).",
+    "context_2": "Catalogo con testi di Peter Cornell, Jan Öqvist e Catharina Gabrielsson."
   },
   "texts": {
     "title": "Critica, saggi e interviste",
@@ -88,7 +107,22 @@
     "education": "Formazione",
     "position": "Posizione",
     "award": "Premio",
-    "personal": "Personale"
+    "personal": "Personale",
+    "photographs": "Fotografie",
+    "timeline_0": "Nato a Husby-Rekarne, Södermanland",
+    "timeline_1": "Formazione tecnica, Eskilstuna",
+    "timeline_2": "Apprendistato presso l'architetto Sigurd Lewerentz",
+    "timeline_3": "Seminario per insegnanti di disegno, Stockholm",
+    "timeline_4": "Kungliga Konsthögskolan, Stockholm",
+    "timeline_5": "Collaborazione con l'architetto Peter Celsing",
+    "timeline_6": "Residente a Locarno, Svizzera",
+    "timeline_7": "Insegnante di teoria della forma, Scuola di Architettura KTH",
+    "timeline_8": "Membro, Reale Accademia di Belle Arti",
+    "timeline_9": "Membro, Statens konstråd",
+    "timeline_10": "Premio della Pietra, Federazione svedese dell'industria della pietra",
+    "timeline_11": "Membro, Consiglio estetico dell'Amministrazione nazionale delle strade",
+    "timeline_12": "Professore di scultura, Kungliga Konsthögskolan",
+    "timeline_13": "Sergelpriset, Stockholm"
   },
   "contact": {
     "title": "Mettersi in contatto",
@@ -114,7 +148,13 @@
     "intro": "Serie di sculture, grafica, film e fotografie che documentano la produzione artistica di Sivert Lindblom.",
     "sculpture_series": "Serie di sculture",
     "film_tv": "Cinema e TV",
-    "director": "Regia"
+    "director": "Regia",
+    "no_images": "Nessuna immagine disponibile al momento.",
+    "read_here": "LEGGI QUI",
+    "fotografier": "Fotografie e Ispirazione",
+    "fotografier_intro": "Questa galleria contiene immagini che in un modo o nell'altro hanno toccato e ispirato Sivert Lindblom nel suo lavoro. Le sue opere, per quanto possano sembrare prive di storia, emanano da una lunga tradizione di immagini simboliche che artisti di tutti i tempi e culture hanno ricercato per manifestare la presenza dell'umanità.",
+    "publicerat": "Pubblicato",
+    "publicerat_intro": "Cataloghi, articoli di riviste e libri con testi relativi alla pratica artistica di Sivert."
   },
   "footer": {
     "rights": "Tutti i diritti riservati.",

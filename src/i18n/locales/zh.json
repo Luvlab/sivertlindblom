@@ -22,7 +22,12 @@
     "all": "全部",
     "language": "语言",
     "close": "关闭",
-    "loading": "加载中..."
+    "loading": "加载中...",
+    "font_size": "字体大小",
+    "open_menu": "打开菜单",
+    "close_menu": "关闭菜单",
+    "play_slideshow": "播放幻灯片",
+    "pause_slideshow": "暂停幻灯片"
   },
   "home": {
     "sculptor": "雕塑家 · 斯德哥尔摩",
@@ -61,12 +66,26 @@
     "desc_scenography": "为斯德哥尔摩市立剧院创作的舞台设计及与玛格丽塔·奥斯伯格等人的编舞合作。",
     "count_works": "件作品",
     "exteriors": "室外",
-    "interiors": "室内"
+    "interiors": "室内",
+    "no_images": "暂无可用图片。",
+    "blasieholmstorg_desc": "两匹绿色铜锈铜马，仿威尼斯圣马可大教堂原作铸造。由Herman Bergmans Konstgjuteri AB铸造。",
+    "map_label": "地图",
+    "map_title": "在地图上探索雕塑",
+    "map_works": "件公共作品，遍布",
+    "map_countries": "个国家",
+    "map_view": "查看地图",
+    "type_theater": "戏剧舞台设计",
+    "type_choreography": "编舞"
   },
   "watercolors": {
     "title": "水彩画 1975–2012",
     "description": "约200幅素描式水彩画，作为一种'心理构成主义'形式创作，描绘神秘的建筑景观。这些作品采用严格控制的图形技法，形成一种自由运用的轴测画法。",
-    "book_note": "五十件作品于2012年10月6日至11月4日在斯德哥尔摩皇家美术学院展出。书籍《西韦特·林德布洛姆水彩画等》（布尔芬奇出版社，2012年）对该系列进行了记录。"
+    "book_note": "五十件作品于2012年10月6日至11月4日在斯德哥尔摩皇家美术学院展出。书籍《西韦特·林德布洛姆水彩画等》（布尔芬奇出版社，2012年）对该系列进行了记录。",
+    "gallery_count": "件作品",
+    "click_hint": "点击播放幻灯片",
+    "short_description": "一系列轴测建筑视觉作品，使用未标记的Winsor & Newton颜料直接从颜料盒中绘制。Peter Cornell将其描述为一个天才构造的涌流——一个神秘的建筑景观。",
+    "context_1": "一百件作品于2012年10月至11月在斯德哥尔摩Kungl. Konstakademien完整展出（70延米展墙）。",
+    "context_2": "附有Peter Cornell、Jan Öqvist和Catharina Gabrielsson文章的展览图录。"
   },
   "texts": {
     "title": "批评、论文与访谈",
@@ -88,7 +107,22 @@
     "education": "教育经历",
     "position": "职务",
     "award": "奖项",
-    "personal": "个人经历"
+    "personal": "个人经历",
+    "photographs": "照片",
+    "timeline_0": "出生于瑟德曼兰省胡斯比-雷卡内",
+    "timeline_1": "技术培训，Eskilstuna",
+    "timeline_2": "跟随建筑师Sigurd Lewerentz学徒",
+    "timeline_3": "图画教师培训，Stockholm",
+    "timeline_4": "Kungliga Konsthögskolan，Stockholm",
+    "timeline_5": "与建筑师Peter Celsing合作",
+    "timeline_6": "定居Locarno，瑞士",
+    "timeline_7": "KTH建筑学院形式理论教师",
+    "timeline_8": "成员，皇家美术学院",
+    "timeline_9": "成员，Statens konstråd",
+    "timeline_10": "石材奖，瑞典石材工业联合会",
+    "timeline_11": "成员，国家公路管理局美学委员会",
+    "timeline_12": "雕塑教授，Kungliga Konsthögskolan",
+    "timeline_13": "Sergelpriset，Stockholm"
   },
   "contact": {
     "title": "联系我们",
@@ -114,7 +148,13 @@
     "intro": "记录西韦特·林德布洛姆艺术创作的雕塑系列、版画、影片和照片。",
     "sculpture_series": "雕塑系列",
     "film_tv": "电影与电视",
-    "director": "导演"
+    "director": "导演",
+    "no_images": "暂无可用图片。",
+    "read_here": "阅读此处",
+    "fotografier": "照片与灵感",
+    "fotografier_intro": "这个画廊收录了以各种方式触动并启发西韦特·林德布洛姆创作的图像。他的作品，无论看起来多么缺乏历史感，都源于一个悠久的象征传统——各个时代和文化的艺术家都曾寻求这些象征，以彰显人类的存在。",
+    "publicerat": "已出版",
+    "publicerat_intro": "与西韦特艺术实践相关的目录、期刊文章和书籍。"
   },
   "footer": {
     "rights": "版权所有。",

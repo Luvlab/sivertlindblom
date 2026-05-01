@@ -128,21 +128,17 @@ export default async function PortfolioPage({
         }}>
           <div>
             <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-accent)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '0.25rem' }}>
-              {locale === 'sv' ? 'Karta' : locale === 'th' ? 'แผนที่' : 'Map'}
+              {dict.portfolio?.map_label ?? 'Map'}
             </p>
             <h3 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-lg)', fontWeight: 400, marginBottom: '0.5rem' }}>
-              {locale === 'sv' ? 'Utforska skulpturer på karta' :
-               locale === 'th' ? 'สำรวจประติมากรรมบนแผนที่' :
-               'Explore sculptures on a map'}
+              {dict.portfolio?.map_title ?? 'Explore sculptures on a map'}
             </h3>
             <p style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-muted)' }}>
-              {locale === 'sv' ? `${29} offentliga verk i ${5} länder` :
-               locale === 'th' ? `ผลงานสาธารณะ ${29} ชิ้นใน ${5} ประเทศ` :
-               `${29} public works across ${5} countries`}
+              {29} {dict.portfolio?.map_works ?? 'public works'} {5} {dict.portfolio?.map_countries ?? 'countries'}
             </p>
           </div>
           <Link href={`/${locale}/portfolio/map`} className="btn" style={{ whiteSpace: 'nowrap' }}>
-            {locale === 'sv' ? 'Visa karta' : locale === 'th' ? 'ดูแผนที่' : 'View map'} →
+            {dict.portfolio?.map_view ?? 'View map'} →
           </Link>
         </div>
       </div>

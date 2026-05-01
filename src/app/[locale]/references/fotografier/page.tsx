@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 import { getDictionary } from '@/i18n/getDictionary'
 import { locales } from '@/i18n/config'
 import type { Locale } from '@/i18n/config'
+import MasonryGallery from '@/components/gallery/MasonryGallery'
 
 export const metadata: Metadata = {
   title: 'Fotografier & Inspiration — Sivert Lindblom',
@@ -130,37 +131,14 @@ export default async function FotografierPage({
           {dict.references?.fotografier ?? 'Fotografier & Inspiration'}
         </h1>
         <p style={{ color: 'var(--color-muted)', maxWidth: '65ch', fontSize: 'var(--fs-base)', lineHeight: 1.8 }}>
-          I detta galleri finns bilder som på ett eller annat sätt berört och inspirerat Sivert Lindblom i sitt arbete.
-          Hans verk, hur historielösa de än kan verka, är emanerade ur en lång tradition av sinnebilder som konstnärer
-          i alla tider och kulturer har sökt för att manifestera människans närvaro.
+          {dict.references?.fotografier_intro ?? ''}
         </p>
       </div>
 
       <hr className="divider" />
 
       <div className="page-pad" style={{ paddingTop: '2rem', paddingBottom: '4rem' }}>
-        <div className="foto-grid">
-          {IMAGES.map((img, i) => (
-            <div
-              key={i}
-              style={{ marginBottom: '6px', breakInside: 'avoid', lineHeight: 0 }}
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={img.url}
-                alt={img.caption ?? `Inspiration ${i + 1}`}
-                loading={i < 16 ? 'eager' : 'lazy'}
-                style={{ width: '100%', height: 'auto', display: 'block' }}
-                title={img.caption}
-              />
-            </div>
-          ))}
-        </div>
-        <style>{`
-          .foto-grid { columns: 4; column-gap: 6px; }
-          @media (max-width: 480px)  { .foto-grid { columns: 2; } }
-          @media (min-width: 481px) and (max-width: 768px) { .foto-grid { columns: 3; } }
-        `}</style>
+        <MasonryGallery images={IMAGES} columns="4" />
       </div>
     </div>
   )

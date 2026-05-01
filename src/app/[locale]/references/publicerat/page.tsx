@@ -209,7 +209,7 @@ export default async function PubliceratPage({
           {dict.references?.publicerat ?? 'Publicerat'}
         </h1>
         <p style={{ color: 'var(--color-muted)', maxWidth: '65ch', fontSize: 'var(--fs-base)', lineHeight: 1.8 }}>
-          Kataloger, tidskriftsartiklar och böcker med texter som anknyter till Siverts konstnärskap.
+          {dict.references?.publicerat_intro ?? 'Kataloger, tidskriftsartiklar och böcker med texter som anknyter till Siverts konstnärskap.'}
         </p>
       </div>
 

@@ -22,7 +22,12 @@
     "all": "すべて",
     "language": "言語",
     "close": "閉じる",
-    "loading": "読み込み中..."
+    "loading": "読み込み中...",
+    "font_size": "文字サイズ",
+    "open_menu": "メニューを開く",
+    "close_menu": "メニューを閉じる",
+    "play_slideshow": "スライドショーを再生",
+    "pause_slideshow": "スライドショーを一時停止"
   },
   "home": {
     "sculptor": "彫刻家 · ストックホルム",
@@ -61,12 +66,26 @@
     "desc_scenography": "ストックホルム市立劇場への舞台美術提供、マルガレータ・オースベリら振付家との協働。",
     "count_works": "作品",
     "exteriors": "屋外",
-    "interiors": "屋内"
+    "interiors": "屋内",
+    "no_images": "現在、利用可能な画像はありません。",
+    "blasieholmstorg_desc": "ヴェネツィアのサン・マルコ大聖堂の原作を模して制作された2頭の緑青銅馬。Herman Bergmans Konstgjuteri ABにより鋳造。",
+    "map_label": "地図",
+    "map_title": "地図で彫刻を探索する",
+    "map_works": "か国・地域の公共作品",
+    "map_countries": "か国",
+    "map_view": "地図を表示",
+    "type_theater": "演劇舞台美術",
+    "type_choreography": "振付"
   },
   "watercolors": {
     "title": "水彩画 1975–2012",
     "description": "「精神的構成主義」の一形態として制作された約200点のスケッチ風水彩画。難解な建築的風景を描いており、厳密にコントロールされたグラフィック技法により、自由に応用されたアクソノメトリーを実現しています。",
-    "book_note": "2012年10月6日から11月4日まで、ストックホルムの王立芸術アカデミーにて50点が展示されました。書籍『シヴェルト・リンドブロム 水彩画等』（ブルフィンチ・パブリッシング、2012年）がコレクションを記録しています。"
+    "book_note": "2012年10月6日から11月4日まで、ストックホルムの王立芸術アカデミーにて50点が展示されました。書籍『シヴェルト・リンドブロム 水彩画等』（ブルフィンチ・パブリッシング、2012年）がコレクションを記録しています。",
+    "gallery_count": "作品",
+    "click_hint": "クリックでスライドショー",
+    "short_description": "ラベルなしのWinsor & Newtonの絵具を直接箱から使って描かれた、軸測投影の建築的ヴィジョンのシリーズ。Peter Cornellはそれらを「天才的な構築物の流れ」と表現しており、難解な建築的景観を形成しています。",
+    "context_1": "100点の作品がストックホルムのKungl. Konstakademienにて2012年10月〜11月に全点展示されました（展示壁70メートル）。",
+    "context_2": "Peter Cornell、Jan Öqvist、Catharina Gabrielssonのテキストを収録したカタログ。"
   },
   "texts": {
     "title": "批評、エッセイ・インタビュー",
@@ -88,7 +107,22 @@
     "education": "学歴",
     "position": "職歴",
     "award": "受賞",
-    "personal": "個人"
+    "personal": "個人",
+    "photographs": "写真",
+    "timeline_0": "ソーデルマンランド州ホスビー=レカルネ生まれ",
+    "timeline_1": "技術訓練、Eskilstuna",
+    "timeline_2": "建築家Sigurd Lewerentzの下で見習い",
+    "timeline_3": "図画教員養成セミナー、Stockholm",
+    "timeline_4": "Kungliga Konsthögskolan、Stockholm",
+    "timeline_5": "建築家Peter Celsingとの協働",
+    "timeline_6": "Locarno（スイス）在住",
+    "timeline_7": "形態理論教師、KTH建築学校",
+    "timeline_8": "会員、王立芸術アカデミー",
+    "timeline_9": "会員、Statens konstråd",
+    "timeline_10": "石材賞、スウェーデン石材産業連盟",
+    "timeline_11": "会員、国家道路庁美観委員会",
+    "timeline_12": "彫刻教授、Kungliga Konsthögskolan",
+    "timeline_13": "Sergelpriset、Stockholm"
   },
   "contact": {
     "title": "お問い合わせ",
@@ -114,7 +148,13 @@
     "intro": "シヴェルト・リンドブロムの芸術制作を記録した彫刻シリーズ、版画、映像、写真。",
     "sculpture_series": "彫刻シリーズ",
     "film_tv": "映画・TV",
-    "director": "監督"
+    "director": "監督",
+    "no_images": "現在、利用可能な画像はありません。",
+    "read_here": "こちらを読む",
+    "fotografier": "写真とインスピレーション",
+    "fotografier_intro": "このギャラリーには、シヴェルト・リンドブロムの制作活動において何らかの形で触れ、インスピレーションを与えた画像が収録されています。彼の作品は、一見歴史性を持たないように見えても、あらゆる時代・文化の芸術家が人類の存在を示すために求めてきた象徴の長い伝統から生まれています。",
+    "publicerat": "出版物",
+    "publicerat_intro": "シヴェルトの芸術実践に関連するテキストを収録したカタログ、雑誌記事、書籍。"
   },
   "footer": {
     "rights": "全著作権所有。",

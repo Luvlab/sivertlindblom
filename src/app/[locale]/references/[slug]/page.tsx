@@ -95,7 +95,7 @@ export default async function SculptureSeriesPage({
                     width: 'fit-content',
                   }}
                 >
-                  <span>LÄS HÄR</span>
+                  <span>{dict.references?.read_here ?? 'LÄS HÄR'}</span>
                   <span style={{ fontStyle: 'italic', color: 'var(--color-text)' }}>{link.label}</span>
                   <span>→</span>
                 </a>

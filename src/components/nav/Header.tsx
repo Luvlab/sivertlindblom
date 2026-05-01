@@ -72,7 +72,7 @@ export default function Header({ locale, dict }: HeaderProps) {
 
             {/* Hamburger — mobile only */}
             <button
-              aria-label={open ? 'Stäng meny' : 'Öppna meny'}
+              aria-label={open ? (dict?.common?.close_menu ?? 'Stäng meny') : (dict?.common?.open_menu ?? 'Öppna meny')}
               aria-expanded={open}
               aria-controls="mobile-nav"
               onClick={() => setOpen(!open)}
@@ -132,7 +132,7 @@ export default function Header({ locale, dict }: HeaderProps) {
           {/* Font slider in mobile menu too */}
           <div style={{ paddingTop: '1.5rem' }}>
             <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '0.75rem' }}>
-              Textstorlek
+              {dict?.common?.font_size ?? 'Textstorlek'}
             </p>
             <FontSizeSlider />
           </div>
