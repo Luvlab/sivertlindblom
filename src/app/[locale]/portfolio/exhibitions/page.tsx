@@ -99,6 +99,7 @@ export default async function ExhibitionsPage({
           {EXHIBITIONS.map((ex) => (
             <div
               key={ex.slug}
+              id={ex.slug}
               className="row-hover"
               style={{
                 display: 'grid',

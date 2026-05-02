@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import type { Metadata } from 'next'
 import { getDictionary } from '@/i18n/getDictionary'
 import { locales } from '@/i18n/config'
@@ -27,12 +28,12 @@ const TIMELINE = [
   { year: '1995',      label: 'Sergelpriset, Stockholm' },
 ]
 
-const PUBLIC_COMMISSIONS = [
-  { year: '2013', title: 'Bältesspännarparken', location: 'Göteborg' },
+const PUBLIC_COMMISSIONS: Array<{ year: string; title: string; location: string; slug?: string }> = [
+  { year: '2013', title: 'Bältesspännarparken', location: 'Göteborg',  slug: 'baltesspaennarparken-2013' },
   { year: '2004', title: 'Roslagens Sparbank', location: 'Norrtälje' },
-  { year: '2003', title: 'Nobelmonument', location: 'New York' },
+  { year: '2003', title: 'Nobelmonument', location: 'New York',          slug: 'nobelmonument-new-york-2003' },
   { year: '2002', title: 'Eskilstuna rondellen — Profilen', location: 'Eskilstuna' },
-  { year: '2002', title: 'Gustav Adolfs torg, fontäner', location: 'Malmö' },
+  { year: '2002', title: 'Gustav Adolfs torg, fontäner', location: 'Malmö', slug: 'gustav-adolfs-torg-2002' },
   { year: '2001', title: 'Potatisåkern — Profilen', location: 'Malmö' },
   { year: '1998', title: 'Kungliga Biblioteket', location: 'Stockholm' },
   { year: '1998', title: 'Sergels torg — Sergel monumentet', location: 'Stockholm' },
@@ -44,29 +45,29 @@ const PUBLIC_COMMISSIONS = [
   { year: '1992', title: 'SEB Banken Huvudkontor', location: 'Rissne' },
   { year: '1991', title: 'Berns Ljusgård', location: 'Stockholm' },
   { year: '1990–91', title: 'Sveriges ambassad, entré', location: 'Tokyo' },
-  { year: '1989', title: 'Blasieholmstorg — Hästar i brons', location: 'Stockholm' },
+  { year: '1989', title: 'Blasieholmstorg — Hästar i brons', location: 'Stockholm', slug: 'blasieholmstorg-1989' },
   { year: '1988', title: 'SAS Huvudkontor, Frösundavik', location: 'Stockholm' },
   { year: '1988', title: 'Skissernas Museum, fasad', location: 'Lund' },
-  { year: '1987–91', title: 'Stockholms Universitet Campus', location: 'Stockholm' },
+  { year: '1987–91', title: 'Stockholms Universitet Campus', location: 'Stockholm', slug: 'frescati-1987' },
   { year: '1986', title: 'Uppsala Stadsbibliotek', location: 'Uppsala' },
   { year: '1985', title: 'Göteborgs Universitetsbibliotek', location: 'Göteborg' },
   { year: '1984–85', title: 'Tetra Pak', location: 'Lausanne' },
   { year: '1984–85', title: 'Pharmacia entréplats', location: 'Uppsala' },
   { year: '1982', title: 'Riksbyggen/Göta Ark, Medborgarplatsen', location: 'Stockholm' },
-  { year: '1975–85', title: 'Västra skogen T-banestation', location: 'Stockholm' },
+  { year: '1975–85', title: 'Västra skogen T-banestation', location: 'Stockholm', slug: 'vastra-skogen-1975' },
   { year: '1975', title: 'Fersenska palatset, Handelsbanken', location: 'Stockholm' },
   { year: '1972', title: 'Garnisonen', location: 'Stockholm' },
   { year: '1966–67', title: 'Vällingby backe', location: 'Stockholm' },
   { year: '1965', title: 'Bronsgaller, Dagens Nyheter', location: 'Stockholm' },
 ]
 
-const GROUP_EXHIBITIONS = [
-  { year: '1968', title: '34:e Biennalen i Venedig', location: 'Venedig' },
-  { year: '1972', title: 'Swedish Art 1972', location: 'Tokyo & Kyoto' },
-  { year: '1973', title: 'Images du Nord, Art Suédois, Musée Dynamique', location: 'Dakar' },
-  { year: '1975', title: '12 Svenska skulptörer, Malmö Konsthall', location: 'Malmö' },
-  { year: '1977', title: 'Kunstmuseum Luzern, Live Show II', location: 'Schweiz' },
-  { year: '1979', title: 'Biennale Middelheim', location: 'Antwerpen' },
+const GROUP_EXHIBITIONS: Array<{ year: string; title: string; location: string; slug?: string }> = [
+  { year: '1968', title: '34:e Biennalen i Venedig', location: 'Venedig',      slug: 'biennale-venezia-1968' },
+  { year: '1972', title: 'Swedish Art 1972', location: 'Tokyo & Kyoto',         slug: 'swedish-art-1972' },
+  { year: '1973', title: 'Images du Nord, Art Suédois, Musée Dynamique', location: 'Dakar', slug: 'musee-dynamique-1973' },
+  { year: '1975', title: '12 Svenska skulptörer, Malmö Konsthall', location: 'Malmö', slug: 'skulptorer-1975' },
+  { year: '1977', title: 'Kunstmuseum Luzern, Live Show II', location: 'Schweiz', slug: 'kunstmuseum-luzern-1977' },
+  { year: '1979', title: 'Biennale Middelheim', location: 'Antwerpen',          slug: 'biennale-middelheim-1979' },
 ]
 
 export default async function BiographyPage({
@@ -116,13 +117,19 @@ export default async function BiographyPage({
             <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-2xl)', marginBottom: '2rem' }}>
               {dict.biography?.group_exhibitions ?? 'Grupputställningar i urval'}
             </h2>
-            {GROUP_EXHIBITIONS.map((e, i) => (
-              <div key={i} style={{ display: 'grid', gridTemplateColumns: '5rem 1fr auto', gap: '1rem', padding: '0.9rem 0', borderBottom: '1px solid var(--color-border)' }}>
-                <span style={{ color: 'var(--color-accent)', fontFamily: 'Georgia, serif', fontSize: 'var(--fs-sm)' }}>{e.year}</span>
-                <span style={{ fontSize: 'var(--fs-sm)' }}>{e.title}</span>
-                <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', textAlign: 'right' }}>{e.location}</span>
-              </div>
-            ))}
+            {GROUP_EXHIBITIONS.map((e, i) => {
+              const rowStyle = { display: 'grid', gridTemplateColumns: '5rem 1fr auto', gap: '1rem', padding: '0.9rem 0', borderBottom: '1px solid var(--color-border)', textDecoration: 'none', color: 'inherit' } as const
+              const inner = (
+                <>
+                  <span style={{ color: 'var(--color-accent)', fontFamily: 'Georgia, serif', fontSize: 'var(--fs-sm)' }}>{e.year}</span>
+                  <span style={{ fontSize: 'var(--fs-sm)' }}>{e.title}</span>
+                  <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', textAlign: 'right' }}>{e.location}</span>
+                </>
+              )
+              return e.slug
+                ? <Link key={i} href={`/${locale}/portfolio/exhibitions#${e.slug}`} className="row-hover" style={rowStyle}>{inner}</Link>
+                : <div key={i} style={rowStyle}>{inner}</div>
+            })}
           </section>
         </div>
       </div>
@@ -135,13 +142,19 @@ export default async function BiographyPage({
           {dict.biography?.public_commissions ?? 'Offentliga uppdrag i urval'}
         </h2>
         <div>
-          {PUBLIC_COMMISSIONS.map((c, i) => (
-            <div key={i} style={{ display: 'grid', gridTemplateColumns: '7rem 1fr auto', gap: '1rem', padding: '0.85rem 0', borderBottom: '1px solid var(--color-border)' }}>
-              <span style={{ color: 'var(--color-accent)', fontFamily: 'Georgia, serif', fontSize: 'var(--fs-sm)' }}>{c.year}</span>
-              <span style={{ fontSize: 'var(--fs-sm)' }}>{c.title}</span>
-              <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', textAlign: 'right' }}>{c.location}</span>
-            </div>
-          ))}
+          {PUBLIC_COMMISSIONS.map((c, i) => {
+            const rowStyle = { display: 'grid', gridTemplateColumns: '7rem 1fr auto', gap: '1rem', padding: '0.85rem 0', borderBottom: '1px solid var(--color-border)', textDecoration: 'none', color: 'inherit' } as const
+            const inner = (
+              <>
+                <span style={{ color: 'var(--color-accent)', fontFamily: 'Georgia, serif', fontSize: 'var(--fs-sm)' }}>{c.year}</span>
+                <span style={{ fontSize: 'var(--fs-sm)' }}>{c.title}</span>
+                <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', textAlign: 'right' }}>{c.location}</span>
+              </>
+            )
+            return c.slug
+              ? <Link key={i} href={`/${locale}/portfolio/public-works/${c.slug}`} className="row-hover" style={rowStyle}>{inner}</Link>
+              : <div key={i} style={rowStyle}>{inner}</div>
+          })}
         </div>
       </section>
 
