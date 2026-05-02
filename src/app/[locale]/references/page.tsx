@@ -10,6 +10,11 @@ export function generateStaticParams() {
   return locales.map((locale) => ({ locale }))
 }
 
+function getYouTubeId(url: string): string | null {
+  const m = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([A-Za-z0-9_-]{11})/)
+  return m ? m[1] : null
+}
+
 const SCULPTURE_SERIES = [
   { key: 'profiler', label: 'Profiler', desc: 'Profilskulpturer i sten och brons.' },
   { key: 'metamorfoser', label: 'Metamorfoser — Sittare', desc: 'Sittande figurer i metamorfos.' },
@@ -81,26 +86,42 @@ export default async function ReferencesPage({
         <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-2xl)', marginBottom: '2rem' }}>
           {dict.references?.film_tv ?? 'Film & TV'}
         </h2>
-        {FILMS.map((f) => (
-          <div key={f.title} style={{ display: 'grid', gridTemplateColumns: '4rem 1fr', gap: '1.5rem', padding: '1rem 0', borderBottom: '1px solid var(--color-border)' }}>
-            <span style={{ color: 'var(--color-accent)', fontFamily: 'Georgia, serif', fontSize: 'var(--fs-sm)' }}>{f.year}</span>
-            <div>
-              <div style={{ fontSize: 'var(--fs-base)' }}>{f.title}</div>
-              {f.director && <div style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', marginTop: '0.2rem' }}>{dict.references?.director ?? 'Regi'}: {f.director}</div>}
-              {f.venue && <div style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', marginTop: '0.2rem' }}>{f.venue}</div>}
-              {f.videoUrl && (
-                <a
-                  href={f.videoUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{ display: 'inline-block', marginTop: '0.4rem', fontSize: 'var(--fs-xs)', color: 'var(--color-accent)', letterSpacing: '0.06em', textTransform: 'uppercase', textDecoration: 'none', borderBottom: '1px solid var(--color-accent-dim)' }}
-                >
-                  ▶ {dict.references?.watch ?? 'Se filmen'} →
-                </a>
+        {FILMS.map((f) => {
+          const ytId = f.videoUrl ? getYouTubeId(f.videoUrl) : null
+          return (
+            <div key={f.title} style={{ padding: '1.5rem 0', borderBottom: '1px solid var(--color-border)' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: '4rem 1fr', gap: '1.5rem' }}>
+                <span style={{ color: 'var(--color-accent)', fontFamily: 'Georgia, serif', fontSize: 'var(--fs-sm)' }}>{f.year}</span>
+                <div>
+                  <div style={{ fontSize: 'var(--fs-base)', marginBottom: '0.2rem' }}>{f.title}</div>
+                  {f.director && <div style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)' }}>{dict.references?.director ?? 'Regi'}: {f.director}</div>}
+                  {f.venue && <div style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)' }}>{f.venue}</div>}
+                  {f.videoUrl && !ytId && (
+                    <a
+                      href={f.videoUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{ display: 'inline-block', marginTop: '0.5rem', fontSize: 'var(--fs-xs)', color: 'var(--color-accent)', letterSpacing: '0.06em', textTransform: 'uppercase', textDecoration: 'none', borderBottom: '1px solid var(--color-accent-dim)' }}
+                    >
+                      ▶ {dict.references?.watch ?? 'Se filmen'} →
+                    </a>
+                  )}
+                </div>
+              </div>
+              {ytId && (
+                <div style={{ marginTop: '1rem', marginLeft: '5.5rem', aspectRatio: '16/9', maxWidth: '640px', background: '#000', borderRadius: 2, overflow: 'hidden' }}>
+                  <iframe
+                    src={`https://www.youtube.com/embed/${ytId}`}
+                    title={f.title}
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                    style={{ width: '100%', height: '100%', border: 'none', display: 'block' }}
+                  />
+                </div>
               )}
             </div>
-          </div>
-        ))}
+          )
+        })}
       </section>
 
       <hr className="divider" />

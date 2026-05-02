@@ -106,10 +106,15 @@ export default async function PublicWorkDetailPage({
         </div>
       )}
 
-      {/* Back link */}
-      <div className="page-pad" style={{ paddingBottom: '4rem' }}>
-        <Link href={`/${locale}/portfolio/public-works`} style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
-          ← {dict.portfolio?.cat_public ?? 'Offentliga arbeten'}
+      {/* Back links */}
+      <div className="page-pad" style={{ paddingBottom: '4rem', display: 'flex', gap: '2rem', flexWrap: 'wrap' }}>
+        <Link href={`/${locale}/portfolio/public-works`} className="back-link">
+          <span className="back-link-arrow">←</span>
+          <span className="back-link-label">{dict.portfolio?.cat_public ?? 'Offentliga arbeten'}</span>
+        </Link>
+        <Link href={`/${locale}/portfolio/map`} className="back-link">
+          <span className="back-link-arrow">⊙</span>
+          <span className="back-link-label">{dict.portfolio?.map_label ?? 'Karta'}</span>
         </Link>
       </div>
     </div>

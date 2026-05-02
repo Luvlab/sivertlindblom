@@ -56,25 +56,30 @@ export default function SculptureMap({ locations, locale }: Props) {
 
     mapInstance.current = map
 
-    // Add markers
-    locations.forEach((loc) => {
+    // Helper to add a marker with hover highlight
+    const addMarker = (loc: SculptureLocation, targetMap: typeof map) => {
       const color = TYPE_COLORS[loc.type] ?? '#c9a84c'
+      const iconHtml = (scale = 1) => `<div style="
+        width:${14 * scale}px;height:${14 * scale}px;
+        background:${color};
+        border:2px solid #0a0a0a;
+        border-radius:50%;
+        cursor:pointer;
+        box-shadow:0 0 0 ${2 * scale}px ${color}60;
+        transition:all 0.15s;
+        margin:${-((14 * scale - 14) / 2)}px 0 0 ${-((14 * scale - 14) / 2)}px;
+      "></div>`
 
-      const icon = L.divIcon({
-        html: `<div style="
-          width:14px;height:14px;
-          background:${color};
-          border:2px solid #0a0a0a;
-          border-radius:50%;
-          cursor:pointer;
-          box-shadow:0 0 0 1px ${color}40;
-        "></div>`,
-        className: '',
-        iconSize: [14, 14],
-        iconAnchor: [7, 7],
+      const icon = L.divIcon({ html: iconHtml(1), className: '', iconSize: [14, 14], iconAnchor: [7, 7] })
+      const marker = L.marker([loc.lat, loc.lng], { icon }).addTo(targetMap)
+
+      // Hover effects
+      marker.on('mouseover', () => {
+        marker.setIcon(L.divIcon({ html: iconHtml(1.6), className: '', iconSize: [14, 14], iconAnchor: [7, 7] }))
       })
-
-      const marker = L.marker([loc.lat, loc.lng], { icon }).addTo(map)
+      marker.on('mouseout', () => {
+        marker.setIcon(L.divIcon({ html: iconHtml(1), className: '', iconSize: [14, 14], iconAnchor: [7, 7] }))
+      })
 
       const typeLabel = TYPE_LABELS[loc.type]?.[locale] ?? loc.type
       marker.bindPopup(`
@@ -86,11 +91,12 @@ export default function SculptureMap({ locations, locale }: Props) {
           <div style="font-size:12px;color:#888;margin-bottom:${loc.description ? '8px' : '0'}">${loc.city}, ${loc.country}</div>
           ${loc.description ? `<div style="font-size:12px;color:#aaa;line-height:1.5;border-top:1px solid #333;padding-top:8px">${loc.description}</div>` : ''}
         </div>
-      `, {
-        maxWidth: 280,
-        className: 'sculpture-popup',
-      })
-    })
+      `, { maxWidth: 280, className: 'sculpture-popup' })
+      return marker
+    }
+
+    // Add markers
+    locations.forEach((loc) => addMarker(loc, map))
 
     return () => {
       map.remove()
@@ -117,21 +123,25 @@ export default function SculptureMap({ locations, locale }: Props) {
 
     filtered.forEach((loc) => {
       const color = TYPE_COLORS[loc.type] ?? '#c9a84c'
-      const icon = L.divIcon({
-        html: `<div style="
-          width:14px;height:14px;
-          background:${color};
-          border:2px solid #0a0a0a;
-          border-radius:50%;
-          cursor:pointer;
-          box-shadow:0 0 0 1px ${color}40;
-        "></div>`,
-        className: '',
-        iconSize: [14, 14],
-        iconAnchor: [7, 7],
+      const iconHtml = (scale = 1) => `<div style="
+        width:${14 * scale}px;height:${14 * scale}px;
+        background:${color};
+        border:2px solid #0a0a0a;
+        border-radius:50%;
+        cursor:pointer;
+        box-shadow:0 0 0 ${2 * scale}px ${color}60;
+        transition:all 0.15s;
+        margin:${-((14 * scale - 14) / 2)}px 0 0 ${-((14 * scale - 14) / 2)}px;
+      "></div>`
+      const icon = L.divIcon({ html: iconHtml(1), className: '', iconSize: [14, 14], iconAnchor: [7, 7] })
+      const marker = L.marker([loc.lat, loc.lng], { icon }).addTo(mapInstance.current)
+      marker.on('mouseover', () => {
+        marker.setIcon(L.divIcon({ html: iconHtml(1.6), className: '', iconSize: [14, 14], iconAnchor: [7, 7] }))
+      })
+      marker.on('mouseout', () => {
+        marker.setIcon(L.divIcon({ html: iconHtml(1), className: '', iconSize: [14, 14], iconAnchor: [7, 7] }))
       })
       const typeLabel = TYPE_LABELS[loc.type]?.[locale] ?? loc.type
-      const marker = L.marker([loc.lat, loc.lng], { icon }).addTo(mapInstance.current)
       marker.bindPopup(`
         <div style="font-family:Georgia,serif;min-width:200px">
           <div style="font-size:11px;color:#c9a84c;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:4px">
