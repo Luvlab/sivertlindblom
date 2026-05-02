@@ -96,7 +96,8 @@
     "review": "Reseña",
     "interview": "Entrevista",
     "own_writing": "Texto propio",
-    "translated": "Traducido"
+    "translated": "Traducido",
+    "original_language": "Idioma original"
   },
   "biography": {
     "title": "Sivert Lindblom",

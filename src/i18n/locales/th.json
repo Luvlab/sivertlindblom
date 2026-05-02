@@ -96,7 +96,8 @@
     "review": "บทวิจารณ์",
     "interview": "สัมภาษณ์",
     "own_writing": "งานเขียนของตนเอง",
-    "translated": "แปลแล้ว"
+    "translated": "แปลแล้ว",
+    "original_language": "ภาษาต้นฉบับ"
   },
   "biography": {
     "title": "ซีเวิร์ต ลินด์บลอม",

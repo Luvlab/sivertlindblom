@@ -75,15 +75,19 @@ export default async function TextDetailPage({
         </h1>
 
         {/* Author + publication */}
-        <p style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-sm)', marginBottom: '2.5rem' }}>
-          {text.author}
-          {text.publication && (
-            <>
-              <span style={{ margin: '0 0.4rem', color: 'var(--color-border)' }}>—</span>
-              <em>{text.publication}</em>
-            </>
+        <div style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-sm)', marginBottom: '2.5rem' }}>
+          <span>{text.author}</span>
+          {text.authorBio && (
+            <span style={{ color: 'var(--color-muted)', opacity: 0.7, marginLeft: '0.4rem', fontStyle: 'italic' }}>
+              — {text.authorBio}
+            </span>
           )}
-        </p>
+          {text.publication && (
+            <div style={{ marginTop: '0.25rem', fontSize: 'var(--fs-xs)' }}>
+              <em>{text.publication}</em>
+            </div>
+          )}
+        </div>
 
         <hr className="divider" style={{ marginBottom: '2.5rem' }} />
 
@@ -98,7 +102,7 @@ export default async function TextDetailPage({
             padding: '0.6rem 1rem',
             marginBottom: '2rem',
           }}>
-            {langLabel} — {dict.common?.loading ? '' : 'Original language'}
+            {langLabel} — {(dict.texts as Record<string,string> | undefined)?.original_language ?? 'Originalspråk'}
           </p>
         )}
 

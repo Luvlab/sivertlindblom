@@ -6,6 +6,7 @@ export interface TextItem {
   year: number
   title: string
   author: string
+  authorBio?: string                        // short bio shown under signature
   publication: string
   lang: 'sv' | 'en' | 'de' | 'fr' | 'it'
   body: string                              // original-language body (always present)
@@ -19,6 +20,7 @@ const RAW_TEXTS_DATA: Omit<TextItem, 'bodies'>[] = [
     year: 2012,
     title: 'Text till katalog, Akvareller m.m. 2012',
     author: 'Peter Cornell',
+    authorBio: 'Författare och konstkritiker',
     publication: 'Katalog Kungl. Konstakademien',
     lang: 'sv',
     body: `Ett flöde av sinnrika konstruktioner. Krafter som tynger, pressar, svävar. Allt är fakta som i den nya franska romanen; på en gång sakförhållanden och fiktion.
@@ -53,6 +55,7 @@ Peter Cornell`,
     year: 2012,
     title: 'Text till katalog, Akvareller m.m. 2012',
     author: 'Jan Öqvist',
+    authorBio: 'Scenograf',
     publication: 'Katalog Kungl. Konstakademien',
     lang: 'sv',
     body: `Ett inre rum med yttre gränser genom vilket tiden passerar
@@ -61,9 +64,16 @@ Alla känner vi skillnaden mellan upplevelsen av att se spåren av en händelse 
 Gestaltande konst försöker upphäva denna skillnad och få oss att bli en del av det som skapade verket.
 I Sivert Lindbloms till synes scenografiskt strama landskap tvingas vi att ta ställning till detta fenomen.
 
-Skeendet, tidpunkten och platsen för händelserna i hans bilder är öppna för oss. Det vi ser verkar vara frusna ögonblick men samtidigt tecken på att något dramatiskt är på gång. Vi kan aldrig vara riktigt säkra på vilket – när, var och varför finns inte i hans bilder och objekt men ändå är det där med oss i betraktandet. När vi, åskådare, befinner oss granskande och ser ner i de rumsligheter han avbildat försöker vi identifiera det vi ser och ställa detta i relation till våra egna erfarenheter. Trots sin saklighet och frånvaron av visuella betoningar som reflexer och skuggor får dessa objekt stark innebörd.
-De tunna färgskikten på de statiska objekten blir en vibrerande hinna, en hud som andas omsorg. Vi skapar referensvärldar för att se vad iscensättningen står för. Varje delobjekt i hans bilder är precist och verkar överensstämma med det igenkännbara. Likheterna mellan barndomens byggklotsar och futuristiska arkitektvisioner färgar våra tolkningar.
+Skeendet, tidpunkten och platsen för händelserna i hans bilder är öppna för oss.
+
+Det vi ser verkar vara frusna ögonblick men samtidigt tecken på att något dramatiskt är på gång. Vi kan aldrig vara riktigt säkra på vilket – när, var och varför finns inte i hans bilder och objekt men ändå är det där med oss i betraktandet. När vi, åskådare, befinner oss granskande och ser ner i de rumsligheter han avbildat försöker vi identifiera det vi ser och ställa detta i relation till våra egna erfarenheter. Trots sin saklighet och frånvaron av visuella betoningar som reflexer och skuggor får dessa objekt stark innebörd.
+
+De tunna färgskikten på de statiska objekten blir en vibrerande hinna, en hud som andas omsorg.
+
+Vi skapar referensvärldar för att se vad iscensättningen står för. Varje delobjekt i hans bilder är precist och verkar överensstämma med det igenkännbara. Likheterna mellan barndomens byggklotsar och futuristiska arkitektvisioner färgar våra tolkningar.
+
 Vi försöker spåra orsakerna till dessa egensinniga världar och vad som där ska bli. Det börjar som en visuell lek med det sneda perspektivet men går snabbt över till att bli en mental uppgörelse med oss själva. Inte med det som finns avbildat utan med det som inte finns där.
+
 Vi är vana att en inre logik måste råda mellan det avbildade och det som sker i vårt medvetande, att det finns samband mellan tanke och handling och att detta även måste ligga till grund för konstnärliga manifestationer – att innehåll och upplevelse har ett uttryckt samband.
 
 Det enda tolkningsbara i Sivert Lindbloms bilder kommer från våra egna mentala bearbetningsprocesser.
@@ -104,6 +114,7 @@ Vi ropar ut i universum och undrar: förutom det kända och det okända där ute
     year: 2012,
     title: 'Text till katalog, Akvareller 2012',
     author: 'Catharina Gabrielsson',
+    authorBio: 'Professor, Kungliga Tekniska Högskolan',
     publication: 'Katalog Kungl. Konstakademien',
     lang: 'sv',
     body: `'Genom modeller och beskrivningar kan vi få verkligheten att framträda och vi har ingen rätt att väja för det som blir synligt.' Sivert Lindblom (1974)

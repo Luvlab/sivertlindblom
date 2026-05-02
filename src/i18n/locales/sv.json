@@ -91,12 +91,13 @@
     "title": "Kritik, essays & intervjuer",
     "subtitle": "Texter",
     "intro": "Texter om och av Sivert Lindblom: kritiska essays, recensioner, intervjuer och egna skrifter, 1963–2012.",
-    "essay": "Essay",
+    "essay": "Utställningstexter",
     "preface": "Förord",
-    "review": "Recension",
-    "interview": "Intervju",
-    "own_writing": "Egen text",
-    "translated": "Översatt"
+    "review": "Recensioner",
+    "interview": "Intervjuer",
+    "own_writing": "Egna texter",
+    "translated": "Översatta texter",
+    "original_language": "Originalspråk"
   },
   "biography": {
     "title": "Sivert Lindblom",

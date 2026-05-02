@@ -96,7 +96,8 @@
     "review": "Рецензия",
     "interview": "Интервью",
     "own_writing": "Собственный текст",
-    "translated": "Переведено"
+    "translated": "Переведено",
+    "original_language": "Оригинальный язык"
   },
   "biography": {
     "title": "Сиверт Линдблом",

@@ -19,7 +19,7 @@
   --color-bg-card:    #1a1a1a;
   --color-border:     #2a2a2a;
   --color-text:       #f5f5f0;
-  --color-muted:      #888880;
+  --color-muted:      #a0a098;
   --color-accent:     #c8a97e;
   --color-accent-dim: #8c6e4a;
   --header-h:         4rem;
@@ -415,9 +415,10 @@ a:hover { opacity: 0.7; }
   display: inline-flex;
   align-items: center;
   gap: 0.6rem;
-  color: var(--color-muted);
+  color: var(--color-text);
+  opacity: 0.65;
   text-decoration: none;
-  transition: color 0.15s;
+  transition: color 0.15s, opacity 0.15s;
 }
 .back-link:hover { color: var(--color-text); opacity: 1; }
 
