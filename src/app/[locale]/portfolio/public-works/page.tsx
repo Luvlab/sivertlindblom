@@ -15,10 +15,10 @@ export function generateStaticParams() {
 }
 
 const EXTERIORS: Array<{ title: string; year: number; location: string; slug?: string }> = [
-  { title: 'Blasieholmstorg — Hästar i brons', year: 1989, location: 'Stockholm',            slug: 'blasieholmstorg-1989' },
-  { title: 'Bältesspännarparken',               year: 2013, location: 'Göteborg',            slug: 'baltesspaennarparken-2013' },
-  { title: 'Nobelmonument',                     year: 2003, location: 'New York',             slug: 'nobelmonument-new-york-2003' },
-  { title: 'Gustav Adolfs torg, fontäner',      year: 2002, location: 'Malmö',               slug: 'gustav-adolfs-torg-2002' },
+  { title: 'Blasieholmstorg — Hästar i brons', year: 1989, location: 'Stockholm',  slug: 'blasieholmstorg-1989' },
+  { title: 'Bältesspännarparken',               year: 2013, location: 'Göteborg',  slug: 'baltesspaennarparken-2013' },
+  { title: 'Nobelmonument',                     year: 2003, location: 'New York',  slug: 'nobelmonument-new-york-2003' },
+  { title: 'Gustav Adolfs torg, fontäner',      year: 2002, location: 'Malmö',     slug: 'gustav-adolfs-torg-2002' },
   { title: 'Eskilstuna rondellen — Profilen',   year: 2002, location: 'Eskilstuna' },
   { title: 'Potatisåkern — Profilen',           year: 2001, location: 'Malmö' },
   { title: 'Kungsträdgården, norra delen',      year: 1997, location: 'Stockholm' },
@@ -29,7 +29,7 @@ const EXTERIORS: Array<{ title: string; year: number; location: string; slug?: s
   { title: 'Synagoga — Förintelsenmonumentet',  year: 1998, location: 'Stockholm' },
   { title: 'SEB Banken Huvudkontor',            year: 1992, location: 'Rissne' },
   { title: 'Sveriges ambassad, entré',          year: 1990, location: 'Tokyo' },
-  { title: 'Stockholms Universitet Campus',     year: 1987, location: 'Stockholm',            slug: 'frescati-1987' },
+  { title: 'Stockholms Universitet Campus',     year: 1987, location: 'Stockholm',  slug: 'frescati-1987' },
   { title: 'SAS Huvudkontor, Frösundavik',      year: 1988, location: 'Stockholm' },
   { title: 'Skissernas Museum, fasad',          year: 1988, location: 'Lund' },
   { title: 'Pharmacia entréplats',              year: 1984, location: 'Uppsala' },
@@ -38,47 +38,49 @@ const EXTERIORS: Array<{ title: string; year: number; location: string; slug?: s
 ]
 
 const INTERIORS: Array<{ title: string; year: number; location: string; slug?: string }> = [
-  { title: 'Nobel Forum',                              year: 1993, location: 'Solna' },
-  { title: 'Berns Ljusgård',                           year: 1991, location: 'Stockholm' },
-  { title: 'Västra skogen T-banestation',              year: 1975, location: 'Stockholm', slug: 'vastra-skogen-1975' },
-  { title: 'Sveriges Riksbank',                        year: 1973, location: 'Stockholm' },
-  { title: 'Riksbyggen/Göta Ark, Medborgarplatsen',    year: 1984, location: 'Stockholm' },
-  { title: 'Tetra Pak',                                year: 1984, location: 'Lausanne' },
-  { title: 'Göteborgs Universitetsbibliotek',          year: 1985, location: 'Göteborg' },
-  { title: 'NK Ljusgård',                              year: 1968, location: 'Stockholm' },
-  { title: 'Stadsteatern Stockholm',                   year: 1970, location: 'Stockholm' },
+  { title: 'Nobel Forum',                           year: 1993, location: 'Solna' },
+  { title: 'Berns Ljusgård',                        year: 1991, location: 'Stockholm' },
+  { title: 'Västra skogen T-banestation',           year: 1975, location: 'Stockholm', slug: 'vastra-skogen-1975' },
+  { title: 'Sveriges Riksbank',                     year: 1973, location: 'Stockholm' },
+  { title: 'Riksbyggen/Göta Ark, Medborgarplatsen', year: 1984, location: 'Stockholm' },
+  { title: 'Tetra Pak',                             year: 1984, location: 'Lausanne' },
+  { title: 'Göteborgs Universitetsbibliotek',       year: 1985, location: 'Göteborg' },
+  { title: 'NK Ljusgård',                           year: 1968, location: 'Stockholm' },
+  { title: 'Stadsteatern Stockholm',                year: 1970, location: 'Stockholm' },
 ]
 
-function WorkRow({
+function WorkCard({
   title, year, location, slug, locale,
 }: {
   title: string; year: number; location: string; slug?: string; locale: string
 }) {
-  const rowStyle = {
-    display: 'grid',
-    gridTemplateColumns: '5rem 1fr auto',
-    gap: '1.5rem',
-    alignItems: 'center',
-    padding: '1rem 0',
+  const cardStyle = {
+    display: 'flex',
+    flexDirection: 'column' as const,
+    gap: '0.25rem',
+    padding: '1.25rem 1.5rem',
+    borderRight: '1px solid var(--color-border)',
     borderBottom: '1px solid var(--color-border)',
-  } as const
+    textDecoration: 'none',
+    transition: 'background 0.12s',
+  }
 
   const inner = (
     <>
-      <span style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-accent)', fontFamily: 'Georgia, serif' }}>{year}</span>
-      <span style={{ fontSize: 'var(--fs-base)' }}>{title}</span>
-      <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', textAlign: 'right' }}>{location}</span>
+      <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-accent)', fontFamily: 'Georgia, serif', lineHeight: 1 }}>{year}</span>
+      <span style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-text)', lineHeight: 1.35 }}>{title}</span>
+      <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', marginTop: '0.15rem' }}>{location}</span>
     </>
   )
 
   if (slug) {
     return (
-      <Link href={`/${locale}/portfolio/public-works/${slug}`} className="row-hover" style={rowStyle}>
+      <Link href={`/${locale}/portfolio/public-works/${slug}`} className="row-hover" style={cardStyle}>
         {inner}
       </Link>
     )
   }
-  return <div className="row-hover" style={rowStyle}>{inner}</div>
+  return <div className="row-hover" style={cardStyle}>{inner}</div>
 }
 
 export default async function PublicWorksPage({
@@ -93,6 +95,9 @@ export default async function PublicWorksPage({
     total: SCULPTURE_LOCATIONS.length,
     countries: new Set(SCULPTURE_LOCATIONS.map((l) => l.country)).size,
   }
+
+  const sortedExteriors = [...EXTERIORS].sort((a, b) => b.year - a.year)
+  const sortedInteriors = [...INTERIORS].sort((a, b) => b.year - a.year)
 
   return (
     <div>
@@ -117,36 +122,67 @@ export default async function PublicWorksPage({
         <SculptureMap locations={SCULPTURE_LOCATIONS} locale={locale} />
       </div>
 
-      {/* ── All locations ─────────────────────────────────────── */}
-      <div className="page-pad" style={{ paddingTop: '4rem', paddingBottom: '6rem' }}>
-
-        {/* Exteriors */}
-        <section style={{ marginBottom: '4rem' }}>
-          <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-2xl)', marginBottom: '0.5rem' }}>
+      {/* ── Exteriörer — full-width auto-fill grid ─────────────── */}
+      <div style={{ borderBottom: '1px solid var(--color-border)' }}>
+        {/* Section header */}
+        <div style={{
+          display: 'flex',
+          alignItems: 'baseline',
+          gap: '1.5rem',
+          padding: '2rem 2rem 1.5rem',
+          borderBottom: '1px solid var(--color-border)',
+        }}>
+          <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-2xl)', fontWeight: 400, margin: 0 }}>
             {dict.portfolio?.exteriors ?? 'Exteriörer'}
           </h2>
-          <p style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-sm)', marginBottom: '2rem' }}>
+          <span style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-sm)' }}>
             {EXTERIORS.length} {dict.portfolio?.count_works ?? 'verk'}
-          </p>
-          {EXTERIORS.sort((a, b) => b.year - a.year).map((w) => (
-            <WorkRow key={w.title} {...w} locale={locale} />
-          ))}
-        </section>
+          </span>
+        </div>
 
-        {/* Interiors */}
-        <section style={{ marginBottom: '5rem' }}>
-          <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-2xl)', marginBottom: '0.5rem' }}>
+        {/* Auto-fill grid — full width, no page-pad */}
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))',
+          borderTop: 'none',
+        }}>
+          {sortedExteriors.map((w) => (
+            <WorkCard key={w.title} {...w} locale={locale} />
+          ))}
+        </div>
+      </div>
+
+      {/* ── Interiörer — full-width auto-fill grid ─────────────── */}
+      <div style={{ borderBottom: '1px solid var(--color-border)' }}>
+        {/* Section header */}
+        <div style={{
+          display: 'flex',
+          alignItems: 'baseline',
+          gap: '1.5rem',
+          padding: '2rem 2rem 1.5rem',
+          borderBottom: '1px solid var(--color-border)',
+        }}>
+          <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-2xl)', fontWeight: 400, margin: 0 }}>
             {dict.portfolio?.interiors ?? 'Interiörer'}
           </h2>
-          <p style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-sm)', marginBottom: '2rem' }}>
+          <span style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-sm)' }}>
             {INTERIORS.length} {dict.portfolio?.count_works ?? 'verk'}
-          </p>
-          {INTERIORS.sort((a, b) => b.year - a.year).map((w) => (
-            <WorkRow key={w.title} {...w} locale={locale} />
-          ))}
-        </section>
+          </span>
+        </div>
 
-        {/* Blasieholmstorg featured gallery */}
+        {/* Auto-fill grid */}
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))',
+        }}>
+          {sortedInteriors.map((w) => (
+            <WorkCard key={w.title} {...w} locale={locale} />
+          ))}
+        </div>
+      </div>
+
+      {/* ── Blasieholmstorg featured gallery ──────────────────── */}
+      <div className="page-pad" style={{ paddingTop: '4rem', paddingBottom: '6rem' }}>
         <section style={{ marginBottom: '4rem' }}>
           <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-2xl)', marginBottom: '0.5rem' }}>
             Blasieholmstorg, Stockholm 1989
