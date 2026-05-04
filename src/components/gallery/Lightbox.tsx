@@ -108,7 +108,10 @@ export default function Lightbox({ images, startIndex, onClose }: Props) {
       aria-label={current.alt || 'Lightbox'}
       style={{
         position: 'fixed',
-        inset: 0,
+        top: 'var(--header-h)',
+        left: 0,
+        right: 0,
+        bottom: 0,
         zIndex: 200,
         background: 'rgba(0,0,0,0.96)',
         display: 'flex',
