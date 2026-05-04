@@ -156,10 +156,10 @@ export const SCULPTURE_LOCATIONS: SculptureLocation[] = [
     year: 1973,
     city: 'Stockholm',
     country: 'Sweden',
-    lat: 59.3270,
-    lng: 18.0694,
+    lat: 59.3310,
+    lng: 18.0685,
     type: 'interior',
-    description: 'Konstverk i Sveriges Riksbanks interiör.',
+    description: 'Konstverk i Skandinaviska Bankens Palats, Gustav Adolfs Torg, Stockholm.',
   },
   {
     id: 'medborgarplatsen-1984',
