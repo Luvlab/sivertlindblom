@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { cookies } from 'next/headers'
 import type { BiographyEntryType } from '@/types'
 import { loadCmsData, saveCmsData } from '@/lib/cms-data'
+import { createAdminClient } from '@/lib/supabase/admin'
 
 export interface BioCmsEntry {
   id: string
@@ -31,10 +32,34 @@ async function checkAuth(): Promise<boolean> {
   return store.get('admin_session')?.value === 'authenticated'
 }
 
+function dbToBio(row: Record<string, unknown>): BioCmsEntry {
+  return {
+    id: row.id as string,
+    entry_type: row.entry_type as BiographyEntryType,
+    year_start: (row.year_start as number) ?? 0,
+    year_end: (row.year_end as number) ?? undefined,
+    title: row.title as string,
+    description: (row.description as string) ?? undefined,
+    location: (row.location as string) ?? undefined,
+  }
+}
+
 export async function GET() {
   if (!(await checkAuth())) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
+
+  const supabase = createAdminClient()
+  if (supabase) {
+    const { data, error } = await supabase
+      .from('biography_entries')
+      .select('*')
+      .order('year_start', { ascending: true })
+    if (!error && data) {
+      return NextResponse.json(data.map(row => dbToBio(row as Record<string, unknown>)))
+    }
+  }
+
   const data = loadCmsData<BioCmsEntry>('biography', STATIC_BIO)
   return NextResponse.json(data)
 }
@@ -45,16 +70,29 @@ export async function POST(request: Request) {
   }
   try {
     const body = await request.json() as BioCmsEntry
-    const current = loadCmsData<BioCmsEntry>('biography', STATIC_BIO)
-    const newItem: BioCmsEntry = {
-      ...body,
-      id: body.id || String(Date.now()),
+
+    const supabase = createAdminClient()
+    if (supabase) {
+      const { data, error } = await supabase
+        .from('biography_entries')
+        .insert({
+          entry_type: body.entry_type,
+          year_start: body.year_start,
+          year_end: body.year_end ?? null,
+          title: body.title,
+          description: body.description ?? null,
+          location: body.location ?? null,
+        })
+        .select()
+        .single()
+      if (!error && data) return NextResponse.json(dbToBio(data as Record<string, unknown>), { status: 201 })
     }
+
+    const current = loadCmsData<BioCmsEntry>('biography', STATIC_BIO)
+    const newItem: BioCmsEntry = { ...body, id: body.id || String(Date.now()) }
     const updated = [...current, newItem]
     const result = saveCmsData('biography', updated)
-    if (!result.ok) {
-      return NextResponse.json({ error: result.message }, { status: 500 })
-    }
+    if (!result.ok) return NextResponse.json({ error: result.message }, { status: 500 })
     return NextResponse.json(newItem, { status: 201 })
   } catch (e) {
     return NextResponse.json({ error: String(e) }, { status: 500 })
