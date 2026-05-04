@@ -23,7 +23,7 @@ export async function POST(request: Request) {
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
       maxAge: 60 * 60 * 8, // 8 hours
-      path: '/admin',
+      path: '/', // must be '/' so it's sent to /api/admin/* routes too
     })
 
     return NextResponse.json({ ok: true })
@@ -34,6 +34,6 @@ export async function POST(request: Request) {
 
 export async function DELETE() {
   const cookieStore = await cookies()
-  cookieStore.delete(ADMIN_TOKEN_NAME)
+  cookieStore.set(ADMIN_TOKEN_NAME, '', { maxAge: 0, path: '/' })
   return NextResponse.json({ ok: true })
 }
