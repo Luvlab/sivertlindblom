@@ -142,6 +142,13 @@ export default async function PortfolioPage({
           </Link>
         </div>
       </div>
+
+      <div className="page-pad" style={{ paddingBottom: '4rem', paddingTop: '2rem' }}>
+        <Link href={`/${locale}`} className="back-link">
+          <span className="back-link-arrow">←</span>
+          <span className="back-link-label">{dict.nav?.home ?? 'Hem'}</span>
+        </Link>
+      </div>
     </div>
   )
 }

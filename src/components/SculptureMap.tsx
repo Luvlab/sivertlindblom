@@ -32,19 +32,27 @@ export default function SculptureMap({ locations, locale }: Props) {
   const mapRef = useRef<HTMLDivElement>(null)
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const mapInstance = useRef<any>(null)
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const clusterRef = useRef<any>(null)
   const [leafletReady, setLeafletReady] = useState(false)
   const [selectedType, setSelectedType] = useState<string | null>(null)
+  const scriptsLoadedRef = useRef(0)
+
+  const handleScriptLoad = () => {
+    scriptsLoadedRef.current++
+    if (scriptsLoadedRef.current >= 2) setLeafletReady(true)
+  }
 
   useEffect(() => {
     if (!leafletReady || !mapRef.current || mapInstance.current) return
 
     const L = window.L
-    if (!L) return
+    if (!L || !L.markerClusterGroup) return
 
-    // Init map centered on Stockholm
+    // Init map centered on southern Sweden + international coverage
     const map = L.map(mapRef.current, {
-      center: [54.0, 14.0],
-      zoom: 4,
+      center: [56.5, 14.5],
+      zoom: 5,
       zoomControl: true,
     })
 
@@ -54,10 +62,35 @@ export default function SculptureMap({ locations, locale }: Props) {
       maxZoom: 19,
     }).addTo(map)
 
-    mapInstance.current = map
+    // Create cluster group
+    const clusterGroup = L.markerClusterGroup({
+      maxClusterRadius: 40,
+      showCoverageOnHover: false,
+      iconCreateFunction: (cluster: { getChildCount: () => number }) => {
+        const count = cluster.getChildCount()
+        return L.divIcon({
+          html: `<div style="
+            width:32px;height:32px;
+            background:#c9a84c;
+            border:2px solid #0a0a0a;
+            border-radius:50%;
+            display:flex;align-items:center;justify-content:center;
+            font-size:11px;color:#0a0a0a;font-weight:600;
+            font-family:Georgia,serif;
+            box-shadow:0 0 0 3px #c9a84c60;
+          ">${count}</div>`,
+          className: '',
+          iconSize: [32, 32],
+          iconAnchor: [16, 16],
+        })
+      },
+    })
 
-    // Helper to add a marker with hover highlight
-    const addMarker = (loc: SculptureLocation, targetMap: typeof map) => {
+    mapInstance.current = map
+    clusterRef.current = clusterGroup
+
+    // Helper to create a marker
+    const addMarker = (loc: SculptureLocation) => {
       const color = TYPE_COLORS[loc.type] ?? '#c9a84c'
       const iconHtml = (scale = 1) => `<div style="
         width:${14 * scale}px;height:${14 * scale}px;
@@ -71,7 +104,7 @@ export default function SculptureMap({ locations, locale }: Props) {
       "></div>`
 
       const icon = L.divIcon({ html: iconHtml(1), className: '', iconSize: [14, 14], iconAnchor: [7, 7] })
-      const marker = L.marker([loc.lat, loc.lng], { icon }).addTo(targetMap)
+      const marker = L.marker([loc.lat, loc.lng], { icon })
 
       // Hover effects
       marker.on('mouseover', () => {
@@ -79,6 +112,15 @@ export default function SculptureMap({ locations, locale }: Props) {
       })
       marker.on('mouseout', () => {
         marker.setIcon(L.divIcon({ html: iconHtml(1), className: '', iconSize: [14, 14], iconAnchor: [7, 7] }))
+      })
+
+      // Tooltip (hover label)
+      marker.bindTooltip(loc.title, {
+        permanent: false,
+        direction: 'top',
+        offset: [0, -10],
+        className: 'sculpture-tooltip',
+        opacity: 0.95,
       })
 
       const typeLabel = TYPE_LABELS[loc.type]?.[locale] ?? loc.type
@@ -90,34 +132,43 @@ export default function SculptureMap({ locations, locale }: Props) {
           <div style="font-size:14px;line-height:1.4;margin-bottom:6px;font-weight:500">${loc.title}</div>
           <div style="font-size:12px;color:#888;margin-bottom:${loc.description ? '8px' : '0'}">${loc.city}, ${loc.country}</div>
           ${loc.description ? `<div style="font-size:12px;color:#aaa;line-height:1.5;border-top:1px solid #333;padding-top:8px">${loc.description}</div>` : ''}
+          ${loc.slug ? `<a href="/${locale}/portfolio/public-works/${loc.slug}" style="display:inline-block;margin-top:8px;font-size:11px;color:#c9a84c;text-decoration:none;letter-spacing:0.06em;text-transform:uppercase;border-bottom:1px solid #c9a84c60;padding-bottom:2px">→ Läs mer</a>` : ''}
         </div>
       `, { maxWidth: 280, className: 'sculpture-popup' })
+
+      // Click handler: navigate to detail page if slug is defined
+      if (loc.slug) {
+        marker.on('click', () => {
+          window.location.href = `/${locale}/portfolio/public-works/${loc.slug}`
+        })
+      }
+
       return marker
     }
 
-    // Add markers
-    locations.forEach((loc) => addMarker(loc, map))
+    // Add all markers to cluster group
+    locations.forEach((loc) => {
+      const marker = addMarker(loc)
+      clusterGroup.addLayer(marker)
+    })
+
+    clusterGroup.addTo(map)
 
     return () => {
       map.remove()
       mapInstance.current = null
+      clusterRef.current = null
     }
   }, [leafletReady, locations, locale])
 
   // Re-filter markers when selectedType changes
   useEffect(() => {
-    if (!mapInstance.current) return
+    if (!mapInstance.current || !clusterRef.current) return
     const L = window.L
     if (!L) return
 
-    // Remove all layers except tile layer and re-add filtered
-    mapInstance.current.eachLayer((layer: unknown) => {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      if ((layer as any)._url === undefined) {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        mapInstance.current.removeLayer(layer as any)
-      }
-    })
+    const clusterGroup = clusterRef.current
+    clusterGroup.clearLayers()
 
     const filtered = selectedType ? locations.filter((l) => l.type === selectedType) : locations
 
@@ -134,12 +185,19 @@ export default function SculptureMap({ locations, locale }: Props) {
         margin:${-((14 * scale - 14) / 2)}px 0 0 ${-((14 * scale - 14) / 2)}px;
       "></div>`
       const icon = L.divIcon({ html: iconHtml(1), className: '', iconSize: [14, 14], iconAnchor: [7, 7] })
-      const marker = L.marker([loc.lat, loc.lng], { icon }).addTo(mapInstance.current)
+      const marker = L.marker([loc.lat, loc.lng], { icon })
       marker.on('mouseover', () => {
         marker.setIcon(L.divIcon({ html: iconHtml(1.6), className: '', iconSize: [14, 14], iconAnchor: [7, 7] }))
       })
       marker.on('mouseout', () => {
         marker.setIcon(L.divIcon({ html: iconHtml(1), className: '', iconSize: [14, 14], iconAnchor: [7, 7] }))
+      })
+      marker.bindTooltip(loc.title, {
+        permanent: false,
+        direction: 'top',
+        offset: [0, -10],
+        className: 'sculpture-tooltip',
+        opacity: 0.95,
       })
       const typeLabel = TYPE_LABELS[loc.type]?.[locale] ?? loc.type
       marker.bindPopup(`
@@ -150,8 +208,15 @@ export default function SculptureMap({ locations, locale }: Props) {
           <div style="font-size:14px;line-height:1.4;margin-bottom:6px;font-weight:500">${loc.title}</div>
           <div style="font-size:12px;color:#888;margin-bottom:${loc.description ? '8px' : '0'}">${loc.city}, ${loc.country}</div>
           ${loc.description ? `<div style="font-size:12px;color:#aaa;line-height:1.5;border-top:1px solid #333;padding-top:8px">${loc.description}</div>` : ''}
+          ${loc.slug ? `<a href="/${locale}/portfolio/public-works/${loc.slug}" style="display:inline-block;margin-top:8px;font-size:11px;color:#c9a84c;text-decoration:none;letter-spacing:0.06em;text-transform:uppercase;border-bottom:1px solid #c9a84c60;padding-bottom:2px">→ Läs mer</a>` : ''}
         </div>
       `, { maxWidth: 280, className: 'sculpture-popup' })
+      if (loc.slug) {
+        marker.on('click', () => {
+          window.location.href = `/${locale}/portfolio/public-works/${loc.slug}`
+        })
+      }
+      clusterGroup.addLayer(marker)
     })
   }, [selectedType, locations, locale])
 
@@ -165,10 +230,26 @@ export default function SculptureMap({ locations, locale }: Props) {
         href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
         crossOrigin=""
       />
+      <link
+        rel="stylesheet"
+        href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css"
+        crossOrigin=""
+      />
+      <link
+        rel="stylesheet"
+        href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css"
+        crossOrigin=""
+      />
       <Script
         src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
         crossOrigin=""
-        onLoad={() => setLeafletReady(true)}
+        onLoad={handleScriptLoad}
+        strategy="afterInteractive"
+      />
+      <Script
+        src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"
+        crossOrigin=""
+        onLoad={handleScriptLoad}
         strategy="afterInteractive"
       />
 
@@ -259,6 +340,18 @@ export default function SculptureMap({ locations, locale }: Props) {
         .leaflet-control-zoom a:hover {
           background: #2a2a2a !important;
         }
+        .sculpture-tooltip {
+          background: #1a1a1a !important;
+          border: 1px solid #3a3a3a !important;
+          color: #e8e8e4 !important;
+          font-family: Georgia, serif !important;
+          font-size: 11px !important;
+          padding: 3px 8px !important;
+          border-radius: 2px !important;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.5) !important;
+          white-space: nowrap !important;
+        }
+        .sculpture-tooltip::before { display: none !important; }
       `}</style>
     </div>
   )

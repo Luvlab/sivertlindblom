@@ -16,18 +16,22 @@ const EXHIBITIONS = [
   { slug: 'korsbarsgarden-2010',           title: 'Körsbärsgården, Sundre',                                   year: 2010, location: 'Gotland' },
   { slug: 'galerie-aronowitsch-2005',      title: 'Galerie Aronowitsch',                                      year: 2005, location: 'Stockholm' },
   { slug: 'historiska-museet-1998',        title: 'Historiska Museet — Kulturåret',                          year: 1998, location: 'Stockholm' },
+  { slug: 'arkipelag-1998',               title: 'Arkipelag — Stockholms Europas Kulturhuvudstad',           year: 1998, location: 'Stockholm' },
   { slug: 'eskilstuna-1996',               title: 'Eskilstuna Konstförening',                                 year: 1996, location: 'Eskilstuna' },
   { slug: 'skovde-1996',                   title: 'Skövde Konsthall',                                         year: 1996, location: 'Skövde' },
+  { slug: 'arkitekturmuseet-1994',         title: 'Sivert Lindblom, Arkitekturmuseet',                        year: 1994, location: 'Stockholm' },
   { slug: 'lunds-konsthall-1993',          title: 'Lunds Konsthall',                                          year: 1993, location: 'Lund' },
   { slug: 'skissernas-1993',               title: 'Skissernas Museum',                                        year: 1993, location: 'Lund' },
   { slug: 'bildmuseet-1993',               title: 'Bildmuseet',                                               year: 1993, location: 'Umeå' },
   { slug: 'galleri-wallner-1987',          title: 'Galleri Wallner',                                          year: 1987, location: 'Stockholm' },
   { slug: 'malmo-konsthall-1986',          title: 'Malmö Konsthall — Metapolis',                              year: 1986, location: 'Malmö' },
   { slug: 'liljevalchs-1986',              title: 'Liljevalchs Konsthall',                                    year: 1986, location: 'Stockholm' },
+  { slug: 'galleri-olsson-1985',           title: 'Galleri Olsson — Skulptur i brons 1959–61',                year: 1985, location: 'Stockholm' },
   { slug: 'ibid-ii-1983',                  title: 'IBID II, Münchenbryggeriet',                               year: 1983, location: 'Stockholm' },
   { slug: 'ibid-i-1982',                   title: 'IBID I, Linoljefabriken Danviken',                         year: 1982, location: 'Stockholm' },
   { slug: 'galeri-asbaek-1981',            title: 'Galeri Asbæk',                                             year: 1981, location: 'Köpenhamn' },
   { slug: 'aronowitsch-1981',              title: 'Galerie Aronowitsch',                                      year: 1981, location: 'Stockholm' },
+  { slug: 'ideprojektet-1981',             title: 'Idéprojektet Atlantis, Galleriet Kungl. Konstakademien',   year: 1981, location: 'Stockholm' },
   { slug: 'ccs-paris-1980',               title: 'Sans Titre, Centre Culturel Suédois',                      year: 1980, location: 'Paris' },
   { slug: 'biennale-middelheim-1979',      title: 'Biennale Middelheim',                                      year: 1979, location: 'Antwerpen' },
   { slug: 'galleri-wallner-1978',          title: 'Galleri Wallner',                                          year: 1978, location: 'Stockholm' },
@@ -38,25 +42,31 @@ const EXHIBITIONS = [
   { slug: 'galleri-wallner-1977',          title: 'Galleri Wallner',                                          year: 1977, location: 'Stockholm' },
   { slug: 'skulptorer-1975',               title: '12 svenska skulptörer, Malmö Konsthall',                   year: 1975, location: 'Malmö' },
   { slug: 'moderna-museet-1974',           title: 'Moderna Museet — Live Show',                               year: 1974, location: 'Stockholm' },
+  { slug: 'tradgardar-1974',               title: 'Trädgårdar — Riksutställningar',                            year: 1974, location: 'Sverige' },
   { slug: 'galerie-belle-1973',            title: 'Galerie Belle — kringresande utställning',                 year: 1973, location: 'Västerås' },
   { slug: 'musee-dynamique-1973',          title: 'Images du Nord — Art Suédois, Musée Dynamique',            year: 1973, location: 'Dakar' },
   { slug: 'galerie-buren-1973',            title: 'Galerie Burén — Föreslagna Åtgärder',                      year: 1973, location: 'Stockholm' },
   { slug: 'swedish-art-1972',              title: 'Swedish Art 1972',                                         year: 1972, location: 'Tokyo & Kyoto' },
   { slug: 'galerie-gimpel-1971',           title: 'Galerie Gimpel & Hanover',                                 year: 1971, location: 'Zürich' },
   { slug: 'ars-baltica-1970',              title: 'Gotlands Fornsal — Ars Baltica IV',                        year: 1970, location: 'Visby' },
+  { slug: 'kunsthalle-nurnberg-1970',      title: 'Kunsthalle Nürnberg — Der Raum, med Ulrik Samuelson',      year: 1970, location: 'Nürnberg' },
+  { slug: 'galleri-ostergren-1969',        title: 'Galleri Östergren',                                        year: 1969, location: 'Malmö' },
   { slug: 'biennale-venezia-1968',         title: '34:e Biennalen i Venedig',                                 year: 1968, location: 'Venedig' },
+  { slug: 'multikonst-1968',              title: 'Multikonst — Riksutställningar',                            year: 1968, location: 'Sverige' },
   { slug: 'konsthallen-eskilstuna-1968',   title: 'Konsthallen',                                              year: 1968, location: 'Eskilstuna' },
   { slug: 'galerie-buren-1968',            title: 'Galerie Burén',                                            year: 1968, location: 'Stockholm' },
   { slug: 'galleri-lowdahl-1967',          title: 'Galleri Löwendahl',                                        year: 1967, location: 'Stockholm' },
+  { slug: 'krognoshuset-1967',             title: 'Krognoshuset',                                             year: 1967, location: 'Lund' },
   { slug: 'har-och-nu-1967',              title: 'Här och Nu — Gävle Museum / Moderna Museet',               year: 1967, location: 'Gävle' },
   { slug: 'galerie-buren-1966',            title: 'Galerie Burén',                                            year: 1966, location: 'Stockholm' },
   { slug: 'vasterbotten-1966',             title: 'Hantverkshuset, Västerbottens Läns Konstförening',         year: 1966, location: 'Umeå' },
+  { slug: 'nutida-skulptur-1966',          title: 'Nutida Svensk Skulptur, Liljevalchs Konsthall',            year: 1966, location: 'Stockholm' },
   { slug: 'bronsgaller-1965',              title: 'Bronsgaller, Dagens Nyheter',                              year: 1965, location: 'Stockholm' },
   { slug: 'galerie-buren-1963',            title: 'Galerie Burén',                                            year: 1963, location: 'Stockholm' },
   { slug: 'konsthallen-goteborg-1964',     title: 'Konsthallen',                                              year: 1964, location: 'Göteborg' },
   { slug: 'norrköping-1962',               title: 'Norrköpings Museum',                                       year: 1962, location: 'Norrköping' },
   { slug: 'vadsbo-1962',                   title: 'Vadsbo Museum',                                            year: 1962, location: 'Mariestad' },
-  { slug: 'skara-1961',                    title: 'Skara Konstförening',                                      year: 1961, location: 'Skara' },
+  { slug: 'skara-1961',                    title: 'Skara Konstförening — med Ulrik Samuelson och Mårten Hultenberg', year: 1961, location: 'Skara' },
 ]
 
 export default async function ExhibitionsPage({
@@ -87,7 +97,7 @@ export default async function ExhibitionsPage({
             {dict.portfolio?.cat_exhibitions ?? 'Utställningar'}
           </h1>
           <p style={{ color: 'rgba(255,255,255,0.55)', fontSize: 'var(--fs-sm)' }}>
-            {EXHIBITIONS.length} {dict.portfolio?.cat_exhibitions?.toLowerCase() ?? 'utställningar'}, 1963–2016
+            {EXHIBITIONS.length} {dict.portfolio?.cat_exhibitions?.toLowerCase() ?? 'utställningar'}, 1961–2016
           </p>
         </div>
       </div>
@@ -118,6 +128,13 @@ export default async function ExhibitionsPage({
             </div>
           ))}
         </div>
+      </div>
+
+      <div className="page-pad" style={{ paddingBottom: '4rem', paddingTop: '2rem' }}>
+        <Link href={`/${locale}/portfolio`} className="back-link">
+          <span className="back-link-arrow">←</span>
+          <span className="back-link-label">{dict.nav?.portfolio ?? 'Portfolio'}</span>
+        </Link>
       </div>
     </div>
   )

@@ -152,6 +152,13 @@ export default async function PublicWorksPage({
             <WorkRow key={w.title} {...w} locale={locale} />
           ))}
         </section>
+
+        <div style={{ paddingBottom: '4rem', paddingTop: '2rem' }}>
+          <Link href={`/${locale}/portfolio`} className="back-link">
+            <span className="back-link-arrow">←</span>
+            <span className="back-link-label">{dict.nav?.portfolio ?? 'Portfolio'}</span>
+          </Link>
+        </div>
       </div>
     </div>
   )
