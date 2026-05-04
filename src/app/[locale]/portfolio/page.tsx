@@ -153,7 +153,7 @@ export default async function PortfolioPage({
               {29} {dict.portfolio?.map_works ?? 'offentliga verk'} · {5} {dict.portfolio?.map_countries ?? 'länder'}
             </span>
           </div>
-          <span style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-accent)', flexShrink: 0 }}>
+          <span style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-muted)', flexShrink: 0 }}>
             {dict.portfolio?.map_label ?? 'Visa karta'} →
           </span>
         </Link>

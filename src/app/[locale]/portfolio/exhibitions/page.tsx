@@ -23,9 +23,9 @@ export default async function ExhibitionsPage({
   const sorted = [...exhibitions].sort((a, b) => b.year - a.year)
 
   return (
-    <div className="section-gap">
-      {/* Hero */}
-      <div style={{ position: 'relative', height: '55vh', minHeight: 300, overflow: 'hidden', marginBottom: '4rem' }}>
+    <div>
+      {/* Hero — bleeds under the fixed header, no top padding */}
+      <div style={{ position: 'relative', height: '55vh', minHeight: 300, overflow: 'hidden', marginBottom: '4rem', marginTop: 'calc(-1 * (var(--header-h) + 1.5rem))' }}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src="https://sivertlindblom.se/wp-content/uploads/2015/01/Siverts-exit.jpg"

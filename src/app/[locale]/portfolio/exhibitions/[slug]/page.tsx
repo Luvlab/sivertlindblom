@@ -53,10 +53,10 @@ export default async function ExhibitionDetailPage({
   }))
 
   return (
-    <div className="section-gap">
-      {/* Hero */}
+    <div>
+      {/* Hero — bleeds under the fixed header, no top padding */}
       {heroImage && (
-        <div style={{ position: 'relative', height: '60vh', minHeight: 320, overflow: 'hidden', marginBottom: '4rem' }}>
+        <div style={{ position: 'relative', height: '60vh', minHeight: 320, overflow: 'hidden', marginBottom: '4rem', marginTop: 'calc(-1 * (var(--header-h) + 1.5rem))' }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={heroImage.replace(/-\d+x\d+(\.\w+)$/, '$1')}
