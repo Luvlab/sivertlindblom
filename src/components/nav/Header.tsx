@@ -64,8 +64,27 @@ export default function Header({ locale, dict }: HeaderProps) {
             ))}
           </nav>
 
-          {/* Right side: language switcher + font slider (desktop only) + hamburger */}
+          {/* Right side: search + language switcher + font slider (desktop only) + hamburger */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+            {/* Search icon */}
+            <Link
+              href={`/${locale}/search`}
+              aria-label="Sök"
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: 'var(--color-muted)',
+                transition: 'color 0.15s',
+                padding: '0.25rem',
+              }}
+              className="search-icon-btn"
+            >
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="7.5" cy="7.5" r="5.5" />
+                <line x1="11.5" y1="11.5" x2="16" y2="16" />
+              </svg>
+            </Link>
             <LanguageSwitcher locale={locale} />
             {/* Font slider hidden on mobile — accessible via the drawer instead */}
             <span className="hidden-mobile"><FontSizeSlider /></span>
