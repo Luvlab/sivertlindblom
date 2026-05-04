@@ -3,11 +3,46 @@ import type { Metadata } from 'next'
 import { getDictionary } from '@/i18n/getDictionary'
 import { locales } from '@/i18n/config'
 import type { Locale } from '@/i18n/config'
+import PortfolioSlideshow from '@/components/portfolio/PortfolioSlideshow'
 
 export const metadata: Metadata = { title: 'Portfolio' }
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }))
+}
+
+const SLIDESHOW_IMAGES: Record<string, string[]> = {
+  exhibitions: [
+    'https://sivertlindblom.se/wp-content/uploads/2015/01/Siverts-exit.jpg',
+    'https://sivertlindblom.se/wp-content/uploads/2015/01/Sivert-Lindblom-Lunds-konsthall-10.jpg',
+    'https://sivertlindblom.se/wp-content/uploads/2015/01/Sivert-Lindblom-Lunds-konsthall-7.jpg',
+    'https://sivertlindblom.se/wp-content/uploads/2015/01/SAM_7624.jpg',
+    'https://sivertlindblom.se/wp-content/uploads/2015/01/20121028_135410.jpg',
+    'https://sivertlindblom.se/wp-content/uploads/2015/01/20121028_160220.jpg',
+  ],
+  'public-works': [
+    'https://sivertlindblom.se/wp-content/uploads/2015/01/Sivert-Lindblom-Blasieholms-Torg-31.jpg',
+    'https://sivertlindblom.se/wp-content/uploads/2015/01/Sivert-Lindblom-Frescati-Atlas.jpg',
+    'https://sivertlindblom.se/wp-content/uploads/2015/01/Sivert-Lindblom-Västra-skogen-T.bana_0106.jpg',
+    'https://sivertlindblom.se/wp-content/uploads/2018/02/20180114_142218.jpg',
+    'https://sivertlindblom.se/wp-content/uploads/2015/01/Sivert566-kopia.jpg',
+    'https://sivertlindblom.se/wp-content/uploads/2015/06/CampusTbana.jpg',
+    'https://sivertlindblom.se/wp-content/uploads/2019/05/20190506_182925.jpg',
+  ],
+  watercolors: [
+    'https://sivertlindblom.se/wp-content/uploads/2015/01/Sivert-Lindblom-akvarell-01-1507-2.jpg',
+    'https://sivertlindblom.se/wp-content/uploads/2015/01/Sivert-Lindblom-akvarell-12-1489.jpg',
+    'https://sivertlindblom.se/wp-content/uploads/2015/01/Sivert-Lindblom-akvarell-29-1431-2.jpg',
+    'https://sivertlindblom.se/wp-content/uploads/2015/01/Sivert-Lindblom-akvarell-38-1478.jpg',
+    'https://sivertlindblom.se/wp-content/uploads/2015/01/Sivert-Lindblom-akvarell-64-1453-2.jpg',
+    'https://sivertlindblom.se/wp-content/uploads/2015/01/Sivert-Lindblom-akvarell-42-1473.jpg',
+    'https://sivertlindblom.se/wp-content/uploads/2015/01/Sivert-Lindblom-akvarell-59-1458.jpg',
+  ],
+  scenography: [
+    'https://sivertlindblom.se/wp-content/uploads/2015/03/Sivert-Triumf-Paris.jpg',
+    'https://sivertlindblom.se/wp-content/uploads/2015/01/Sivert-Lindblom-Profiler_0069.jpg',
+    'https://sivertlindblom.se/wp-content/uploads/2015/01/Sivert-Lindblom-Profiler_0072.jpg',
+  ],
 }
 
 export default async function PortfolioPage({
@@ -24,7 +59,6 @@ export default async function PortfolioPage({
       label: dict.portfolio?.cat_exhibitions ?? 'Utställningar',
       sub: dict.portfolio?.sub_exhibitions ?? '1961 – 2016',
       desc: dict.portfolio?.desc_exhibitions ?? '',
-      image: 'https://sivertlindblom.se/wp-content/uploads/2015/01/Siverts-exit.jpg',
       count: 28,
     },
     {
@@ -32,7 +66,6 @@ export default async function PortfolioPage({
       label: dict.portfolio?.cat_public ?? 'Offentliga arbeten',
       sub: dict.portfolio?.sub_public ?? 'Exteriörer & interiörer',
       desc: dict.portfolio?.desc_public ?? '',
-      image: 'https://sivertlindblom.se/wp-content/uploads/2015/01/Sivert-Lindblom-Blasieholms-Torg-31.jpg',
       count: 42,
     },
     {
@@ -40,7 +73,6 @@ export default async function PortfolioPage({
       label: dict.portfolio?.cat_watercolors ?? 'Akvareller',
       sub: dict.portfolio?.sub_watercolors ?? '1975 – 2012',
       desc: dict.portfolio?.desc_watercolors ?? '',
-      image: 'https://sivertlindblom.se/wp-content/uploads/2015/01/Sivert-Lindblom-akvarell-01-1507-2.jpg',
       count: 49,
     },
     {
@@ -48,7 +80,6 @@ export default async function PortfolioPage({
       label: dict.portfolio?.cat_scenography ?? 'Scenografi',
       sub: dict.portfolio?.sub_scenography ?? 'Teater & koreografi',
       desc: dict.portfolio?.desc_scenography ?? '',
-      image: 'https://sivertlindblom.se/wp-content/uploads/2015/03/Sivert-Triumf-Paris.jpg',
       count: 6,
     },
   ]
@@ -74,33 +105,16 @@ export default async function PortfolioPage({
           {CATEGORIES.map((cat) => (
             <Link key={cat.key} href={`/${locale}/portfolio/${cat.key}`} style={{ display: 'block' }}>
               <article className="card" style={{ overflow: 'hidden' }}>
-                {cat.image ? (
-                  cat.key === 'watercolors' ? (
-                    /* contain so the full painting + frame is always visible */
-                    <div style={{ aspectRatio: '4/3', background: '#ede9e2', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={cat.image} alt={cat.label} loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block', padding: '1rem' }} />
-                    </div>
-                  ) : (
-                    <div className="img-zoom" style={{ aspectRatio: '4/3' }}>
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={cat.image} alt={cat.label} loading="lazy" />
-                    </div>
-                  )
-                ) : (
-                  <div style={{
-                    aspectRatio: '4/3',
-                    background: 'var(--color-bg-surface)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    borderBottom: '1px solid var(--color-border)',
-                  }}>
-                    <span style={{ fontSize: 'var(--fs-4xl)', color: 'var(--color-border)', fontFamily: 'Georgia, serif' }}>
-                      {cat.label.charAt(0)}
-                    </span>
-                  </div>
-                )}
+                <div style={{ aspectRatio: '4/3', position: 'relative', overflow: 'hidden' }}>
+                  <PortfolioSlideshow
+                    images={SLIDESHOW_IMAGES[cat.key] ?? []}
+                    alt={cat.label}
+                    objectFit={cat.key === 'watercolors' ? 'contain' : 'cover'}
+                    background={cat.key === 'watercolors' ? '#ede9e2' : 'var(--color-bg-card)'}
+                    padding={cat.key === 'watercolors' ? '1rem' : '0'}
+                    interval={3200 + Object.keys(SLIDESHOW_IMAGES).indexOf(cat.key) * 400}
+                  />
+                </div>
                 <div style={{ padding: '1.5rem' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '0.5rem' }}>
                     <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-xl)', margin: 0 }}>{cat.label}</h2>
