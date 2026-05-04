@@ -1,6 +1,25 @@
 'use client'
 
 import { useEffect, useRef, useCallback, useState } from 'react'
+import { usePathname } from 'next/navigation'
+
+const CLOSE_LABELS: Record<string, string> = {
+  sv: 'Stäng bildspel',
+  en: 'Close slideshow',
+  de: 'Diaschau schließen',
+  fr: 'Fermer le diaporama',
+  es: 'Cerrar presentación',
+  it: 'Chiudi presentazione',
+  nl: 'Diashow sluiten',
+  pl: 'Zamknij pokaz slajdów',
+  pt: 'Fechar apresentação',
+  ru: 'Закрыть слайд-шоу',
+  ja: 'スライドショーを閉じる',
+  ko: '슬라이드쇼 닫기',
+  zh: '关闭幻灯片',
+  ar: 'إغلاق عرض الشرائح',
+  th: 'ปิดสไลด์โชว์',
+}
 
 export interface LightboxImage {
   url: string
@@ -19,6 +38,9 @@ const INTERVAL_MS = 5000
 export default function Lightbox({ images, startIndex, onClose }: Props) {
   const [index, setIndex] = useState(startIndex)
   const [isPlaying, setIsPlaying] = useState(images.length > 1)
+  const pathname = usePathname()
+  const locale = pathname?.split('/')[1] ?? 'en'
+  const closeLabel = CLOSE_LABELS[locale] ?? CLOSE_LABELS.en
   const touchStartX = useRef<number | null>(null)
   const total = images.length
 
@@ -151,18 +173,22 @@ export default function Lightbox({ images, startIndex, onClose }: Props) {
           right: '1rem',
           background: 'none',
           border: 'none',
-          color: 'rgba(255,255,255,0.75)',
-          fontSize: '2rem',
-          lineHeight: 1,
+          color: 'rgba(255,255,255,0.6)',
           cursor: 'pointer',
-          padding: '0.5rem',
+          padding: '0.4rem 0.6rem',
           zIndex: 203,
+          display: 'flex',
+          alignItems: 'center',
+          gap: '0.4rem',
           transition: 'color 0.15s',
         }}
         onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.color = '#fff' }}
-        onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.color = 'rgba(255,255,255,0.75)' }}
+        onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.color = 'rgba(255,255,255,0.6)' }}
       >
-        ×
+        <span style={{ fontSize: 'var(--fs-xs)', letterSpacing: '0.12em', textTransform: 'uppercase' }}>
+          {closeLabel}
+        </span>
+        <span style={{ fontSize: '1.6rem', lineHeight: 1 }}>×</span>
       </button>
 
       {/* Play / Pause button — only shown when multiple images */}
