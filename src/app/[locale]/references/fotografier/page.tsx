@@ -137,8 +137,15 @@ export default async function FotografierPage({
 
       <hr className="divider" />
 
-      <div className="page-pad" style={{ paddingTop: '2rem', paddingBottom: '4rem' }}>
+      <div className="page-pad" style={{ paddingTop: '2rem', paddingBottom: '2rem' }}>
         <MasonryGallery images={IMAGES} columns="4" />
+      </div>
+
+      <div className="page-pad" style={{ paddingBottom: '4rem' }}>
+        <Link href={`/${locale}/references`} className="back-link">
+          <span className="back-link-arrow">←</span>
+          <span className="back-link-label">{dict.references?.title ?? 'Referensmaterial'}</span>
+        </Link>
       </div>
     </div>
   )

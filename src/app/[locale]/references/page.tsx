@@ -25,12 +25,13 @@ const SCULPTURE_SERIES = [
   { key: 'blyplattor', label: 'Blyplattor', desc: 'Reliefverk i bly.' },
   { key: 'tradkonstruktioner', label: 'Trädkonstruktioner', desc: 'Skulpturer i trä.' },
   { key: 'tornmodeller', label: 'Tornmodeller', desc: 'Modeller och förslag för torn.' },
+  { key: 'arbetsmodeller', label: 'Arbetsmodeller & Förslag', desc: 'Arbetsmodeller i gips, lera och trä samt tävlingsförslag.' },
   { key: 'grafik', label: 'Grafik i urval', desc: 'Teckningar, grafikblad och studier.' },
 ]
 
 const FILMS: Array<{ year: number; title: string; director?: string; venue?: string; videoUrl?: string }> = [
   { year: 1967, title: 'Beskrivning av en tankes rörelse', director: 'Lasse Forsberg' },
-  { year: 1972, title: 'Ted Gärdestad sjunger "Helena"', venue: 'med Sivert Lindbloms skulpturer', videoUrl: 'https://youtu.be/TapuXHkrEQs' },
+  { year: 1972, title: 'Ted Gärdestad sjunger "Helena"', venue: 'med Sivert Lindbloms skulpturer', videoUrl: 'https://www.youtube.com/watch?v=yXAKq0KDpYk' },
   { year: 1974, title: 'Vad var Multikonst?', venue: 'SVT / Öppet Arkiv', videoUrl: 'https://www.oppetarkiv.se/video/10872733/multikonst-hela-sverige-gar-pa-utstallning' },
   { year: 1993, title: 'Sivert Lindblom visar modeller', venue: 'Skissernas Museum, Lund' },
   { year: 1996, title: 'Poetic Cinema — Landscape After Verlaine', venue: 'Carl Henrik Svenstedt' },

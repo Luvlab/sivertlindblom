@@ -215,7 +215,7 @@ export default async function PubliceratPage({
 
       <hr className="divider" />
 
-      <div className="page-pad" style={{ paddingTop: '3rem', paddingBottom: '5rem' }}>
+      <div className="page-pad" style={{ paddingTop: '3rem', paddingBottom: '3rem' }}>
         {/* Masonry grid of publication covers */}
         <div style={{
           display: 'grid',
@@ -273,6 +273,13 @@ export default async function PubliceratPage({
             </div>
           ))}
         </div>
+      </div>
+
+      <div className="page-pad" style={{ paddingBottom: '4rem' }}>
+        <Link href={`/${locale}/references`} className="back-link">
+          <span className="back-link-arrow">←</span>
+          <span className="back-link-label">{dict.references?.title ?? 'Referensmaterial'}</span>
+        </Link>
       </div>
     </div>
   )

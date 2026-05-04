@@ -106,18 +106,26 @@ export default async function SculptureSeriesPage({
       </div>
 
       {images.length > 0 && (
-        <div className="page-pad" style={{ paddingBottom: '4rem' }}>
+        <div className="page-pad" style={{ paddingBottom: '2rem' }}>
           <GalleryGrid images={images} aspectRatio="3/2" columns="sm" />
         </div>
       )}
 
       {images.length === 0 && (
-        <div className="page-pad" style={{ paddingBottom: '4rem' }}>
+        <div className="page-pad" style={{ paddingBottom: '2rem' }}>
           <p style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-sm)', fontStyle: 'italic' }}>
             {dict.references?.no_images ?? 'Inga bilder tillgängliga för tillfället.'}
           </p>
         </div>
       )}
+
+      {/* Back link below gallery */}
+      <div className="page-pad" style={{ paddingBottom: '4rem' }}>
+        <Link href={`/${locale}/references`} className="back-link">
+          <span className="back-link-arrow">←</span>
+          <span className="back-link-label">{dict.references?.subtitle ?? 'Skulptur & Grafik'}</span>
+        </Link>
+      </div>
     </div>
   )
 }

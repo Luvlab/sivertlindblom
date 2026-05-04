@@ -47,6 +47,12 @@ export default async function PublicWorkDetailPage({
   return (
     <div className="section-gap">
       <div className="page-pad" style={{ marginBottom: '2rem' }}>
+        {/* Back link above post */}
+        <Link href={`/${locale}/portfolio/public-works`} className="back-link" style={{ marginBottom: '2rem', display: 'inline-flex' }}>
+          <span className="back-link-arrow">←</span>
+          <span className="back-link-label">{dict.portfolio?.cat_public ?? 'Offentliga arbeten'}</span>
+        </Link>
+
         {/* Breadcrumb */}
         <nav aria-label="Breadcrumb" style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '2rem' }}>
           <Link href={`/${locale}/portfolio`} style={{ color: 'var(--color-muted)' }}>
