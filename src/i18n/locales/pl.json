@@ -46,7 +46,12 @@
     "explore": "Przeglądaj stronę",
     "contact_title": "Kontakt",
     "contact_sub": "Pytania dotyczące prac, wypożyczeń lub współpracy",
-    "contact_btn": "Skontaktuj się"
+    "contact_btn": "Skontaktuj się",
+    "press_label": "Press",
+    "press_quote": "»Någonting pågår, exakt vad kommer vi aldrig att få svar på, annat än av vår egen fantasi.«",
+    "press_attribution": "Karsten Thurfjell",
+    "press_source": "Kulturnytt, Sveriges Radio P1 · 4 Aug 2016",
+    "press_listen": "Listen to the broadcast"
   },
   "portfolio": {
     "title": "Twórczość artystyczna 1961–2016",

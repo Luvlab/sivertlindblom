@@ -46,7 +46,12 @@
     "explore": "Utforska webbplatsen",
     "contact_title": "Kontakt",
     "contact_sub": "Frågor om verk, utlåning eller samarbeten",
-    "contact_btn": "Kontakta oss"
+    "contact_btn": "Kontakta oss",
+    "press_label": "Recension",
+    "press_quote": "»Någonting pågår, exakt vad kommer vi aldrig att få svar på, annat än av vår egen fantasi.«",
+    "press_attribution": "Karsten Thurfjell",
+    "press_source": "Kulturnytt, Sveriges Radio P1 · 4 aug 2016",
+    "press_listen": "Lyssna på inslaget"
   },
   "portfolio": {
     "title": "Konstnärskap 1961–2016",

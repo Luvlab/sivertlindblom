@@ -92,6 +92,89 @@ export default async function HomePage({
         </div>
       </HeroSlideshow>
 
+      {/* PRESS QUOTE + AUDIO — Karsten Thurfjell, Kulturnytt P1 2016 */}
+      <section style={{
+        background: 'var(--color-bg-surface)',
+        borderBottom: '1px solid var(--color-border)',
+        padding: '4rem clamp(1rem,4vw,5rem)',
+        textAlign: 'center',
+      }}>
+        <p style={{
+          fontSize: 'var(--fs-xs)',
+          letterSpacing: '0.14em',
+          textTransform: 'uppercase',
+          color: 'var(--color-accent)',
+          marginBottom: '1.5rem',
+        }}>
+          {dict.home?.press_label ?? 'Recension'}
+        </p>
+        <blockquote style={{
+          fontFamily: 'Georgia, serif',
+          fontStyle: 'italic',
+          fontSize: 'clamp(1.1rem, 2.5vw, 1.55rem)',
+          fontWeight: 400,
+          lineHeight: 1.7,
+          color: 'var(--color-text)',
+          maxWidth: '65ch',
+          margin: '0 auto 1.5rem',
+          padding: 0,
+          border: 'none',
+        }}>
+          {dict.home?.press_quote ?? '»Någonting pågår, exakt vad kommer vi aldrig att få svar på, annat än av vår egen fantasi.«'}
+        </blockquote>
+        <p style={{
+          fontSize: 'var(--fs-sm)',
+          color: 'var(--color-text)',
+          marginBottom: '0.25rem',
+        }}>
+          {dict.home?.press_attribution ?? 'Karsten Thurfjell'}
+        </p>
+        <p style={{
+          fontSize: 'var(--fs-xs)',
+          letterSpacing: '0.08em',
+          color: 'var(--color-muted)',
+          marginBottom: '2rem',
+        }}>
+          {dict.home?.press_source ?? 'Kulturnytt, Sveriges Radio P1 · 4 aug 2016'}
+        </p>
+
+        {/* Native audio player */}
+        {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
+        <audio
+          controls
+          preload="none"
+          style={{
+            width: '100%',
+            maxWidth: '480px',
+            height: '36px',
+            accentColor: 'var(--color-accent)',
+            marginBottom: '1.25rem',
+            display: 'block',
+            marginLeft: 'auto',
+            marginRight: 'auto',
+          }}
+        >
+          <source src="https://www.sverigesradio.se/topsy/ljudfil/5783965?publicationId=6483716" type="audio/mpeg" />
+        </audio>
+
+        <a
+          href="https://sverigesradio.se/artikel/6483716"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{
+            fontSize: 'var(--fs-xs)',
+            letterSpacing: '0.1em',
+            textTransform: 'uppercase',
+            color: 'var(--color-accent)',
+            textDecoration: 'none',
+            borderBottom: '1px solid var(--color-accent-dim)',
+            paddingBottom: '0.15em',
+          }}
+        >
+          {dict.home?.press_listen ?? 'Lyssna på inslaget'} → Sveriges Radio
+        </a>
+      </section>
+
       {/* ABOUT strip */}
       <section style={{
         background: 'var(--color-bg-surface)',
