@@ -1,11 +1,10 @@
 'use client'
 
 import Link from 'next/link'
-import { useState, useCallback, useMemo, useRef, useEffect } from 'react'
+import { useState } from 'react'
 import Lightbox from '@/components/gallery/Lightbox'
 import type { LightboxImage } from '@/components/gallery/Lightbox'
 
-// All 49 watercolors confirmed from sivertlindblom.se/folio/akvareller-1975-2012/
 const WATERCOLOR_IMAGES: LightboxImage[] = [
   { url: 'https://sivertlindblom.se/wp-content/uploads/2015/01/Sivert-Lindblom-akvarell-01-1507-2.jpg',  alt: 'Akvarell nr 01, 1507' },
   { url: 'https://sivertlindblom.se/wp-content/uploads/2015/01/Sivert-Lindblom-akvarell-02-1506-2.jpg',  alt: 'Akvarell nr 02, 1506' },
@@ -58,98 +57,14 @@ const WATERCOLOR_IMAGES: LightboxImage[] = [
   { url: 'https://sivertlindblom.se/wp-content/uploads/2015/01/Sivert-Lindblom-akvarell-80-1428.jpg',    alt: 'Akvarell nr 80, 1428' },
 ]
 
-const GAP = 4
-const DEFAULT_AR = 1.33
-
-// Greedy row-packing: returns array of rows, each row is an array of image indices
-function packRows(aspectRatios: number[], containerWidth: number, targetRowHeight: number): number[][] {
-  if (containerWidth <= 0) return []
-  const rows: number[][] = []
-  let currentRow: number[] = []
-  let currentWidth = 0
-
-  for (let i = 0; i < aspectRatios.length; i++) {
-    const ar = aspectRatios[i]
-    const itemWidth = ar * targetRowHeight
-    const gapCost = currentRow.length > 0 ? GAP : 0
-    if (currentRow.length > 0 && currentWidth + gapCost + itemWidth > containerWidth) {
-      rows.push(currentRow)
-      currentRow = [i]
-      currentWidth = itemWidth
-    } else {
-      currentRow.push(i)
-      currentWidth += gapCost + itemWidth
-    }
-  }
-  if (currentRow.length > 0) rows.push(currentRow)
-  return rows
-}
-
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 interface Props { locale: string; dict: any }
 
 export default function WatercolorsGallery({ locale, dict }: Props) {
   const [lightboxIdx, setLightboxIdx] = useState<number | null>(null)
-  const [aspectRatios, setAspectRatios] = useState<number[]>(
-    () => Array(WATERCOLOR_IMAGES.length).fill(DEFAULT_AR)
-  )
-  const [containerWidth, setContainerWidth] = useState<number>(0)
-
-  const containerRef = useRef<HTMLDivElement>(null)
-  const loadedCount = useRef<number>(0)
-  // Track which ratios have been measured so we do one setState per image
-  const measuredRatios = useRef<number[]>(Array(WATERCOLOR_IMAGES.length).fill(DEFAULT_AR))
 
   const wc = dict?.watercolors ?? {}
   const nav = dict?.nav ?? {}
-
-  // ResizeObserver to track container width
-  useEffect(() => {
-    const el = containerRef.current
-    if (!el) return
-    const ro = new ResizeObserver((entries) => {
-      const width = entries[0]?.contentRect.width ?? 0
-      setContainerWidth(width)
-    })
-    ro.observe(el)
-    // Set initial width
-    setContainerWidth(el.getBoundingClientRect().width)
-    return () => ro.disconnect()
-  }, [])
-
-  // Callback for each invisible measurement img
-  const handleMeasure = useCallback((index: number, e: React.SyntheticEvent<HTMLImageElement>) => {
-    const img = e.currentTarget
-    const { naturalWidth, naturalHeight } = img
-    if (naturalWidth > 0 && naturalHeight > 0) {
-      measuredRatios.current[index] = naturalWidth / naturalHeight
-    }
-    loadedCount.current += 1
-    if (loadedCount.current === WATERCOLOR_IMAGES.length) {
-      // All measured — flush to state once
-      setAspectRatios([...measuredRatios.current])
-    }
-  }, [])
-
-  // Pick responsive target row height based on container width
-  const targetRowHeight = containerWidth < 640 ? 140 : containerWidth < 1024 ? 180 : 220
-
-  // Dimensions are considered "known" once any image has loaded (loadedCount > 0)
-  // We track this via the aspectRatios array differing from all-default,
-  // but we use a separate boolean flag derived from the ref
-  const [dimensionsKnown, setDimensionsKnown] = useState(false)
-  const handleMeasureWithFlag = useCallback((index: number, e: React.SyntheticEvent<HTMLImageElement>) => {
-    handleMeasure(index, e)
-    setDimensionsKnown(true)
-  }, [handleMeasure])
-
-  // Compute rows from aspect ratios + container width
-  const rows = useMemo(
-    () => packRows(aspectRatios, containerWidth, targetRowHeight),
-    [aspectRatios, containerWidth, targetRowHeight]
-  )
-
-  const isLastRow = (rowIndex: number) => rowIndex === rows.length - 1
 
   return (
     <div className="section-gap">
@@ -175,115 +90,45 @@ export default function WatercolorsGallery({ locale, dict }: Props) {
 
       <hr className="divider" />
 
+      {/* Uniform grid — alla thumbnails exakt samma storlek */}
       <div className="page-pad" style={{ paddingTop: '2rem', paddingBottom: '3rem' }}>
-        {/* Invisible measurement images */}
-        <div style={{ position: 'absolute', visibility: 'hidden', pointerEvents: 'none', width: 0, height: 0, overflow: 'hidden' }}>
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))',
+          gap: '4px',
+        }}>
           {WATERCOLOR_IMAGES.map((img, i) => (
-            /* eslint-disable-next-line @next/next/no-img-element */
-            <img
+            <button
               key={i}
-              src={img.url}
-              alt=""
-              onLoad={(e) => handleMeasureWithFlag(i, e)}
-              onError={(e) => handleMeasureWithFlag(i, e)}
-            />
+              onClick={() => setLightboxIdx(i)}
+              aria-label={img.alt}
+              style={{
+                display: 'block',
+                width: '100%',
+                aspectRatio: '1 / 1',
+                padding: '6px',
+                border: 'none',
+                background: '#f0ede8',
+                cursor: 'pointer',
+                overflow: 'hidden',
+                boxSizing: 'border-box',
+                lineHeight: 0,
+              }}
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={img.url}
+                alt={img.alt}
+                loading={i < 16 ? 'eager' : 'lazy'}
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'contain',
+                  display: 'block',
+                }}
+              />
+            </button>
           ))}
-        </div>
-
-        {/* Gallery container */}
-        <div ref={containerRef}>
-          {!dimensionsKnown || containerWidth === 0 ? (
-            /* Fallback: CSS columns while dimensions are loading */
-            <div style={{ columns: 4, columnGap: GAP }}>
-              {WATERCOLOR_IMAGES.map((img, i) => (
-                <button
-                  key={i}
-                  onClick={() => setLightboxIdx(i)}
-                  aria-label={img.alt}
-                  style={{
-                    display: 'block',
-                    width: '100%',
-                    padding: 6,
-                    border: 'none',
-                    background: '#f0ede8',
-                    cursor: 'pointer',
-                    marginBottom: GAP,
-                    breakInside: 'avoid',
-                    lineHeight: 0,
-                    boxSizing: 'border-box',
-                  }}
-                >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={img.url}
-                    alt={img.alt}
-                    loading={i < 12 ? 'eager' : 'lazy'}
-                    style={{ width: '100%', height: 'auto', display: 'block' }}
-                  />
-                </button>
-              ))}
-            </div>
-          ) : (
-            /* Justified row mosaic */
-            <div style={{ display: 'flex', flexDirection: 'column', gap: GAP }}>
-              {rows.map((rowIndices, rowIndex) => {
-                const last = isLastRow(rowIndex)
-                const sumAr = rowIndices.reduce((sum, idx) => sum + aspectRatios[idx], 0)
-                const rowHeight = last
-                  ? targetRowHeight
-                  : (containerWidth - (rowIndices.length - 1) * GAP) / sumAr
-
-                return (
-                  <div
-                    key={rowIndex}
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'row',
-                      gap: GAP,
-                      justifyContent: last ? 'flex-start' : 'flex-start',
-                      alignItems: 'flex-start',
-                    }}
-                  >
-                    {rowIndices.map((idx) => {
-                      const itemWidth = aspectRatios[idx] * rowHeight
-                      return (
-                        <button
-                          key={idx}
-                          onClick={() => setLightboxIdx(idx)}
-                          aria-label={WATERCOLOR_IMAGES[idx].alt}
-                          style={{
-                            width: itemWidth,
-                            height: rowHeight,
-                            flex: 'none',
-                            overflow: 'hidden',
-                            background: '#f0ede8',
-                            padding: 6,
-                            boxSizing: 'border-box',
-                            border: 'none',
-                            cursor: 'pointer',
-                            display: 'block',
-                          }}
-                        >
-                          {/* eslint-disable-next-line @next/next/no-img-element */}
-                          <img
-                            src={WATERCOLOR_IMAGES[idx].url}
-                            alt={WATERCOLOR_IMAGES[idx].alt}
-                            loading={idx < 12 ? 'eager' : 'lazy'}
-                            style={{
-                              width: '100%',
-                              height: '100%',
-                              objectFit: 'contain',
-                              display: 'block',
-                            }}
-                          />
-                        </button>
-                      )
-                    })}
-                  </div>
-                )
-              })}
-            </div>
-          )}
         </div>
       </div>
 
@@ -295,7 +140,7 @@ export default function WatercolorsGallery({ locale, dict }: Props) {
         </Link>
       </div>
 
-      {/* Fullscreen lightbox with autoplay */}
+      {/* Fullscreen lightbox */}
       {lightboxIdx !== null && (
         <Lightbox
           images={WATERCOLOR_IMAGES}
