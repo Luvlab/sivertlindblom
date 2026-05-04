@@ -128,9 +128,10 @@ export default async function PortfolioPage({
           ))}
         </div>
 
-        {/* Map callout — full-width prominent CTA */}
+        {/* Map callout */}
         <Link
           href={`/${locale}/portfolio/map`}
+          className="row-hover"
           style={{
             display: 'flex',
             alignItems: 'center',
@@ -138,28 +139,22 @@ export default async function PortfolioPage({
             gap: '2rem',
             flexWrap: 'wrap',
             marginTop: '3rem',
-            padding: '2.25rem 2.5rem',
-            background: 'var(--color-accent)',
-            color: '#000',
+            padding: '1.25rem 0',
+            borderTop: '1px solid var(--color-border)',
+            borderBottom: '1px solid var(--color-border)',
             textDecoration: 'none',
-            transition: 'background 0.15s',
           }}
-          onMouseEnter={undefined}
-          className="map-cta-link"
         >
-          <div>
-            <p style={{ fontSize: 'var(--fs-xs)', letterSpacing: '0.14em', textTransform: 'uppercase', opacity: 0.65, marginBottom: '0.3rem' }}>
-              {dict.portfolio?.map_label ?? 'Karta'}
-            </p>
-            <p style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-xl)', fontWeight: 400, lineHeight: 1.2 }}>
+          <div style={{ display: 'flex', alignItems: 'baseline', gap: '1.5rem', flexWrap: 'wrap' }}>
+            <span style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-base)', color: 'var(--color-text)' }}>
               {dict.portfolio?.map_title ?? 'Utforska skulpturer på karta'}
-            </p>
-            <p style={{ fontSize: 'var(--fs-sm)', opacity: 0.65, marginTop: '0.35rem' }}>
+            </span>
+            <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)' }}>
               {29} {dict.portfolio?.map_works ?? 'offentliga verk'} · {5} {dict.portfolio?.map_countries ?? 'länder'}
-            </p>
+            </span>
           </div>
-          <span style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-3xl)', lineHeight: 1, fontWeight: 400, flexShrink: 0 }}>
-            VISA KARTA →
+          <span style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-accent)', flexShrink: 0 }}>
+            {dict.portfolio?.map_label ?? 'Visa karta'} →
           </span>
         </Link>
       </div>
