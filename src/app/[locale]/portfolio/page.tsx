@@ -76,19 +76,20 @@ export default async function PortfolioPage({
               <article className="card" style={{ overflow: 'hidden' }}>
                 {cat.image ? (
                   cat.key === 'watercolors' ? (
-                    <div style={{ aspectRatio: '16/9', background: '#ede9e2', overflow: 'hidden' }}>
+                    /* contain so the full painting + frame is always visible */
+                    <div style={{ aspectRatio: '4/3', background: '#ede9e2', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                       {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={cat.image} alt={cat.label} loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+                      <img src={cat.image} alt={cat.label} loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block', padding: '1rem' }} />
                     </div>
                   ) : (
-                    <div className="img-zoom" style={{ aspectRatio: '16/9' }}>
+                    <div className="img-zoom" style={{ aspectRatio: '4/3' }}>
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img src={cat.image} alt={cat.label} loading="lazy" />
                     </div>
                   )
                 ) : (
                   <div style={{
-                    aspectRatio: '16/9',
+                    aspectRatio: '4/3',
                     background: 'var(--color-bg-surface)',
                     display: 'flex',
                     alignItems: 'center',
