@@ -3,7 +3,7 @@ import type { Metadata } from 'next'
 import { getDictionary } from '@/i18n/getDictionary'
 import { locales } from '@/i18n/config'
 import type { Locale } from '@/i18n/config'
-import exhibitions from '@/lib/exhibitions-data'
+import { getExhibitions } from '@/lib/data-server'
 
 export const metadata: Metadata = { title: 'Exhibitions' }
 
@@ -19,8 +19,7 @@ export default async function ExhibitionsPage({
   const { locale } = await params
   const dict = await getDictionary(locale as Locale)
 
-  // Sort newest first
-  const sorted = [...exhibitions].sort((a, b) => b.year - a.year)
+  const sorted = await getExhibitions()
 
   return (
     <div>
@@ -28,7 +27,7 @@ export default async function ExhibitionsPage({
       <div style={{ position: 'relative', height: '55vh', minHeight: 300, overflow: 'hidden', marginBottom: '4rem', marginTop: 'calc(-1 * (var(--header-h) + 1.5rem))' }}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src="https://sivertlindblom.se/wp-content/uploads/2015/01/Siverts-exit.jpg"
+          src="https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Siverts-exit.jpg"
           alt="Sivert Lindblom"
           style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 30%' }}
         />

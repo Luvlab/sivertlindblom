@@ -5,11 +5,11 @@ import { locales } from '@/i18n/config'
 import type { Locale } from '@/i18n/config'
 import { getDictionary } from '@/i18n/getDictionary'
 import { TEXTS_DATA } from '@/lib/texts-data'
+import { getTextSlugs, getText } from '@/lib/data-server'
 
-export function generateStaticParams() {
-  return locales.flatMap((locale) =>
-    TEXTS_DATA.map((t) => ({ locale, slug: t.slug }))
-  )
+export async function generateStaticParams() {
+  const slugs = await getTextSlugs()
+  return locales.flatMap((locale) => slugs.map((slug) => ({ locale, slug })))
 }
 
 export async function generateMetadata({
@@ -19,6 +19,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params
   const text = TEXTS_DATA.find((t) => t.slug === slug)
+    ?? await getText(slug)
   if (!text) return {}
   return {
     title: text.title,
@@ -39,6 +40,7 @@ export default async function TextDetailPage({
   const dict = await getDictionary(locale as Locale)
 
   const text = TEXTS_DATA.find((t) => t.slug === slug)
+    ?? await getText(slug)
   if (!text) notFound()
 
   // Use locale-specific translation when available, fall back to original

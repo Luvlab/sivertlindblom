@@ -6,7 +6,7 @@ import type { Locale } from '@/i18n/config'
 import GalleryGrid from '@/components/gallery/GalleryGrid'
 import type { LightboxImage } from '@/components/gallery/Lightbox'
 import SculptureMap from '@/components/SculptureMap'
-import { SCULPTURE_LOCATIONS } from '@/lib/sculpture-locations'
+import { getMapPins, getPublicWork } from '@/lib/data-server'
 
 export const metadata: Metadata = { title: 'Public Works' }
 
@@ -91,13 +91,23 @@ export default async function PublicWorksPage({
   const { locale } = await params
   const dict = await getDictionary(locale as Locale)
 
+  const [locations, blasieholmWork] = await Promise.all([
+    getMapPins(),
+    getPublicWork('blasieholmstorg-1989'),
+  ])
+
   const counts = {
-    total: SCULPTURE_LOCATIONS.length,
-    countries: new Set(SCULPTURE_LOCATIONS.map((l) => l.country)).size,
+    total: locations.length,
+    countries: new Set(locations.map((l) => l.country)).size,
   }
 
   const sortedExteriors = [...EXTERIORS].sort((a, b) => b.year - a.year)
   const sortedInteriors = [...INTERIORS].sort((a, b) => b.year - a.year)
+
+  const blasieholmImages: LightboxImage[] = (blasieholmWork?.images ?? []).map((img) => ({
+    url: img.url,
+    alt: img.alt,
+  }))
 
   return (
     <div>
@@ -119,12 +129,11 @@ export default async function PublicWorksPage({
 
       {/* ── Full-viewport map ─────────────────────────────────── */}
       <div style={{ height: '100dvh', width: '100%', position: 'relative' }}>
-        <SculptureMap locations={SCULPTURE_LOCATIONS} locale={locale} />
+        <SculptureMap locations={locations} locale={locale} />
       </div>
 
       {/* ── Exteriörer — full-width auto-fill grid ─────────────── */}
       <div style={{ borderBottom: '1px solid var(--color-border)' }}>
-        {/* Section header */}
         <div style={{
           display: 'flex',
           alignItems: 'baseline',
@@ -139,8 +148,6 @@ export default async function PublicWorksPage({
             {EXTERIORS.length} {dict.portfolio?.count_works ?? 'verk'}
           </span>
         </div>
-
-        {/* Auto-fill grid — full width, no page-pad */}
         <div style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))',
@@ -154,7 +161,6 @@ export default async function PublicWorksPage({
 
       {/* ── Interiörer — full-width auto-fill grid ─────────────── */}
       <div style={{ borderBottom: '1px solid var(--color-border)' }}>
-        {/* Section header */}
         <div style={{
           display: 'flex',
           alignItems: 'baseline',
@@ -169,8 +175,6 @@ export default async function PublicWorksPage({
             {INTERIORS.length} {dict.portfolio?.count_works ?? 'verk'}
           </span>
         </div>
-
-        {/* Auto-fill grid */}
         <div style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))',
@@ -190,24 +194,9 @@ export default async function PublicWorksPage({
           <p style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-sm)', marginBottom: '2rem', maxWidth: '60ch' }}>
             {dict.portfolio?.blasieholmstorg_desc ?? 'Två grönpatinerade bronshästar modellerade efter originalen på San Marcos basilika i Venedig. Gjutna av Herman Bergmans Konstgjuteri AB.'}
           </p>
-          <GalleryGrid
-            images={([
-              'https://sivertlindblom.se/wp-content/uploads/2015/01/Sivert-Lindblom-Blasieholms-Torg-01.jpg',
-              'https://sivertlindblom.se/wp-content/uploads/2015/01/Sivert-Lindblom-Blasieholms-Torg-31.jpg',
-              'https://sivertlindblom.se/wp-content/uploads/2015/01/Sivert-Lindblom-Blasieholms-Torg-48.jpg',
-              'https://sivertlindblom.se/wp-content/uploads/2015/01/Sivert-Lindblom-Blasieholms-Torg-43.jpg',
-              'https://sivertlindblom.se/wp-content/uploads/2015/01/Sivert-Lindblom-Blasieholms-Torg-71.jpg',
-              'https://sivertlindblom.se/wp-content/uploads/2015/01/Sivert-Lindblom-Blasieholms-Torg-33.jpg',
-              'https://sivertlindblom.se/wp-content/uploads/2015/01/Sivert-Lindblom-Blasieholms-Torg-75.jpg',
-              'https://sivertlindblom.se/wp-content/uploads/2015/01/Sivert-Lindblom-Blasieholms-Torg-68.jpg',
-              'https://sivertlindblom.se/wp-content/uploads/2015/01/Sivert-Lindblom-Blasieholms-Torg-42.jpg',
-              'https://sivertlindblom.se/wp-content/uploads/2015/01/Sivert-Lindblom-Blasieholms-Torg-02.jpg',
-              'https://sivertlindblom.se/wp-content/uploads/2015/01/Sivert-Lindblom-Blasieholms-Torg-57.jpg',
-              'https://sivertlindblom.se/wp-content/uploads/2015/01/Sivert-Lindblom-Blasieholms-Torg-60.jpg',
-            ] as string[]).map((url, i): LightboxImage => ({ url, alt: `Blasieholmstorg ${i + 1}` }))}
-            aspectRatio="4/3"
-            columns="sm"
-          />
+          {blasieholmImages.length > 0 && (
+            <GalleryGrid images={blasieholmImages} aspectRatio="4/3" columns="sm" />
+          )}
         </section>
 
         <Link href={`/${locale}/portfolio`} className="back-link">

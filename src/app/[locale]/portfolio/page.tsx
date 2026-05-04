@@ -4,7 +4,7 @@ import { getDictionary } from '@/i18n/getDictionary'
 import { locales } from '@/i18n/config'
 import type { Locale } from '@/i18n/config'
 import PortfolioSlideshow from '@/components/portfolio/PortfolioSlideshow'
-import { SCULPTURE_LOCATIONS } from '@/lib/sculpture-locations'
+import { getMapPins } from '@/lib/data-server'
 
 export const metadata: Metadata = { title: 'Portfolio' }
 
@@ -12,37 +12,39 @@ export function generateStaticParams() {
   return locales.map((locale) => ({ locale }))
 }
 
+const S = 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images'
+
 const SLIDESHOW_IMAGES: Record<string, string[]> = {
   exhibitions: [
-    'https://sivertlindblom.se/wp-content/uploads/2015/01/Siverts-exit.jpg',
-    'https://sivertlindblom.se/wp-content/uploads/2015/01/Sivert-Lindblom-Lunds-konsthall-10.jpg',
-    'https://sivertlindblom.se/wp-content/uploads/2015/01/Sivert-Lindblom-Lunds-konsthall-7.jpg',
-    'https://sivertlindblom.se/wp-content/uploads/2015/01/SAM_7624.jpg',
-    'https://sivertlindblom.se/wp-content/uploads/2015/01/20121028_135410.jpg',
-    'https://sivertlindblom.se/wp-content/uploads/2015/01/20121028_160220.jpg',
+    `${S}/wp/2015/01/Siverts-exit.jpg`,
+    `${S}/wp/2015/01/Sivert-Lindblom-Lunds-konsthall-10.jpg`,
+    `${S}/wp/2015/01/Sivert-Lindblom-Lunds-konsthall-7.jpg`,
+    `${S}/wp/2015/01/SAM_7624.jpg`,
+    `${S}/wp/2015/01/20121028_135410.jpg`,
+    `${S}/wp/2015/01/20121028_160220.jpg`,
   ],
   'public-works': [
-    'https://sivertlindblom.se/wp-content/uploads/2015/01/Sivert-Lindblom-Blasieholms-Torg-31.jpg',
-    'https://sivertlindblom.se/wp-content/uploads/2015/01/Sivert-Lindblom-Frescati-Atlas.jpg',
-    'https://sivertlindblom.se/wp-content/uploads/2015/01/Sivert-Lindblom-Västra-skogen-T.bana_0106.jpg',
-    'https://sivertlindblom.se/wp-content/uploads/2018/02/20180114_142218.jpg',
-    'https://sivertlindblom.se/wp-content/uploads/2015/01/Sivert566-kopia.jpg',
-    'https://sivertlindblom.se/wp-content/uploads/2015/06/CampusTbana.jpg',
-    'https://sivertlindblom.se/wp-content/uploads/2019/05/20190506_182925.jpg',
+    `${S}/wp/2015/01/Sivert-Lindblom-Blasieholms-Torg-31.jpg`,
+    `${S}/wp/2015/01/Sivert-Lindblom-Frescati-Atlas.jpg`,
+    `${S}/wp/2015/01/Sivert-Lindblom-Frescati-Klot.jpg`,
+    `${S}/wp/2018/02/20180114_142218.jpg`,
+    `${S}/wp/2015/01/Sivert566-kopia.jpg`,
+    `${S}/wp/2015/06/CampusTbana.jpg`,
+    `${S}/wp/2019/05/20190506_182925.jpg`,
   ],
   watercolors: [
-    'https://sivertlindblom.se/wp-content/uploads/2015/01/Sivert-Lindblom-akvarell-01-1507-2.jpg',
-    'https://sivertlindblom.se/wp-content/uploads/2015/01/Sivert-Lindblom-akvarell-12-1489.jpg',
-    'https://sivertlindblom.se/wp-content/uploads/2015/01/Sivert-Lindblom-akvarell-29-1431-2.jpg',
-    'https://sivertlindblom.se/wp-content/uploads/2015/01/Sivert-Lindblom-akvarell-38-1478.jpg',
-    'https://sivertlindblom.se/wp-content/uploads/2015/01/Sivert-Lindblom-akvarell-64-1453-2.jpg',
-    'https://sivertlindblom.se/wp-content/uploads/2015/01/Sivert-Lindblom-akvarell-42-1473.jpg',
-    'https://sivertlindblom.se/wp-content/uploads/2015/01/Sivert-Lindblom-akvarell-59-1458.jpg',
+    `${S}/wp/2015/01/Sivert-Lindblom-akvarell-01-1507-2.jpg`,
+    `${S}/wp/2015/01/Sivert-Lindblom-akvarell-12-1489.jpg`,
+    `${S}/wp/2015/01/Sivert-Lindblom-akvarell-29-1431-2.jpg`,
+    `${S}/wp/2015/01/Sivert-Lindblom-akvarell-38-1478.jpg`,
+    `${S}/wp/2015/01/Sivert-Lindblom-akvarell-64-1453-2.jpg`,
+    `${S}/wp/2015/01/Sivert-Lindblom-akvarell-42-1473.jpg`,
+    `${S}/wp/2015/01/Sivert-Lindblom-akvarell-59-1458.jpg`,
   ],
   scenography: [
-    'https://sivertlindblom.se/wp-content/uploads/2015/03/Sivert-Triumf-Paris.jpg',
-    'https://sivertlindblom.se/wp-content/uploads/2015/01/Sivert-Lindblom-Profiler_0069.jpg',
-    'https://sivertlindblom.se/wp-content/uploads/2015/01/Sivert-Lindblom-Profiler_0072.jpg',
+    `${S}/wp/2015/03/Sivert-Triumf-Paris.jpg`,
+    `${S}/wp/2015/01/Sivert-Lindblom-Profiler_0069.jpg`,
+    `${S}/wp/2015/01/Sivert-Lindblom-Profiler_0072.jpg`,
   ],
 }
 
@@ -52,7 +54,10 @@ export default async function PortfolioPage({
   params: Promise<{ locale: string }>
 }) {
   const { locale } = await params
-  const dict = await getDictionary(locale as Locale)
+  const [dict, mapPins] = await Promise.all([
+    getDictionary(locale as Locale),
+    getMapPins(),
+  ])
 
   const CATEGORIES = [
     {
@@ -151,7 +156,7 @@ export default async function PortfolioPage({
               {dict.portfolio?.map_title ?? 'Utforska skulpturer på karta'}
             </span>
             <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)' }}>
-              {SCULPTURE_LOCATIONS.length} {dict.portfolio?.map_works ?? 'offentliga verk'} · {new Set(SCULPTURE_LOCATIONS.map(l => l.country)).size} {dict.portfolio?.map_countries ?? 'länder'}
+              {mapPins.length} {dict.portfolio?.map_works ?? 'offentliga verk'} · {new Set(mapPins.map(l => l.country)).size} {dict.portfolio?.map_countries ?? 'länder'}
             </span>
           </div>
           <span style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-muted)', flexShrink: 0 }}>

@@ -4,14 +4,13 @@ import type { Metadata } from 'next'
 import { locales } from '@/i18n/config'
 import type { Locale } from '@/i18n/config'
 import { getDictionary } from '@/i18n/getDictionary'
-import { PUBLIC_WORKS } from '@/lib/public-works'
+import { getPublicWork, getPublicWorkSlugs } from '@/lib/data-server'
 import GalleryGrid from '@/components/gallery/GalleryGrid'
 import type { LightboxImage } from '@/components/gallery/Lightbox'
 
-export function generateStaticParams() {
-  return locales.flatMap((locale) =>
-    PUBLIC_WORKS.map((w) => ({ locale, slug: w.slug }))
-  )
+export async function generateStaticParams() {
+  const slugs = await getPublicWorkSlugs()
+  return locales.flatMap((locale) => slugs.map((slug) => ({ locale, slug })))
 }
 
 export async function generateMetadata({
@@ -20,7 +19,7 @@ export async function generateMetadata({
   params: Promise<{ locale: string; slug: string }>
 }): Promise<Metadata> {
   const { slug } = await params
-  const work = PUBLIC_WORKS.find((w) => w.slug === slug)
+  const work = await getPublicWork(slug)
   if (!work) return {}
   return {
     title: work.title,
@@ -36,7 +35,7 @@ export default async function PublicWorkDetailPage({
   const { locale, slug } = await params
   const dict = await getDictionary(locale as Locale)
 
-  const work = PUBLIC_WORKS.find((w) => w.slug === slug)
+  const work = await getPublicWork(slug)
   if (!work) notFound()
 
   const images: LightboxImage[] = work.images.map((img) => ({

@@ -3,7 +3,7 @@ import { locales } from '@/i18n/config'
 import type { Locale } from '@/i18n/config'
 import { getDictionary } from '@/i18n/getDictionary'
 import SculptureMap from '@/components/SculptureMap'
-import { SCULPTURE_LOCATIONS } from '@/lib/sculpture-locations'
+import { getMapPins } from '@/lib/data-server'
 
 export const metadata: Metadata = { title: 'Sculpture Map' }
 
@@ -17,10 +17,11 @@ export default async function MapPage({ params }: Props) {
   const { locale } = await params
   const dict = await getDictionary(locale)
 
+  const locations = await getMapPins()
   const counts = {
-    total: SCULPTURE_LOCATIONS.length,
-    countries: new Set(SCULPTURE_LOCATIONS.map((l) => l.country)).size,
-    cities: new Set(SCULPTURE_LOCATIONS.map((l) => l.city)).size,
+    total: locations.length,
+    countries: new Set(locations.map((l) => l.country)).size,
+    cities: new Set(locations.map((l) => l.city)).size,
   }
 
   return (
@@ -66,7 +67,7 @@ export default async function MapPage({ params }: Props) {
       </div>
 
       {/* Map */}
-      <SculptureMap locations={SCULPTURE_LOCATIONS} locale={locale} />
+      <SculptureMap locations={locations} locale={locale} />
 
       {/* Location list */}
       <div style={{ padding: '3rem', maxWidth: 1200 }}>
@@ -74,7 +75,7 @@ export default async function MapPage({ params }: Props) {
           {locale === 'sv' ? 'Alla platser' : locale === 'th' ? 'สถานที่ทั้งหมด' : 'All locations'}
         </h2>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '1rem' }}>
-          {SCULPTURE_LOCATIONS.sort((a, b) => b.year - a.year).map((loc) => (
+          {locations.sort((a, b) => b.year - a.year).map((loc) => (
             <div key={loc.id} className="card" style={{ padding: '1.25rem' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.5rem' }}>
                 <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-accent)', fontFamily: 'Georgia, serif' }}>{loc.year}</span>

@@ -6,16 +6,11 @@ import { locales } from '@/i18n/config'
 import type { Locale } from '@/i18n/config'
 import GalleryGrid from '@/components/gallery/GalleryGrid'
 import type { LightboxImage } from '@/components/gallery/Lightbox'
-import exhibitions from '@/lib/exhibitions-data'
+import { getExhibition, getExhibitions, getExhibitionSlugs } from '@/lib/data-server'
 
 export async function generateStaticParams() {
-  const params: { locale: string; slug: string }[] = []
-  for (const locale of locales) {
-    for (const ex of exhibitions) {
-      params.push({ locale, slug: ex.slug })
-    }
-  }
-  return params
+  const slugs = await getExhibitionSlugs()
+  return locales.flatMap((locale) => slugs.map((slug) => ({ locale, slug })))
 }
 
 export async function generateMetadata({
@@ -24,7 +19,7 @@ export async function generateMetadata({
   params: Promise<{ locale: string; slug: string }>
 }): Promise<Metadata> {
   const { slug } = await params
-  const ex = exhibitions.find((e) => e.slug === slug)
+  const ex = await getExhibition(slug)
   if (!ex) return { title: 'Exhibition' }
   return { title: `${ex.title} — Sivert Lindblom` }
 }
@@ -37,18 +32,19 @@ export default async function ExhibitionDetailPage({
   const { locale, slug } = await params
   const dict = await getDictionary(locale as Locale)
 
-  const ex = exhibitions.find((e) => e.slug === slug)
+  const [ex, allExhibitions] = await Promise.all([
+    getExhibition(slug),
+    getExhibitions(),
+  ])
   if (!ex) notFound()
 
-  // All exhibitions sorted for prev/next navigation
-  const sorted = [...exhibitions].sort((a, b) => b.year - a.year)
-  const idx = sorted.findIndex((e) => e.slug === slug)
-  const prev = idx > 0 ? sorted[idx - 1] : null
-  const next = idx < sorted.length - 1 ? sorted[idx + 1] : null
+  const idx = allExhibitions.findIndex((e) => e.slug === slug)
+  const prev = idx > 0 ? allExhibitions[idx - 1] : null
+  const next = idx < allExhibitions.length - 1 ? allExhibitions[idx + 1] : null
 
   const heroImage = ex.images[0]
   const galleryImages: LightboxImage[] = ex.images.map((url, i) => ({
-    url: url.replace(/-\d+x\d+(\.\w+)$/, '$1'), // strip WP thumbnail suffixes
+    url,
     alt: `${ex.title} — bild ${i + 1}`,
   }))
 
@@ -59,7 +55,7 @@ export default async function ExhibitionDetailPage({
         <div style={{ position: 'relative', height: '60vh', minHeight: 320, overflow: 'hidden', marginBottom: '4rem', marginTop: 'calc(-1 * (var(--header-h) + 1.5rem))' }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src={heroImage.replace(/-\d+x\d+(\.\w+)$/, '$1')}
+            src={heroImage}
             alt={ex.title}
             style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 40%' }}
           />
