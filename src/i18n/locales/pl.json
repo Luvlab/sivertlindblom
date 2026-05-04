@@ -166,5 +166,21 @@
   "footer": {
     "rights": "Wszelkie prawa zastrzeżone.",
     "editor": "Redaktor"
+  },
+  "search": {
+    "label": "Szukaj",
+    "title": "Przeszukaj całe archiwum",
+    "placeholder": "Szukaj wystaw, tekstów, rzeźb, biografii…",
+    "type_exhibition": "Wystawy",
+    "type_text": "Teksty",
+    "type_public_work": "Prace publiczne",
+    "type_sculpture": "Rzeźby",
+    "type_biography": "Biografia",
+    "results": "wyniki łącznie",
+    "hits": "dopasowań",
+    "hit": "dopasowanie",
+    "min_chars": "Wpisz co najmniej 2 znaki…",
+    "no_results": "Brak wyników",
+    "no_results_for": "Nic nie pasuje do"
   }
 }

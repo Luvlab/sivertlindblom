@@ -166,5 +166,21 @@
   "footer": {
     "rights": "جميع الحقوق محفوظة.",
     "editor": "محرر"
+  },
+  "search": {
+    "label": "بحث",
+    "title": "البحث في الأرشيف بالكامل",
+    "placeholder": "البحث في المعارض والنصوص والمنحوتات والسيرة الذاتية…",
+    "type_exhibition": "معارض",
+    "type_text": "نصوص",
+    "type_public_work": "أعمال عامة",
+    "type_sculpture": "منحوتات",
+    "type_biography": "السيرة الذاتية",
+    "results": "نتائج إجمالية",
+    "hits": "تطابقات",
+    "hit": "تطابق",
+    "min_chars": "اكتب حرفين على الأقل…",
+    "no_results": "لا نتائج",
+    "no_results_for": "لا يوجد تطابق لـ"
   }
 }

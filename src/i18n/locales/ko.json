@@ -166,5 +166,21 @@
   "footer": {
     "rights": "모든 권리 보유.",
     "editor": "편집자"
+  },
+  "search": {
+    "label": "검색",
+    "title": "전체 아카이브 검색",
+    "placeholder": "전시회, 텍스트, 조각, 전기 검색…",
+    "type_exhibition": "전시회",
+    "type_text": "텍스트",
+    "type_public_work": "공공 예술",
+    "type_sculpture": "조각",
+    "type_biography": "전기",
+    "results": "개 결과",
+    "hits": "개 일치",
+    "hit": "개 일치",
+    "min_chars": "2자 이상 입력해주세요…",
+    "no_results": "결과 없음",
+    "no_results_for": "일치하는 항목 없음"
   }
 }

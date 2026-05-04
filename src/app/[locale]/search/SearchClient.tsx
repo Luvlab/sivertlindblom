@@ -4,15 +4,24 @@ import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import type { SearchItem } from '@/lib/search-index'
 
-const TYPE_LABELS: Record<SearchItem['type'], string> = {
-  exhibition:   'Utställning',
-  text:         'Text',
-  'public-work': 'Offentligt arbete',
-  sculpture:    'Skulptur',
-  biography:    'Biografi',
+type TypeKey = SearchItem['type']
+
+interface Props {
+  index: SearchItem[]
+  locale: string
+  placeholder: string
+  typeLabels: Record<TypeKey, string>
+  ui: {
+    minChars: string
+    noResults: string
+    noResultsFor: string
+    results: string
+    hits: string
+    hit: string
+  }
 }
 
-const TYPE_ORDER: SearchItem['type'][] = [
+const TYPE_ORDER: TypeKey[] = [
   'public-work', 'sculpture', 'exhibition', 'text', 'biography',
 ]
 
@@ -40,17 +49,10 @@ function highlight(text: string, q: string): React.ReactNode {
   )
 }
 
-interface Props {
-  index: SearchItem[]
-  locale: string
-  placeholder: string
-}
-
-export default function SearchClient({ index, locale, placeholder }: Props) {
+export default function SearchClient({ index, locale, placeholder, typeLabels, ui }: Props) {
   const [query, setQuery] = useState('')
   const inputRef = useRef<HTMLInputElement>(null)
 
-  // Auto-focus on mount
   useEffect(() => { inputRef.current?.focus() }, [])
 
   const q = query.trim()
@@ -63,10 +65,9 @@ export default function SearchClient({ index, locale, placeholder }: Props) {
         .sort((a, b) => b.s - a.s || (b.item.year ?? 0) - (a.item.year ?? 0))
         .map(({ item }) => item)
 
-  // Group by type in preferred order
   const grouped = TYPE_ORDER.map((type) => ({
     type,
-    label: TYPE_LABELS[type],
+    label: typeLabels[type],
     items: results.filter((r) => r.type === type),
   })).filter((g) => g.items.length > 0)
 
@@ -75,13 +76,8 @@ export default function SearchClient({ index, locale, placeholder }: Props) {
       {/* Search input */}
       <div style={{ position: 'relative', marginBottom: '2.5rem' }}>
         <span style={{
-          position: 'absolute',
-          left: '1rem',
-          top: '50%',
-          transform: 'translateY(-50%)',
-          color: 'var(--color-muted)',
-          pointerEvents: 'none',
-          fontSize: '1.1rem',
+          position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)',
+          color: 'var(--color-muted)', pointerEvents: 'none', fontSize: '1rem',
         }}>
           <SearchIcon />
         </span>
@@ -98,7 +94,7 @@ export default function SearchClient({ index, locale, placeholder }: Props) {
             background: 'var(--color-bg-surface)',
             border: '1px solid var(--color-border)',
             borderRadius: 3,
-            padding: '0.85rem 1rem 0.85rem 2.75rem',
+            padding: '0.85rem 2.5rem 0.85rem 2.75rem',
             fontSize: 'var(--fs-base)',
             color: 'var(--color-text)',
             outline: 'none',
@@ -110,59 +106,48 @@ export default function SearchClient({ index, locale, placeholder }: Props) {
         {query && (
           <button
             onClick={() => setQuery('')}
-            aria-label="Rensa"
+            aria-label="Clear"
             style={{
-              position: 'absolute',
-              right: '0.75rem',
-              top: '50%',
-              transform: 'translateY(-50%)',
-              background: 'none',
-              border: 'none',
-              cursor: 'pointer',
-              color: 'var(--color-muted)',
-              fontSize: '1.1rem',
-              lineHeight: 1,
-              padding: '0.2rem',
+              position: 'absolute', right: '0.75rem', top: '50%', transform: 'translateY(-50%)',
+              background: 'none', border: 'none', cursor: 'pointer',
+              color: 'var(--color-muted)', fontSize: '1.2rem', lineHeight: 1, padding: '0.2rem',
             }}
           >×</button>
         )}
       </div>
 
-      {/* Empty state */}
+      {/* Empty / hint state */}
       {q.length < 2 && (
         <p style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-sm)' }}>
-          Skriv minst 2 tecken för att söka…
+          {ui.minChars}
         </p>
       )}
 
       {/* No results */}
       {q.length >= 2 && results.length === 0 && (
         <div style={{ textAlign: 'center', padding: '4rem 0', color: 'var(--color-muted)' }}>
-          <p style={{ fontSize: 'var(--fs-xl)', marginBottom: '0.5rem' }}>Inga träffar</p>
-          <p style={{ fontSize: 'var(--fs-sm)' }}>Ingen post matchade «{q}»</p>
+          <p style={{ fontSize: 'var(--fs-xl)', marginBottom: '0.5rem' }}>{ui.noResults}</p>
+          <p style={{ fontSize: 'var(--fs-sm)' }}>{ui.noResultsFor} «{q}»</p>
         </div>
       )}
 
-      {/* Results */}
+      {/* Results grouped by type */}
       {grouped.map(({ type, label, items }) => (
         <section key={type} style={{ marginBottom: '3rem' }}>
           <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '0.75rem',
-            marginBottom: '1rem',
-            paddingBottom: '0.5rem',
+            display: 'flex', alignItems: 'center', gap: '0.75rem',
+            marginBottom: '1rem', paddingBottom: '0.5rem',
             borderBottom: '1px solid var(--color-border)',
           }}>
             <span style={{ fontSize: 'var(--fs-xs)', letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--color-accent)' }}>
               {label}
             </span>
             <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)' }}>
-              {items.length} träff{items.length !== 1 ? 'ar' : ''}
+              {items.length} {items.length === 1 ? ui.hit : ui.hits}
             </span>
           </div>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '0' }}>
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
             {items.map((item) => (
               <Link
                 key={item.id}
@@ -170,7 +155,7 @@ export default function SearchClient({ index, locale, placeholder }: Props) {
                 className="row-hover"
                 style={{
                   display: 'block',
-                  padding: '0.9rem 0',
+                  padding: '0.9rem 0.5rem',
                   borderBottom: '1px solid var(--color-border)',
                   textDecoration: 'none',
                 }}
@@ -201,10 +186,9 @@ export default function SearchClient({ index, locale, placeholder }: Props) {
         </section>
       ))}
 
-      {/* Result count summary */}
       {results.length > 0 && (
-        <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', marginTop: '1rem', opacity: 0.6 }}>
-          {results.length} resultat totalt
+        <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', marginTop: '1rem', opacity: 0.55 }}>
+          {results.length} {ui.results}
         </p>
       )}
     </div>

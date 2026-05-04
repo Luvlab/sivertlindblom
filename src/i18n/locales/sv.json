@@ -166,5 +166,21 @@
   "footer": {
     "rights": "Alla rättigheter förbehållna.",
     "editor": "Redaktör"
+  },
+  "search": {
+    "label": "Sök",
+    "title": "Sök i hela arkivet",
+    "placeholder": "Sök utställningar, texter, skulpturer, biografi…",
+    "type_exhibition": "Utställningar",
+    "type_text": "Texter",
+    "type_public_work": "Offentliga arbeten",
+    "type_sculpture": "Skulpturer",
+    "type_biography": "Biografi",
+    "results": "resultat totalt",
+    "hits": "träffar",
+    "hit": "träff",
+    "min_chars": "Skriv minst 2 tecken för att söka…",
+    "no_results": "Inga träffar",
+    "no_results_for": "Ingen post matchade"
   }
 }

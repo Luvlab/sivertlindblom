@@ -166,5 +166,21 @@
   "footer": {
     "rights": "Todos los derechos reservados.",
     "editor": "Editor"
+  },
+  "search": {
+    "label": "Buscar",
+    "title": "Buscar en el archivo completo",
+    "placeholder": "Buscar exposiciones, textos, esculturas, biografía…",
+    "type_exhibition": "Exposiciones",
+    "type_text": "Textos",
+    "type_public_work": "Obras públicas",
+    "type_sculpture": "Esculturas",
+    "type_biography": "Biografía",
+    "results": "resultados en total",
+    "hits": "coincidencias",
+    "hit": "coincidencia",
+    "min_chars": "Escribe al menos 2 caracteres…",
+    "no_results": "Sin resultados",
+    "no_results_for": "Nada coincide con"
   }
 }

@@ -166,5 +166,21 @@
   "footer": {
     "rights": "Tutti i diritti riservati.",
     "editor": "Redattore"
+  },
+  "search": {
+    "label": "Cerca",
+    "title": "Cerca nell'archivio completo",
+    "placeholder": "Cerca mostre, testi, sculture, biografia…",
+    "type_exhibition": "Mostre",
+    "type_text": "Testi",
+    "type_public_work": "Opere pubbliche",
+    "type_sculpture": "Sculture",
+    "type_biography": "Biografia",
+    "results": "risultati totali",
+    "hits": "corrispondenze",
+    "hit": "corrispondenza",
+    "min_chars": "Inserisci almeno 2 caratteri…",
+    "no_results": "Nessun risultato",
+    "no_results_for": "Nessuna voce corrisponde a"
   }
 }

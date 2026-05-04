@@ -166,5 +166,21 @@
   "footer": {
     "rights": "Alle Rechte vorbehalten.",
     "editor": "Redakteur"
+  },
+  "search": {
+    "label": "Suche",
+    "title": "Gesamtes Archiv durchsuchen",
+    "placeholder": "Suche Ausstellungen, Texte, Skulpturen, Biografie…",
+    "type_exhibition": "Ausstellungen",
+    "type_text": "Texte",
+    "type_public_work": "Öffentliche Werke",
+    "type_sculpture": "Skulpturen",
+    "type_biography": "Biografie",
+    "results": "Ergebnisse gesamt",
+    "hits": "Treffer",
+    "hit": "Treffer",
+    "min_chars": "Mindestens 2 Zeichen eingeben…",
+    "no_results": "Keine Ergebnisse",
+    "no_results_for": "Nichts gefunden für"
   }
 }

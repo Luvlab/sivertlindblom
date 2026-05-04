@@ -166,5 +166,21 @@
   "footer": {
     "rights": "Alle rechten voorbehouden.",
     "editor": "Redacteur"
+  },
+  "search": {
+    "label": "Zoeken",
+    "title": "Zoek in het hele archief",
+    "placeholder": "Zoek tentoonstellingen, teksten, sculpturen, biografie…",
+    "type_exhibition": "Tentoonstellingen",
+    "type_text": "Teksten",
+    "type_public_work": "Openbare werken",
+    "type_sculpture": "Sculpturen",
+    "type_biography": "Biografie",
+    "results": "resultaten totaal",
+    "hits": "overeenkomsten",
+    "hit": "overeenkomst",
+    "min_chars": "Typ minimaal 2 tekens…",
+    "no_results": "Geen resultaten",
+    "no_results_for": "Geen resultaat gevonden voor"
   }
 }

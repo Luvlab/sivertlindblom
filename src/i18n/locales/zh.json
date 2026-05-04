@@ -166,5 +166,21 @@
   "footer": {
     "rights": "版权所有。",
     "editor": "编辑"
+  },
+  "search": {
+    "label": "搜索",
+    "title": "搜索全部档案",
+    "placeholder": "搜索展览、文章、雕塑、传记…",
+    "type_exhibition": "展览",
+    "type_text": "文章",
+    "type_public_work": "公共艺术",
+    "type_sculpture": "雕塑",
+    "type_biography": "传记",
+    "results": "条结果",
+    "hits": "条匹配",
+    "hit": "条匹配",
+    "min_chars": "请输入至少2个字符…",
+    "no_results": "无结果",
+    "no_results_for": "未找到匹配项"
   }
 }

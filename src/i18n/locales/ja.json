@@ -166,5 +166,21 @@
   "footer": {
     "rights": "全著作権所有。",
     "editor": "編集者"
+  },
+  "search": {
+    "label": "検索",
+    "title": "アーカイブ全体を検索",
+    "placeholder": "展示会、テキスト、彫刻、伝記を検索…",
+    "type_exhibition": "展示会",
+    "type_text": "テキスト",
+    "type_public_work": "パブリックアート",
+    "type_sculpture": "彫刻",
+    "type_biography": "伝記",
+    "results": "件の結果",
+    "hits": "件一致",
+    "hit": "件一致",
+    "min_chars": "2文字以上入力してください…",
+    "no_results": "結果なし",
+    "no_results_for": "一致する項目がありません"
   }
 }
