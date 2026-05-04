@@ -14,7 +14,7 @@ export interface Exhibition {
 export const exhibitions: Exhibition[] = [
   {
     slug: "vandalorum-2016",
-    title: "VANDALORUM 11 juni–28 augusti 2016",
+    title: "Vandalorum 11 juni–28 augusti 2016",
     year: 2016,
     location: "Värnamo",
     url: "https://sivertlindblom.se/vandalorum-11-juni-28-augusti-2016/",

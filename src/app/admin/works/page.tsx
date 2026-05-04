@@ -9,7 +9,7 @@ const MOCK_WORKS = [
   { id: '2', title: 'Gustav Adolfs torg, fontäner',    category: 'public_exterior', year_start: 2002, location: 'Malmö',     published: true },
   { id: '3', title: 'Nobelmonument',                   category: 'public_exterior', year_start: 2003, location: 'New York',  published: true },
   { id: '4', title: 'Sergels torg — Sergel monumentet',category: 'public_exterior', year_start: 1998, location: 'Stockholm', published: true },
-  { id: '5', title: 'VANDALORUM',                      category: 'exhibition',      year_start: 2016, location: 'Värnamo',  published: true },
+  { id: '5', title: 'Vandalorum',                      category: 'exhibition',      year_start: 2016, location: 'Värnamo',  published: true },
   { id: '6', title: 'Kungl. Konstakademien',           category: 'exhibition',      year_start: 2012, location: 'Stockholm', published: true },
   { id: '7', title: 'Lunds Konsthall',                 category: 'exhibition',      year_start: 1993, location: 'Lund',      published: true },
   { id: '8', title: 'Moderna Museet — Live Show',      category: 'exhibition',      year_start: 1974, location: 'Stockholm', published: true },

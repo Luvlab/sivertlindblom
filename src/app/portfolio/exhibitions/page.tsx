@@ -4,7 +4,7 @@ import type { Metadata } from 'next'
 export const metadata: Metadata = { title: 'Utställningar' }
 
 const EXHIBITIONS = [
-  { slug: 'vandalorum-2016',               title: 'VANDALORUM',                             year: 2016, location: 'Värnamo' },
+  { slug: 'vandalorum-2016',               title: 'Vandalorum',                             year: 2016, location: 'Värnamo' },
   { slug: 'konstakademien-2012',           title: 'Kungl. Konstakademien',                  year: 2012, location: 'Stockholm' },
   { slug: 'korsbarsgarden-2010',           title: 'Körsbärsgården',                          year: 2010, location: 'Gotland' },
   { slug: 'galerie-aronowitsch-2005',      title: 'Galerie Aronowitsch',                    year: 2005, location: 'Stockholm' },
