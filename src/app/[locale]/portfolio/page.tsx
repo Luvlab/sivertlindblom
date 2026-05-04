@@ -4,6 +4,7 @@ import { getDictionary } from '@/i18n/getDictionary'
 import { locales } from '@/i18n/config'
 import type { Locale } from '@/i18n/config'
 import PortfolioSlideshow from '@/components/portfolio/PortfolioSlideshow'
+import { SCULPTURE_LOCATIONS } from '@/lib/sculpture-locations'
 
 export const metadata: Metadata = { title: 'Portfolio' }
 
@@ -150,7 +151,7 @@ export default async function PortfolioPage({
               {dict.portfolio?.map_title ?? 'Utforska skulpturer på karta'}
             </span>
             <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)' }}>
-              {29} {dict.portfolio?.map_works ?? 'offentliga verk'} · {5} {dict.portfolio?.map_countries ?? 'länder'}
+              {SCULPTURE_LOCATIONS.length} {dict.portfolio?.map_works ?? 'offentliga verk'} · {new Set(SCULPTURE_LOCATIONS.map(l => l.country)).size} {dict.portfolio?.map_countries ?? 'länder'}
             </span>
           </div>
           <span style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-muted)', flexShrink: 0 }}>
