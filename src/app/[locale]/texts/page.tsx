@@ -11,15 +11,18 @@ export function generateStaticParams() {
 }
 
 const TEXTS: Array<{ type: string; year: number; title: string; author: string; lang: string; publication: string; slug?: string }> = [
+  { type: 'essay',       year: 2013, title: 'Akvarellen Nr 2 – 2013',                                  author: 'Håkan Bull',              lang: 'sv', publication: 'Akvarellen Nr 2, 2013',      slug: 'hakan-bull-2013' },
   { type: 'essay',       year: 2012, title: 'Text till katalog, Akvareller m.m.',                     author: 'Peter Cornell',           lang: 'sv', publication: 'Katalog Konstakademien',   slug: 'peter-cornell-2012' },
   { type: 'essay',       year: 2012, title: 'Text till katalog, Akvareller m.m.',                     author: 'Jan Öqvist',              lang: 'sv', publication: 'Katalog Konstakademien',   slug: 'jan-oqvist-2012' },
   { type: 'essay',       year: 2012, title: 'Text till katalog, Akvareller',                          author: 'Catharina Gabrielsson',   lang: 'sv', publication: 'Katalog Konstakademien',   slug: 'catharina-gabrielsson-2012' },
   { type: 'preface',     year: 1993, title: 'Förord, Skulptur, Lunds Konsthall',                      author: 'Daniel Birnbaum',         lang: 'sv', publication: 'Katalog Lunds Konsthall',  slug: 'daniel-birnbaum-1993' },
+  { type: 'preface',     year: 1993, title: 'Förord, Skulptur Arkitektur, Skissernas Museum',         author: 'Jan Torsten Ahlstrand',   lang: 'sv', publication: 'Katalog Skissernas Museum', slug: 'jan-torsten-ahlstrand-1993' },
   { type: 'essay',       year: 1993, title: 'Text, Skulptur Arkitektur, Skissernas Museum',           author: 'Stefan Alenius',          lang: 'sv', publication: 'Katalog Skissernas Museum',  slug: 'stefan-alenius-1993' },
   { type: 'preface',     year: 1993, title: 'Förord, Skulptur, Lunds Konsthall',                      author: 'Cecilia Nelson',          lang: 'sv', publication: 'Katalog Lunds Konsthall',   slug: 'cecilia-nelson-1993' },
   { type: 'essay',       year: 1993, title: 'Text, Skulptur, Lunds Konsthall',                        author: 'Stig Larsson',            lang: 'sv', publication: 'Katalog Lunds Konsthall',  slug: 'stig-larsson-1993' },
   { type: 'essay',       year: 1981, title: 'Om Sivert Lindblom, Galeri Åsbaek',                      author: 'Stig Larsson',            lang: 'sv', publication: 'Galeri Åsbaek, Köpenhamn', slug: 'stig-larsson-1981' },
   { type: 'essay',       year: 1977, title: 'Katalogtext, Live Show II, Kunstmuseum Luzern',          author: 'Jean-Christophe Ammann',  lang: 'de', publication: 'Katalog Kunstmuseum Luzern', slug: 'jean-christophe-ammann-1977' },
+  { type: 'essay',       year: 1973, title: 'Om Galerie Buren 1973',                                  author: 'Beate Sydhoff',           lang: 'sv', publication: 'Galerie Buren, Stockholm',   slug: 'beate-sydhoff-galerie-buren-1973' },
   { type: 'essay',       year: 1971, title: 'Text till utställning, Galerie Gimpel',                  author: 'Ulf Linde',               lang: 'en', publication: 'Galerie Gimpel',            slug: 'ulf-linde-1971' },
   { type: 'preface',     year: 1963, title: 'Förord till utställning, Galerie Buren',                 author: 'Leon Rappaport',          lang: 'sv', publication: 'Galerie Buren',             slug: 'leon-rappaport-1963' },
   { type: 'review',      year: 2012, title: 'Om Sivert Lindblom, Kungl. Konstakademien',              author: 'Ingela Lind',             lang: 'sv', publication: 'Dagens Nyheter',            slug: 'ingela-lind-2012' },
@@ -35,6 +38,7 @@ const TEXTS: Array<{ type: string; year: number; title: string; author: string; 
   { type: 'own_writing', year: 1986, title: 'Bra konst i bra arkitektur',                             author: 'Sivert Lindblom',         lang: 'sv', publication: 'KRO Distrikt 17',           slug: 'sivert-lindblom-bra-konst-1986' },
   { type: 'own_writing', year: 1974, title: 'Katalogtext, Live Show, Moderna Museet',                 author: 'Sivert Lindblom',         lang: 'sv', publication: 'Moderna Museet',            slug: 'sivert-lindblom-live-show-1974' },
   { type: 'translated',  year: 1980, title: 'Préface pour la exhibition à Centre Culturel Suédois',  author: 'Lars Bergquist',          lang: 'fr', publication: 'CCS Paris',                  slug: 'lars-bergquist-1980' },
+  { type: 'translated',  year: 1980, title: 'Pour CCS Paris — texte critique',                        author: 'Torsten Ekbom',           lang: 'fr', publication: 'Centre Culturel Suédois, Paris', slug: 'torsten-ekbom-1980' },
   { type: 'translated',  year: 1967, title: 'A Conversation with Sivert Lindblom',                   author: 'Beate Sydhoff',           lang: 'en', publication: 'Konstrevy nr 2',            slug: 'beate-sydhoff-english-1967' },
   { type: 'translated',  year: 1967, title: 'Conversazione con Sivert Lindblom',                     author: 'Beate Sydhoff',           lang: 'it', publication: 'Konstrevy nr 2',             slug: 'beate-sydhoff-italian-1967' },
 ]

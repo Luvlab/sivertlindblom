@@ -96,7 +96,7 @@ export default async function PublicWorksPage({
         />
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, transparent 30%, rgba(10,10,10,0.95) 100%)' }} />
         <div className="page-pad" style={{ position: 'absolute', bottom: '2rem', left: 0, right: 0 }}>
-          <Link href={`/${locale}/portfolio`} className="back-link" style={{ color: 'rgba(255,255,255,0.6)' }}>
+          <Link href={`/${locale}/portfolio`} className="back-link" style={{ color: 'rgba(255,255,255,0.85)' }}>
             <span className="back-link-arrow">←</span>
             <span className="back-link-label">{dict.nav?.portfolio ?? 'Portfolio'}</span>
           </Link>

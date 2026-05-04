@@ -89,14 +89,14 @@ export default async function ExhibitionsPage({
         />
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, transparent 30%, rgba(10,10,10,0.9) 100%)' }} />
         <div className="page-pad" style={{ position: 'absolute', bottom: '2.5rem', left: 0, right: 0 }}>
-          <Link href={`/${locale}/portfolio`} className="back-link" style={{ color: 'rgba(255,255,255,0.6)' }}>
+          <Link href={`/${locale}/portfolio`} className="back-link" style={{ color: 'rgba(255,255,255,0.85)' }}>
             <span className="back-link-arrow">←</span>
             <span className="back-link-label">{dict.nav?.portfolio ?? 'Portfolio'}</span>
           </Link>
           <h1 style={{ fontFamily: 'Georgia, serif', fontWeight: 400, fontSize: 'clamp(1.8rem,3vw,3rem)', marginTop: '0.5rem', marginBottom: '0.25rem' }}>
             {dict.portfolio?.cat_exhibitions ?? 'Utställningar'}
           </h1>
-          <p style={{ color: 'rgba(255,255,255,0.55)', fontSize: 'var(--fs-sm)' }}>
+          <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: 'var(--fs-sm)' }}>
             {EXHIBITIONS.length} {dict.portfolio?.cat_exhibitions?.toLowerCase() ?? 'utställningar'}, 1961–2016
           </p>
         </div>
