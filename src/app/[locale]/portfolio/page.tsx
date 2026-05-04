@@ -128,34 +128,40 @@ export default async function PortfolioPage({
           ))}
         </div>
 
-        {/* Map callout */}
-        <div style={{
-          marginTop: '3rem',
-          padding: '2rem',
-          border: '1px solid var(--color-border)',
-          borderRadius: 2,
-          background: 'var(--color-bg-surface)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          gap: '2rem',
-          flexWrap: 'wrap',
-        }}>
+        {/* Map callout — full-width prominent CTA */}
+        <Link
+          href={`/${locale}/portfolio/map`}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            gap: '2rem',
+            flexWrap: 'wrap',
+            marginTop: '3rem',
+            padding: '2.25rem 2.5rem',
+            background: 'var(--color-accent)',
+            color: '#000',
+            textDecoration: 'none',
+            transition: 'background 0.15s',
+          }}
+          onMouseEnter={undefined}
+          className="map-cta-link"
+        >
           <div>
-            <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-accent)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '0.25rem' }}>
-              {dict.portfolio?.map_label ?? 'Map'}
+            <p style={{ fontSize: 'var(--fs-xs)', letterSpacing: '0.14em', textTransform: 'uppercase', opacity: 0.65, marginBottom: '0.3rem' }}>
+              {dict.portfolio?.map_label ?? 'Karta'}
             </p>
-            <h3 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-lg)', fontWeight: 400, marginBottom: '0.5rem' }}>
-              {dict.portfolio?.map_title ?? 'Explore sculptures on a map'}
-            </h3>
-            <p style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-muted)' }}>
-              {29} {dict.portfolio?.map_works ?? 'public works'} {5} {dict.portfolio?.map_countries ?? 'countries'}
+            <p style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-xl)', fontWeight: 400, lineHeight: 1.2 }}>
+              {dict.portfolio?.map_title ?? 'Utforska skulpturer på karta'}
+            </p>
+            <p style={{ fontSize: 'var(--fs-sm)', opacity: 0.65, marginTop: '0.35rem' }}>
+              {29} {dict.portfolio?.map_works ?? 'offentliga verk'} · {5} {dict.portfolio?.map_countries ?? 'länder'}
             </p>
           </div>
-          <Link href={`/${locale}/portfolio/map`} className="btn" style={{ whiteSpace: 'nowrap' }}>
-            {dict.portfolio?.map_view ?? 'View map'} →
-          </Link>
-        </div>
+          <span style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-3xl)', lineHeight: 1, fontWeight: 400, flexShrink: 0 }}>
+            VISA KARTA →
+          </span>
+        </Link>
       </div>
 
       <div className="page-pad" style={{ paddingBottom: '4rem', paddingTop: '2rem' }}>

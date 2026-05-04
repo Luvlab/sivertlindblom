@@ -436,6 +436,9 @@ a:hover { opacity: 0.7; }
   text-transform: uppercase;
 }
 
+/* ─── Map CTA ────────────────────────────────────────────── */
+.map-cta-link:hover { background: var(--color-accent-dim) !important; }
+
 /* ─── Search icon ────────────────────────────────────────── */
 .search-icon-btn:hover { color: var(--color-text) !important; }
 
