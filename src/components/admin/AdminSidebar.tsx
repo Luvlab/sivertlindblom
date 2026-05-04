@@ -4,12 +4,14 @@ import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 
 const NAV_ITEMS = [
-  { href: '/admin',            label: 'Dashboard',     icon: '◈' },
-  { href: '/admin/works',      label: 'Verk',          icon: '▦' },
-  { href: '/admin/texts',      label: 'Texter',        icon: '≡' },
-  { href: '/admin/biography',  label: 'Biografi',      icon: '◉' },
-  { href: '/admin/media',      label: 'Media',         icon: '▣' },
-  { href: '/admin/settings',   label: 'Inställningar', icon: '⚙' },
+  { href: '/admin',                label: 'Dashboard',          icon: '◈' },
+  { href: '/admin/exhibitions',    label: 'Utställningar',      icon: '◻' },
+  { href: '/admin/public-works',   label: 'Offentliga arbeten', icon: '▦' },
+  { href: '/admin/texts',          label: 'Texter',             icon: '≡' },
+  { href: '/admin/biography',      label: 'Biografi',           icon: '◉' },
+  { href: '/admin/map',            label: 'Karta',              icon: '◎' },
+  { href: '/admin/media',          label: 'Media',              icon: '▣' },
+  { href: '/admin/settings',       label: 'Inställningar',      icon: '⚙' },
 ]
 
 export default function AdminSidebar() {

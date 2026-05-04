@@ -106,13 +106,21 @@ export default async function TextDetailPage({
           </p>
         )}
 
-        {/* Body */}
+        {/* Body — double newlines split paragraphs; single newlines become <br> */}
         <div>
-          {body.split('\n\n').map((para, i) => (
-            <p key={i} style={{ fontSize: 'var(--fs-base)', lineHeight: 1.8, marginBottom: '1.5em', color: 'var(--color-text)' }}>
-              {para}
-            </p>
-          ))}
+          {body.split('\n\n').map((para, i) => {
+            const lines = para.split('\n')
+            return (
+              <p key={i} style={{ fontSize: 'var(--fs-base)', lineHeight: 1.8, marginBottom: '1.5em', color: 'var(--color-text)' }}>
+                {lines.map((line, j) => (
+                  <span key={j}>
+                    {j > 0 && <br />}
+                    {line}
+                  </span>
+                ))}
+              </p>
+            )
+          })}
         </div>
 
         {/* Back link */}

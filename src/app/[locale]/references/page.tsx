@@ -39,6 +39,7 @@ const FILMS: Array<{ year: number; title: string; director?: string; venue?: str
   { year: 1998, title: 'TV4-Uppland: kortintervju om skulptur', venue: 'TV4 Uppland' },
   { year: 2001, title: 'Resningen av Profilen, Potatisåkern', venue: 'Malmö' },
   { year: 2002, title: 'Fontänerna på Gustav Adolfs torg', venue: 'Malmö', videoUrl: 'https://www.youtube.com/watch?v=-ba2Oq65qe4' },
+  { year: 1973, title: 'Skandinaviska Bankens Palats — Gustav Adolfs Torg', venue: 'Sveriges Riksbank', videoUrl: 'https://www.riksbank.se/sv/om-riksbanken/riksbankens-hus/' },
 ]
 
 export default async function ReferencesPage({

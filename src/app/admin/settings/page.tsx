@@ -1,9 +1,17 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+
+interface Settings {
+  site_title: string
+  site_subtitle: string
+  hero_tagline: string
+  contact_email: string
+  about_short: string
+}
 
 export default function AdminSettings() {
-  const [settings, setSettings] = useState({
+  const [settings, setSettings] = useState<Settings>({
     site_title:    'Sivert Lindblom',
     site_subtitle: 'Skulptör · Konstnär · Stockholm',
     hero_tagline:  'Skulptur, offentlig konst, akvareller och scenografi sedan 1963',
@@ -12,23 +20,48 @@ export default function AdminSettings() {
   })
   const [saved, setSaved] = useState(false)
   const [saving, setSaving] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const [saveMsg, setSaveMsg] = useState<string | null>(null)
+
+  useEffect(() => {
+    fetch('/api/admin/settings')
+      .then(r => r.json())
+      .then((d: Settings | { error: string }) => { if (!('error' in d)) setSettings(d) })
+      .catch(() => {}) // silently fall back to defaults
+  }, [])
 
   async function handleSave(e: React.FormEvent) {
     e.preventDefault()
     setSaving(true)
-    // TODO: POST to /api/admin/settings
-    await new Promise(r => setTimeout(r, 600))
-    setSaving(false)
-    setSaved(true)
-    setTimeout(() => setSaved(false), 3000)
+    setError(null)
+    try {
+      const res = await fetch('/api/admin/settings', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(settings),
+      })
+      const data = await res.json() as { ok?: boolean; message?: string; error?: string }
+      if (data.ok) {
+        setSaved(true)
+        setSaveMsg(null)
+        setTimeout(() => setSaved(false), 3000)
+      } else {
+        setSaveMsg(data.message ?? null)
+        setError(data.error ?? 'Fel vid sparning')
+      }
+    } catch (e) { setError(String(e)) }
+    finally { setSaving(false) }
   }
 
-  const field = (key: keyof typeof settings, label: string, multiline = false) => (
+  const field = (key: keyof Settings, label: string, multiline = false) => (
     <div>
       <label style={{ display: 'block', fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '0.4rem' }}>{label}</label>
       {multiline
-        ? <textarea className="input" rows={4} value={settings[key]} onChange={e => setSettings(p => ({ ...p, [key]: e.target.value }))} style={{ resize: 'vertical' }} />
-        : <input type="text" className="input" value={settings[key]} onChange={e => setSettings(p => ({ ...p, [key]: e.target.value }))} />
+        ? <textarea className="input" rows={4} value={settings[key]}
+            onChange={e => setSettings(p => ({ ...p, [key]: e.target.value }))}
+            style={{ resize: 'vertical', width: '100%' }} />
+        : <input type="text" className="input" style={{ width: '100%' }} value={settings[key]}
+            onChange={e => setSettings(p => ({ ...p, [key]: e.target.value }))} />
       }
     </div>
   )
@@ -37,8 +70,15 @@ export default function AdminSettings() {
     <div style={{ padding: '3rem', maxWidth: 700 }}>
       <h1 style={{ fontFamily: 'Georgia, serif', fontWeight: 400, fontSize: 'var(--fs-3xl)', marginBottom: '0.5rem' }}>Inställningar</h1>
       <p style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-sm)', marginBottom: '2.5rem' }}>
-        Webbplatsens globala inställningar, sparas i Supabase-tabellen <code style={{ fontSize: 'var(--fs-xs)' }}>settings</code>.
+        Globala webbplatsinställningar — sparas i <code style={{ fontSize: 'var(--fs-xs)' }}>public/cms-data/settings.json</code>.
       </p>
+
+      {error && (
+        <div style={{ background: '#3a0010', border: '1px solid #c00', padding: '1rem', marginBottom: '1.5rem', fontSize: 'var(--fs-sm)', color: '#f88' }}>
+          {error}
+          {saveMsg && <p style={{ marginTop: '0.5rem', color: '#aaa' }}>{saveMsg}</p>}
+        </div>
+      )}
 
       <form onSubmit={handleSave} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
         {field('site_title', 'Webbplatsens titel')}
@@ -56,21 +96,13 @@ export default function AdminSettings() {
       <hr className="divider" style={{ margin: '3rem 0' }} />
 
       <section>
-        <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-xl)', marginBottom: '1.5rem' }}>Supabase-konfiguration</h2>
-        <div style={{ background: 'var(--color-bg-surface)', border: '1px solid var(--color-border)', padding: '1.5rem', fontSize: 'var(--fs-sm)' }}>
-          <p style={{ color: 'var(--color-muted)', marginBottom: '1rem' }}>Sätt dessa i <code style={{ fontSize: 'var(--fs-xs)' }}>.env.local</code>:</p>
-          {[
-            ['NEXT_PUBLIC_SUPABASE_URL', 'Din Supabase projekt-URL'],
-            ['NEXT_PUBLIC_SUPABASE_ANON_KEY', 'Din anon-nyckel'],
-            ['SUPABASE_SERVICE_ROLE_KEY', 'Din service role-nyckel'],
-          ].map(([k, desc]) => (
-            <div key={k} style={{ marginBottom: '1rem' }}>
-              <code style={{ display: 'block', fontSize: 'var(--fs-xs)', color: 'var(--color-accent)', marginBottom: '0.2rem' }}>{k}</code>
-              <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)' }}>{desc}</span>
-            </div>
-          ))}
-          <p style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-xs)', marginTop: '1rem' }}>
-            Kör sedan <code>supabase/schema.sql</code> i Supabase SQL Editor, följt av <code>supabase/seed.sql</code>.
+        <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-xl)', marginBottom: '1rem' }}>Hur sparning fungerar</h2>
+        <div style={{ background: 'var(--color-bg-surface)', border: '1px solid var(--color-border)', padding: '1.5rem', fontSize: 'var(--fs-sm)', lineHeight: 1.7 }}>
+          <p style={{ color: 'var(--color-muted)', marginBottom: '1rem' }}>
+            <strong style={{ color: 'var(--color-text)' }}>Lokalt (npm run dev):</strong> Ändringar sparas direkt till <code style={{ fontSize: 'var(--fs-xs)' }}>public/cms-data/</code>. Committa dessa filer till git för att publicera på Vercel.
+          </p>
+          <p style={{ color: 'var(--color-muted)' }}>
+            <strong style={{ color: 'var(--color-text)' }}>Vercel production:</strong> Filsystemet är skrivskyddat. Gör ändringar lokalt och pusha till git, eller konfigurera Supabase nedan.
           </p>
         </div>
       </section>

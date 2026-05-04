@@ -153,9 +153,10 @@ a:hover { opacity: 0.7; }
 .hero {
   height: 100dvh;
   /* pull the hero up so it bleeds behind the fixed header and truly fills the
-     viewport — main-content has padding-top: var(--header-h) to keep other
-     pages' content below the header, but the hero should ignore that offset */
-  margin-top: calc(-1 * var(--header-h));
+     viewport — main-content has padding-top: calc(var(--header-h) + 1.5rem)
+     to keep other pages' content below the header, but the hero should ignore
+     that offset entirely */
+  margin-top: calc(-1 * (var(--header-h) + 1.5rem));
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -420,7 +421,7 @@ a:hover { opacity: 0.7; }
   text-decoration: none;
   transition: color 0.15s;
 }
-.back-link:hover { color: var(--color-accent); opacity: 1; }
+.back-link:hover { color: var(--color-text); opacity: 1; }
 
 .back-link-arrow {
   font-size: var(--fs-2xl);
@@ -435,6 +436,42 @@ a:hover { opacity: 0.7; }
   text-transform: uppercase;
 }
 
+/* ─── Language switcher ──────────────────────────────────── */
+.lang-item {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  width: 100%;
+  text-align: left;
+  border: none;
+  border-bottom: 1px solid #ebebeb;
+  cursor: pointer;
+  padding: 0.65rem 1rem;
+  transition: background 0.12s;
+  font-family: inherit;
+}
+.lang-item:last-child { border-bottom: none; }
+.lang-item:hover { background: #f0f0f0 !important; }
+
+.lang-flag-item {
+  font-size: 1.35em;
+  line-height: 1;
+  display: inline-block;
+  transform-origin: 40% 60%;
+}
+.lang-item:hover .lang-flag-item {
+  animation: flagWave 0.55s ease-in-out;
+}
+
+@keyframes flagWave {
+  0%   { transform: rotate(0deg);   }
+  20%  { transform: rotate(-14deg); }
+  45%  { transform: rotate(10deg);  }
+  65%  { transform: rotate(-6deg);  }
+  80%  { transform: rotate(3deg);   }
+  100% { transform: rotate(0deg);   }
+}
+
 /* ─── Utilities ──────────────────────────────────────────── */
 .truncate-2 {
   display: -webkit-box;
@@ -443,5 +480,5 @@ a:hover { opacity: 0.7; }
   overflow: hidden;
 }
 
-/* Page content pushed below fixed header */
-.main-content { padding-top: var(--header-h); }
+/* Page content pushed below fixed header — extra 1.5 rem breathing room */
+.main-content { padding-top: calc(var(--header-h) + 1.5rem); }
