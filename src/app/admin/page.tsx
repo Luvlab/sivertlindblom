@@ -4,17 +4,18 @@ import Link from 'next/link'
 export const metadata: Metadata = { title: 'Dashboard' }
 
 const STATS = [
-  { label: 'Verk',         value: '71',  href: '/admin/works',     desc: 'Utställningar, offentliga arbeten, scenografi, akvareller' },
-  { label: 'Texter',       value: '23',  href: '/admin/texts',     desc: 'Essays, recensioner, intervjuer, egna texter' },
-  { label: 'Biografi',     value: '45+', href: '/admin/biography', desc: 'Kronologiposter och offentliga uppdrag' },
-  { label: 'Bilder',       value: '60+', href: '/admin/media',     desc: 'Uppladdade bilder och externa URL:er' },
+  { label: 'Utställningar',     value: '44',  href: '/admin/exhibitions',   desc: 'Solo- och grupputställningar 1961–2016' },
+  { label: 'Offentliga arbeten',value: '29',  href: '/admin/public-works',  desc: 'Exteriörer och interiörer' },
+  { label: 'Texter',            value: '23',  href: '/admin/texts',         desc: 'Essays, recensioner, intervjuer, egna texter' },
+  { label: 'Biografi',          value: '10+', href: '/admin/biography',     desc: 'Kronologiposter och offentliga uppdrag' },
 ]
 
 const QUICK_ACTIONS = [
-  { href: '/admin/works/new',     label: 'Lägg till verk',      icon: '+' },
-  { href: '/admin/texts/new',     label: 'Lägg till text',      icon: '+' },
-  { href: '/admin/biography/new', label: 'Ny biografipost',     icon: '+' },
-  { href: '/admin/settings',      label: 'Redigera inställningar', icon: '⚙' },
+  { href: '/admin/exhibitions/new', label: 'Ny utställning',        icon: '+' },
+  { href: '/admin/texts/new',       label: 'Ny text',               icon: '+' },
+  { href: '/admin/biography/new',   label: 'Ny biografipost',       icon: '+' },
+  { href: '/admin/map/new',         label: 'Ny kartnål',            icon: '+' },
+  { href: '/admin/settings',        label: 'Inställningar',         icon: '⚙' },
 ]
 
 export default function AdminDashboard() {

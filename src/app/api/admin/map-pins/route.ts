@@ -29,7 +29,7 @@ export async function POST(request: Request) {
     if (!result.ok) {
       return NextResponse.json({ error: result.message }, { status: 500 })
     }
-    return NextResponse.json(body, { status: 201 })
+    return NextResponse.json({ ok: true, id: body.id, ...body }, { status: 201 })
   } catch (e) {
     return NextResponse.json({ error: String(e) }, { status: 500 })
   }

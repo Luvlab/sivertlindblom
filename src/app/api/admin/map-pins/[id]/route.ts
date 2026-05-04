@@ -42,7 +42,7 @@ export async function PUT(
     if (!result.ok) {
       return NextResponse.json({ error: result.message }, { status: 500 })
     }
-    return NextResponse.json(body)
+    return NextResponse.json({ ok: true, ...body })
   } catch (e) {
     return NextResponse.json({ error: String(e) }, { status: 500 })
   }

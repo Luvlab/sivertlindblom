@@ -18,6 +18,9 @@ export default function AdminSidebar() {
   const pathname = usePathname()
   const router = useRouter()
 
+  // Don't render sidebar on the login page
+  if (pathname?.startsWith('/admin/login')) return null
+
   async function handleLogout() {
     await fetch('/api/admin/auth', { method: 'DELETE' })
     router.push('/admin-login')
