@@ -173,7 +173,7 @@ export default function Lightbox({ images, startIndex, onClose }: Props) {
           right: '1rem',
           background: 'none',
           border: 'none',
-          color: 'rgba(255,255,255,0.6)',
+          color: '#ffffff',
           cursor: 'pointer',
           padding: '0.4rem 0.6rem',
           zIndex: 203,
@@ -182,8 +182,8 @@ export default function Lightbox({ images, startIndex, onClose }: Props) {
           gap: '0.4rem',
           transition: 'color 0.15s',
         }}
-        onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.color = '#fff' }}
-        onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.color = 'rgba(255,255,255,0.6)' }}
+        onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.color = 'var(--color-accent)' }}
+        onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.color = '#ffffff' }}
       >
         <span style={{ fontSize: 'var(--fs-xs)', letterSpacing: '0.12em', textTransform: 'uppercase' }}>
           {closeLabel}
