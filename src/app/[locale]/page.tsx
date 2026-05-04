@@ -115,7 +115,7 @@ export default async function HomePage({
           fontWeight: 400,
           lineHeight: 1.7,
           color: 'var(--color-text)',
-          maxWidth: '65ch',
+          maxWidth: '75ch',
           margin: '0 auto 1.5rem',
           padding: 0,
           border: 'none',
