@@ -4,7 +4,7 @@ import type { Metadata } from 'next'
 import { locales } from '@/i18n/config'
 import type { Locale } from '@/i18n/config'
 import { getDictionary } from '@/i18n/getDictionary'
-import { getPublicWork, getPublicWorkSlugs } from '@/lib/data-server'
+import { getPublicWork, getPublicWorkSlugs, getMapPinForWork } from '@/lib/data-server'
 import GalleryGrid from '@/components/gallery/GalleryGrid'
 import type { LightboxImage } from '@/components/gallery/Lightbox'
 
@@ -35,8 +35,15 @@ export default async function PublicWorkDetailPage({
   const { locale, slug } = await params
   const dict = await getDictionary(locale as Locale)
 
-  const work = await getPublicWork(slug)
+  const [work, mapPin] = await Promise.all([
+    getPublicWork(slug),
+    getMapPinForWork(slug),
+  ])
   if (!work) notFound()
+
+  const googleMapsUrl = mapPin
+    ? `https://www.google.com/maps?q=${mapPin.lat},${mapPin.lng}&z=16`
+    : `https://www.google.com/maps/search/${encodeURIComponent(work.title + ' ' + work.location)}`
 
   const images: LightboxImage[] = work.images.map((img) => ({
     url: img.url,
@@ -84,6 +91,28 @@ export default async function PublicWorkDetailPage({
         <p style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-base)', maxWidth: '60ch', marginBottom: '2rem' }}>
           {work.description}
         </p>
+
+        {/* Location button */}
+        <a
+          href={googleMapsUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '0.5rem',
+            fontSize: 'var(--fs-xs)',
+            letterSpacing: '0.1em',
+            textTransform: 'uppercase',
+            color: 'var(--color-accent)',
+            border: '1px solid var(--color-accent-dim)',
+            padding: '0.4em 0.9em',
+            textDecoration: 'none',
+            marginBottom: '2rem',
+          }}
+        >
+          ⊙ {dict.portfolio?.view_location ?? 'Visa platsen'}
+        </a>
 
         <hr className="divider" style={{ marginBottom: '2rem' }} />
 

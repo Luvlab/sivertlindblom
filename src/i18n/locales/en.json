@@ -80,7 +80,8 @@
     "map_countries": "countries",
     "map_view": "View map",
     "type_theater": "Theatre scenography",
-    "type_choreography": "Choreography"
+    "type_choreography": "Choreography",
+    "view_location": "View location"
   },
   "watercolors": {
     "title": "Watercolours 1975–2012",

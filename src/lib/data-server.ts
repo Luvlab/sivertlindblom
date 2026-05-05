@@ -199,6 +199,16 @@ export async function getText(slug: string): Promise<TextItem | null> {
   return STATIC_TEXTS.find((t) => t.slug === slug) ?? null
 }
 
+// Returns the map pin for a public work slug (for coordinates / Google Maps link)
+export async function getMapPinForWork(slug: string): Promise<SculptureLocation | null> {
+  const supabase = createAdminClient()
+  if (supabase) {
+    const { data, error } = await supabase.from('map_pins').select('*').eq('slug', slug).single()
+    if (!error && data) return dbRowToLocation(data as Record<string, unknown>)
+  }
+  return STATIC_LOCATIONS.find((l) => l.slug === slug) ?? null
+}
+
 export async function getTextSlugs(): Promise<string[]> {
   const supabase = createAdminClient()
   if (supabase) {
