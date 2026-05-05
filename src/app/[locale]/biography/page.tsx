@@ -168,22 +168,22 @@ export default async function BiographyPage({
         <MasonryGallery
           columns="4"
           images={[
-            { url: 'https://sivertlindblom.se/wp-content/uploads/2012/12/Sivert-skulptör.jpg',        caption: 'Sivert Lindblom, skulptör' },
-            { url: 'https://sivertlindblom.se/wp-content/uploads/2015/01/Porträtt-SivertMattias.jpg', caption: 'Porträtt. Foto: Mathias Johansson' },
-            { url: 'https://sivertlindblom.se/wp-content/uploads/2015/01/20121028_135427.jpg',         caption: 'Konstakademien 2012. Foto: Jan Öqvist' },
-            { url: 'https://sivertlindblom.se/wp-content/uploads/2015/01/Sivert-sten-kopia.jpg',       caption: 'Sivert med sten. Foto: Jan Öqvist' },
-            { url: 'https://sivertlindblom.se/wp-content/uploads/2015/01/20130308_101452.jpg',         caption: 'Bergmans Konstgjuteri, Enskede 2013. Foto: Jan Öqvist' },
-            { url: 'https://sivertlindblom.se/wp-content/uploads/2015/01/Sivert571-kopia.jpg',         caption: 'Sivert vid Kejsar Konstantins hand, Capitolium museet, Rom' },
-            { url: 'https://sivertlindblom.se/wp-content/uploads/2012/12/Sivert-skulpterar-1.jpg',     caption: 'Sivert skulpterar' },
-            { url: 'https://sivertlindblom.se/wp-content/uploads/2015/01/20121101_151438.jpg',         caption: 'Ateljén. Foto: Jan Öqvist' },
-            { url: 'https://sivertlindblom.se/wp-content/uploads/2015/01/fotokarta-1963.jpg',          caption: 'Fotokort, 1963' },
-            { url: 'https://sivertlindblom.se/wp-content/uploads/2015/01/Eskilstuna-91.jpg',           caption: 'Eskilstuna. Foto: Lasse Larsson' },
-            { url: 'https://sivertlindblom.se/wp-content/uploads/2015/01/Eskilstuna-arb-161.jpg',      caption: 'I arbete, Eskilstuna. Foto: Lasse Larsson' },
-            { url: 'https://sivertlindblom.se/wp-content/uploads/2015/01/DSC01888-kopia.jpg',          caption: 'Sivert Lindblom' },
-            { url: 'https://sivertlindblom.se/wp-content/uploads/2015/01/20120614_173855-kopia.jpg',   caption: 'Foto: Jan Öqvist' },
-            { url: 'https://sivertlindblom.se/wp-content/uploads/2015/01/SAM_7961.jpg',                caption: 'Foto: Jan Öqvist' },
-            { url: 'https://sivertlindblom.se/wp-content/uploads/2015/01/Siverts-exit.jpg',            caption: 'Siverts exit' },
-            { url: 'https://sivertlindblom.se/wp-content/uploads/2015/01/20130308_103958.jpg',         caption: 'Gjuteriet 2013. Foto: Jan Öqvist' },
+            { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2012/12/Sivert-skulptor.jpg',        caption: 'Sivert Lindblom, skulptör' },
+            { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Portratt-SivertMattias.jpg', caption: 'Porträtt. Foto: Mathias Johansson' },
+            { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/20121028_135427.jpg',         caption: 'Konstakademien 2012. Foto: Jan Öqvist' },
+            { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Sivert-sten-kopia.jpg',       caption: 'Sivert med sten. Foto: Jan Öqvist' },
+            { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/20130308_101452.jpg',         caption: 'Bergmans Konstgjuteri, Enskede 2013. Foto: Jan Öqvist' },
+            { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Sivert571-kopia.jpg',         caption: 'Sivert vid Kejsar Konstantins hand, Capitolium museet, Rom' },
+            { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2012/12/Sivert-skulpterar-1.jpg',     caption: 'Sivert skulpterar' },
+            { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/20121101_151438.jpg',         caption: 'Ateljén. Foto: Jan Öqvist' },
+            { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/fotokarta-1963.jpg',          caption: 'Fotokort, 1963' },
+            { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Eskilstuna-91.jpg',           caption: 'Eskilstuna. Foto: Lasse Larsson' },
+            { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Eskilstuna-arb-161.jpg',      caption: 'I arbete, Eskilstuna. Foto: Lasse Larsson' },
+            { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/DSC01888-kopia.jpg',          caption: 'Sivert Lindblom' },
+            { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/20120614_173855-kopia.jpg',   caption: 'Foto: Jan Öqvist' },
+            { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/SAM_7961.jpg',                caption: 'Foto: Jan Öqvist' },
+            { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Siverts-exit.jpg',            caption: 'Siverts exit' },
+            { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/20130308_103958.jpg',         caption: 'Gjuteriet 2013. Foto: Jan Öqvist' },
           ]}
         />
       </section>

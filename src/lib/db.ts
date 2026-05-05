@@ -11,12 +11,12 @@ export const FALLBACK_SETTINGS: SiteSettings = {
 
 // Key highlight works used on the homepage when DB is empty
 export const HIGHLIGHT_IMAGES = [
-  { url: 'https://sivertlindblom.se/wp-content/uploads/2015/01/Sivert-Lindblom-Blasieholms-Torg-01.jpg',  alt: 'Blasieholmstorg, Stockholm 1989' },
-  { url: 'https://sivertlindblom.se/wp-content/uploads/2015/01/Sivert-Lindblom-Blasieholms-Torg-31.jpg',  alt: 'Hästar i brons, Blasieholmstorg' },
-  { url: 'https://sivertlindblom.se/wp-content/uploads/2015/01/Sivert-Lindblom-Blasieholms-Torg-48.jpg',  alt: 'Detalj, Blasieholmstorg' },
-  { url: 'https://sivertlindblom.se/wp-content/uploads/2015/01/Sivert-Lindblom-Blasieholms-Torg-43.jpg',  alt: 'Blasieholmstorg natt' },
-  { url: 'https://sivertlindblom.se/wp-content/uploads/2015/01/Sivert-Lindblom-Blasieholms-Torg-71.jpg',  alt: 'Blasieholmstorg panorama' },
-  { url: 'https://sivertlindblom.se/wp-content/uploads/2015/03/San-Marco-h%C3%A4star.jpg',                 alt: 'San Marco hästar, Venedig' },
+  { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Sivert-Lindblom-Blasieholms-Torg-01.jpg',  alt: 'Blasieholmstorg, Stockholm 1989' },
+  { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Sivert-Lindblom-Blasieholms-Torg-31.jpg',  alt: 'Hästar i brons, Blasieholmstorg' },
+  { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Sivert-Lindblom-Blasieholms-Torg-48.jpg',  alt: 'Detalj, Blasieholmstorg' },
+  { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Sivert-Lindblom-Blasieholms-Torg-43.jpg',  alt: 'Blasieholmstorg natt' },
+  { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Sivert-Lindblom-Blasieholms-Torg-71.jpg',  alt: 'Blasieholmstorg panorama' },
+  { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/03/San-Marco-hastar.jpg',                 alt: 'San Marco hästar, Venedig' },
 ]
 
 export function isSupabaseConfigured() {

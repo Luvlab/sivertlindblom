@@ -14,7 +14,7 @@ const inter = Inter({
 })
 
 const OG_IMAGE =
-  'https://sivertlindblom.se/wp-content/uploads/2015/01/Sivert-Lindblom-Blasieholms-Torg-01.jpg'
+  'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Sivert-Lindblom-Blasieholms-Torg-01.jpg'
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://sivertlindblom.se'),

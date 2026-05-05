@@ -9,7 +9,7 @@ const CATEGORIES = [
     label: 'Utställningar',
     sub: '1961 – 2016',
     desc: 'Solo- och grupputställningar i Sverige och internationellt, från Galerie Buren 1963 till Vandalorum 2016.',
-    image: 'https://sivertlindblom.se/wp-content/uploads/2015/01/Siverts-exit.jpg',
+    image: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Siverts-exit.jpg',
     count: 28,
   },
   {
@@ -17,7 +17,7 @@ const CATEGORIES = [
     label: 'Offentliga arbeten',
     sub: 'Exteriörer & interiörer',
     desc: 'Skulpturer och installationer på torg, tunnelbanestationer, ambassader och bibliotek i Sverige och världen.',
-    image: 'https://sivertlindblom.se/wp-content/uploads/2015/01/Sivert-Lindblom-Blasieholms-Torg-31.jpg',
+    image: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Sivert-Lindblom-Blasieholms-Torg-31.jpg',
     count: 42,
   },
   {

@@ -3,13 +3,13 @@
 import { useState } from 'react'
 
 const SAMPLE_IMAGES = [
-  { id:'1', url:'https://sivertlindblom.se/wp-content/uploads/2015/01/Sivert-Lindblom-Blasieholms-Torg-01.jpg', alt:'Blasieholmstorg 01', work:'Blasieholmstorg' },
-  { id:'2', url:'https://sivertlindblom.se/wp-content/uploads/2015/01/Sivert-Lindblom-Blasieholms-Torg-31.jpg', alt:'Blasieholmstorg 31', work:'Blasieholmstorg' },
-  { id:'3', url:'https://sivertlindblom.se/wp-content/uploads/2015/01/Sivert-Lindblom-Blasieholms-Torg-48.jpg', alt:'Blasieholmstorg 48', work:'Blasieholmstorg' },
-  { id:'4', url:'https://sivertlindblom.se/wp-content/uploads/2015/01/Sivert-Lindblom-Blasieholms-Torg-43.jpg', alt:'Blasieholmstorg 43', work:'Blasieholmstorg' },
-  { id:'5', url:'https://sivertlindblom.se/wp-content/uploads/2015/01/Sivert-Lindblom-Blasieholms-Torg-71.jpg', alt:'Blasieholmstorg 71', work:'Blasieholmstorg' },
-  { id:'6', url:'https://sivertlindblom.se/wp-content/uploads/2015/01/Sivert-Lindblom-Blasieholms-Torg-33.jpg', alt:'Blasieholmstorg 33', work:'Blasieholmstorg' },
-  { id:'7', url:'https://sivertlindblom.se/wp-content/uploads/2015/03/San-Marco-h%C3%A4star.jpg',               alt:'San Marco hästar',  work:'Blasieholmstorg' },
+  { id:'1', url:'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Sivert-Lindblom-Blasieholms-Torg-01.jpg', alt:'Blasieholmstorg 01', work:'Blasieholmstorg' },
+  { id:'2', url:'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Sivert-Lindblom-Blasieholms-Torg-31.jpg', alt:'Blasieholmstorg 31', work:'Blasieholmstorg' },
+  { id:'3', url:'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Sivert-Lindblom-Blasieholms-Torg-48.jpg', alt:'Blasieholmstorg 48', work:'Blasieholmstorg' },
+  { id:'4', url:'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Sivert-Lindblom-Blasieholms-Torg-43.jpg', alt:'Blasieholmstorg 43', work:'Blasieholmstorg' },
+  { id:'5', url:'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Sivert-Lindblom-Blasieholms-Torg-71.jpg', alt:'Blasieholmstorg 71', work:'Blasieholmstorg' },
+  { id:'6', url:'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Sivert-Lindblom-Blasieholms-Torg-33.jpg', alt:'Blasieholmstorg 33', work:'Blasieholmstorg' },
+  { id:'7', url:'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/03/San-Marco-hastar.jpg',               alt:'San Marco hästar',  work:'Blasieholmstorg' },
 ]
 
 export default function AdminMedia() {

@@ -13,13 +13,13 @@ export const metadata: Metadata = {
     description:
       'Över 200 akvareller 1975–2012. Axonometriska perspektiv — "hermetiskt arkitektoniskt landskap" (Peter Cornell).',
     images: [{
-      url: 'https://sivertlindblom.se/wp-content/uploads/2015/01/Sivert-Lindblom-akvarell-01-1507-2.jpg',
+      url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Sivert-Lindblom-akvarell-01-1507-2.jpg',
       width: 1200, height: 800, alt: 'Sivert Lindblom, Akvarell nr 01',
     }],
   },
   twitter: {
     card: 'summary_large_image',
-    images: ['https://sivertlindblom.se/wp-content/uploads/2015/01/Sivert-Lindblom-akvarell-01-1507-2.jpg'],
+    images: ['https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Sivert-Lindblom-akvarell-01-1507-2.jpg'],
   },
 }
 
