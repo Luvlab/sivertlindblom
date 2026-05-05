@@ -20,7 +20,7 @@ const WATERCOLOR_IMAGES = Array.from({ length: 50 }, (_, i) => {
     '37','38','39','40','41','42','43','44','45','46',
   ]
   return {
-    url: `https://sivertlindblom.se/wp-content/uploads/2015/01/Sivert-Lindblom-akvarell-${nums[i] || String(i+1).padStart(2,'0')}-${ids[i] || '1400'}.jpg`,
+    url: `https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Sivert-Lindblom-akvarell-${nums[i] || String(i+1).padStart(2,'0')}-${ids[i] || '1400'}.jpg`,
     alt: `Akvarell nr ${nums[i] || i+1}`,
   }
 }).slice(0, 12) // show first 12 as a sample
