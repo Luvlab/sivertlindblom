@@ -136,13 +136,6 @@ export default function SculptureMap({ locations, locale }: Props) {
         </div>
       `, { maxWidth: 280, className: 'sculpture-popup' })
 
-      // Click handler: navigate to detail page if slug is defined
-      if (loc.slug) {
-        marker.on('click', () => {
-          window.location.href = `/${locale}/portfolio/public-works/${loc.slug}`
-        })
-      }
-
       return marker
     }
 
@@ -211,11 +204,6 @@ export default function SculptureMap({ locations, locale }: Props) {
           ${loc.slug ? `<a href="/${locale}/portfolio/public-works/${loc.slug}" style="display:inline-block;margin-top:8px;font-size:11px;color:#c9a84c;text-decoration:none;letter-spacing:0.06em;text-transform:uppercase;border-bottom:1px solid #c9a84c60;padding-bottom:2px">→ Läs mer</a>` : ''}
         </div>
       `, { maxWidth: 280, className: 'sculpture-popup' })
-      if (loc.slug) {
-        marker.on('click', () => {
-          window.location.href = `/${locale}/portfolio/public-works/${loc.slug}`
-        })
-      }
       clusterGroup.addLayer(marker)
     })
   }, [selectedType, locations, locale])
