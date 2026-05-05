@@ -243,12 +243,12 @@ export default async function HomePage({
         <p style={{ fontSize: 'var(--fs-xs)', letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--color-accent)', marginBottom: '3rem' }}>
           {dict.home?.explore ?? 'Utforska webbplatsen'}
         </p>
-        <div className="auto-grid-wide">
+        <div style={{ display: 'flex', gap: '2rem', flexWrap: 'wrap' }}>
           {sections.map((s) => (
             <Link
               key={s.href}
               href={s.href}
-              style={{ display: 'block', textDecoration: 'none' }}
+              style={{ display: 'block', textDecoration: 'none', flex: '1 1 200px' }}
             >
               <article className="card" style={{ padding: '2rem', height: '100%', minHeight: 200 }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1.5rem' }}>
