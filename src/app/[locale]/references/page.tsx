@@ -3,6 +3,8 @@ import type { Metadata } from 'next'
 import { getDictionary } from '@/i18n/getDictionary'
 import { locales } from '@/i18n/config'
 import type { Locale } from '@/i18n/config'
+import PortfolioSlideshow from '@/components/portfolio/PortfolioSlideshow'
+import { SCULPTURE_PROJECTS } from '@/lib/sculpture-projects'
 
 export const metadata: Metadata = { title: 'Sculpture & Graphics' }
 
@@ -14,6 +16,11 @@ function getYouTubeId(url: string): string | null {
   const m = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([A-Za-z0-9_-]{11})/)
   return m ? m[1] : null
 }
+
+// Build slug → image URL[] lookup from sculpture-projects data
+const SLIDESHOW_IMAGES: Record<string, string[]> = Object.fromEntries(
+  SCULPTURE_PROJECTS.map((p) => [p.slug, p.images.slice(0, 8).map((i) => i.url)])
+)
 
 const SCULPTURE_SERIES = [
   { key: 'profiler', label: 'Profiler', desc: 'Profilskulpturer i sten och brons.' },
@@ -72,12 +79,38 @@ export default async function ReferencesPage({
           {dict.references?.sculpture_series ?? 'Skulpturserier'}
         </h2>
         <div className="auto-grid-wide">
-          {SCULPTURE_SERIES.map((s) => (
-            <Link key={s.key} href={`/${locale}/references/${s.key}`} className="card card-hover" style={{ padding: '1.5rem', display: 'block' }}>
-              <h3 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-lg)', marginBottom: '0.5rem' }}>{s.label}</h3>
-              <p style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-sm)' }}>{s.desc}</p>
-            </Link>
-          ))}
+          {SCULPTURE_SERIES.map((s, i) => {
+            const images = SLIDESHOW_IMAGES[s.key] ?? []
+            return (
+              <Link key={s.key} href={`/${locale}/references/${s.key}`} className="card card-hover" style={{ display: 'block', overflow: 'hidden', textDecoration: 'none' }}>
+                {images.length > 0 ? (
+                  <div style={{ aspectRatio: '4/3', position: 'relative', overflow: 'hidden' }}>
+                    <PortfolioSlideshow
+                      images={images}
+                      alt={s.label}
+                      objectFit="cover"
+                      interval={3200 + i * 300}
+                    />
+                  </div>
+                ) : (
+                  <div style={{
+                    aspectRatio: '4/3',
+                    background: 'var(--color-bg-surface)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    borderBottom: '1px solid var(--color-border)',
+                  }}>
+                    <span style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-xs)', fontStyle: 'italic' }}>{s.label}</span>
+                  </div>
+                )}
+                <div style={{ padding: '1.25rem 1.5rem 1.5rem' }}>
+                  <h3 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-lg)', marginBottom: '0.4rem' }}>{s.label}</h3>
+                  <p style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-sm)', margin: 0 }}>{s.desc}</p>
+                </div>
+              </Link>
+            )
+          })}
         </div>
       </section>
 
