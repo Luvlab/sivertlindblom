@@ -9,24 +9,6 @@ interface LanguageSwitcherProps {
   locale: Locale
 }
 
-const FLAGS: Record<Locale, string> = {
-  sv: '🇸🇪',
-  en: '🇬🇧',
-  de: '🇩🇪',
-  fr: '🇫🇷',
-  es: '🇪🇸',
-  it: '🇮🇹',
-  zh: '🇨🇳',
-  ja: '🇯🇵',
-  ar: '🇸🇦',
-  pt: '🇵🇹',
-  ru: '🇷🇺',
-  nl: '🇳🇱',
-  pl: '🇵🇱',
-  ko: '🇰🇷',
-  th: '🇹🇭',
-}
-
 const NATIVE_NAMES: Record<Locale, string> = {
   sv: 'Svenska',
   en: 'English',
@@ -91,12 +73,11 @@ export default function LanguageSwitcher({ locale }: LanguageSwitcherProps) {
           gap: '0.35rem',
         }}
       >
-        <span style={{ fontSize: '1.35em', lineHeight: 1 }}>{FLAGS[locale]}</span>
         <span style={{
-          fontSize: 'var(--fs-sm)',
-          letterSpacing: '0.06em',
-          fontWeight: 500,
-          color: 'var(--color-muted)',
+          fontSize: 'var(--fs-base)',
+          letterSpacing: '0.08em',
+          fontWeight: 600,
+          color: 'var(--color-text)',
         }}>
           {locale.toUpperCase()}
         </span>
@@ -132,7 +113,7 @@ export default function LanguageSwitcher({ locale }: LanguageSwitcherProps) {
                 fontWeight: l === locale ? 600 : 400,
               }}
             >
-              <span className="lang-flag-item">{FLAGS[l]}</span>
+              <span style={{ fontSize: 'var(--fs-xs)', letterSpacing: '0.08em', fontWeight: 600, color: '#444', minWidth: '2rem' }}>{l.toUpperCase()}</span>
               <span style={{ fontSize: 'var(--fs-sm)' }}>{NATIVE_NAMES[l]}</span>
               {l === locale && (
                 <span style={{ marginLeft: 'auto', fontSize: '0.65em', color: '#999' }}>✓</span>
