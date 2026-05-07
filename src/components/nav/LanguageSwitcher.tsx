@@ -86,19 +86,18 @@ export default function LanguageSwitcher({ locale }: LanguageSwitcherProps) {
         </span>
       </button>
 
-      {/* Dropdown — white bg, black text */}
+      {/* Dropdown — matches app dark theme */}
       {open && (
         <div
           style={{
             position: 'absolute',
-            top: 'calc(100% + 6px)',
+            top: 'calc(100% + 8px)',
             right: 0,
-            background: '#ffffff',
-            border: '1px solid #ddd',
-            minWidth: 175,
+            background: 'var(--color-bg-card)',
+            border: '1px solid var(--color-border)',
+            minWidth: 190,
             zIndex: 400,
-            boxShadow: '0 6px 24px rgba(0,0,0,0.18)',
-            borderRadius: 4,
+            boxShadow: '0 8px 32px rgba(0,0,0,0.5)',
             overflow: 'hidden',
           }}
         >
@@ -106,17 +105,42 @@ export default function LanguageSwitcher({ locale }: LanguageSwitcherProps) {
             <button
               key={l}
               onClick={() => switchLocale(l)}
-              className="lang-item"
               style={{
-                background: l === locale ? '#f2f2f2' : 'transparent',
-                color: l === locale ? '#000' : '#222',
-                fontWeight: l === locale ? 600 : 400,
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.75rem',
+                width: '100%',
+                textAlign: 'left',
+                border: 'none',
+                borderBottom: '1px solid var(--color-border)',
+                cursor: 'pointer',
+                padding: '0.6rem 1rem',
+                background: l === locale ? 'var(--color-bg-surface)' : 'transparent',
+                transition: 'background 0.12s',
+                fontFamily: 'inherit',
               }}
+              onMouseEnter={e => (e.currentTarget.style.background = 'var(--color-bg-surface)')}
+              onMouseLeave={e => (e.currentTarget.style.background = l === locale ? 'var(--color-bg-surface)' : 'transparent')}
             >
-              <span style={{ fontSize: 'var(--fs-xs)', letterSpacing: '0.08em', fontWeight: 600, color: '#444', minWidth: '2rem' }}>{l.toUpperCase()}</span>
-              <span style={{ fontSize: 'var(--fs-sm)' }}>{NATIVE_NAMES[l]}</span>
+              <span style={{
+                fontSize: 'var(--fs-xs)',
+                letterSpacing: '0.1em',
+                fontWeight: 700,
+                color: l === locale ? 'var(--color-accent)' : 'var(--color-muted)',
+                minWidth: '2rem',
+                fontFamily: 'inherit',
+              }}>
+                {l.toUpperCase()}
+              </span>
+              <span style={{
+                fontSize: 'var(--fs-sm)',
+                color: l === locale ? 'var(--color-text)' : 'var(--color-muted)',
+                fontWeight: l === locale ? 500 : 400,
+              }}>
+                {NATIVE_NAMES[l]}
+              </span>
               {l === locale && (
-                <span style={{ marginLeft: 'auto', fontSize: '0.65em', color: '#999' }}>✓</span>
+                <span style={{ marginLeft: 'auto', color: 'var(--color-accent)', fontSize: 'var(--fs-xs)' }}>✓</span>
               )}
             </button>
           ))}
