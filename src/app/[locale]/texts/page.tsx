@@ -1,4 +1,3 @@
-import React from 'react'
 import Link from 'next/link'
 import type { Metadata } from 'next'
 import { getDictionary } from '@/i18n/getDictionary'
@@ -111,59 +110,52 @@ export default async function TextsPage({
         <section key={group.type} id={group.type} className="page-pad" style={{ paddingTop: '3rem', paddingBottom: '3rem' }}>
           <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-2xl)', marginBottom: '2rem' }}>{group.label}</h2>
 
-          <div style={{ display: 'grid', gap: 0 }}>
-            {group.items.map((t, i) => {
-              const rowStyle: React.CSSProperties = {
-                display: 'grid',
-                gridTemplateColumns: '4rem 1fr auto',
-                gap: '1.5rem',
-                alignItems: 'start',
-                padding: '1rem 0',
-                borderBottom: '1px solid var(--color-border)',
-              }
-              return (
-                <div key={i} className="row-hover" style={rowStyle}>
-                  <span style={{ color: 'var(--color-accent)', fontFamily: 'Georgia, serif', fontSize: 'var(--fs-sm)', paddingTop: '0.15rem' }}>{t.year}</span>
-                  {/* Title + author — clickable area to text detail */}
-                  {t.slug ? (
-                    <Link href={`/${locale}/texts/${t.slug}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-                      <div style={{ fontSize: 'var(--fs-base)', marginBottom: '0.2rem' }}>{t.title}</div>
-                      <div style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)' }}>
-                        {t.author} — {t.publication}
-                      </div>
-                    </Link>
-                  ) : (
-                    <div>
-                      <div style={{ fontSize: 'var(--fs-base)', marginBottom: '0.2rem' }}>{t.title}</div>
-                      <div style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)' }}>
-                        {t.author} — {t.publication}
-                      </div>
+          <div>
+            {group.items.map((t, i) => (
+              <div key={i} className="text-row">
+                {/* Year */}
+                <span style={{ color: 'var(--color-accent)', fontFamily: 'Georgia, serif', fontSize: 'var(--fs-sm)', flexShrink: 0 }}>{t.year}</span>
+
+                {/* Title + author */}
+                {t.slug ? (
+                  <Link href={`/${locale}/texts/${t.slug}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                    <div style={{ fontSize: 'var(--fs-base)', marginBottom: '0.15rem' }}>{t.title}</div>
+                    <div style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)' }}>
+                      {t.author} · {t.publication}
                     </div>
-                  )}
-                  {/* Badges: lang + optional related exhibition/work */}
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem', alignItems: 'flex-end', flexShrink: 0 }}>
-                    <span className="badge">{LANG_LABELS[t.lang] || t.lang}</span>
-                    {t.relatedPath && t.relatedLabel && (
-                      <Link
-                        href={`/${locale}/${t.relatedPath}`}
-                        style={{
-                          fontSize: 'var(--fs-xs)',
-                          color: 'var(--color-accent)',
-                          letterSpacing: '0.06em',
-                          textTransform: 'uppercase',
-                          borderBottom: '1px solid var(--color-accent-dim)',
-                          paddingBottom: '0.1em',
-                          textDecoration: 'none',
-                          whiteSpace: 'nowrap',
-                        }}
-                      >
-                        → {t.relatedLabel}
-                      </Link>
-                    )}
+                  </Link>
+                ) : (
+                  <div>
+                    <div style={{ fontSize: 'var(--fs-base)', marginBottom: '0.15rem' }}>{t.title}</div>
+                    <div style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)' }}>
+                      {t.author} · {t.publication}
+                    </div>
                   </div>
+                )}
+
+                {/* Badges: lang + optional related link */}
+                <div className="text-row-meta">
+                  <span className="badge">{LANG_LABELS[t.lang] || t.lang}</span>
+                  {t.relatedPath && t.relatedLabel && (
+                    <Link
+                      href={`/${locale}/${t.relatedPath}`}
+                      style={{
+                        fontSize: 'var(--fs-xs)',
+                        color: 'var(--color-accent)',
+                        letterSpacing: '0.06em',
+                        textTransform: 'uppercase',
+                        borderBottom: '1px solid var(--color-accent-dim)',
+                        paddingBottom: '0.1em',
+                        textDecoration: 'none',
+                        whiteSpace: 'nowrap',
+                      }}
+                    >
+                      → {t.relatedLabel}
+                    </Link>
+                  )}
                 </div>
-              )
-            })}
+              </div>
+            ))}
           </div>
         </section>
       ))}

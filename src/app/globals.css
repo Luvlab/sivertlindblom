@@ -487,3 +487,38 @@ a:hover { opacity: 0.7; }
 
 /* Page content pushed below fixed header — extra 1.5 rem breathing room */
 .main-content { padding-top: calc(var(--header-h) + 1.5rem); }
+
+/* ─── Texts page responsive row ─────────────────────────── */
+/* Mobile-first: stack vertically. Desktop: 3-column grid. */
+.text-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--color-border);
+  transition: background 0.12s;
+}
+.text-row:hover { background: var(--color-bg-card); }
+
+.text-row-meta {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+@media (min-width: 640px) {
+  .text-row {
+    display: grid;
+    grid-template-columns: 4rem 1fr auto;
+    gap: 1.5rem;
+    align-items: start;
+    flex-direction: unset;
+  }
+  .text-row-meta {
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.4rem;
+  }
+}
