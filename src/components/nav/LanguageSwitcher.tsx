@@ -76,7 +76,7 @@ export default function LanguageSwitcher({ locale }: LanguageSwitcherProps) {
         <span style={{
           fontSize: 'var(--fs-base)',
           letterSpacing: '0.08em',
-          fontWeight: 600,
+          fontWeight: 400,
           color: 'var(--color-text)',
         }}>
           {locale.toUpperCase()}
