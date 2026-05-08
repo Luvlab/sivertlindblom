@@ -3,7 +3,7 @@
  * Use only in Server Components and API routes (never in client components).
  */
 import { createAdminClient } from '@/lib/supabase/admin'
-import type { Exhibition } from '@/lib/exhibitions-data'
+import type { Exhibition, ExhibitionLink } from '@/lib/exhibitions-data'
 import { exhibitions as STATIC_EXHIBITIONS } from '@/lib/exhibitions-data'
 import type { PublicWork } from '@/lib/public-works'
 import { PUBLIC_WORKS as STATIC_PUBLIC_WORKS } from '@/lib/public-works'
@@ -23,6 +23,8 @@ function dbRowToExhibition(w: Record<string, unknown>): Exhibition {
     location: (w.location as string) ?? '',
     url: (w.source_url as string) ?? '',
     description: (w.description as string) ?? '',
+    body: (w.body as string) ?? undefined,
+    links: (w.links as ExhibitionLink[]) ?? undefined,
     images: imgs
       .sort((a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0))
       .map((img) => img.url),

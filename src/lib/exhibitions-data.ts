@@ -1,6 +1,13 @@
 // Scraped from sivertlindblom.se — all exhibition pages
 // Generated 2026-05-04
 
+export interface ExhibitionLink {
+  label: string;
+  url: string;
+  prefix?: string;
+  external?: boolean;
+}
+
 export interface Exhibition {
   slug: string;
   title: string;
@@ -9,6 +16,8 @@ export interface Exhibition {
   url: string;
   images: string[];
   description: string;
+  body?: string;
+  links?: ExhibitionLink[];
 }
 
 export const exhibitions: Exhibition[] = [

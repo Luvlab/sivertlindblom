@@ -103,10 +103,47 @@ export default async function ExhibitionDetailPage({
             fontSize: 'var(--fs-base)',
             lineHeight: 1.85,
             maxWidth: '68ch',
-            marginBottom: '3.5rem',
+            marginBottom: ex.body || (ex.links && ex.links.length > 0) ? '1.5rem' : '3.5rem',
           }}>
             {ex.description}
           </p>
+        )}
+
+        {/* Body text */}
+        {ex.body && (
+          <p style={{
+            color: 'var(--color-muted)',
+            fontSize: 'var(--fs-base)',
+            lineHeight: 1.85,
+            maxWidth: '68ch',
+            marginBottom: (ex.links && ex.links.length > 0) ? '1.5rem' : '3.5rem',
+          }}>
+            {ex.body}
+          </p>
+        )}
+
+        {/* Links */}
+        {ex.links && ex.links.length > 0 && (
+          <div style={{ marginBottom: '3.5rem', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+            {ex.links.map((link, i) => (
+              link.url === '#' ? (
+                <span key={i} style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-muted)' }}>
+                  {link.prefix && <strong style={{ color: 'var(--color-accent)', marginRight: '0.4rem', letterSpacing: '0.06em', fontSize: 'var(--fs-xs)', textTransform: 'uppercase' }}>{link.prefix}</strong>}
+                  {link.label}
+                </span>
+              ) : link.external ? (
+                <a key={i} href={link.url} target="_blank" rel="noopener noreferrer" style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-accent)', textDecoration: 'none', borderBottom: '1px solid var(--color-accent-dim)', paddingBottom: '0.1em', alignSelf: 'flex-start' }}>
+                  {link.prefix && <strong style={{ marginRight: '0.4rem', letterSpacing: '0.06em', fontSize: 'var(--fs-xs)', textTransform: 'uppercase' }}>{link.prefix}</strong>}
+                  {link.label} →
+                </a>
+              ) : (
+                <Link key={i} href={`/${locale}${link.url}`} style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-accent)', textDecoration: 'none', borderBottom: '1px solid var(--color-accent-dim)', paddingBottom: '0.1em', alignSelf: 'flex-start' }}>
+                  {link.prefix && <strong style={{ marginRight: '0.4rem', letterSpacing: '0.06em', fontSize: 'var(--fs-xs)', textTransform: 'uppercase' }}>{link.prefix}</strong>}
+                  {link.label} →
+                </Link>
+              )
+            ))}
+          </div>
         )}
 
         {/* Gallery */}
