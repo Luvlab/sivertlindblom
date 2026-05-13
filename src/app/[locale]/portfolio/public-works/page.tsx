@@ -3,8 +3,6 @@ import type { Metadata } from 'next'
 import { getDictionary } from '@/i18n/getDictionary'
 import { locales } from '@/i18n/config'
 import type { Locale } from '@/i18n/config'
-import GalleryGrid from '@/components/gallery/GalleryGrid'
-import type { LightboxImage } from '@/components/gallery/Lightbox'
 import PortfolioSlideshow from '@/components/portfolio/PortfolioSlideshow'
 import SculptureMap from '@/components/SculptureMap'
 import { getMapPins, getPublicWorks } from '@/lib/data-server'
@@ -139,12 +137,6 @@ export default async function PublicWorksPage({
   const sortedExteriors = [...EXTERIORS].sort((a, b) => b.year - a.year)
   const sortedInteriors = [...INTERIORS].sort((a, b) => b.year - a.year)
 
-  const blasieholmWork = allWorks.find((w) => w.slug === 'blasieholmstorg-1989')
-  const blasieholmImages: LightboxImage[] = (blasieholmWork?.images ?? []).map((img) => ({
-    url: img.url,
-    alt: img.alt,
-  }))
-
   return (
     <div>
       {/* ── Compact page header ──────────────────────────────── */}
@@ -236,20 +228,8 @@ export default async function PublicWorksPage({
         </div>
       </div>
 
-      {/* ── Blasieholmstorg featured gallery ──────────────────── */}
-      <div className="page-pad" style={{ paddingTop: '4rem', paddingBottom: '6rem' }}>
-        <section style={{ marginBottom: '4rem' }}>
-          <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-2xl)', marginBottom: '0.5rem' }}>
-            Blasieholmstorg, Stockholm 1989
-          </h2>
-          <p style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-sm)', marginBottom: '2rem', maxWidth: '60ch' }}>
-            {dict.portfolio?.blasieholmstorg_desc ?? 'Två grönpatinerade bronshästar modellerade efter originalen på San Marcos basilika i Venedig. Gjutna av Herman Bergmans Konstgjuteri AB.'}
-          </p>
-          {blasieholmImages.length > 0 && (
-            <GalleryGrid images={blasieholmImages} aspectRatio="4/3" columns="sm" />
-          )}
-        </section>
-
+      {/* ── Back link ──────────────────────────────────────────── */}
+      <div className="page-pad" style={{ paddingTop: '3rem', paddingBottom: '4rem' }}>
         <Link href={`/${locale}/portfolio`} className="back-link">
           <span className="back-link-arrow">←</span>
           <span className="back-link-label">{dict.nav?.portfolio ?? 'Portfolio'}</span>

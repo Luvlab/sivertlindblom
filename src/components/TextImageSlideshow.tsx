@@ -5,9 +5,11 @@ import { useState, useEffect, useCallback } from 'react'
 interface Props {
   images: string[]
   title: string
+  /** Aspect ratio for thumbnail strip items. Default '3/4' (portrait scans). Use '4/3' for landscape photos. */
+  thumbnailAspect?: string
 }
 
-export default function TextImageSlideshow({ images, title }: Props) {
+export default function TextImageSlideshow({ images, title, thumbnailAspect = '3/4' }: Props) {
   const [idx, setIdx] = useState(0)
 
   const prev = useCallback(() => setIdx(i => (i - 1 + images.length) % images.length), [images.length])
@@ -82,7 +84,7 @@ export default function TextImageSlideshow({ images, title }: Props) {
                 src={img}
                 alt={`sida ${i + 1}`}
                 loading="lazy"
-                style={{ width: '100%', aspectRatio: '3/4', objectFit: 'cover', display: 'block' }}
+                style={{ width: '100%', aspectRatio: thumbnailAspect, objectFit: 'cover', display: 'block' }}
               />
             </button>
           ))}

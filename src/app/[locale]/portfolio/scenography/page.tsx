@@ -3,7 +3,7 @@ import type { Metadata } from 'next'
 import { getDictionary } from '@/i18n/getDictionary'
 import { locales } from '@/i18n/config'
 import type { Locale } from '@/i18n/config'
-import SafeImg from '@/components/SafeImg'
+import TextImageSlideshow from '@/components/TextImageSlideshow'
 
 export const metadata: Metadata = { title: 'Scenography' }
 
@@ -212,30 +212,10 @@ export default async function ScenographyPage({
                 </div>
               )}
 
-              {/* Image gallery */}
+              {/* Image slideshow */}
               {w.images.length > 0 && (
-                <div
-                  style={{
-                    paddingLeft: 'calc(5rem + 1.5rem)',
-                    display: 'grid',
-                    gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))',
-                    gap: '0.5rem',
-                  }}
-                >
-                  {w.images.map((src, i) => (
-                    <SafeImg
-                      key={i}
-                      src={src}
-                      alt={`${w.title} — bild ${i + 1}`}
-                      style={{
-                        width: '100%',
-                        aspectRatio: '1 / 1',
-                        objectFit: 'cover',
-                        display: 'block',
-                        background: 'var(--color-bg-card)',
-                      }}
-                    />
-                  ))}
+                <div style={{ paddingLeft: 'calc(5rem + 1.5rem)', maxWidth: '720px' }}>
+                  <TextImageSlideshow images={w.images} title={w.title} thumbnailAspect="4/3" />
                 </div>
               )}
 

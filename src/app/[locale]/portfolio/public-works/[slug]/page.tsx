@@ -5,8 +5,7 @@ import { locales } from '@/i18n/config'
 import type { Locale } from '@/i18n/config'
 import { getDictionary } from '@/i18n/getDictionary'
 import { getPublicWork, getPublicWorkSlugs, getMapPinForWork } from '@/lib/data-server'
-import GalleryGrid from '@/components/gallery/GalleryGrid'
-import type { LightboxImage } from '@/components/gallery/Lightbox'
+import TextImageSlideshow from '@/components/TextImageSlideshow'
 
 export async function generateStaticParams() {
   const slugs = await getPublicWorkSlugs()
@@ -45,10 +44,7 @@ export default async function PublicWorkDetailPage({
     ? `https://www.google.com/maps?q=${mapPin.lat},${mapPin.lng}&z=16`
     : `https://www.google.com/maps/search/${encodeURIComponent(work.title + ' ' + work.location)}`
 
-  const images: LightboxImage[] = work.images.map((img) => ({
-    url: img.url,
-    alt: img.alt,
-  }))
+  const imageUrls = work.images.map((img) => img.url)
 
   return (
     <div className="section-gap">
@@ -126,13 +122,13 @@ export default async function PublicWorkDetailPage({
         </div>
       </div>
 
-      {images.length > 0 && (
-        <div className="page-pad" style={{ paddingBottom: '4rem' }}>
-          <GalleryGrid images={images} aspectRatio="4/3" columns="sm" />
+      {imageUrls.length > 0 && (
+        <div className="page-pad" style={{ paddingBottom: '4rem', maxWidth: '900px' }}>
+          <TextImageSlideshow images={imageUrls} title={work.title} thumbnailAspect="4/3" />
         </div>
       )}
 
-      {images.length === 0 && (
+      {imageUrls.length === 0 && (
         <div className="page-pad" style={{ paddingBottom: '4rem' }}>
           <p style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-sm)', fontStyle: 'italic' }}>
             {dict.portfolio?.no_images ?? 'Inga bilder tillgängliga för tillfället.'}
