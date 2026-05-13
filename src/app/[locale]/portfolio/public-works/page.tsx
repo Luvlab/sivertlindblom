@@ -183,9 +183,11 @@ export default async function PublicWorksPage({
             {EXTERIORS.length} {dict.portfolio?.count_works ?? 'verk'}
           </span>
         </div>
-        <div style={{
+        <div className="page-pad" style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))',
+          paddingTop: '1.5rem',
+          paddingBottom: '1.5rem',
         }}>
           {sortedExteriors.map((w, i) => (
             <WorkCard
@@ -216,9 +218,11 @@ export default async function PublicWorksPage({
             {INTERIORS.length} {dict.portfolio?.count_works ?? 'verk'}
           </span>
         </div>
-        <div style={{
+        <div className="page-pad" style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))',
+          paddingTop: '1.5rem',
+          paddingBottom: '1.5rem',
         }}>
           {sortedInteriors.map((w, i) => (
             <WorkCard
