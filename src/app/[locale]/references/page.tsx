@@ -132,6 +132,29 @@ export default async function ReferencesPage({
         <p style={{ color: 'var(--color-muted)', marginTop: '1rem', maxWidth: '60ch', fontSize: 'var(--fs-base)' }}>
           {dict.references?.intro ?? ''}
         </p>
+
+        {/* Section nav */}
+        <nav style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', marginTop: '2rem' }} aria-label="Sektioner">
+          {[
+            { href: '#skulptur',    label: dict.references?.sculpture_series ?? 'Skulpturserier' },
+            { href: '#film-tv',     label: dict.references?.film_tv ?? 'Film & TV' },
+            { href: '#publicerat',  label: dict.references?.published ?? 'Publicerat' },
+            { href: '#fotografi',   label: dict.references?.photography ?? 'Fotografier & Inspiration' },
+            { href: '#utmarkelser', label: dict.references?.awards ?? 'Utmärkelser & Medaljer' },
+          ].map(({ href, label }) => (
+            <a key={href} href={href} className="filter-link" style={{
+              fontSize: 'var(--fs-xs)',
+              letterSpacing: '0.08em',
+              textTransform: 'uppercase',
+              color: 'var(--color-muted)',
+              border: '1px solid var(--color-border)',
+              padding: '0.3em 0.8em',
+              textDecoration: 'none',
+            }}>
+              {label}
+            </a>
+          ))}
+        </nav>
       </div>
 
       <hr className="divider" />

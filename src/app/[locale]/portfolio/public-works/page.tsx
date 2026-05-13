@@ -168,11 +168,12 @@ export default async function PublicWorksPage({
 
       {/* ── Exteriörer — thumbnail grid ───────────────────────── */}
       <div style={{ borderTop: '1px solid var(--color-border)', borderBottom: '1px solid var(--color-border)' }}>
-        <div style={{
+        <div className="page-pad" style={{
           display: 'flex',
           alignItems: 'baseline',
           gap: '1.5rem',
-          padding: '2rem 2rem 1.5rem',
+          paddingTop: '2rem',
+          paddingBottom: '1.5rem',
           borderBottom: '1px solid var(--color-border)',
         }}>
           <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-2xl)', fontWeight: 400, margin: 0 }}>
@@ -200,11 +201,12 @@ export default async function PublicWorksPage({
 
       {/* ── Interiörer — thumbnail grid ───────────────────────── */}
       <div style={{ borderBottom: '1px solid var(--color-border)' }}>
-        <div style={{
+        <div className="page-pad" style={{
           display: 'flex',
           alignItems: 'baseline',
           gap: '1.5rem',
-          padding: '2rem 2rem 1.5rem',
+          paddingTop: '2rem',
+          paddingBottom: '1.5rem',
           borderBottom: '1px solid var(--color-border)',
         }}>
           <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-2xl)', fontWeight: 400, margin: 0 }}>
