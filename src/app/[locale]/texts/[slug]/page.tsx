@@ -5,7 +5,7 @@ import { locales } from '@/i18n/config'
 import type { Locale } from '@/i18n/config'
 import { getDictionary } from '@/i18n/getDictionary'
 import { TEXTS_DATA } from '@/lib/texts-data'
-import { getTextSlugs, getText } from '@/lib/data-server'
+import { getTextSlugs, getText, getTexts } from '@/lib/data-server'
 
 export async function generateStaticParams() {
   const slugs = await getTextSlugs()
@@ -37,11 +37,21 @@ export default async function TextDetailPage({
   params: Promise<{ locale: string; slug: string }>
 }) {
   const { locale, slug } = await params
-  const dict = await getDictionary(locale as Locale)
+  const [dict, allTexts] = await Promise.all([
+    getDictionary(locale as Locale),
+    getTexts(),
+  ])
 
   const text = TEXTS_DATA.find((t) => t.slug === slug)
+    ?? allTexts.find((t) => t.slug === slug)
     ?? await getText(slug)
   if (!text) notFound()
+
+  // Prev / next within the same type group (already ordered newest-first)
+  const sameType = allTexts.filter((t) => t.type === text.type)
+  const idx = sameType.findIndex((t) => t.slug === slug)
+  const prev = idx > 0 ? sameType[idx - 1] : null
+  const next = idx < sameType.length - 1 ? sameType[idx + 1] : null
 
   // Use locale-specific translation when available, fall back to original
   const body = text.bodies?.[locale] ?? text.body
@@ -174,9 +184,36 @@ export default async function TextDetailPage({
           </div>
         )}
 
-        {/* Back link */}
-        <div style={{ marginTop: '4rem', paddingTop: '2rem', borderTop: '1px solid var(--color-border)' }}>
-          <Link href={`/${locale}/texts`} className="back-link">
+        {/* Prev / Next + back nav */}
+        <div style={{ marginTop: '4rem', borderTop: '1px solid var(--color-border)', paddingTop: '2rem' }}>
+          <nav style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem', marginBottom: '2rem' }}>
+            {/* Prev — newer in the same type */}
+            <div>
+              {prev && (
+                <Link href={`/${locale}/texts/${prev.slug}`} style={{ textDecoration: 'none', display: 'block' }}>
+                  <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '0.3rem' }}>
+                    ← {prev.year}
+                  </p>
+                  <p style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-text)', lineHeight: 1.4 }}>{prev.author}</p>
+                  <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', marginTop: '0.15rem' }}>{prev.title}</p>
+                </Link>
+              )}
+            </div>
+            {/* Next — older in the same type */}
+            <div style={{ textAlign: 'right' }}>
+              {next && (
+                <Link href={`/${locale}/texts/${next.slug}`} style={{ textDecoration: 'none', display: 'block' }}>
+                  <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '0.3rem' }}>
+                    {next.year} →
+                  </p>
+                  <p style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-text)', lineHeight: 1.4 }}>{next.author}</p>
+                  <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', marginTop: '0.15rem' }}>{next.title}</p>
+                </Link>
+              )}
+            </div>
+          </nav>
+
+          <Link href={`/${locale}/texts#${text.type}`} className="back-link">
             <span className="back-link-arrow">←</span>
             <span className="back-link-label">{dict.texts?.title ?? 'Texter'}</span>
           </Link>
