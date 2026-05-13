@@ -6,6 +6,7 @@ import type { Locale } from '@/i18n/config'
 import { getDictionary } from '@/i18n/getDictionary'
 import { TEXTS_DATA } from '@/lib/texts-data'
 import { getTextSlugs, getText, getTexts } from '@/lib/data-server'
+import TextImageSlideshow from '@/components/TextImageSlideshow'
 
 export async function generateStaticParams() {
   const slugs = await getTextSlugs()
@@ -121,17 +122,9 @@ export default async function TextDetailPage({
         {/* Article images + OCR text — side-by-side on desktop, stacked on mobile */}
         {text.images && text.images.length > 0 ? (
           <div className="article-scan-layout">
-            {/* Images column */}
+            {/* Images column — slideshow when multiple images */}
             <div className="article-scan-images">
-              {text.images.map((img, i) => (
-                /* eslint-disable-next-line @next/next/no-img-element */
-                <img
-                  key={i}
-                  src={img}
-                  alt={`${text.title} — sida ${i + 1}`}
-                  style={{ width: '100%', display: 'block', marginBottom: i < text.images!.length - 1 ? '1rem' : 0 }}
-                />
-              ))}
+              <TextImageSlideshow images={text.images} title={text.title} />
             </div>
 
             {/* OCR / body text column */}
