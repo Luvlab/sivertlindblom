@@ -4,6 +4,7 @@ import { getDictionary } from '@/i18n/getDictionary'
 import { locales } from '@/i18n/config'
 import type { Locale } from '@/i18n/config'
 import PortfolioSlideshow from '@/components/portfolio/PortfolioSlideshow'
+import SafeImg from '@/components/SafeImg'
 import { SCULPTURE_PROJECTS } from '@/lib/sculpture-projects'
 
 export const metadata: Metadata = { title: 'Sculpture & Graphics' }
@@ -36,17 +37,79 @@ const SCULPTURE_SERIES = [
   { key: 'grafik', label: 'Grafik i urval', desc: 'Teckningar, grafikblad och studier.' },
 ]
 
-const FILMS: Array<{ year: number; title: string; director?: string; venue?: string; videoUrl?: string }> = [
-  { year: 1967, title: 'Beskrivning av en tankes rörelse', director: 'Lasse Forsberg' },
-  { year: 1972, title: 'Ted Gärdestad sjunger "Helena"', venue: 'med Sivert Lindbloms skulpturer', videoUrl: 'https://www.youtube.com/watch?v=yXAKq0KDpYk' },
-  { year: 1974, title: 'Vad var Multikonst?', venue: 'SVT / Öppet Arkiv', videoUrl: 'https://www.oppetarkiv.se/video/10872733/multikonst-hela-sverige-gar-pa-utstallning' },
-  { year: 1993, title: 'Sivert Lindblom visar modeller', venue: 'Skissernas Museum, Lund' },
-  { year: 1996, title: 'Poetic Cinema — Landscape After Verlaine', venue: 'Carl Henrik Svenstedt' },
-  { year: 1996, title: 'TV-intervju med Sivert Lindblom', venue: 'TV Eskilstuna' },
-  { year: 1998, title: 'TV4-Uppland: kortintervju om skulptur', venue: 'TV4 Uppland' },
-  { year: 2001, title: 'Resningen av Profilen, Potatisåkern', venue: 'Malmö' },
-  { year: 2002, title: 'Fontänerna på Gustav Adolfs torg', venue: 'Malmö', videoUrl: 'https://www.youtube.com/watch?v=-ba2Oq65qe4' },
-  { year: 1973, title: 'Skandinaviska Bankens Palats — Gustav Adolfs Torg', venue: 'Sveriges Riksbank', videoUrl: 'https://www.riksbank.se/sv/om-riksbanken/riksbankens-hus/' },
+const FILMS: Array<{ year: number; title: string; director?: string; venue?: string; desc?: string; videoUrl?: string; extraVideos?: string[] }> = [
+  {
+    year: 1967,
+    title: 'Beskrivning av en tankes rörelse',
+    director: 'Lasse Forsberg',
+    desc: 'En film om Sivert Lindblom av Lasse Forsberg, 1967. Sivert berättar om sin metod: hur profilen av hans eget ansikte blev utgångspunkten för ett formspråk förmedlat via exakta arbetsorder — på samma sätt som en arkitekt förmedlar form utan att delta i det praktiska arbetet. »Målet är inte att ge en illusion av rörelse utan målet är att ge en beskrivning av en tankes rörelse.«',
+  },
+  {
+    year: 1972,
+    title: 'Ted Gärdestad sjunger "Helena"',
+    venue: 'med Sivert Lindbloms skulpturer',
+    desc: 'Musikvideo till Ted Gärdestads "Helena" inspelad i miljö med Sivert Lindbloms skulpturer.',
+    videoUrl: 'https://www.youtube.com/watch?v=yXAKq0KDpYk',
+  },
+  {
+    year: 1974,
+    title: 'Vad var Multikonst?',
+    venue: 'SVT / Öppet Arkiv',
+    desc: 'Program från SVT om Multikonst-projektet 1967 — en vandringsutsällning i samarbete med Moderna Museet och Riksutställningar. Finns att se hos SVT Öppet Arkiv (extern länk, kan inte bäddas in).',
+    videoUrl: 'https://www.oppetarkiv.se/video/10872733/multikonst-hela-sverige-gar-pa-utstallning',
+  },
+  {
+    year: 1993,
+    title: 'Sivert Lindblom visar modeller på Skissernas museum, Lund',
+    venue: 'Skissernas Museum, Lund',
+    desc: 'Tre filmer från utställningen Skulptur Arkitektur på Skissernas museum i Lund 1993, där Sivert Lindblom presenterar modeller och offentliga verk.',
+    videoUrl: 'https://youtu.be/5GvdoEYox-k',
+    extraVideos: [
+      'https://www.youtube.com/embed/bF_AHab50Xc',
+      'https://www.youtube.com/embed/HCEZ9_anTmo',
+    ],
+  },
+  {
+    year: 1996,
+    title: 'TV-intervju med Sivert Lindblom',
+    venue: 'TV Eskilstuna / Minnenas Television',
+    desc: 'Intervju med Sivert Lindblom för TV Eskilstuna 1996 — Minnenas Television.',
+    videoUrl: 'https://www.youtube.com/embed/xhMABJ90HBE',
+  },
+  {
+    year: 1996,
+    title: 'Poetic Cinema — Landscape After Verlaine',
+    venue: 'Carl Henrik Svenstedt',
+    desc: 'Filmverk av Carl Henrik Svenstedt, 1996.',
+  },
+  {
+    year: 1998,
+    title: 'TV4-Uppland: kortintervju om skulptur',
+    venue: 'TV4 Uppland',
+    desc: 'I en 1-minuters intervju den 23 februari 1998 kommenterar Sivert Lindblom vilken skulptur han är mest nöjd med.',
+    videoUrl: 'https://www.youtube.com/embed/bhWP7NP89YM',
+  },
+  {
+    year: 1999,
+    title: 'Torg i tiden — Gustav Adolfs torg, Malmö',
+    venue: 'Malmö Stads Gatukontor',
+    desc: 'En 23 minuter lång dokumentärfilm om Gustav Adolfs torgs historia i Malmö, producerad av Malmö Stads Gatukontor. Byggherre: Malmö kommun. Invigdes 12 juni 1999.',
+    videoUrl: 'https://www.youtube.com/watch?v=-ba2Oq65qe4',
+  },
+  {
+    year: 2001,
+    title: 'Resningen av Profilen, Potatisåkern',
+    venue: 'Malmö',
+    desc: 'Film över resningen och installationen av Sivert Lindbloms skulptur "Profilen" på Potatisåkern bostadsområde i Malmö, 2001.',
+    videoUrl: 'https://www.youtube.com/embed/hfwecUKJCJo',
+  },
+  {
+    year: 1973,
+    title: 'Skandinaviska Bankens Palats — Gustav Adolfs Torg',
+    venue: 'Sveriges Riksbank',
+    desc: 'Dokumentation av utsmyckningen av Riksbankens fasad vid Gustav Adolfs torg, Stockholm, 1973.',
+    videoUrl: 'https://www.riksbank.se/sv/om-riksbanken/riksbankens-hus/',
+  },
 ]
 
 export default async function ReferencesPage({
@@ -128,15 +191,20 @@ export default async function ReferencesPage({
               <div style={{ display: 'grid', gridTemplateColumns: '4rem 1fr', gap: '1.5rem' }}>
                 <span style={{ color: 'var(--color-accent)', fontFamily: 'Georgia, serif', fontSize: 'var(--fs-sm)' }}>{f.year}</span>
                 <div>
-                  <div style={{ fontSize: 'var(--fs-base)', marginBottom: '0.2rem' }}>{f.title}</div>
-                  {f.director && <div style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)' }}>{dict.references?.director ?? 'Regi'}: {f.director}</div>}
-                  {f.venue && <div style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)' }}>{f.venue}</div>}
+                  <div style={{ fontSize: 'var(--fs-base)', marginBottom: '0.2rem', fontWeight: 500 }}>{f.title}</div>
+                  {f.director && <div style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', marginBottom: '0.15rem' }}>{dict.references?.director ?? 'Regi'}: {f.director}</div>}
+                  {f.venue && <div style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', marginBottom: '0.15rem' }}>{f.venue}</div>}
+                  {f.desc && (
+                    <p style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-muted)', lineHeight: 1.7, margin: '0.5rem 0 0', maxWidth: '65ch' }}>
+                      {f.desc}
+                    </p>
+                  )}
                   {f.videoUrl && !ytId && (
                     <a
                       href={f.videoUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      style={{ display: 'inline-block', marginTop: '0.5rem', fontSize: 'var(--fs-xs)', color: 'var(--color-accent)', letterSpacing: '0.06em', textTransform: 'uppercase', textDecoration: 'none', borderBottom: '1px solid var(--color-accent-dim)' }}
+                      style={{ display: 'inline-block', marginTop: '0.75rem', fontSize: 'var(--fs-xs)', color: 'var(--color-accent)', letterSpacing: '0.06em', textTransform: 'uppercase', textDecoration: 'none', borderBottom: '1px solid var(--color-accent-dim)' }}
                     >
                       ▶ {dict.references?.watch ?? 'Se filmen'} →
                     </a>
@@ -154,6 +222,21 @@ export default async function ReferencesPage({
                   />
                 </div>
               )}
+              {f.extraVideos && f.extraVideos.map((ev, ei) => {
+                const evId = getYouTubeId(ev)
+                if (!evId) return null
+                return (
+                  <div key={ei} style={{ marginTop: '0.75rem', marginLeft: '5.5rem', aspectRatio: '16/9', maxWidth: '640px', background: '#000', borderRadius: 2, overflow: 'hidden' }}>
+                    <iframe
+                      src={`https://www.youtube.com/embed/${evId}`}
+                      title={`${f.title} (del ${ei + 2})`}
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                      style={{ width: '100%', height: '100%', border: 'none', display: 'block' }}
+                    />
+                  </div>
+                )
+              })}
             </div>
           )
         })}
@@ -206,10 +289,9 @@ export default async function ReferencesPage({
             { src: 'https://sivertlindblom.se/wp-content/uploads/2018/05/Medaljer-Front.jpg',       alt: 'Medaljer åtsida' },
             { src: 'https://sivertlindblom.se/wp-content/uploads/2018/05/20180316_172048_001.jpg',  alt: 'Medaljer' },
           ].map((img) => (
-            /* eslint-disable-next-line @next/next/no-img-element */
-            <img key={img.src} src={img.src} alt={img.alt} loading="lazy"
+            
+            <SafeImg key={img.src} src={img.src} alt={img.alt} loading="lazy"
               style={{ height: 160, width: 'auto', objectFit: 'cover', border: '1px solid var(--color-border)' }}
-              onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none' }}
             />
           ))}
         </div>
@@ -274,10 +356,9 @@ export default async function ReferencesPage({
               <p style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-muted)', fontStyle: 'italic', lineHeight: 1.7, marginBottom: '1rem', maxWidth: '55ch' }}>
                 »Kreativ konstnär vars många sköna och spännande skulpturer på torg och broar är viktiga inslag i kulturstaden Stockholm«
               </p>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="https://sivertlindblom.se/wp-content/uploads/2018/05/S-t-Eriksmedalj.jpg" alt="S:t Eriksmedaljen"
+              {}
+              <SafeImg src="https://sivertlindblom.se/wp-content/uploads/2018/05/S-t-Eriksmedalj.jpg" alt="S:t Eriksmedaljen"
                 loading="lazy" style={{ height: 120, width: 'auto', border: '1px solid var(--color-border)' }}
-                onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none' }}
               />
             </div>
           </div>
@@ -292,12 +373,11 @@ export default async function ReferencesPage({
               <div style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', marginBottom: '1rem' }}>Eskilstuna-Kuriren</div>
               <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
                 {[1,2,3,4].map(n => (
-                  /* eslint-disable-next-line @next/next/no-img-element */
-                  <img key={n}
+                  
+                  <SafeImg key={n}
                     src={`http://media.sivertlindblom.se/2015/03/Sivert-Lindblom-Eskilstuna-Kuriren-Kulturpris-${n}-.jpg`}
                     alt={`Eskilstunakurirens kulturpris ${n}`} loading="lazy"
                     style={{ height: 120, width: 'auto', border: '1px solid var(--color-border)' }}
-                    onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none' }}
                   />
                 ))}
               </div>
@@ -326,10 +406,9 @@ export default async function ReferencesPage({
                   { src: 'https://sivertlindblom.se/wp-content/uploads/2018/05/Isis-gudinna.jpg',      alt: 'Isis gudinna — inspiration' },
                   { src: 'https://sivertlindblom.se/wp-content/uploads/2018/05/Balusterdockor-1-1.jpg', alt: 'Balusterdockor' },
                 ].map(img => (
-                  /* eslint-disable-next-line @next/next/no-img-element */
-                  <img key={img.src} src={img.src} alt={img.alt} loading="lazy"
+                  
+                  <SafeImg key={img.src} src={img.src} alt={img.alt} loading="lazy"
                     style={{ height: 120, width: 'auto', border: '1px solid var(--color-border)' }}
-                    onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none' }}
                   />
                 ))}
               </div>
@@ -357,10 +436,9 @@ export default async function ReferencesPage({
                   { src: 'https://sivertlindblom.se/wp-content/uploads/2018/05/Jubileumsmedalj-1.jpeg',  alt: 'Jubileumsmedalj' },
                   { src: 'https://sivertlindblom.se/wp-content/uploads/2018/05/Jubileumsmedalj-2.jpeg',  alt: 'Jubileumsmedalj detalj' },
                 ].map(img => (
-                  /* eslint-disable-next-line @next/next/no-img-element */
-                  <img key={img.src} src={img.src} alt={img.alt} loading="lazy"
+                  
+                  <SafeImg key={img.src} src={img.src} alt={img.alt} loading="lazy"
                     style={{ height: 120, width: 'auto', border: '1px solid var(--color-border)' }}
-                    onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none' }}
                   />
                 ))}
               </div>

@@ -14,13 +14,15 @@ export function generateStaticParams() {
 }
 
 // All publication covers scraped from sivertlindblom.se/biografi/publicerat/
-const PUBLICATIONS: Array<{ title: string; year?: string; isbn?: string; publisher?: string; imageUrl?: string }> = [
+const PUBLICATIONS: Array<{ title: string; year?: string; isbn?: string; publisher?: string; imageUrl?: string; downloadUrl?: string; downloadLabel?: string }> = [
   {
     title: 'Akvareller 1975–2012, Kungl. Konstakademien',
     year: '2012',
     isbn: '978-91-86583-13-2',
     publisher: 'Bullfinch Publishing',
     imageUrl: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Gratt-omslag-klipp.jpg',
+    downloadUrl: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/documents/Sivert-Katalog-Akvareller.pdf',
+    downloadLabel: 'Ladda ner katalog (PDF)',
   },
   {
     title: 'Skissernas Museum',
@@ -117,6 +119,8 @@ const PUBLICATIONS: Array<{ title: string; year?: string; isbn?: string; publish
     title: 'Sveriges Stenindustriförbund, Nr 2',
     year: '1985',
     imageUrl: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/02/Skannad-bild-150460006.jpg',
+    downloadUrl: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/documents/Stenpriset-1985.pdf',
+    downloadLabel: 'Ladda ner artikel (PDF)',
   },
   {
     title: '"Glöm oss inte"',
@@ -268,6 +272,24 @@ export default async function PubliceratPage({
                 )}
                 {pub.isbn && (
                   <div style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', marginTop: '0.1rem', fontVariantNumeric: 'tabular-nums' }}>{pub.isbn}</div>
+                )}
+                {pub.downloadUrl && (
+                  <a
+                    href={pub.downloadUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      display: 'inline-block',
+                      marginTop: '0.5rem',
+                      fontSize: 'var(--fs-xs)',
+                      color: 'var(--color-accent)',
+                      textDecoration: 'none',
+                      letterSpacing: '0.04em',
+                      borderBottom: '1px solid var(--color-accent-dim)',
+                    }}
+                  >
+                    ↓ {pub.downloadLabel ?? 'Ladda ner (PDF)'}
+                  </a>
                 )}
               </div>
             </div>
