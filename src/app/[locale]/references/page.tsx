@@ -194,30 +194,63 @@ export default async function ReferencesPage({
       {/* Utmärkelser */}
       <section id="utmarkelser" className="page-pad" style={{ paddingTop: '3rem', paddingBottom: '3rem' }}>
         <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-2xl)', marginBottom: '2rem' }}>
-          Utmärkelser
+          Utmärkelser, priser och medaljer
         </h2>
+
+        <h3 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-lg)', fontWeight: 400, color: 'var(--color-muted)', marginBottom: '1rem', marginTop: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.08em', fontSize: 'var(--fs-xs)' }}>
+          Mottagna priser
+        </h3>
         {[
-          { year: '1985', title: 'Stenpriset', org: 'Sveriges Stenindustrifförbund' },
-          { year: '1995', title: 'Sergelpriset', org: 'Stockholm stad' },
+          { year: '1984', title: 'K A Linds Hederspris', org: 'Moderna Museets Vänners kulturpris' },
+          { year: '1985', title: 'Stenpriset', org: 'Sveriges Stenindustriförbund' },
+          { year: '1989', title: 'Prins Eugen-medaljen', org: '' },
+          { year: '1995', title: 'Sergelpriset', org: 'Kungl. Akademien för de fria konsterna, Stockholm', desc: 'Priset inrättades 1945 till minne av Johan Tobias Sergel. Utdelas vart femte år på Sergels dödsdag 26 februari.' },
+          { year: '2002', title: 'S:t Eriksmedaljen', org: 'Stockholm stad', desc: '»Kreativ konstnär vars många sköna och spännande skulpturer på torg och broar är viktiga inslag i kulturstaden Stockholm«' },
+          { year: '2002', title: 'Eskilstunakurirens kulturpris', org: 'Eskilstuna-Kuriren' },
         ].map((a) => (
-          <div key={a.year} style={{ display: 'grid', gridTemplateColumns: '5rem 1fr auto', gap: '1rem', padding: '0.9rem 0', borderBottom: '1px solid var(--color-border)', alignItems: 'start' }}>
-            <span style={{ color: 'var(--color-accent)', fontFamily: 'Georgia, serif', fontSize: 'var(--fs-sm)' }}>{a.year}</span>
-            <span style={{ fontSize: 'var(--fs-base)' }}>{a.title}</span>
-            <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', textAlign: 'right' }}>{a.org}</span>
+          <div key={a.title + a.year} style={{ padding: '1rem 0', borderBottom: '1px solid var(--color-border)' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '5rem 1fr', gap: '1rem', alignItems: 'baseline' }}>
+              <span style={{ color: 'var(--color-accent)', fontFamily: 'Georgia, serif', fontSize: 'var(--fs-sm)' }}>{a.year}</span>
+              <div>
+                <span style={{ fontSize: 'var(--fs-base)' }}>{a.title}</span>
+                {a.org && <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', marginLeft: '0.75rem' }}>{a.org}</span>}
+                {a.desc && <p style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-muted)', marginTop: '0.35rem', fontStyle: 'italic', lineHeight: 1.6 }}>{a.desc}</p>}
+              </div>
+            </div>
           </div>
         ))}
-      </section>
 
-      <hr className="divider" />
-
-      {/* Ögonblick — enskilda objekt och minnesmärken */}
-      <section id="ogonblick" className="page-pad" style={{ paddingTop: '3rem', paddingBottom: '5rem' }}>
-        <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-2xl)', marginBottom: '1rem' }}>
-          Ögonblick, enskilda objekt och minnesmärken
-        </h2>
-        <p style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-base)', maxWidth: '60ch', lineHeight: 1.8 }}>
-          Innehåll importeras från originalsajten.
-        </p>
+        <h3 style={{ fontFamily: 'Georgia, serif', fontWeight: 400, color: 'var(--color-muted)', marginBottom: '1rem', marginTop: '2.5rem', textTransform: 'uppercase', letterSpacing: '0.08em', fontSize: 'var(--fs-xs)' }}>
+          Medaljer formgivna av Sivert Lindblom
+        </h3>
+        {[
+          {
+            year: '1992',
+            title: 'Kungl. Ingenjörsvetenskapsakademiens (IVA) Minnesmedalj',
+            desc: 'Åtsida: Profil av arkitekten Gunnar Asplund. Frånsida: Symbol för Stockholmsutställningen 1930 med kompassnål N och upphöjd sfär, inspirerad av egyptiska gudinnan Isis.',
+            videoUrl: 'https://youtu.be/uKDKR1KDdvQ',
+          },
+          {
+            year: '2003',
+            title: 'Kungl. Vitterhets Historie och Antikvitets Akademiens Jubileumsmedalj',
+            desc: 'Åtsida: latinskt motto SEMPER VIRIDES med tre lagerkransar. Frånsida: fasaden av Rettigska huset vid Villagatan 3, Stockholm. 2 exemplar i guld (Kungen och Drottningen) samt 400 i silver till jubileumsbanketten 20 mars 2003.',
+          },
+        ].map((m) => (
+          <div key={m.title} style={{ padding: '1rem 0', borderBottom: '1px solid var(--color-border)' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '5rem 1fr', gap: '1rem' }}>
+              <span style={{ color: 'var(--color-accent)', fontFamily: 'Georgia, serif', fontSize: 'var(--fs-sm)', paddingTop: '0.1rem' }}>{m.year}</span>
+              <div>
+                <div style={{ fontSize: 'var(--fs-base)' }}>{m.title}</div>
+                <p style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-muted)', marginTop: '0.35rem', lineHeight: 1.6 }}>{m.desc}</p>
+                {m.videoUrl && (
+                  <a href={m.videoUrl} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-block', marginTop: '0.5rem', fontSize: 'var(--fs-xs)', color: 'var(--color-accent)', letterSpacing: '0.06em', textTransform: 'uppercase', textDecoration: 'none', borderBottom: '1px solid var(--color-accent-dim)' }}>
+                    ▶ Se film →
+                  </a>
+                )}
+              </div>
+            </div>
+          </div>
+        ))}
       </section>
     </div>
   )
