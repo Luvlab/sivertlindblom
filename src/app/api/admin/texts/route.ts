@@ -20,6 +20,7 @@ function dbToTextItem(row: Record<string, unknown>): TextItem {
     publication: (row.publication as string) ?? '',
     lang: (row.language as TextItem['lang']) ?? 'sv',
     body: (row.content as string) ?? '',
+    images: (row.images as string[] | null) ?? [],
   }
 }
 

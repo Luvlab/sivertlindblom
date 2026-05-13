@@ -56,6 +56,7 @@ const FADE_MS    = 2000  // fade-out duration
 
 interface Props {
   children?: React.ReactNode
+  slides?: Array<{ url: string; alt: string }>
 }
 
 /**
@@ -77,8 +78,8 @@ interface Props {
  *
  * Because BACK is always opacity:1, the background is never exposed.
  */
-export default function HeroSlideshow({ children }: Props) {
-  const [images]              = useState<typeof ALL_IMAGES>(() => shuffle(ALL_IMAGES))
+export default function HeroSlideshow({ children, slides }: Props) {
+  const [images]              = useState<typeof ALL_IMAGES>(() => shuffle(slides && slides.length > 0 ? slides : ALL_IMAGES))
   const [frontIdx, setFrontIdx] = useState(0)
   const [backIdx,  setBackIdx]  = useState(1)
   const [fading,   setFading]   = useState(false)

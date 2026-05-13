@@ -223,3 +223,38 @@ export async function getTextSlugs(): Promise<string[]> {
   }
   return STATIC_TEXTS.map((t) => t.slug)
 }
+
+// ─── Hero Slides ─────────────────────────────────────────────────────────────
+
+// Fallback: first 9 images from ALL_IMAGES in HeroSlideshow
+const FALLBACK_HERO_SLIDES = [
+  { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Sivert-Lindblom-Blasieholms-Torg-01.jpg', alt: 'Blasieholmstorg, Stockholm 1989' },
+  { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Sivert-Lindblom-Blasieholms-Torg-31.jpg', alt: 'Hästar i brons' },
+  { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Sivert-Lindblom-Blasieholms-Torg-48.jpg', alt: 'Blasieholmstorg detalj' },
+  { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Sivert-Lindblom-Blasieholms-Torg-43.jpg', alt: 'Blasieholmstorg natt' },
+  { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Sivert-Lindblom-Blasieholms-Torg-71.jpg', alt: 'Blasieholmstorg panorama' },
+  { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Sivert-Lindblom-Blasieholms-Torg-33.jpg', alt: 'Blasieholmstorg sidovy' },
+  { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/03/Sivert-Triumf-Paris.jpg', alt: 'Sivert Lindblom i Paris' },
+  { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/05/img307.jpg', alt: 'Arkivbild' },
+  { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/04/Glyptoteket.jpg', alt: 'Glyptoteket, Köpenhamn' },
+]
+
+export async function getHeroSlides(): Promise<Array<{ url: string; alt: string }>> {
+  const supabase = createAdminClient()
+  if (supabase) {
+    const { data, error } = await supabase
+      .from('settings')
+      .select('value')
+      .eq('key', 'hero_slides')
+      .single()
+    if (!error && data?.value) {
+      try {
+        const slides = JSON.parse(data.value) as Array<{ url: string; alt: string }>
+        if (Array.isArray(slides) && slides.length > 0) return slides
+      } catch {
+        // fall through to fallback
+      }
+    }
+  }
+  return FALLBACK_HERO_SLIDES
+}

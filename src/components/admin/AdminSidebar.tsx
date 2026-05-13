@@ -5,6 +5,7 @@ import { usePathname, useRouter } from 'next/navigation'
 
 const NAV_ITEMS = [
   { href: '/admin',                label: 'Dashboard',          icon: '◈' },
+  { href: '/admin/home',           label: 'Startsida',          icon: '⌂' },
   { href: '/admin/exhibitions',    label: 'Utställningar',      icon: '◻' },
   { href: '/admin/public-works',   label: 'Offentliga arbeten', icon: '▦' },
   { href: '/admin/texts',          label: 'Texter',             icon: '≡' },
