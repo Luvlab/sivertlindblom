@@ -52,6 +52,15 @@ export default function AdminMedia() {
           }
         }
 
+        // Fetch manually uploaded images from storage
+        const uploadsRes = await fetch('/api/admin/upload')
+        const uploadsData = await uploadsRes.json() as { files?: Array<{ url: string; alt: string; name: string }> } | { error: string }
+        if (!('error' in uploadsData) && uploadsData.files) {
+          for (const f of uploadsData.files) {
+            collected.push({ url: f.url, alt: f.alt ?? '', work: 'Uppladdningar' })
+          }
+        }
+
         setImages(collected)
       } catch (e) {
         setError(String(e))
