@@ -57,26 +57,38 @@ export default function AdminTexts() {
         </div>
       )}
 
-      <div style={{ display: 'flex', gap: '1rem', marginBottom: '2rem', flexWrap: 'wrap' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginBottom: '2rem' }}>
         <input
           type="search"
           className="input"
           placeholder="Sök titel, författare..."
           value={filter}
           onChange={e => setFilter(e.target.value)}
-          style={{ maxWidth: 280 }}
+          style={{ maxWidth: 320 }}
         />
-        <select
-          className="input"
-          value={typeFilter}
-          onChange={e => setTypeFilter(e.target.value)}
-          style={{ maxWidth: 200 }}
-        >
-          <option value="">Alla typer</option>
-          {Object.entries(TYPE_LABELS).map(([k, v]) => (
-            <option key={k} value={k}>{v}</option>
+        <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+          {[['', 'Alla'], ...Object.entries(TYPE_LABELS)].map(([k, v]) => (
+            <button
+              key={k}
+              onClick={() => setTypeFilter(k)}
+              style={{
+                fontSize: 'var(--fs-xs)',
+                letterSpacing: '0.08em',
+                textTransform: 'uppercase',
+                padding: '0.35em 0.9em',
+                border: '1px solid',
+                borderColor: typeFilter === k ? 'var(--color-accent)' : 'var(--color-border)',
+                background: typeFilter === k ? 'var(--color-accent)' : 'transparent',
+                color: typeFilter === k ? '#0a0a0a' : 'var(--color-muted)',
+                cursor: 'pointer',
+                borderRadius: 1,
+                transition: 'all 0.12s',
+              }}
+            >
+              {v}
+            </button>
           ))}
-        </select>
+        </div>
       </div>
 
       {loading ? (
