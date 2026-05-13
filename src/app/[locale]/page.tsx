@@ -238,36 +238,6 @@ export default async function HomePage({
         </div>
       </section>
 
-      {/* SECTION CARDS */}
-      <section className="section-gap page-pad">
-        <p style={{ fontSize: 'var(--fs-xs)', letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--color-accent)', marginBottom: '3rem' }}>
-          {dict.home?.explore ?? 'Utforska webbplatsen'}
-        </p>
-        <div style={{ display: 'flex', gap: '2rem', flexWrap: 'wrap' }}>
-          {sections.map((s) => (
-            <Link
-              key={s.href}
-              href={s.href}
-              style={{ display: 'block', textDecoration: 'none', flex: '1 1 200px' }}
-            >
-              <article className="card" style={{ padding: '2rem', height: '100%', minHeight: 200 }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1.5rem' }}>
-                  <h3 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-2xl)', margin: 0 }}>{s.label}</h3>
-                  {s.count && (
-                    <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-accent)', fontFamily: 'Georgia, serif' }}>{s.count}</span>
-                  )}
-                </div>
-                <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-accent)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '1rem' }}>{s.sub}</p>
-                <p style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-muted)', lineHeight: 1.7 }}>{s.desc}</p>
-                <div style={{ marginTop: '1.5rem', fontSize: 'var(--fs-xs)', color: 'var(--color-accent)', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
-                  {dict.common?.show ?? 'Visa'} →
-                </div>
-              </article>
-            </Link>
-          ))}
-        </div>
-      </section>
-
       {/* CONTACT CTA */}
       <section style={{
         margin: '0 clamp(1rem,4vw,5rem) 5rem',
