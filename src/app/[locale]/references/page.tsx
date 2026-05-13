@@ -74,7 +74,7 @@ export default async function ReferencesPage({
       <hr className="divider" />
 
       {/* Sculpture series */}
-      <section className="page-pad" style={{ paddingTop: '3rem', paddingBottom: '3rem' }}>
+      <section id="skulptur" className="page-pad" style={{ paddingTop: '3rem', paddingBottom: '3rem' }}>
         <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-2xl)', marginBottom: '2rem' }}>
           {dict.references?.sculpture_series ?? 'Skulpturserier'}
         </h2>
@@ -117,7 +117,7 @@ export default async function ReferencesPage({
       <hr className="divider" />
 
       {/* Film & TV */}
-      <section className="page-pad" style={{ paddingTop: '3rem', paddingBottom: '3rem' }}>
+      <section id="film-tv" className="page-pad" style={{ paddingTop: '3rem', paddingBottom: '3rem' }}>
         <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-2xl)', marginBottom: '2rem' }}>
           {dict.references?.film_tv ?? 'Film & TV'}
         </h2>
@@ -162,7 +162,7 @@ export default async function ReferencesPage({
       <hr className="divider" />
 
       {/* Publicerat */}
-      <section className="page-pad" style={{ paddingTop: '3rem', paddingBottom: '3rem' }}>
+      <section id="publicerat" className="page-pad" style={{ paddingTop: '3rem', paddingBottom: '3rem' }}>
         <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-2xl)', marginBottom: '1rem' }}>
           {dict.references?.publicerat ?? 'Publicerat'}
         </h2>
@@ -177,7 +177,7 @@ export default async function ReferencesPage({
       <hr className="divider" />
 
       {/* Fotografier & Inspiration */}
-      <section className="page-pad" style={{ paddingTop: '3rem', paddingBottom: '5rem' }}>
+      <section id="fotografi" className="page-pad" style={{ paddingTop: '3rem', paddingBottom: '3rem' }}>
         <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-2xl)', marginBottom: '1rem' }}>
           {dict.references?.fotografier ?? 'Fotografier & Inspiration'}
         </h2>
@@ -187,6 +187,37 @@ export default async function ReferencesPage({
         <Link href={`/${locale}/references/fotografier`} className="btn">
           {dict.references?.view_fotografier ?? 'Visa bildgalleri'} →
         </Link>
+      </section>
+
+      <hr className="divider" />
+
+      {/* Utmärkelser */}
+      <section id="utmarkelser" className="page-pad" style={{ paddingTop: '3rem', paddingBottom: '3rem' }}>
+        <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-2xl)', marginBottom: '2rem' }}>
+          Utmärkelser
+        </h2>
+        {[
+          { year: '1985', title: 'Stenpriset', org: 'Sveriges Stenindustrifförbund' },
+          { year: '1995', title: 'Sergelpriset', org: 'Stockholm stad' },
+        ].map((a) => (
+          <div key={a.year} style={{ display: 'grid', gridTemplateColumns: '5rem 1fr auto', gap: '1rem', padding: '0.9rem 0', borderBottom: '1px solid var(--color-border)', alignItems: 'start' }}>
+            <span style={{ color: 'var(--color-accent)', fontFamily: 'Georgia, serif', fontSize: 'var(--fs-sm)' }}>{a.year}</span>
+            <span style={{ fontSize: 'var(--fs-base)' }}>{a.title}</span>
+            <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', textAlign: 'right' }}>{a.org}</span>
+          </div>
+        ))}
+      </section>
+
+      <hr className="divider" />
+
+      {/* Ögonblick — enskilda objekt och minnesmärken */}
+      <section id="ogonblick" className="page-pad" style={{ paddingTop: '3rem', paddingBottom: '5rem' }}>
+        <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-2xl)', marginBottom: '1rem' }}>
+          Ögonblick, enskilda objekt och minnesmärken
+        </h2>
+        <p style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-base)', maxWidth: '60ch', lineHeight: 1.8 }}>
+          Innehåll importeras från originalsajten.
+        </p>
       </section>
     </div>
   )

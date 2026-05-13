@@ -1,11 +1,12 @@
 {
   "nav": {
     "portfolio": "作品集",
-    "sculpture": "雕塑",
+    "sculpture": "参考资料",
     "texts": "文章",
     "biography": "传记",
     "contact": "联系",
-    "admin": "Admin"
+    "admin": "Admin",
+    "references": "参考资料"
   },
   "common": {
     "year": "年份",
@@ -103,7 +104,8 @@
     "interview": "访谈",
     "own_writing": "本人著作",
     "translated": "译文",
-    "original_language": "原文语言"
+    "original_language": "原文语言",
+    "others_texts": "他人文章"
   },
   "biography": {
     "title": "西韦特·林德布洛姆",

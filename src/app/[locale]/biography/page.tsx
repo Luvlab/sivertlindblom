@@ -95,7 +95,7 @@ export default async function BiographyPage({
 
       <hr className="divider" />
 
-      <div className="page-pad" style={{ paddingTop: '3rem' }}>
+      <div id="biografi" className="page-pad" style={{ paddingTop: '3rem' }}>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%,480px),1fr))', gap: '4rem' }}>
 
           {/* Timeline */}
@@ -113,7 +113,7 @@ export default async function BiographyPage({
           </section>
 
           {/* Group exhibitions */}
-          <section>
+          <section id="grupputstallningar">
             <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-2xl)', marginBottom: '2rem' }}>
               {dict.biography?.group_exhibitions ?? 'Grupputställningar i urval'}
             </h2>
@@ -137,7 +137,7 @@ export default async function BiographyPage({
       <hr className="divider" style={{ margin: '4rem 0' }} />
 
       {/* Public commissions */}
-      <section className="page-pad" style={{ paddingBottom: '3rem' }}>
+      <section id="offentliga-uppdrag" className="page-pad" style={{ paddingBottom: '3rem' }}>
         <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-2xl)', marginBottom: '2rem' }}>
           {dict.biography?.public_commissions ?? 'Offentliga uppdrag i urval'}
         </h2>
@@ -160,8 +160,20 @@ export default async function BiographyPage({
 
       <hr className="divider" style={{ margin: '0 0 4rem' }} />
 
+      {/* Litteraturförteckning */}
+      <section id="litteratur" className="page-pad" style={{ paddingBottom: '3rem' }}>
+        <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-2xl)', marginBottom: '2rem' }}>
+          {dict.biography?.bibliography ?? 'Litteraturförteckning i urval'}
+        </h2>
+        <p style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-sm)' }}>
+          Innehåll importeras från originalsajten.
+        </p>
+      </section>
+
+      <hr className="divider" style={{ margin: '0 0 4rem' }} />
+
       {/* Photographs of Sivert */}
-      <section className="page-pad" style={{ paddingBottom: '5rem' }}>
+      <section id="fotografier" className="page-pad" style={{ paddingBottom: '5rem' }}>
         <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-2xl)', marginBottom: '2rem' }}>
           {dict.biography?.photographs ?? 'Fotografier'}
         </h2>

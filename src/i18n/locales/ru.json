@@ -1,11 +1,12 @@
 {
   "nav": {
     "portfolio": "Портфолио",
-    "sculpture": "Скульптура",
+    "sculpture": "Ссылки",
     "texts": "Тексты",
     "biography": "Биография",
     "contact": "Контакт",
-    "admin": "Admin"
+    "admin": "Admin",
+    "references": "Ссылки"
   },
   "common": {
     "year": "Год",
@@ -103,7 +104,8 @@
     "interview": "Интервью",
     "own_writing": "Собственный текст",
     "translated": "Переведено",
-    "original_language": "Оригинальный язык"
+    "original_language": "Оригинальный язык",
+    "others_texts": "Тексты других"
   },
   "biography": {
     "title": "Сиверт Линдблом",

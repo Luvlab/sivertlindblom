@@ -1,11 +1,12 @@
 {
   "nav": {
     "portfolio": "ผลงาน",
-    "sculpture": "ประติมากรรม",
+    "sculpture": "อ้างอิง",
     "texts": "บทความ",
     "biography": "ประวัติ",
     "contact": "ติดต่อ",
-    "admin": "ผู้ดูแล"
+    "admin": "ผู้ดูแล",
+    "references": "อ้างอิง"
   },
   "common": {
     "year": "ปี",
@@ -103,7 +104,8 @@
     "interview": "สัมภาษณ์",
     "own_writing": "งานเขียนของตนเอง",
     "translated": "แปลแล้ว",
-    "original_language": "ภาษาต้นฉบับ"
+    "original_language": "ภาษาต้นฉบับ",
+    "others_texts": "ข้อความของผู้อื่น"
   },
   "biography": {
     "title": "ซีเวิร์ต ลินด์บลอม",

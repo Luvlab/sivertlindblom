@@ -1,11 +1,12 @@
 {
   "nav": {
     "portfolio": "포트폴리오",
-    "sculpture": "조각",
+    "sculpture": "참고자료",
     "texts": "텍스트",
     "biography": "약력",
     "contact": "연락처",
-    "admin": "Admin"
+    "admin": "Admin",
+    "references": "참고자료"
   },
   "common": {
     "year": "연도",
@@ -103,7 +104,8 @@
     "interview": "인터뷰",
     "own_writing": "자작 글",
     "translated": "번역",
-    "original_language": "원본 언어"
+    "original_language": "원본 언어",
+    "others_texts": "다른 이들의 글"
   },
   "biography": {
     "title": "시베르트 린드블롬",

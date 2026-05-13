@@ -1,11 +1,12 @@
 {
   "nav": {
     "portfolio": "ポートフォリオ",
-    "sculpture": "彫刻",
+    "sculpture": "参考資料",
     "texts": "テキスト",
     "biography": "略歴",
     "contact": "お問い合わせ",
-    "admin": "Admin"
+    "admin": "Admin",
+    "references": "参考資料"
   },
   "common": {
     "year": "年",
@@ -103,7 +104,8 @@
     "interview": "インタビュー",
     "own_writing": "自著",
     "translated": "翻訳",
-    "original_language": "原語"
+    "original_language": "原語",
+    "others_texts": "他者のテキスト"
   },
   "biography": {
     "title": "シヴェルト・リンドブロム",

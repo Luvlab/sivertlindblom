@@ -45,7 +45,9 @@ const LANG_LABELS: Record<string, string> = {
   sv: 'SV', en: 'EN', de: 'DE', fr: 'FR', it: 'IT',
 }
 
-const TYPE_ORDER = ['own_writing', 'essay', 'preface', 'interview', 'review', 'translated']
+// "andras_texter" is a virtual group that combines essay + preface (texts by others about Sivert)
+const TYPE_ORDER = ['andras_texter', 'own_writing', 'interview', 'review', 'translated'] as const
+type GroupType = typeof TYPE_ORDER[number]
 
 export default async function TextsPage({
   params,
@@ -58,20 +60,22 @@ export default async function TextsPage({
     getTexts(),
   ])
 
-  const TYPE_LABELS: Record<string, string> = {
-    essay:       dict.texts?.essay ?? 'Essay',
-    preface:     dict.texts?.preface ?? 'Förord',
-    review:      dict.texts?.review ?? 'Recension',
-    interview:   dict.texts?.interview ?? 'Intervju',
-    own_writing: dict.texts?.own_writing ?? 'Egen text',
-    translated:  dict.texts?.translated ?? 'Översatt',
+  const TYPE_LABELS: Record<GroupType, string> = {
+    andras_texter: dict.texts?.others_texts ?? 'Andras texter',
+    own_writing:   dict.texts?.own_writing  ?? 'Egna texter',
+    interview:     dict.texts?.interview    ?? 'Intervjuer',
+    review:        dict.texts?.review       ?? 'Recensioner',
+    translated:    dict.texts?.translated   ?? 'Översatt text',
   }
 
   // getTexts() already returns newest-first (year DESC from Supabase)
+  // "andras_texter" combines essay + preface (texts written by others about Sivert)
   const grouped = TYPE_ORDER.map((type) => ({
     type,
     label: TYPE_LABELS[type],
-    items: allTexts.filter((t) => t.type === type),
+    items: type === 'andras_texter'
+      ? allTexts.filter((t) => t.type === 'essay' || t.type === 'preface')
+      : allTexts.filter((t) => t.type === type),
   })).filter((g) => g.items.length)
 
   return (
@@ -101,7 +105,7 @@ export default async function TextsPage({
               padding: '0.3em 0.8em',
               transition: 'all 0.15s',
             }}>
-              {TYPE_LABELS[t]}
+              {TYPE_LABELS[t as GroupType]}
             </a>
           ))}
         </nav>

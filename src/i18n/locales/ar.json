@@ -1,11 +1,12 @@
 {
   "nav": {
     "portfolio": "أعمال فنية",
-    "sculpture": "نحت",
+    "sculpture": "مراجع",
     "texts": "نصوص",
     "biography": "سيرة ذاتية",
     "contact": "اتصل بنا",
-    "admin": "Admin"
+    "admin": "Admin",
+    "references": "مراجع"
   },
   "common": {
     "year": "السنة",
@@ -103,7 +104,8 @@
     "interview": "مقابلة",
     "own_writing": "كتابة خاصة",
     "translated": "مترجم",
-    "original_language": "اللغة الأصلية"
+    "original_language": "اللغة الأصلية",
+    "others_texts": "نصوص الآخرين"
   },
   "biography": {
     "title": "سيفرت ليندبلوم",

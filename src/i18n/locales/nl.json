@@ -1,11 +1,12 @@
 {
   "nav": {
     "portfolio": "Portfolio",
-    "sculpture": "Beeldhouwkunst",
+    "sculpture": "Referenties",
     "texts": "Teksten",
     "biography": "Biografie",
     "contact": "Contact",
-    "admin": "Admin"
+    "admin": "Admin",
+    "references": "Referenties"
   },
   "common": {
     "year": "Jaar",
@@ -103,7 +104,8 @@
     "interview": "Interview",
     "own_writing": "Eigen tekst",
     "translated": "Vertaald",
-    "original_language": "Originele taal"
+    "original_language": "Originele taal",
+    "others_texts": "Teksten van anderen"
   },
   "biography": {
     "title": "Sivert Lindblom",
