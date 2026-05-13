@@ -11,6 +11,7 @@ export interface TextItem {
   lang: 'sv' | 'en' | 'de' | 'fr' | 'it'
   body: string                              // original-language body (always present)
   bodies?: Partial<Record<string, string>>  // locale → translated body
+  images?: string[]                         // scanned article image URLs (reviews)
 }
 
 const RAW_TEXTS_DATA: Omit<TextItem, 'bodies'>[] = [

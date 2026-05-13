@@ -172,6 +172,7 @@ function dbRowToText(row: Record<string, unknown>): TextItem {
     publication: (row.publication as string) ?? '',
     lang: ((row.language as string) ?? 'sv') as TextItem['lang'],
     body: (row.content as string) ?? '',
+    images: (row.images as string[] | null) ?? [],
   }
 }
 

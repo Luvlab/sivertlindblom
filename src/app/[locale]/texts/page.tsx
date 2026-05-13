@@ -4,6 +4,7 @@ import { getDictionary } from '@/i18n/getDictionary'
 import { locales } from '@/i18n/config'
 import type { Locale } from '@/i18n/config'
 import { getTexts } from '@/lib/data-server'
+import ScrollSaver from '@/components/ScrollSaver'
 
 export const metadata: Metadata = { title: 'Texts' }
 
@@ -75,6 +76,8 @@ export default async function TextsPage({
 
   return (
     <div className="section-gap">
+      {/* Saves + restores scroll position so ← back keeps your place */}
+      <ScrollSaver storageKey="texts-list-scroll" />
       <div className="page-pad" style={{ marginBottom: '3rem' }}>
         <p style={{ fontSize: 'var(--fs-xs)', letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--color-accent)', marginBottom: '0.75rem' }}>
           {dict.texts?.subtitle ?? 'Texter'}

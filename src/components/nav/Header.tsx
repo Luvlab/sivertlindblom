@@ -7,6 +7,9 @@ import FontSizeSlider from '../FontSizeSlider'
 import LanguageSwitcher from './LanguageSwitcher'
 import type { Locale } from '@/i18n/config'
 
+interface SubItem { label: string; href: string }
+interface NavItem  { label: string; href: string; sub?: SubItem[] }
+
 interface HeaderProps {
   locale: Locale
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -15,17 +18,38 @@ interface HeaderProps {
 
 export default function Header({ locale, dict }: HeaderProps) {
   const [open, setOpen] = useState(false)
+  const [openSub, setOpenSub] = useState<string | null>(null) // mobile accordion
+  const [hovered, setHovered] = useState<string | null>(null)  // desktop dropdown
   const pathname = usePathname()
 
   const isAdmin = pathname?.startsWith('/admin')
   if (isAdmin) return null
 
-  const NAV = [
-    { label: dict?.nav?.portfolio ?? 'Portfolio', href: `/${locale}/portfolio` },
-    { label: dict?.nav?.sculpture ?? 'Skulptur',  href: `/${locale}/references` },
-    { label: dict?.nav?.texts ?? 'Texter',        href: `/${locale}/texts` },
+  const NAV: NavItem[] = [
+    {
+      label: dict?.nav?.portfolio ?? 'Portfolio',
+      href: `/${locale}/portfolio`,
+      sub: [
+        { label: dict?.portfolio?.cat_exhibitions ?? 'Utställningar',    href: `/${locale}/portfolio/exhibitions` },
+        { label: dict?.portfolio?.cat_public      ?? 'Offentliga verk',  href: `/${locale}/portfolio/public-works` },
+        { label: dict?.portfolio?.cat_scenography ?? 'Scenografi',       href: `/${locale}/portfolio/scenography` },
+        { label: dict?.portfolio?.cat_watercolors ?? 'Akvareller',       href: `/${locale}/portfolio/watercolors` },
+      ],
+    },
+    { label: dict?.nav?.sculpture ?? 'Skulptur', href: `/${locale}/references` },
+    {
+      label: dict?.nav?.texts ?? 'Texter',
+      href: `/${locale}/texts`,
+      sub: [
+        { label: dict?.texts?.review      ?? 'Recensioner', href: `/${locale}/texts#review` },
+        { label: dict?.texts?.essay       ?? 'Essay',       href: `/${locale}/texts#essay` },
+        { label: dict?.texts?.preface     ?? 'Förord',      href: `/${locale}/texts#preface` },
+        { label: dict?.texts?.interview   ?? 'Intervjuer',  href: `/${locale}/texts#interview` },
+        { label: dict?.texts?.own_writing ?? 'Egna texter', href: `/${locale}/texts#own_writing` },
+      ],
+    },
     { label: dict?.nav?.biography ?? 'Biografi',  href: `/${locale}/biography` },
-    { label: dict?.nav?.contact ?? 'Kontakt',     href: `/${locale}/contact` },
+    { label: dict?.nav?.contact   ?? 'Kontakt',   href: `/${locale}/contact` },
   ]
 
   return (
@@ -54,13 +78,36 @@ export default function Header({ locale, dict }: HeaderProps) {
             className="hidden-mobile"
           >
             {NAV.map((item) => (
-              <Link
+              <div
                 key={item.href}
-                href={item.href}
-                className={`nav-link${pathname?.startsWith(item.href) ? ' active' : ''}`}
+                className="nav-item-wrap"
+                onMouseEnter={() => item.sub && setHovered(item.href)}
+                onMouseLeave={() => setHovered(null)}
               >
-                {item.label}
-              </Link>
+                <Link
+                  href={item.href}
+                  className={`nav-link${pathname?.startsWith(item.href) ? ' active' : ''}`}
+                  style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}
+                >
+                  {item.label}
+                  {item.sub && (
+                    <svg width="8" height="5" viewBox="0 0 8 5" fill="none" style={{ opacity: 0.5, marginTop: '1px' }}>
+                      <path d="M1 1l3 3 3-3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                  )}
+                </Link>
+
+                {/* Desktop dropdown */}
+                {item.sub && hovered === item.href && (
+                  <div className="nav-dropdown">
+                    {item.sub.map((s) => (
+                      <Link key={s.href} href={s.href} className="nav-dropdown-item" onClick={() => setHovered(null)}>
+                        {s.label}
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
             ))}
           </nav>
 
@@ -123,21 +170,53 @@ export default function Header({ locale, dict }: HeaderProps) {
       >
         <div className="page-pad" style={{ paddingTop: '2rem', paddingBottom: '2rem' }}>
           {NAV.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              onClick={() => setOpen(false)}
-              style={{
-                display: 'block',
-                padding: '1rem 0',
-                fontSize: 'var(--fs-2xl)',
-                fontFamily: 'Georgia, serif',
-                borderBottom: '1px solid var(--color-border)',
-                color: pathname?.startsWith(item.href) ? 'var(--color-accent)' : 'var(--color-text)',
-              }}
-            >
-              {item.label}
-            </Link>
+            <div key={item.href}>
+              {/* Top-level row */}
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid var(--color-border)' }}>
+                <Link
+                  href={item.href}
+                  onClick={() => setOpen(false)}
+                  style={{
+                    display: 'block',
+                    padding: '1rem 0',
+                    fontSize: 'var(--fs-2xl)',
+                    fontFamily: 'Georgia, serif',
+                    color: pathname?.startsWith(item.href) ? 'var(--color-accent)' : 'var(--color-text)',
+                    flex: 1,
+                  }}
+                >
+                  {item.label}
+                </Link>
+                {item.sub && (
+                  <button
+                    onClick={() => setOpenSub(openSub === item.href ? null : item.href)}
+                    aria-label="Visa undermeny"
+                    style={{
+                      background: 'none',
+                      border: 'none',
+                      cursor: 'pointer',
+                      padding: '1rem 0 1rem 1rem',
+                      color: 'var(--color-muted)',
+                    }}
+                  >
+                    <svg width="12" height="8" viewBox="0 0 12 8" fill="none" style={{ transform: openSub === item.href ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s' }}>
+                      <path d="M1 1l5 5 5-5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                  </button>
+                )}
+              </div>
+
+              {/* Sub-items accordion */}
+              {item.sub && openSub === item.href && (
+                <div>
+                  {item.sub.map((s) => (
+                    <Link key={s.href} href={s.href} className="mobile-sub-item" onClick={() => setOpen(false)}>
+                      {s.label}
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
           ))}
 
           {/* Language switcher in mobile menu */}

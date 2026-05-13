@@ -108,22 +108,71 @@ export default async function TextDetailPage({
           </p>
         )}
 
-        {/* Body — double newlines split paragraphs; single newlines become <br> */}
-        <div>
-          {body.split('\n\n').map((para, i) => {
-            const lines = para.split('\n')
-            return (
-              <p key={i} style={{ fontSize: 'var(--fs-base)', lineHeight: 1.8, marginBottom: '1.5em', color: 'var(--color-text)' }}>
-                {lines.map((line, j) => (
-                  <span key={j}>
-                    {j > 0 && <br />}
-                    {line}
-                  </span>
-                ))}
-              </p>
-            )
-          })}
-        </div>
+        {/* Article images + OCR text — side-by-side on desktop, stacked on mobile */}
+        {text.images && text.images.length > 0 ? (
+          <div className="article-scan-layout">
+            {/* Images column */}
+            <div className="article-scan-images">
+              {text.images.map((img, i) => (
+                /* eslint-disable-next-line @next/next/no-img-element */
+                <img
+                  key={i}
+                  src={img}
+                  alt={`${text.title} — sida ${i + 1}`}
+                  style={{ width: '100%', display: 'block', marginBottom: i < text.images!.length - 1 ? '1rem' : 0 }}
+                />
+              ))}
+            </div>
+
+            {/* OCR / body text column */}
+            {body ? (
+              <div className="article-scan-text">
+                <p style={{
+                  fontSize: 'var(--fs-xs)',
+                  letterSpacing: '0.1em',
+                  textTransform: 'uppercase',
+                  color: 'var(--color-accent)',
+                  marginBottom: '1rem',
+                }}>
+                  OCR
+                </p>
+                {body.split('\n\n').map((para, i) => {
+                  const lines = para.split('\n')
+                  return (
+                    <p key={i} style={{ fontSize: 'var(--fs-sm)', lineHeight: 1.75, marginBottom: '1.2em', color: 'var(--color-muted)' }}>
+                      {lines.map((line, j) => (
+                        <span key={j}>{j > 0 && <br />}{line}</span>
+                      ))}
+                    </p>
+                  )
+                })}
+              </div>
+            ) : (
+              <div className="article-scan-text" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <p style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-sm)', fontStyle: 'italic' }}>
+                  OCR-text saknas ännu
+                </p>
+              </div>
+            )}
+          </div>
+        ) : (
+          /* Plain text body for essays/prefaces/etc. */
+          <div>
+            {body.split('\n\n').map((para, i) => {
+              const lines = para.split('\n')
+              return (
+                <p key={i} style={{ fontSize: 'var(--fs-base)', lineHeight: 1.8, marginBottom: '1.5em', color: 'var(--color-text)' }}>
+                  {lines.map((line, j) => (
+                    <span key={j}>
+                      {j > 0 && <br />}
+                      {line}
+                    </span>
+                  ))}
+                </p>
+              )
+            })}
+          </div>
+        )}
 
         {/* Back link */}
         <div style={{ marginTop: '4rem', paddingTop: '2rem', borderTop: '1px solid var(--color-border)' }}>
