@@ -5,8 +5,9 @@ import { locales } from '@/i18n/config'
 import type { Locale } from '@/i18n/config'
 import GalleryGrid from '@/components/gallery/GalleryGrid'
 import type { LightboxImage } from '@/components/gallery/Lightbox'
+import PortfolioSlideshow from '@/components/portfolio/PortfolioSlideshow'
 import SculptureMap from '@/components/SculptureMap'
-import { getMapPins, getPublicWork } from '@/lib/data-server'
+import { getMapPins, getPublicWorks } from '@/lib/data-server'
 
 export const metadata: Metadata = { title: 'Public Works' }
 
@@ -50,37 +51,64 @@ const INTERIORS: Array<{ title: string; year: number; location: string; slug?: s
 ]
 
 function WorkCard({
-  title, year, location, slug, locale,
+  title, year, location, slug, locale, images, idx,
 }: {
-  title: string; year: number; location: string; slug?: string; locale: string
+  title: string; year: number; location: string; slug?: string; locale: string; images?: string[]; idx: number
 }) {
-  const cardStyle = {
-    display: 'flex',
-    flexDirection: 'column' as const,
-    gap: '0.25rem',
-    padding: '1.25rem 1.5rem',
-    borderRight: '1px solid var(--color-border)',
-    borderBottom: '1px solid var(--color-border)',
-    textDecoration: 'none',
-    transition: 'background 0.12s',
-  }
+  const hasImages = images && images.length > 0
 
   const inner = (
     <>
-      <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-accent)', fontFamily: 'Georgia, serif', lineHeight: 1 }}>{year}</span>
-      <span style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-text)', lineHeight: 1.35 }}>{title}</span>
-      <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', marginTop: '0.15rem' }}>{location}</span>
+      {/* Thumbnail slideshow */}
+      {hasImages ? (
+        <div style={{ aspectRatio: '4/3', position: 'relative', overflow: 'hidden', borderBottom: '1px solid var(--color-border)' }}>
+          <PortfolioSlideshow
+            images={images}
+            alt={title}
+            objectFit="cover"
+            interval={4000 + idx * 350}
+          />
+        </div>
+      ) : (
+        <div style={{
+          aspectRatio: '4/3',
+          background: 'var(--color-bg-surface)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          borderBottom: '1px solid var(--color-border)',
+        }}>
+          <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-border)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+            {year}
+          </span>
+        </div>
+      )}
+
+      {/* Text */}
+      <div style={{ padding: '1rem 1.25rem' }}>
+        <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-accent)', fontFamily: 'Georgia, serif', lineHeight: 1 }}>{year}</span>
+        <div style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-text)', lineHeight: 1.35, marginTop: '0.3rem' }}>{title}</div>
+        <div style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', marginTop: '0.25rem' }}>{location}</div>
+      </div>
     </>
   )
 
+  const cardStyle = {
+    display: 'block',
+    overflow: 'hidden',
+    textDecoration: 'none',
+    borderRight: '1px solid var(--color-border)',
+    borderBottom: '1px solid var(--color-border)',
+  } as const
+
   if (slug) {
     return (
-      <Link href={`/${locale}/portfolio/public-works/${slug}`} className="row-hover" style={cardStyle}>
+      <Link href={`/${locale}/portfolio/public-works/${slug}`} className="card-hover" style={cardStyle}>
         {inner}
       </Link>
     )
   }
-  return <div className="row-hover" style={cardStyle}>{inner}</div>
+  return <div className="card-hover" style={cardStyle}>{inner}</div>
 }
 
 export default async function PublicWorksPage({
@@ -89,12 +117,19 @@ export default async function PublicWorksPage({
   params: Promise<{ locale: string }>
 }) {
   const { locale } = await params
-  const dict = await getDictionary(locale as Locale)
-
-  const [locations, blasieholmWork] = await Promise.all([
+  const [dict, locations, allWorks] = await Promise.all([
+    getDictionary(locale as Locale),
     getMapPins(),
-    getPublicWork('blasieholmstorg-1989'),
+    getPublicWorks(),
   ])
+
+  // Build slug → image URLs lookup from DB works
+  const imagesBySlug: Record<string, string[]> = {}
+  for (const w of allWorks) {
+    if (w.slug && w.images.length > 0) {
+      imagesBySlug[w.slug] = w.images.slice(0, 8).map((i) => i.url)
+    }
+  }
 
   const counts = {
     total: locations.length,
@@ -104,6 +139,7 @@ export default async function PublicWorksPage({
   const sortedExteriors = [...EXTERIORS].sort((a, b) => b.year - a.year)
   const sortedInteriors = [...INTERIORS].sort((a, b) => b.year - a.year)
 
+  const blasieholmWork = allWorks.find((w) => w.slug === 'blasieholmstorg-1989')
   const blasieholmImages: LightboxImage[] = (blasieholmWork?.images ?? []).map((img) => ({
     url: img.url,
     alt: img.alt,
@@ -127,13 +163,11 @@ export default async function PublicWorksPage({
         </div>
       </div>
 
-      {/* ── Full-viewport map ─────────────────────────────────── */}
-      <div style={{ height: '100dvh', width: '100%', position: 'relative' }}>
-        <SculptureMap locations={locations} locale={locale} />
-      </div>
+      {/* ── Map — natural height, no 100dvh wrapper ───────────── */}
+      <SculptureMap locations={locations} locale={locale} />
 
-      {/* ── Exteriörer — full-width auto-fill grid ─────────────── */}
-      <div style={{ borderBottom: '1px solid var(--color-border)' }}>
+      {/* ── Exteriörer — thumbnail grid ───────────────────────── */}
+      <div style={{ borderTop: '1px solid var(--color-border)', borderBottom: '1px solid var(--color-border)' }}>
         <div style={{
           display: 'flex',
           alignItems: 'baseline',
@@ -150,16 +184,21 @@ export default async function PublicWorksPage({
         </div>
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))',
-          borderTop: 'none',
+          gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))',
         }}>
-          {sortedExteriors.map((w) => (
-            <WorkCard key={w.title} {...w} locale={locale} />
+          {sortedExteriors.map((w, i) => (
+            <WorkCard
+              key={w.title}
+              {...w}
+              locale={locale}
+              images={w.slug ? imagesBySlug[w.slug] : undefined}
+              idx={i}
+            />
           ))}
         </div>
       </div>
 
-      {/* ── Interiörer — full-width auto-fill grid ─────────────── */}
+      {/* ── Interiörer — thumbnail grid ───────────────────────── */}
       <div style={{ borderBottom: '1px solid var(--color-border)' }}>
         <div style={{
           display: 'flex',
@@ -177,10 +216,16 @@ export default async function PublicWorksPage({
         </div>
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))',
+          gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))',
         }}>
-          {sortedInteriors.map((w) => (
-            <WorkCard key={w.title} {...w} locale={locale} />
+          {sortedInteriors.map((w, i) => (
+            <WorkCard
+              key={w.title}
+              {...w}
+              locale={locale}
+              images={w.slug ? imagesBySlug[w.slug] : undefined}
+              idx={i}
+            />
           ))}
         </div>
       </div>

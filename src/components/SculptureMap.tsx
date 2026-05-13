@@ -43,6 +43,17 @@ export default function SculptureMap({ locations, locale }: Props) {
     if (scriptsLoadedRef.current >= 2) setLeafletReady(true)
   }
 
+  // If scripts are already cached from a previous visit, onLoad won't fire.
+  // Poll until window.L + markerClusterGroup are present.
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    if (window.L?.markerClusterGroup) { setLeafletReady(true); return }
+    const id = setInterval(() => {
+      if (window.L?.markerClusterGroup) { setLeafletReady(true); clearInterval(id) }
+    }, 100)
+    return () => clearInterval(id)
+  }, [])
+
   useEffect(() => {
     if (!leafletReady || !mapRef.current || mapInstance.current) return
 
@@ -211,7 +222,7 @@ export default function SculptureMap({ locations, locale }: Props) {
   const types = ['exterior', 'interior', 'metro']
 
   return (
-    <div>
+    <div style={{ paddingBottom: '2rem' }}>
       {/* Leaflet CSS + JS via CDN */}
       <link
         rel="stylesheet"
@@ -290,9 +301,9 @@ export default function SculptureMap({ locations, locale }: Props) {
       <div
         ref={mapRef}
         style={{
-          height: 520,
+          height: 480,
           background: '#111',
-          margin: '0 3rem',
+          margin: '0 clamp(1rem,3vw,3rem)',
           borderRadius: 2,
           overflow: 'hidden',
           border: '1px solid var(--color-border)',
