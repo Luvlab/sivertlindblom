@@ -5,9 +5,12 @@ import { locales } from '@/i18n/config'
 import type { Locale } from '@/i18n/config'
 import PortfolioSlideshow from '@/components/portfolio/PortfolioSlideshow'
 import SafeImg from '@/components/SafeImg'
-import TextImageSlideshow from '@/components/TextImageSlideshow'
+import GalleryGrid from '@/components/gallery/GalleryGrid'
+import type { LightboxImage } from '@/components/gallery/Lightbox'
 import TabsLayout from '@/components/TabsLayout'
 import { SCULPTURE_PROJECTS } from '@/lib/sculpture-projects'
+import { FOTOGRAFIER_IMAGES } from '@/lib/fotografier-data'
+import { PUBLICATIONS } from '@/lib/publications-data'
 
 export const metadata: Metadata = { title: 'Sculpture & Graphics' }
 
@@ -157,6 +160,18 @@ export default async function ReferencesPage({
   const grafikProject = SCULPTURE_PROJECTS.find((p) => p.slug === 'grafik')
   const grafikImages = grafikProject?.images.map((i) => i.url) ?? []
 
+  // LightboxImage arrays for thumbnail-grid tabs
+  const grafikLightboxImages: LightboxImage[] = grafikImages.map((url) => ({ url, alt: 'Grafik' }))
+  const pubLightboxImages: LightboxImage[] = PUBLICATIONS
+    .filter((p) => !!p.imageUrl)
+    .map((p) => ({ url: p.imageUrl!, alt: p.title, caption: [p.title, p.year].filter(Boolean).join(' — ') }))
+  const fotoLightboxImages: LightboxImage[] = FOTOGRAFIER_IMAGES.map((img) => ({
+    url: img.url,
+    alt: img.caption ?? 'Fotografi',
+    caption: img.caption,
+  }))
+  const ogonblickLightboxImages: LightboxImage[] = OGONBLICK_IMAGES.map((url) => ({ url, alt: 'Ögonblick' }))
+
   const TABS = [
     { id: 'skulptur',    label: dict.references?.sculpture_series ?? 'Skulptur',   count: SCULPTURE_SERIES.length },
     { id: 'grafik',      label: 'Grafik',                                           count: grafikImages.length },
@@ -228,10 +243,8 @@ export default async function ReferencesPage({
               </p>
             </>
           )}
-          {grafikImages.length > 0 ? (
-            <div style={{ maxWidth: '820px' }}>
-              <TextImageSlideshow images={grafikImages} title="Grafik i urval" thumbnailAspect="1/1" />
-            </div>
+          {grafikLightboxImages.length > 0 ? (
+            <GalleryGrid images={grafikLightboxImages} aspectRatio="1/1" columns="sm" />
           ) : (
             <p style={{ color: 'var(--color-muted)', fontStyle: 'italic', fontSize: 'var(--fs-sm)' }}>
               Bilder laddas in…
@@ -288,28 +301,24 @@ export default async function ReferencesPage({
 
         {/* ── 4. Publicerat ─────────────────────────────────── */}
         <section className="page-pad" style={{ paddingTop: '3rem', paddingBottom: '3rem' }}>
-          <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-2xl)', marginBottom: '1rem' }}>
+          <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-2xl)', marginBottom: '0.75rem' }}>
             {dict.references?.publicerat ?? 'Publicerat'}
           </h2>
           <p style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-sm)', marginBottom: '2rem', maxWidth: '60ch' }}>
             {dict.references?.publicerat_desc ?? 'Kataloger, tidskriftsartiklar och böcker med texter om Sivert Lindbloms konstnärskap.'}
           </p>
-          <Link href={`/${locale}/references/publicerat`} className="btn">
-            {dict.references?.view_publicerat ?? 'Visa publikationer'} →
-          </Link>
+          <GalleryGrid images={pubLightboxImages} aspectRatio="2/3" columns="sm" />
         </section>
 
         {/* ── 5. Fotografier ────────────────────────────────── */}
         <section className="page-pad" style={{ paddingTop: '3rem', paddingBottom: '3rem' }}>
-          <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-2xl)', marginBottom: '1rem' }}>
+          <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-2xl)', marginBottom: '0.75rem' }}>
             {dict.references?.fotografier ?? 'Fotografier & Inspiration'}
           </h2>
           <p style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-sm)', marginBottom: '2rem', maxWidth: '60ch' }}>
             {dict.references?.fotografier_desc ?? 'Bilder som på ett eller annat sätt berört och inspirerat Sivert Lindblom i sitt arbete.'}
           </p>
-          <Link href={`/${locale}/references/fotografier`} className="btn">
-            {dict.references?.view_fotografier ?? 'Visa bildgalleri'} →
-          </Link>
+          <GalleryGrid images={fotoLightboxImages} aspectRatio="3/2" columns="sm" />
         </section>
 
         {/* ── 6. Utmärkelser ────────────────────────────────── */}
@@ -422,10 +431,8 @@ export default async function ReferencesPage({
           <p style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-base)', maxWidth: '60ch', lineHeight: 1.7, marginBottom: '2rem' }}>
             Bilder på och med Sivert Lindblom — i atelén, vid invigningar och i vardagen.
           </p>
-          {OGONBLICK_IMAGES.length > 0 && (
-            <div style={{ maxWidth: '820px' }}>
-              <TextImageSlideshow images={OGONBLICK_IMAGES} title="Ögonblick" thumbnailAspect="4/3" />
-            </div>
+          {ogonblickLightboxImages.length > 0 && (
+            <GalleryGrid images={ogonblickLightboxImages} aspectRatio="4/3" columns="sm" />
           )}
         </section>
 
