@@ -8,7 +8,7 @@ interface Props {
   objectFit?: 'cover' | 'contain'
   background?: string
   padding?: string
-  /** ms between fades, default 3500 */
+  /** ms between fades, default 6000 */
   interval?: number
 }
 
@@ -18,7 +18,7 @@ export default function PortfolioSlideshow({
   objectFit = 'cover',
   background = 'var(--color-bg-card)',
   padding = '0',
-  interval = 3500,
+  interval = 6000,
 }: Props) {
   // Two slots always in DOM — we alternate which one is "top"
   const [slots, setSlots] = useState<[string, string]>([
