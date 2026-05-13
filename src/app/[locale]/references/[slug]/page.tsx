@@ -5,8 +5,7 @@ import { locales } from '@/i18n/config'
 import type { Locale } from '@/i18n/config'
 import { getDictionary } from '@/i18n/getDictionary'
 import { SCULPTURE_PROJECTS } from '@/lib/sculpture-projects'
-import GalleryGrid from '@/components/gallery/GalleryGrid'
-import type { LightboxImage } from '@/components/gallery/Lightbox'
+import TextImageSlideshow from '@/components/TextImageSlideshow'
 
 export function generateStaticParams() {
   return locales.flatMap((locale) =>
@@ -39,10 +38,7 @@ export default async function SculptureSeriesPage({
   const project = SCULPTURE_PROJECTS.find((p) => p.slug === slug)
   if (!project) notFound()
 
-  const images: LightboxImage[] = project.images.map((img) => ({
-    url: img.url,
-    alt: img.alt,
-  }))
+  const imageUrls = project.images.map((img) => img.url)
 
   return (
     <div className="section-gap">
@@ -105,13 +101,13 @@ export default async function SculptureSeriesPage({
         </div>
       </div>
 
-      {images.length > 0 && (
-        <div className="page-pad" style={{ paddingBottom: '2rem' }}>
-          <GalleryGrid images={images} aspectRatio="3/2" columns="sm" />
+      {imageUrls.length > 0 && (
+        <div className="page-pad" style={{ paddingBottom: '2rem', maxWidth: '860px' }}>
+          <TextImageSlideshow images={imageUrls} title={project.title} thumbnailAspect="4/3" />
         </div>
       )}
 
-      {images.length === 0 && (
+      {imageUrls.length === 0 && (
         <div className="page-pad" style={{ paddingBottom: '2rem' }}>
           <p style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-sm)', fontStyle: 'italic' }}>
             {dict.references?.no_images ?? 'Inga bilder tillgängliga för tillfället.'}

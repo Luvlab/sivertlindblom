@@ -5,6 +5,8 @@ import { locales } from '@/i18n/config'
 import type { Locale } from '@/i18n/config'
 import PortfolioSlideshow from '@/components/portfolio/PortfolioSlideshow'
 import SafeImg from '@/components/SafeImg'
+import TextImageSlideshow from '@/components/TextImageSlideshow'
+import TabsLayout from '@/components/TabsLayout'
 import { SCULPTURE_PROJECTS } from '@/lib/sculpture-projects'
 
 export const metadata: Metadata = { title: 'Sculpture & Graphics' }
@@ -23,19 +25,19 @@ const SLIDESHOW_IMAGES: Record<string, string[]> = Object.fromEntries(
   SCULPTURE_PROJECTS.map((p) => [p.slug, p.images.slice(0, 8).map((i) => i.url)])
 )
 
+// Skulptur series — excludes grafik (it gets its own tab)
 const SCULPTURE_SERIES = [
-  { key: 'profiler', label: 'Profiler', desc: 'Profilskulpturer i sten och brons.' },
-  { key: 'metamorfoser', label: 'Metamorfoser — Sittare', desc: 'Sittande figurer i metamorfos.' },
-  { key: 'monoliter', label: 'Monoliter & Blystoder', desc: 'Monolitiska former, inkl. Paris 1977.' },
-  { key: 'azteker', label: 'Azteker', desc: 'Aztekiskt inspirerade skulpturer.' },
-  { key: 'tidiga-skulpturer', label: 'Tidiga skulpturer', desc: 'Verk från 1950- och 1960-talen.' },
-  { key: 'kofeser', label: 'Kofeser', desc: 'En serie om meningslös meningsfullhet.' },
-  { key: 'blyplattor', label: 'Blyplattor', desc: 'Reliefverk i bly.' },
-  { key: 'tradkonstruktioner', label: 'Trädkonstruktioner', desc: 'Skulpturer i trä.' },
-  { key: 'tornmodeller', label: 'Tornmodeller', desc: 'Modeller och förslag för torn.' },
-  { key: 'arbetsmodeller', label: 'Arbetsmodeller & Förslag', desc: 'Arbetsmodeller i gips, lera och trä samt tävlingsförslag.' },
-  { key: 'grafik', label: 'Grafik i urval', desc: 'Teckningar, grafikblad och studier.' },
-]
+  { key: 'profiler',        label: 'Profiler',                    desc: 'Profilskulpturer i sten och brons.' },
+  { key: 'metamorfoser',    label: 'Metamorfoser — Sittare',      desc: 'Sittande figurer i metamorfos.' },
+  { key: 'monoliter',       label: 'Monoliter & Blystoder',       desc: 'Monolitiska former, inkl. Paris 1977.' },
+  { key: 'azteker',         label: 'Azteker',                     desc: 'Aztekiskt inspirerade skulpturer.' },
+  { key: 'tidiga-skulpturer', label: 'Tidiga skulpturer',         desc: 'Verk från 1950- och 1960-talen.' },
+  { key: 'kofeser',         label: 'Kofeser',                     desc: 'En serie om meningslös meningsfullhet.' },
+  { key: 'blyplattor',      label: 'Blyplattor',                  desc: 'Reliefverk i bly.' },
+  { key: 'tradkonstruktioner', label: 'Trädkonstruktioner',       desc: 'Skulpturer i trä.' },
+  { key: 'tornmodeller',    label: 'Tornmodeller',                 desc: 'Modeller och förslag för torn.' },
+  { key: 'arbetsmodeller',  label: 'Arbetsmodeller & Förslag',    desc: 'Arbetsmodeller i gips, lera och trä samt tävlingsförslag.' },
+] as const
 
 const FILMS: Array<{ year: number; title: string; director?: string; venue?: string; desc?: string; videoUrl?: string; extraVideos?: string[] }> = [
   {
@@ -112,6 +114,38 @@ const FILMS: Array<{ year: number; title: string; director?: string; venue?: str
   },
 ]
 
+// Ögonblick — candid / behind-the-scenes photos (scraped from sivertlindblom.se)
+const OGONBLICK_IMAGES = [
+  'https://sivertlindblom.se/wp-content/uploads/2018/07/20180714_181121.jpg',
+  'https://sivertlindblom.se/wp-content/uploads/2018/07/20180714_181104.jpg',
+  'https://sivertlindblom.se/wp-content/uploads/2018/07/20180714_181039.jpg',
+  'https://sivertlindblom.se/wp-content/uploads/2018/07/20180714_181150.jpg',
+  'https://sivertlindblom.se/wp-content/uploads/2018/10/20181018_195227.jpg',
+  'https://sivertlindblom.se/wp-content/uploads/2018/10/20181018_195108.jpg',
+  'https://sivertlindblom.se/wp-content/uploads/2018/10/20181018_195148.jpg',
+  'https://sivertlindblom.se/wp-content/uploads/2018/02/20180203_160556.jpg',
+  'https://sivertlindblom.se/wp-content/uploads/2018/02/20180203_160613.jpg',
+  'https://sivertlindblom.se/wp-content/uploads/2018/02/20180203_160538.jpg',
+  'https://sivertlindblom.se/wp-content/uploads/2018/02/20180203_160518.jpg',
+  'https://sivertlindblom.se/wp-content/uploads/2018/02/20180203_160623_001.jpg',
+  'https://sivertlindblom.se/wp-content/uploads/2018/02/Lykta-Konstakademin.jpg',
+  'https://sivertlindblom.se/wp-content/uploads/2018/02/img296.jpg',
+  'https://sivertlindblom.se/wp-content/uploads/2018/08/20180817_135602.jpg',
+  'https://sivertlindblom.se/wp-content/uploads/2018/08/20180817_135547.jpg',
+  'https://sivertlindblom.se/wp-content/uploads/2018/08/20180817_135534.jpg',
+  'https://sivertlindblom.se/wp-content/uploads/2018/08/20180817_135458.jpg',
+  'https://sivertlindblom.se/wp-content/uploads/2018/08/20180817_135440.jpg',
+  'https://sivertlindblom.se/wp-content/uploads/2018/02/20180131_111554.jpg',
+  'https://sivertlindblom.se/wp-content/uploads/2018/02/20180131_111159.jpg',
+  'https://sivertlindblom.se/wp-content/uploads/2018/02/20180131_111221.jpg',
+  'https://sivertlindblom.se/wp-content/uploads/2018/02/20180131_111324.jpg',
+  'https://sivertlindblom.se/wp-content/uploads/2018/02/20180131_111349.jpg',
+  'https://sivertlindblom.se/wp-content/uploads/2018/02/20180131_111425.jpg',
+  'https://sivertlindblom.se/wp-content/uploads/2015/01/20150118_201040.jpg',
+  'https://sivertlindblom.se/wp-content/uploads/2017/10/20170927_181311.jpg',
+  'https://sivertlindblom.se/wp-content/uploads/2017/10/20170927_181256.jpg',
+]
+
 export default async function ReferencesPage({
   params,
 }: {
@@ -120,355 +154,282 @@ export default async function ReferencesPage({
   const { locale } = await params
   const dict = await getDictionary(locale as Locale)
 
+  const grafikProject = SCULPTURE_PROJECTS.find((p) => p.slug === 'grafik')
+  const grafikImages = grafikProject?.images.map((i) => i.url) ?? []
+
+  const TABS = [
+    { id: 'skulptur',    label: dict.references?.sculpture_series ?? 'Skulptur',   count: SCULPTURE_SERIES.length },
+    { id: 'grafik',      label: 'Grafik',                                           count: grafikImages.length },
+    { id: 'film-tv',     label: dict.references?.film_tv ?? 'Film & TV',            count: FILMS.length },
+    { id: 'publicerat',  label: dict.references?.publicerat ?? 'Publicerat' },
+    { id: 'fotografi',   label: dict.references?.fotografier ?? 'Fotografier' },
+    { id: 'utmarkelser', label: 'Utmärkelser' },
+    { id: 'ogonblick',   label: 'Ögonblick' },
+  ]
+
   return (
     <div className="section-gap">
-      <div className="page-pad" style={{ marginBottom: '3rem' }}>
+      {/* Page header */}
+      <div className="page-pad" style={{ marginBottom: '2rem' }}>
         <p style={{ fontSize: 'var(--fs-xs)', letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--color-accent)', marginBottom: '0.75rem' }}>
           {dict.references?.subtitle ?? 'Skulptur & Grafik'}
         </p>
         <h1 style={{ fontFamily: 'Georgia, serif', fontWeight: 400, fontSize: 'clamp(1.8rem,4vw,3rem)' }}>
           {dict.references?.title ?? 'Referensmaterial'}
         </h1>
-        <p style={{ color: 'var(--color-muted)', marginTop: '1rem', maxWidth: '60ch', fontSize: 'var(--fs-base)' }}>
-          {dict.references?.intro ?? ''}
-        </p>
-
-        {/* Section nav */}
-        <nav style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', marginTop: '2rem' }} aria-label="Sektioner">
-          {[
-            { href: '#skulptur',    label: dict.references?.sculpture_series ?? 'Skulpturserier' },
-            { href: '#film-tv',     label: dict.references?.film_tv ?? 'Film & TV' },
-            { href: '#publicerat',  label: dict.references?.published ?? 'Publicerat' },
-            { href: '#fotografi',   label: dict.references?.photography ?? 'Fotografier & Inspiration' },
-            { href: '#utmarkelser', label: dict.references?.awards ?? 'Utmärkelser & Medaljer' },
-          ].map(({ href, label }) => (
-            <a key={href} href={href} className="filter-link" style={{
-              fontSize: 'var(--fs-xs)',
-              letterSpacing: '0.08em',
-              textTransform: 'uppercase',
-              color: 'var(--color-muted)',
-              border: '1px solid var(--color-border)',
-              padding: '0.3em 0.8em',
-              textDecoration: 'none',
-            }}>
-              {label}
-            </a>
-          ))}
-        </nav>
+        {dict.references?.intro && (
+          <p style={{ color: 'var(--color-muted)', marginTop: '1rem', maxWidth: '60ch', fontSize: 'var(--fs-base)' }}>
+            {dict.references.intro}
+          </p>
+        )}
       </div>
 
-      <hr className="divider" />
+      {/* Tabs */}
+      <TabsLayout tabs={TABS} defaultTab="skulptur">
 
-      {/* Sculpture series */}
-      <section id="skulptur" className="page-pad" style={{ paddingTop: '3rem', paddingBottom: '3rem' }}>
-        <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-2xl)', marginBottom: '2rem' }}>
-          {dict.references?.sculpture_series ?? 'Skulpturserier'}
-        </h2>
-        <div className="auto-grid-wide">
-          {SCULPTURE_SERIES.map((s, i) => {
-            const images = SLIDESHOW_IMAGES[s.key] ?? []
-            return (
-              <Link key={s.key} href={`/${locale}/references/${s.key}`} className="card card-hover" style={{ display: 'block', overflow: 'hidden', textDecoration: 'none' }}>
-                {images.length > 0 ? (
-                  <div style={{ aspectRatio: '4/3', position: 'relative', overflow: 'hidden' }}>
-                    <PortfolioSlideshow
-                      images={images}
-                      alt={s.label}
-                      objectFit="cover"
-                      interval={3200 + i * 300}
-                    />
+        {/* ── 1. Skulptur ───────────────────────────────────── */}
+        <section className="page-pad" style={{ paddingTop: '3rem', paddingBottom: '3rem' }}>
+          <div className="auto-grid-wide">
+            {SCULPTURE_SERIES.map((s, i) => {
+              const images = SLIDESHOW_IMAGES[s.key] ?? []
+              return (
+                <Link key={s.key} href={`/${locale}/references/${s.key}`} className="card card-hover" style={{ display: 'block', overflow: 'hidden', textDecoration: 'none' }}>
+                  {images.length > 0 ? (
+                    <div style={{ aspectRatio: '4/3', position: 'relative', overflow: 'hidden' }}>
+                      <PortfolioSlideshow images={images} alt={s.label} objectFit="cover" interval={3200 + i * 300} />
+                    </div>
+                  ) : (
+                    <div style={{ aspectRatio: '4/3', background: 'var(--color-bg-surface)', display: 'flex', alignItems: 'center', justifyContent: 'center', borderBottom: '1px solid var(--color-border)' }}>
+                      <span style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-xs)', fontStyle: 'italic' }}>{s.label}</span>
+                    </div>
+                  )}
+                  <div style={{ padding: '1.25rem 1.5rem 1.5rem' }}>
+                    <h3 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-lg)', marginBottom: '0.4rem' }}>{s.label}</h3>
+                    <p style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-sm)', margin: 0 }}>{s.desc}</p>
                   </div>
-                ) : (
-                  <div style={{
-                    aspectRatio: '4/3',
-                    background: 'var(--color-bg-surface)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    borderBottom: '1px solid var(--color-border)',
-                  }}>
-                    <span style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-xs)', fontStyle: 'italic' }}>{s.label}</span>
+                </Link>
+              )
+            })}
+          </div>
+        </section>
+
+        {/* ── 2. Grafik ─────────────────────────────────────── */}
+        <section className="page-pad" style={{ paddingTop: '3rem', paddingBottom: '3rem' }}>
+          {grafikProject && (
+            <>
+              <p style={{ fontSize: 'var(--fs-xs)', letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--color-accent)', marginBottom: '0.5rem' }}>
+                {grafikProject.years}
+              </p>
+              <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-2xl)', fontWeight: 400, marginBottom: '0.75rem' }}>
+                {grafikProject.title}
+              </h2>
+              <p style={{ color: 'var(--color-muted)', maxWidth: '65ch', fontSize: 'var(--fs-base)', lineHeight: 1.7, marginBottom: '2rem' }}>
+                {grafikProject.body}
+              </p>
+            </>
+          )}
+          {grafikImages.length > 0 ? (
+            <div style={{ maxWidth: '820px' }}>
+              <TextImageSlideshow images={grafikImages} title="Grafik i urval" thumbnailAspect="1/1" />
+            </div>
+          ) : (
+            <p style={{ color: 'var(--color-muted)', fontStyle: 'italic', fontSize: 'var(--fs-sm)' }}>
+              Bilder laddas in…
+            </p>
+          )}
+        </section>
+
+        {/* ── 3. Film & TV ──────────────────────────────────── */}
+        <section className="page-pad" style={{ paddingTop: '3rem', paddingBottom: '3rem' }}>
+          <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-2xl)', marginBottom: '2rem' }}>
+            {dict.references?.film_tv ?? 'Film & TV'}
+          </h2>
+          {FILMS.map((f) => {
+            const ytId = f.videoUrl ? getYouTubeId(f.videoUrl) : null
+            return (
+              <div key={f.title} style={{ padding: '1.5rem 0', borderBottom: '1px solid var(--color-border)' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: '4rem 1fr', gap: '1.5rem' }}>
+                  <span style={{ color: 'var(--color-accent)', fontFamily: 'Georgia, serif', fontSize: 'var(--fs-sm)' }}>{f.year}</span>
+                  <div>
+                    <div style={{ fontSize: 'var(--fs-base)', marginBottom: '0.2rem', fontWeight: 500 }}>{f.title}</div>
+                    {f.director && <div style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', marginBottom: '0.15rem' }}>{dict.references?.director ?? 'Regi'}: {f.director}</div>}
+                    {f.venue && <div style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', marginBottom: '0.15rem' }}>{f.venue}</div>}
+                    {f.desc && (
+                      <p style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-muted)', lineHeight: 1.7, margin: '0.5rem 0 0', maxWidth: '65ch' }}>
+                        {f.desc}
+                      </p>
+                    )}
+                    {f.videoUrl && !ytId && (
+                      <a href={f.videoUrl} target="_blank" rel="noopener noreferrer"
+                        style={{ display: 'inline-block', marginTop: '0.75rem', fontSize: 'var(--fs-xs)', color: 'var(--color-accent)', letterSpacing: '0.06em', textTransform: 'uppercase', textDecoration: 'none', borderBottom: '1px solid var(--color-accent-dim)' }}>
+                        ▶ {dict.references?.watch ?? 'Se filmen'} →
+                      </a>
+                    )}
+                  </div>
+                </div>
+                {ytId && (
+                  <div style={{ marginTop: '1rem', marginLeft: '5.5rem', aspectRatio: '16/9', maxWidth: '640px', background: '#000', overflow: 'hidden' }}>
+                    <iframe src={`https://www.youtube.com/embed/${ytId}`} title={f.title} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen style={{ width: '100%', height: '100%', border: 'none', display: 'block' }} />
                   </div>
                 )}
-                <div style={{ padding: '1.25rem 1.5rem 1.5rem' }}>
-                  <h3 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-lg)', marginBottom: '0.4rem' }}>{s.label}</h3>
-                  <p style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-sm)', margin: 0 }}>{s.desc}</p>
-                </div>
-              </Link>
+                {f.extraVideos && f.extraVideos.map((ev, ei) => {
+                  const evId = getYouTubeId(ev)
+                  if (!evId) return null
+                  return (
+                    <div key={ei} style={{ marginTop: '0.75rem', marginLeft: '5.5rem', aspectRatio: '16/9', maxWidth: '640px', background: '#000', overflow: 'hidden' }}>
+                      <iframe src={`https://www.youtube.com/embed/${evId}`} title={`${f.title} (del ${ei + 2})`} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen style={{ width: '100%', height: '100%', border: 'none', display: 'block' }} />
+                    </div>
+                  )
+                })}
+              </div>
             )
           })}
-        </div>
-      </section>
+        </section>
 
-      <hr className="divider" />
+        {/* ── 4. Publicerat ─────────────────────────────────── */}
+        <section className="page-pad" style={{ paddingTop: '3rem', paddingBottom: '3rem' }}>
+          <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-2xl)', marginBottom: '1rem' }}>
+            {dict.references?.publicerat ?? 'Publicerat'}
+          </h2>
+          <p style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-sm)', marginBottom: '2rem', maxWidth: '60ch' }}>
+            {dict.references?.publicerat_desc ?? 'Kataloger, tidskriftsartiklar och böcker med texter om Sivert Lindbloms konstnärskap.'}
+          </p>
+          <Link href={`/${locale}/references/publicerat`} className="btn">
+            {dict.references?.view_publicerat ?? 'Visa publikationer'} →
+          </Link>
+        </section>
 
-      {/* Film & TV */}
-      <section id="film-tv" className="page-pad" style={{ paddingTop: '3rem', paddingBottom: '3rem' }}>
-        <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-2xl)', marginBottom: '2rem' }}>
-          {dict.references?.film_tv ?? 'Film & TV'}
-        </h2>
-        {FILMS.map((f) => {
-          const ytId = f.videoUrl ? getYouTubeId(f.videoUrl) : null
-          return (
-            <div key={f.title} style={{ padding: '1.5rem 0', borderBottom: '1px solid var(--color-border)' }}>
-              <div style={{ display: 'grid', gridTemplateColumns: '4rem 1fr', gap: '1.5rem' }}>
-                <span style={{ color: 'var(--color-accent)', fontFamily: 'Georgia, serif', fontSize: 'var(--fs-sm)' }}>{f.year}</span>
-                <div>
-                  <div style={{ fontSize: 'var(--fs-base)', marginBottom: '0.2rem', fontWeight: 500 }}>{f.title}</div>
-                  {f.director && <div style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', marginBottom: '0.15rem' }}>{dict.references?.director ?? 'Regi'}: {f.director}</div>}
-                  {f.venue && <div style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', marginBottom: '0.15rem' }}>{f.venue}</div>}
-                  {f.desc && (
-                    <p style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-muted)', lineHeight: 1.7, margin: '0.5rem 0 0', maxWidth: '65ch' }}>
-                      {f.desc}
-                    </p>
-                  )}
-                  {f.videoUrl && !ytId && (
-                    <a
-                      href={f.videoUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{ display: 'inline-block', marginTop: '0.75rem', fontSize: 'var(--fs-xs)', color: 'var(--color-accent)', letterSpacing: '0.06em', textTransform: 'uppercase', textDecoration: 'none', borderBottom: '1px solid var(--color-accent-dim)' }}
-                    >
-                      ▶ {dict.references?.watch ?? 'Se filmen'} →
-                    </a>
-                  )}
-                </div>
-              </div>
-              {ytId && (
-                <div style={{ marginTop: '1rem', marginLeft: '5.5rem', aspectRatio: '16/9', maxWidth: '640px', background: '#000', borderRadius: 2, overflow: 'hidden' }}>
-                  <iframe
-                    src={`https://www.youtube.com/embed/${ytId}`}
-                    title={f.title}
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                    style={{ width: '100%', height: '100%', border: 'none', display: 'block' }}
-                  />
-                </div>
-              )}
-              {f.extraVideos && f.extraVideos.map((ev, ei) => {
-                const evId = getYouTubeId(ev)
-                if (!evId) return null
-                return (
-                  <div key={ei} style={{ marginTop: '0.75rem', marginLeft: '5.5rem', aspectRatio: '16/9', maxWidth: '640px', background: '#000', borderRadius: 2, overflow: 'hidden' }}>
-                    <iframe
-                      src={`https://www.youtube.com/embed/${evId}`}
-                      title={`${f.title} (del ${ei + 2})`}
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      allowFullScreen
-                      style={{ width: '100%', height: '100%', border: 'none', display: 'block' }}
-                    />
-                  </div>
-                )
-              })}
-            </div>
-          )
-        })}
-      </section>
+        {/* ── 5. Fotografier ────────────────────────────────── */}
+        <section className="page-pad" style={{ paddingTop: '3rem', paddingBottom: '3rem' }}>
+          <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-2xl)', marginBottom: '1rem' }}>
+            {dict.references?.fotografier ?? 'Fotografier & Inspiration'}
+          </h2>
+          <p style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-sm)', marginBottom: '2rem', maxWidth: '60ch' }}>
+            {dict.references?.fotografier_desc ?? 'Bilder som på ett eller annat sätt berört och inspirerat Sivert Lindblom i sitt arbete.'}
+          </p>
+          <Link href={`/${locale}/references/fotografier`} className="btn">
+            {dict.references?.view_fotografier ?? 'Visa bildgalleri'} →
+          </Link>
+        </section>
 
-      <hr className="divider" />
+        {/* ── 6. Utmärkelser ────────────────────────────────── */}
+        <section className="page-pad" style={{ paddingTop: '3rem', paddingBottom: '3rem' }}>
+          <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-2xl)', marginBottom: '0.75rem' }}>
+            Utmärkelser, priser och medaljer
+          </h2>
+          <p style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-sm)', marginBottom: '3rem', maxWidth: '60ch' }}>
+            Priser mottagna av Sivert Lindblom samt medaljer och minnesmärken formgivna av honom.
+          </p>
 
-      {/* Publicerat */}
-      <section id="publicerat" className="page-pad" style={{ paddingTop: '3rem', paddingBottom: '3rem' }}>
-        <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-2xl)', marginBottom: '1rem' }}>
-          {dict.references?.publicerat ?? 'Publicerat'}
-        </h2>
-        <p style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-sm)', marginBottom: '2rem', maxWidth: '60ch' }}>
-          {dict.references?.publicerat_desc ?? 'Kataloger, tidskriftsartiklar och böcker med texter om Sivert Lindbloms konstnärskap.'}
-        </p>
-        <Link href={`/${locale}/references/publicerat`} className="btn">
-          {dict.references?.view_publicerat ?? 'Visa publikationer'} →
-        </Link>
-      </section>
+          {/* Medal collage */}
+          <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginBottom: '3rem' }}>
+            {[
+              { src: 'https://sivertlindblom.se/wp-content/uploads/2018/05/Medaljer-Front.jpg',       alt: 'Medaljer åtsida' },
+              { src: 'https://sivertlindblom.se/wp-content/uploads/2018/05/20180316_172048_001.jpg',  alt: 'Medaljer' },
+            ].map((img) => (
+              <SafeImg key={img.src} src={img.src} alt={img.alt} loading="lazy"
+                style={{ height: 160, width: 'auto', objectFit: 'cover', border: '1px solid var(--color-border)' }} />
+            ))}
+          </div>
 
-      <hr className="divider" />
+          <h3 style={{ fontWeight: 400, color: 'var(--color-muted)', marginBottom: '1.25rem', textTransform: 'uppercase', letterSpacing: '0.08em', fontSize: 'var(--fs-xs)' }}>
+            Mottagna priser
+          </h3>
 
-      {/* Fotografier & Inspiration */}
-      <section id="fotografi" className="page-pad" style={{ paddingTop: '3rem', paddingBottom: '3rem' }}>
-        <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-2xl)', marginBottom: '1rem' }}>
-          {dict.references?.fotografier ?? 'Fotografier & Inspiration'}
-        </h2>
-        <p style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-sm)', marginBottom: '2rem', maxWidth: '60ch' }}>
-          {dict.references?.fotografier_desc ?? 'Bilder som på ett eller annat sätt berört och inspirerat Sivert Lindblom i sitt arbete.'}
-        </p>
-        <Link href={`/${locale}/references/fotografier`} className="btn">
-          {dict.references?.view_fotografier ?? 'Visa bildgalleri'} →
-        </Link>
-      </section>
-
-      <hr className="divider" />
-
-      {/* Utmärkelser */}
-      <section id="utmarkelser" className="page-pad" style={{ paddingTop: '3rem', paddingBottom: '3rem' }}>
-        <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-2xl)', marginBottom: '0.75rem' }}>
-          Utmärkelser, priser och medaljer
-        </h2>
-        <p style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-sm)', marginBottom: '3rem', maxWidth: '60ch' }}>
-          Priser mottagna av Sivert Lindblom samt medaljer och minnesmärken formgivna av honom.
-        </p>
-
-        {/* Main medal collage */}
-        <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginBottom: '3rem' }}>
           {[
-            { src: 'https://sivertlindblom.se/wp-content/uploads/2018/05/Medaljer-Front.jpg',       alt: 'Medaljer åtsida' },
-            { src: 'https://sivertlindblom.se/wp-content/uploads/2018/05/20180316_172048_001.jpg',  alt: 'Medaljer' },
-          ].map((img) => (
-            
-            <SafeImg key={img.src} src={img.src} alt={img.alt} loading="lazy"
-              style={{ height: 160, width: 'auto', objectFit: 'cover', border: '1px solid var(--color-border)' }}
-            />
+            { year: 1984, title: 'K A Linds Hederspris', sub: 'Moderna Museets Vänners kulturpris' },
+            { year: 1985, title: 'Stenpriset', sub: 'Sveriges Stenindustriförbund' },
+            { year: 1989, title: 'Prins Eugen-medaljen' },
+            { year: 1995, title: 'Sergelpriset', sub: 'Kungl. Akademien för de fria konsterna, Stockholm', desc: 'Priset inrättades 1945 till minne av skulptören Johan Tobias Sergel. Det utdelas vart femte år på Sergels dödsdag den 26 februari och består av en guldmedalj med Sergels porträtt.' },
+            { year: 2002, title: 'S:t Eriksmedaljen', sub: 'Stockholm stad', quote: '»Kreativ konstnär vars många sköna och spännande skulpturer på torg och broar är viktiga inslag i kulturstaden Stockholm«' },
+            { year: 2002, title: 'Eskilstunakurirens kulturpris', sub: 'Eskilstuna-Kuriren' },
+          ].map((p) => (
+            <div key={p.title} style={{ padding: '1.5rem 0', borderBottom: '1px solid var(--color-border)' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: '5rem 1fr', gap: '1rem' }}>
+                <span style={{ color: 'var(--color-accent)', fontFamily: 'Georgia, serif', fontSize: 'var(--fs-sm)' }}>{p.year}</span>
+                <div>
+                  <div style={{ fontSize: 'var(--fs-base)', marginBottom: '0.25rem' }}>{p.title}</div>
+                  {p.sub && <div style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)' }}>{p.sub}</div>}
+                  {p.desc && <p style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-muted)', lineHeight: 1.7, marginTop: '0.5rem', maxWidth: '55ch' }}>{p.desc}</p>}
+                  {p.quote && <p style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-muted)', fontStyle: 'italic', lineHeight: 1.7, marginTop: '0.5rem', maxWidth: '55ch' }}>{p.quote}</p>}
+                </div>
+              </div>
+            </div>
           ))}
-        </div>
 
-        <h3 style={{ fontWeight: 400, color: 'var(--color-muted)', marginBottom: '1.25rem', textTransform: 'uppercase', letterSpacing: '0.08em', fontSize: 'var(--fs-xs)' }}>
-          Mottagna priser
-        </h3>
+          <h3 style={{ fontWeight: 400, color: 'var(--color-muted)', marginBottom: '1.25rem', marginTop: '3rem', textTransform: 'uppercase', letterSpacing: '0.08em', fontSize: 'var(--fs-xs)' }}>
+            Medaljer formgivna av Sivert Lindblom
+          </h3>
 
-        {/* K A Linds */}
-        <div style={{ padding: '1.5rem 0', borderBottom: '1px solid var(--color-border)' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '5rem 1fr', gap: '1rem' }}>
-            <span style={{ color: 'var(--color-accent)', fontFamily: 'Georgia, serif', fontSize: 'var(--fs-sm)' }}>1984</span>
-            <div>
-              <div style={{ fontSize: 'var(--fs-base)', marginBottom: '0.25rem' }}>K A Linds Hederspris</div>
-              <div style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)' }}>Moderna Museets Vänners kulturpris</div>
-            </div>
-          </div>
-        </div>
-
-        {/* Stenpriset */}
-        <div style={{ padding: '1.5rem 0', borderBottom: '1px solid var(--color-border)' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '5rem 1fr', gap: '1rem' }}>
-            <span style={{ color: 'var(--color-accent)', fontFamily: 'Georgia, serif', fontSize: 'var(--fs-sm)' }}>1985</span>
-            <div>
-              <div style={{ fontSize: 'var(--fs-base)', marginBottom: '0.25rem' }}>Stenpriset</div>
-              <div style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', marginBottom: '1rem' }}>Sveriges Stenindustriförbund</div>
-            </div>
-          </div>
-        </div>
-
-        {/* Prins Eugen */}
-        <div style={{ padding: '1.5rem 0', borderBottom: '1px solid var(--color-border)' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '5rem 1fr', gap: '1rem' }}>
-            <span style={{ color: 'var(--color-accent)', fontFamily: 'Georgia, serif', fontSize: 'var(--fs-sm)' }}>1989</span>
-            <div>
-              <div style={{ fontSize: 'var(--fs-base)' }}>Prins Eugen-medaljen</div>
-            </div>
-          </div>
-        </div>
-
-        {/* Sergelpriset */}
-        <div style={{ padding: '1.5rem 0', borderBottom: '1px solid var(--color-border)' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '5rem 1fr', gap: '1rem' }}>
-            <span style={{ color: 'var(--color-accent)', fontFamily: 'Georgia, serif', fontSize: 'var(--fs-sm)' }}>1995</span>
-            <div>
-              <div style={{ fontSize: 'var(--fs-base)', marginBottom: '0.4rem' }}>Sergelpriset</div>
-              <div style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', marginBottom: '0.75rem' }}>Kungl. Akademien för de fria konsterna, Stockholm</div>
-              <p style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-muted)', lineHeight: 1.7, marginBottom: '1rem', maxWidth: '55ch' }}>
-                Priset inrättades 1945 till minne av skulptören Johan Tobias Sergel. Det utdelas vart femte år på Sergels dödsdag den 26 februari och består av en guldmedalj med Sergels porträtt.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* S:t Eriksmedaljen */}
-        <div style={{ padding: '1.5rem 0', borderBottom: '1px solid var(--color-border)' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '5rem 1fr', gap: '1rem' }}>
-            <span style={{ color: 'var(--color-accent)', fontFamily: 'Georgia, serif', fontSize: 'var(--fs-sm)' }}>2002</span>
-            <div>
-              <div style={{ fontSize: 'var(--fs-base)', marginBottom: '0.4rem' }}>S:t Eriksmedaljen</div>
-              <div style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', marginBottom: '0.75rem' }}>Stockholm stad</div>
-              <p style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-muted)', fontStyle: 'italic', lineHeight: 1.7, marginBottom: '1rem', maxWidth: '55ch' }}>
-                »Kreativ konstnär vars många sköna och spännande skulpturer på torg och broar är viktiga inslag i kulturstaden Stockholm«
-              </p>
-              {}
-              <SafeImg src="https://sivertlindblom.se/wp-content/uploads/2018/05/S-t-Eriksmedalj.jpg" alt="S:t Eriksmedaljen"
-                loading="lazy" style={{ height: 120, width: 'auto', border: '1px solid var(--color-border)' }}
-              />
-            </div>
-          </div>
-        </div>
-
-        {/* Eskilstunakurirens kulturpris */}
-        <div style={{ padding: '1.5rem 0', borderBottom: '1px solid var(--color-border)' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '5rem 1fr', gap: '1rem' }}>
-            <span style={{ color: 'var(--color-accent)', fontFamily: 'Georgia, serif', fontSize: 'var(--fs-sm)' }}>2002</span>
-            <div>
-              <div style={{ fontSize: 'var(--fs-base)', marginBottom: '0.4rem' }}>Eskilstunakurirens kulturpris</div>
-              <div style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', marginBottom: '1rem' }}>Eskilstuna-Kuriren</div>
-              <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
-                {[1,2,3,4].map(n => (
-                  
-                  <SafeImg key={n}
-                    src={`http://media.sivertlindblom.se/2015/03/Sivert-Lindblom-Eskilstuna-Kuriren-Kulturpris-${n}-.jpg`}
-                    alt={`Eskilstunakurirens kulturpris ${n}`} loading="lazy"
-                    style={{ height: 120, width: 'auto', border: '1px solid var(--color-border)' }}
-                  />
-                ))}
+          {/* IVA */}
+          <div style={{ padding: '1.5rem 0', borderBottom: '1px solid var(--color-border)' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '5rem 1fr', gap: '1rem' }}>
+              <span style={{ color: 'var(--color-accent)', fontFamily: 'Georgia, serif', fontSize: 'var(--fs-sm)' }}>1992</span>
+              <div>
+                <div style={{ fontSize: 'var(--fs-base)', marginBottom: '0.4rem' }}>Kungl. Ingenjörsvetenskapsakademiens (IVA) Minnesmedalj</div>
+                <p style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-muted)', lineHeight: 1.7, marginBottom: '1rem', maxWidth: '60ch' }}>
+                  Åtsida: Profil av arkitekten Gunnar Asplund. Frånsida: Symbol för Stockholmsutställningen 1930 med kompassnål N och upphöjd sfär, inspirerad av den egyptiska gudinnan Isis.
+                </p>
+                <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', marginBottom: '1rem' }}>
+                  {[
+                    { src: 'https://sivertlindblom.se/wp-content/uploads/2018/05/Asplund-medalj-1.jpg', alt: 'IVA medalj åtsida — Gunnar Asplund' },
+                    { src: 'https://sivertlindblom.se/wp-content/uploads/2018/05/Asplund-medalj-2.jpg', alt: 'IVA medalj frånsida' },
+                    { src: 'https://sivertlindblom.se/wp-content/uploads/2018/05/Isis-gudinna.jpg',      alt: 'Isis gudinna — inspiration' },
+                    { src: 'https://sivertlindblom.se/wp-content/uploads/2018/05/Balusterdockor-1-1.jpg', alt: 'Balusterdockor' },
+                  ].map(img => (
+                    <SafeImg key={img.src} src={img.src} alt={img.alt} loading="lazy"
+                      style={{ height: 120, width: 'auto', border: '1px solid var(--color-border)' }} />
+                  ))}
+                </div>
+                <a href="https://youtu.be/uKDKR1KDdvQ" target="_blank" rel="noopener noreferrer"
+                  style={{ display: 'inline-block', fontSize: 'var(--fs-xs)', color: 'var(--color-accent)', letterSpacing: '0.06em', textTransform: 'uppercase', textDecoration: 'none', borderBottom: '1px solid var(--color-accent-dim)' }}>
+                  ▶ Se film →
+                </a>
               </div>
             </div>
           </div>
-        </div>
 
-        {/* Medals designed by Sivert */}
-        <h3 style={{ fontWeight: 400, color: 'var(--color-muted)', marginBottom: '1.25rem', marginTop: '3rem', textTransform: 'uppercase', letterSpacing: '0.08em', fontSize: 'var(--fs-xs)' }}>
-          Medaljer formgivna av Sivert Lindblom
-        </h3>
-
-        {/* IVA */}
-        <div style={{ padding: '1.5rem 0', borderBottom: '1px solid var(--color-border)' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '5rem 1fr', gap: '1rem' }}>
-            <span style={{ color: 'var(--color-accent)', fontFamily: 'Georgia, serif', fontSize: 'var(--fs-sm)' }}>1992</span>
-            <div>
-              <div style={{ fontSize: 'var(--fs-base)', marginBottom: '0.4rem' }}>Kungl. Ingenjörsvetenskapsakademiens (IVA) Minnesmedalj</div>
-              <p style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-muted)', lineHeight: 1.7, marginBottom: '1rem', maxWidth: '60ch' }}>
-                Åtsida: Profil av arkitekten Gunnar Asplund. Frånsida: Symbol för Stockholmsutställningen 1930 med kompassnål N och upphöjd sfär, inspirerad av den egyptiska gudinnan Isis.
-              </p>
-              <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', marginBottom: '1rem' }}>
-                {[
-                  { src: 'https://sivertlindblom.se/wp-content/uploads/2018/05/Asplund-medalj-1.jpg', alt: 'IVA medalj åtsida — Gunnar Asplund' },
-                  { src: 'https://sivertlindblom.se/wp-content/uploads/2018/05/Asplund-medalj-2.jpg', alt: 'IVA medalj frånsida' },
-                  { src: 'https://sivertlindblom.se/wp-content/uploads/2018/05/Isis-gudinna.jpg',      alt: 'Isis gudinna — inspiration' },
-                  { src: 'https://sivertlindblom.se/wp-content/uploads/2018/05/Balusterdockor-1-1.jpg', alt: 'Balusterdockor' },
-                ].map(img => (
-                  
-                  <SafeImg key={img.src} src={img.src} alt={img.alt} loading="lazy"
-                    style={{ height: 120, width: 'auto', border: '1px solid var(--color-border)' }}
-                  />
-                ))}
-              </div>
-              <a href="https://youtu.be/uKDKR1KDdvQ" target="_blank" rel="noopener noreferrer"
-                style={{ display: 'inline-block', fontSize: 'var(--fs-xs)', color: 'var(--color-accent)', letterSpacing: '0.06em', textTransform: 'uppercase', textDecoration: 'none', borderBottom: '1px solid var(--color-accent-dim)' }}>
-                ▶ Se film →
-              </a>
-            </div>
-          </div>
-        </div>
-
-        {/* Vitterhetsakademien */}
-        <div style={{ padding: '1.5rem 0', borderBottom: '1px solid var(--color-border)' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '5rem 1fr', gap: '1rem' }}>
-            <span style={{ color: 'var(--color-accent)', fontFamily: 'Georgia, serif', fontSize: 'var(--fs-sm)' }}>2003</span>
-            <div>
-              <div style={{ fontSize: 'var(--fs-base)', marginBottom: '0.4rem' }}>Kungl. Vitterhets Historie och Antikvitets Akademiens Jubileumsmedalj</div>
-              <p style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-muted)', lineHeight: 1.7, marginBottom: '1rem', maxWidth: '60ch' }}>
-                Åtsida: latinskt motto <em>SEMPER VIRIDES</em> med tre lagerkransar. Frånsida: fasaden av Rettigska huset vid Villagatan 3, Stockholm. Utfördes i 2 exemplar i guld (till Kungen och Drottningen) samt 400 i silver till jubileumsbanketten den 20 mars 2003.
-              </p>
-              <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
-                {[
-                  { src: 'https://sivertlindblom.se/wp-content/uploads/2018/05/Akademien-Viridis-1.jpg', alt: 'Jubileumsmedalj åtsida — SEMPER VIRIDES' },
-                  { src: 'https://sivertlindblom.se/wp-content/uploads/2018/05/Akademien-Viridis-2.jpg', alt: 'Jubileumsmedalj frånsida' },
-                  { src: 'https://sivertlindblom.se/wp-content/uploads/2018/05/Jubileumsmedalj-1.jpeg',  alt: 'Jubileumsmedalj' },
-                  { src: 'https://sivertlindblom.se/wp-content/uploads/2018/05/Jubileumsmedalj-2.jpeg',  alt: 'Jubileumsmedalj detalj' },
-                ].map(img => (
-                  
-                  <SafeImg key={img.src} src={img.src} alt={img.alt} loading="lazy"
-                    style={{ height: 120, width: 'auto', border: '1px solid var(--color-border)' }}
-                  />
-                ))}
+          {/* Vitterhetsakademien */}
+          <div style={{ padding: '1.5rem 0', borderBottom: '1px solid var(--color-border)' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '5rem 1fr', gap: '1rem' }}>
+              <span style={{ color: 'var(--color-accent)', fontFamily: 'Georgia, serif', fontSize: 'var(--fs-sm)' }}>2003</span>
+              <div>
+                <div style={{ fontSize: 'var(--fs-base)', marginBottom: '0.4rem' }}>Kungl. Vitterhets Historie och Antikvitets Akademiens Jubileumsmedalj</div>
+                <p style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-muted)', lineHeight: 1.7, marginBottom: '1rem', maxWidth: '60ch' }}>
+                  Åtsida: latinskt motto <em>SEMPER VIRIDES</em> med tre lagerkransar. Frånsida: fasaden av Rettigska huset vid Villagatan 3, Stockholm. Utfördes i 2 exemplar i guld (till Kungen och Drottningen) samt 400 i silver till jubileumsbanketten den 20 mars 2003.
+                </p>
+                <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
+                  {[
+                    { src: 'https://sivertlindblom.se/wp-content/uploads/2018/05/Akademien-Viridis-1.jpg', alt: 'Jubileumsmedalj åtsida — SEMPER VIRIDES' },
+                    { src: 'https://sivertlindblom.se/wp-content/uploads/2018/05/Akademien-Viridis-2.jpg', alt: 'Jubileumsmedalj frånsida' },
+                    { src: 'https://sivertlindblom.se/wp-content/uploads/2018/05/Jubileumsmedalj-1.jpeg',  alt: 'Jubileumsmedalj' },
+                    { src: 'https://sivertlindblom.se/wp-content/uploads/2018/05/Jubileumsmedalj-2.jpeg',  alt: 'Jubileumsmedalj detalj' },
+                  ].map(img => (
+                    <SafeImg key={img.src} src={img.src} alt={img.alt} loading="lazy"
+                      style={{ height: 120, width: 'auto', border: '1px solid var(--color-border)' }} />
+                  ))}
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+
+        {/* ── 7. Ögonblick ──────────────────────────────────── */}
+        <section className="page-pad" style={{ paddingTop: '3rem', paddingBottom: '3rem' }}>
+          <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-2xl)', fontWeight: 400, marginBottom: '0.75rem' }}>
+            Ögonblick
+          </h2>
+          <p style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-base)', maxWidth: '60ch', lineHeight: 1.7, marginBottom: '2rem' }}>
+            Bilder på och med Sivert Lindblom — i atelén, vid invigningar och i vardagen.
+          </p>
+          {OGONBLICK_IMAGES.length > 0 && (
+            <div style={{ maxWidth: '820px' }}>
+              <TextImageSlideshow images={OGONBLICK_IMAGES} title="Ögonblick" thumbnailAspect="4/3" />
+            </div>
+          )}
+        </section>
+
+      </TabsLayout>
     </div>
   )
 }

@@ -5,6 +5,7 @@ import { locales } from '@/i18n/config'
 import type { Locale } from '@/i18n/config'
 import { getTexts } from '@/lib/data-server'
 import ScrollSaver from '@/components/ScrollSaver'
+import TabsLayout from '@/components/TabsLayout'
 
 export const metadata: Metadata = { title: 'Texts' }
 
@@ -13,7 +14,6 @@ export function generateStaticParams() {
 }
 
 // Static lookup for items that link to an exhibition or public-work detail page.
-// Keyed by slug; supplements the live DB data (which has no relatedPath column).
 const RELATED_PATHS: Record<string, { relatedPath: string; relatedLabel: string }> = {
   'hakan-bull-2013':                  { relatedPath: 'portfolio/watercolors',                                        relatedLabel: 'Akvareller' },
   'peter-cornell-2012':               { relatedPath: 'portfolio/exhibitions/kungl-konstakademien-2012',              relatedLabel: 'Konstakademien 2012' },
@@ -69,7 +69,6 @@ export default async function TextsPage({
   }
 
   // getTexts() already returns newest-first (year DESC from Supabase)
-  // "andras_texter" combines essay + preface (texts written by others about Sivert)
   const grouped = TYPE_ORDER.map((type) => ({
     type,
     label: TYPE_LABELS[type],
@@ -78,97 +77,94 @@ export default async function TextsPage({
       : allTexts.filter((t) => t.type === type),
   })).filter((g) => g.items.length)
 
+  const TABS = grouped.map((g) => ({
+    id: g.type,
+    label: g.label,
+    count: g.items.length,
+  }))
+
   return (
     <div className="section-gap">
       {/* Saves + restores scroll position so ← back keeps your place */}
       <ScrollSaver storageKey="texts-list-scroll" />
-      <div className="page-pad" style={{ marginBottom: '3rem' }}>
+
+      {/* Page header */}
+      <div className="page-pad" style={{ marginBottom: '2rem' }}>
         <p style={{ fontSize: 'var(--fs-xs)', letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--color-accent)', marginBottom: '0.75rem' }}>
           {dict.texts?.subtitle ?? 'Texter'}
         </p>
         <h1 style={{ fontFamily: 'Georgia, serif', fontWeight: 400, fontSize: 'clamp(1.8rem,4vw,3rem)' }}>
           {dict.texts?.title ?? 'Kritik, essays & intervjuer'}
         </h1>
-        <p style={{ color: 'var(--color-muted)', marginTop: '1rem', maxWidth: '60ch', fontSize: 'var(--fs-base)' }}>
-          {dict.texts?.intro ?? ''}
-        </p>
-
-        {/* Type filter nav */}
-        <nav style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginTop: '2rem' }} aria-label="Filter">
-          {TYPE_ORDER.map((t) => (
-            <a key={t} href={`#${t}`} className="filter-link" style={{
-              fontSize: 'var(--fs-xs)',
-              letterSpacing: '0.08em',
-              textTransform: 'uppercase',
-              color: 'var(--color-muted)',
-              border: '1px solid var(--color-border)',
-              padding: '0.3em 0.8em',
-              transition: 'all 0.15s',
-            }}>
-              {TYPE_LABELS[t as GroupType]}
-            </a>
-          ))}
-        </nav>
+        {dict.texts?.intro && (
+          <p style={{ color: 'var(--color-muted)', marginTop: '1rem', maxWidth: '60ch', fontSize: 'var(--fs-base)' }}>
+            {dict.texts.intro}
+          </p>
+        )}
       </div>
 
-      <hr className="divider" />
+      {/* Tabs */}
+      <TabsLayout tabs={TABS} defaultTab={grouped[0]?.type ?? 'andras_texter'}>
+        {grouped.map((group) => (
+          <section key={group.type} className="page-pad" style={{ paddingTop: '2.5rem', paddingBottom: '3rem' }}>
+            <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-2xl)', marginBottom: '2rem' }}>
+              {group.label}
+            </h2>
+            <div>
+              {group.items.map((t, i) => {
+                const related = t.slug ? RELATED_PATHS[t.slug] : undefined
+                return (
+                  <div key={i} className="text-row">
+                    {/* Year */}
+                    <span style={{ color: 'var(--color-accent)', fontFamily: 'Georgia, serif', fontSize: 'var(--fs-sm)', flexShrink: 0 }}>
+                      {t.year}
+                    </span>
 
-      {grouped.map((group) => (
-        <section key={group.type} id={group.type} className="page-pad" style={{ paddingTop: '3rem', paddingBottom: '3rem' }}>
-          <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-2xl)', marginBottom: '2rem' }}>{group.label}</h2>
+                    {/* Title + author */}
+                    {t.slug ? (
+                      <Link href={`/${locale}/texts/${t.slug}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                        <div style={{ fontSize: 'var(--fs-base)', marginBottom: '0.15rem' }}>{t.title}</div>
+                        <div style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)' }}>
+                          {t.author} · {t.publication}
+                        </div>
+                      </Link>
+                    ) : (
+                      <div>
+                        <div style={{ fontSize: 'var(--fs-base)', marginBottom: '0.15rem' }}>{t.title}</div>
+                        <div style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)' }}>
+                          {t.author} · {t.publication}
+                        </div>
+                      </div>
+                    )}
 
-          <div>
-            {group.items.map((t, i) => {
-              const related = t.slug ? RELATED_PATHS[t.slug] : undefined
-              return (
-              <div key={i} className="text-row">
-                {/* Year */}
-                <span style={{ color: 'var(--color-accent)', fontFamily: 'Georgia, serif', fontSize: 'var(--fs-sm)', flexShrink: 0 }}>{t.year}</span>
-
-                {/* Title + author */}
-                {t.slug ? (
-                  <Link href={`/${locale}/texts/${t.slug}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-                    <div style={{ fontSize: 'var(--fs-base)', marginBottom: '0.15rem' }}>{t.title}</div>
-                    <div style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)' }}>
-                      {t.author} · {t.publication}
-                    </div>
-                  </Link>
-                ) : (
-                  <div>
-                    <div style={{ fontSize: 'var(--fs-base)', marginBottom: '0.15rem' }}>{t.title}</div>
-                    <div style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)' }}>
-                      {t.author} · {t.publication}
+                    {/* Badges: lang + optional related link */}
+                    <div className="text-row-meta">
+                      <span className="badge">{LANG_LABELS[t.lang] || t.lang}</span>
+                      {related && (
+                        <Link
+                          href={`/${locale}/${related.relatedPath}`}
+                          style={{
+                            fontSize: 'var(--fs-xs)',
+                            color: 'var(--color-accent)',
+                            letterSpacing: '0.06em',
+                            textTransform: 'uppercase',
+                            borderBottom: '1px solid var(--color-accent-dim)',
+                            paddingBottom: '0.1em',
+                            textDecoration: 'none',
+                            whiteSpace: 'nowrap',
+                          }}
+                        >
+                          → {related.relatedLabel}
+                        </Link>
+                      )}
                     </div>
                   </div>
-                )}
-
-                {/* Badges: lang + optional related link */}
-                <div className="text-row-meta">
-                  <span className="badge">{LANG_LABELS[t.lang] || t.lang}</span>
-                  {related && (
-                    <Link
-                      href={`/${locale}/${related.relatedPath}`}
-                      style={{
-                        fontSize: 'var(--fs-xs)',
-                        color: 'var(--color-accent)',
-                        letterSpacing: '0.06em',
-                        textTransform: 'uppercase',
-                        borderBottom: '1px solid var(--color-accent-dim)',
-                        paddingBottom: '0.1em',
-                        textDecoration: 'none',
-                        whiteSpace: 'nowrap',
-                      }}
-                    >
-                      → {related.relatedLabel}
-                    </Link>
-                  )}
-                </div>
-              </div>
-              )
-            })}
-          </div>
-        </section>
-      ))}
+                )
+              })}
+            </div>
+          </section>
+        ))}
+      </TabsLayout>
 
       <div className="page-pad" style={{ paddingBottom: '4rem', paddingTop: '2rem' }}>
         <Link href={`/${locale}`} className="back-link">
