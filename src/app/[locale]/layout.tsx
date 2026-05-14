@@ -4,6 +4,7 @@ import { redirect } from 'next/navigation'
 import { locales, defaultLocale, rtlLocales } from '@/i18n/config'
 import type { Locale } from '@/i18n/config'
 import Header from '@/components/nav/Header'
+import SubNav from '@/components/nav/SubNav'
 import { getDictionary } from '@/i18n/getDictionary'
 import '../globals.css'
 
@@ -93,6 +94,7 @@ export default async function LocaleLayout({
     >
       <body>
         <Header locale={validLocale} dict={dict} />
+        <SubNav locale={validLocale} dict={dict} />
         <main className="main-content">{children}</main>
         <footer
           style={{

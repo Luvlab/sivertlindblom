@@ -22,7 +22,8 @@
   --color-muted:      #a0a098;
   --color-accent:     #c8a97e;
   --color-accent-dim: #8c6e4a;
-  --header-h:         4rem;
+  --header-h:         3rem;
+  --subnav-h:         2.25rem;
 }
 
 /* ─── Reset / Base ──────────────────────────────────────── */
@@ -156,7 +157,7 @@ a:hover { opacity: 0.7; }
      viewport — main-content has padding-top: calc(var(--header-h) + 1.5rem)
      to keep other pages' content below the header, but the hero should ignore
      that offset entirely */
-  margin-top: calc(-1 * (var(--header-h) + 1.5rem));
+  margin-top: calc(-1 * (var(--header-h) + var(--subnav-h) + 1.5rem));
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -306,6 +307,7 @@ a:hover { opacity: 0.7; }
   padding-top: var(--header-h);
 }
 .mobile-nav.open { transform: translateX(0); }
+
 
 /* ─── Form inputs (admin) ────────────────────────────────── */
 .input {
@@ -486,7 +488,7 @@ a:hover { opacity: 0.7; }
 }
 
 /* Page content pushed below fixed header — extra 1.5 rem breathing room */
-.main-content { padding-top: calc(var(--header-h) + 1.5rem); }
+.main-content { padding-top: calc(var(--header-h) + var(--subnav-h) + 1.5rem); }
 
 /* ─── Texts page responsive row ─────────────────────────── */
 /* Mobile-first: stack vertically. Desktop: 3-column grid. */
@@ -600,6 +602,56 @@ a:hover { opacity: 0.7; }
 .nav-dropdown-item:hover {
   color: var(--color-text);
   background: var(--color-bg-surface);
+}
+
+/* ── Sub-navigation bar (fixed below main header) ──────────────────────────── */
+.sub-nav {
+  position: fixed;
+  top: var(--header-h);
+  left: 0; right: 0;
+  height: var(--subnav-h);
+  z-index: 98; /* below mobile-nav (99) and header (300), above content */
+  background: var(--color-bg);
+  border-bottom: 1px solid var(--color-border);
+  --font-scale: 1; /* lock font scale regardless of user preference */
+}
+
+.sub-nav-inner {
+  display: flex;
+  align-items: stretch;
+  height: 100%;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  gap: 0;
+}
+.sub-nav-inner::-webkit-scrollbar { display: none; }
+
+.sub-nav-item {
+  display: inline-flex;
+  align-items: center;
+  padding: 0 0.9rem;
+  font-size: 0.69rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  text-decoration: none;
+  white-space: nowrap;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  transition: color 0.15s, border-color 0.15s;
+  opacity: 1 !important; /* override global a:hover opacity */
+  flex-shrink: 0;
+}
+
+.sub-nav-item:hover {
+  color: var(--color-text);
+  opacity: 1 !important;
+}
+
+.sub-nav-item.active {
+  color: var(--color-text);
+  border-bottom-color: var(--color-accent);
 }
 
 /* mobile sub-items */
