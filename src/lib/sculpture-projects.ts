@@ -19,7 +19,23 @@ export const SCULPTURE_PROJECTS: SculptureProject[] = [
     title: 'Profiler',
     years: '1966–',
     description: 'Profilskulpturer i sten och brons — Sivert Lindbloms genomgående serie sedan 1960-talet.',
-    body: 'Profilserien är ett av Sivert Lindbloms mest genomgående teman. Skulpturerna är abstraherade mänskliga profiler skurna ur sten eller gjutna i brons. Serien spänner från tidiga verk på 1960-talet till stora offentliga monument.\n\nDe första profilskulpturerna visades på Galerie Burén 1966 och 1968. Senare visades serien på Moderna Museet (Live Show 1974), Lunds konsthall (1993), Bildmuseet Umeå (1993), Galerie Aronowitsch (2005) och Vandalorum (2016). Profiler finns bland annat på Stockholms universitet (Frescati), Västra skogen T-banestation, Wanås och i ett flertal privata och offentliga samlingar.',
+    body: `Siverts profiler har blivit något av ett signum genom den ryktbarhet de fått sedan de först presenterades som en skulptural, visuell avbildning av honom själv sedd som ett streck roterat i 360° i samband med Riksutställningars – Multikonst, 1968.
+
+Han har själv berättat att utgångspunkten för den svit av profilskulpturer som han producerade ett antal år ursprungligen var just en punkt, kanske placerad mitt i pannan, som sedan sträcktes ut till en linje som följde hans ansikte och kroppsprofil, från hjässans högsta punkt och till tåspetsen.
+
+Denna linje lät han sedan rotera runt sin "egen axel", varvid hans kropp blev tredimensionell från ett två-dimensionellt streck, från linje till volym. Profilen kunde på så sätt svarvas i olika material och även gjutas i plast eller metall.
+
+Sivert har sedan undersökt den uppkomna formen både som ett upprättstående och som sittande fyllt objekt och som en urtagen volym av formerna själva och sedan även förskjutit profilerna i olika riktningar. Man skulle kunna säga att man kan "se profilerna som konvexa eller konkava".
+
+Han har även gjort flera serier grafiska blad med profilteckningar som bildar mönsterliknande ytor. Det är profiler som överlappar varandra till ett intrikat mönster och som ibland placeras in i perspektiviskt landskap.
+
+Huruvida han träffat på den amerikanske satirtecknaren Charles Dana Gibson är ointressant men det finns ett humoristisk tolkningsperspektiv av hans konst som när man för ett kort ögonblick ser Gibsons skämtteckning "A Gentleman´s Dilemma" från 1900.
+
+Sivert fick mycket senare kännedom om denne i ett brev från hans vän arkitekten Åke Wallgård den 15 december 1994 med en kopia på ett tidningsurklipp med Gibsons teckning och en julhälsning. — Jan Öqvist
+
+Som underlag för "profiler" togs bland annat en serie fotografier – stilstudier – av Sivert som siluett av vännen och fotografen Wilhelm Rapp 1963.
+
+Charles Dana Gibson (1867–1944)`,
     images: [
       { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Sivert-Lindblom-Profiler_0069.jpg', alt: 'Profil' },
       { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Sivert-Lindblom-Profiler_0072.jpg', alt: 'Profil' },
@@ -83,6 +99,7 @@ export const SCULPTURE_PROJECTS: SculptureProject[] = [
       { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/04/SAM_4878-kopia.jpg', alt: 'Profil' },
       { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/02/SAM_4828.jpg', alt: 'Profil. Foto: Jan Öqvist' },
       { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Sivert-Lindblom-NK-ljusgard_0091.jpg', alt: 'Profil, NK Ljusgård' },
+      { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/04/Gibson-.jpg', alt: 'Charles Dana Gibson — "A Gentleman\'s Dilemma", 1900. Brev från Åke Wallgård, 15 dec 1994' },
     ],
   },
   {
@@ -90,7 +107,7 @@ export const SCULPTURE_PROJECTS: SculptureProject[] = [
     title: 'Metamorfoser — Sittare',
     years: '1970–1985',
     description: 'Sittande figurer i sten och brons som förenas i en metamorfosprocess.',
-    body: 'Metamorfoser-serien utforskar övergångstillståndet mellan det mänskliga och det abstrakta. De sittande figurerna är gjutna i brons och bearbetade i sten, med en inre rörelse som antyder förvandling och förändring. Skulpturerna har visats bland annat på Lunds konsthall och Moderna Museet.',
+    body: '',
     images: [
       { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Bok-Skulptur109-kopia.jpg', alt: 'Sittare' },
       { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Bok-Skulptur107-kopia.jpg', alt: 'Sittare. Foto: Magnus Lindblom' },
@@ -129,7 +146,7 @@ export const SCULPTURE_PROJECTS: SculptureProject[] = [
     title: 'Monoliter & Blystoder',
     years: '1975–1982',
     description: 'Monolitiska former i bly och sten, inklusive verken i Paris 1977.',
-    body: 'Monoliterna utgör en serie enkla, upprätta former i bly — ett material som ger skulpturerna en specifik tyngd och yta. Verken visades bland annat på Centre Culturel Suédois i Paris 1980 och på Galerie Åsbaek i Köpenhamn 1981.',
+    body: '',
     images: [
       { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Bly-klossar012.jpg', alt: 'Azteker; bly 1978' },
       { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/bly-klossar004.jpg', alt: 'Azteker; bly 1978' },
@@ -149,7 +166,7 @@ export const SCULPTURE_PROJECTS: SculptureProject[] = [
     title: 'Azteker',
     years: '1978–1983',
     description: 'Aztekiskt inspirerade skulpturer med geometrisk komplexitet.',
-    body: 'Aztekerna är en serie skulpturer inspirerade av prekolumbiansk konst och arkitektur. De karakteristiska trappstegsmönstren och den geometriska upprepningen ger skulpturerna ett monumentalt uttryck trots ofta liten skala. Serien utforskar hur förhistoriska formmönster kan transformeras till ett modernt skulpturalt språk.\n\nVisades bl.a. på Galleri Doktor Glas, Kungsträdgården, Stockholm 1978 och dokumenterades i Kalejdoskop Nr 1/78.',
+    body: '',
     images: [
       { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/03/Azteker-1.jpg', alt: 'Aztek skulptur 1' },
       { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/03/Azteker-2.jpg', alt: 'Aztek skulptur 2' },
@@ -175,7 +192,7 @@ export const SCULPTURE_PROJECTS: SculptureProject[] = [
     title: 'Tidiga skulpturer',
     years: '1955–1968',
     description: 'Verk från 1950- och 1960-talen som spänner från figurativt till abstrakt.',
-    body: 'De tidiga skulpturerna visar Sivert Lindbloms väg från figurativ konst mot ett alltmer abstrakt formspråk. Bland de tidiga verken finns "Utan titel" (brons, 100 cm, 1959), "Nike II" (brons, 100 cm, 1960), "Självbild" (1961, 1963) och "Fritt efter Rodin" (1961). Under 1950-talet arbetade han nära arkitekturen, bland annat i samarbete med Peter Celsing. 1960-talets verk, tillkomna delvis under åren i Locarno (1963–1966), visar ett allt friare förhållande till formen.',
+    body: 'I Magasin III:s samling ingår denna brons "Utan titel" från 1963.\n\nI galleriet finns en del av Siverts tidiga skulpturer.',
     images: [
       { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Sivert678-kopia.jpg', alt: 'Tidigt verk' },
       { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Sivert050-kopia.jpg', alt: 'Tidigt verk' },
@@ -201,7 +218,13 @@ export const SCULPTURE_PROJECTS: SculptureProject[] = [
     title: 'Kofeser — meningslös meningsfullhet',
     years: '1980–1990',
     description: 'En serie skulpturer som undersöker meningslös meningsfullhet.',
-    body: 'Kofeser är ett ord utan definition — en kofes kan vara vad som helst. Serien uppkom spontant, ur slumpen och omedvetna skapande ögonblick, jämförbart med improviserad jazz. Serien utforskar gränsen mellan objekt och skulptur, mellan det vardagliga och det konstnärliga. Birger Vikström har skrivit om vad en kofes egentligen är i "13 berättelser".',
+    body: `Sivert Lindblom har genom åren framkallat skulpturer utan direkt åsyftan utan som kommit till ur slumpen eller ur de omedvetna skapelseögonblicken.
+
+Han har valt att kalla dessa skulpturer för kofeser. Ett begrepp som kanske eller kanske inte behöver någon förklaring därför att en kofes är en kofes och inget annat.
+
+Någon skulle kanske kunna kalla dessa skulpturer för "fri form", jämförbara med jazzmusikens fria uttryck. Andra de för något annat …
+
+Den insisterande kan ju läsa lite om varifrån begreppet "kofes" har sitt förmodade ursprung.`,
     links: [
       { label: 'Birger Vikström — "Vad är en kofes?" ur 13 berättelser', url: '/texts/birger-vikstrom-kofes' },
     ],
@@ -215,7 +238,7 @@ export const SCULPTURE_PROJECTS: SculptureProject[] = [
     title: 'Blyplattor',
     years: '1975–1982',
     description: 'Reliefverk i bly med subtila ytbehandlingar.',
-    body: '1978 undersökte Sivert Lindblom två ytstrukturer inom en given geometrisk utgångspunkt — samma yta i olika format.\n\nHan presenterade dessa för första gången på Doktor Glas i Kungsträdgården med en längre svit av infattade blyplattor, Stockholm.\n\nDessa var blytäckta plattor innanför en klart definierad svartmålad ram. Varje platta signerades med det inre fältets exakta kvadratdecimetermått.',
+    body: '1978 undersökte Sivert två ytstrukturer inom en given geometriskt utgångspunkt dvs. samma yta i olika format.\n\nHan presenterade dessa för första gången på Doktor Glas i Kungsträdgården med en längre svit av infattade blyplattor, Stockholm.\n\nDessa var blytäckta plattor innanför en klart definierat svartmålad ram. Varje platta signerades med det inre fältets exakta kvadratdecimetermått.',
     images: [
       { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/media/2015/03/Blyplattor-.jpg', alt: 'Blyplattor' },
       { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/media/2015/03/Blyplatta-150620028-.jpg', alt: 'Blyplatta' },
@@ -233,7 +256,7 @@ export const SCULPTURE_PROJECTS: SculptureProject[] = [
     title: 'Trädkonstruktioner',
     years: '1974–1978',
     description: 'Skulpturer och konstruktioner i trä, bl.a. från Live Show II i Luzern.',
-    body: 'Trädkonstruktionerna visar Lindbloms undersökning av organiska material och konstruktionsprinciper. Flera av verken skapades för Live Show II på Kunstmuseum Luzern 1977, i samarbete med Björn Lövin och Ulrik Samuelson.',
+    body: '',
     images: [
       { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/LuzernTrad022.jpg', alt: 'Trädkonstruktion, Luzern' },
       { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/LuzernTrad021.jpg', alt: 'Trädkonstruktion, Luzern' },
@@ -268,17 +291,25 @@ Sockeln kan ses som en symbolisk förbindelse mellan marken och det som ska bär
 
 Socklar i stadsrummen brukar bära upp byster av bemärkta personer eller skulpturer med och av dessa i imposanta ställningar.
 
-Den klassiska sockeln skriver Palladio, ur den första boken om arkitekturen: "Vi har ett utkragande nedersta led som eventuellt uttrycker förankring i marken och stabilitet. Vi har ett översta led som med en likaså utkragande gest som uttrycker bärande och utgör sockelns avslutning uppåt. Slutligen ett mellanled vars liv ligger något innanför det översta och nedersta. Mellanledet utgör sockelns bål, utgör dess majoritet av massa och ger helheten dess resning."
+Den klassiska sockeln skriver Palladio, ur den första boken om arkitekturen:
+
+"Vi har ett utkragande nedersta led som eventuellt uttrycker förankring i marken och stabilitet.
+
+Vi har ett översta led som med en likaså utkragande gest som uttrycker bärande och utgör sockelns avslutning uppåt. Slutligen ett mellanled vars liv ligger något innanför det översta och nedersta. Mellanledet utgör sockelns bål, utgör dess majoritet av massa och ger helheten dess resning."
 
 Att visualisera förankring med marken, med moder jord, har högt symbolvärde och är något arketypiskt. Det gäller för hus-socklar såväl som för skulptur-socklar.
 
-I den klassiska antikens byggnader förekommer sockeln företrädesvis som byggnadsanknutet eller en del av tempelbyggnaden — kolonnerna med stylobatens tre trappsteg; överst bär arkitraven föremålet; frisen och arkitraven bildar visuellt underlag till de fullt ut skulpterade gudarna som placeras i tympanon.
+I den klassiska antikens byggnader förekommer sockeln företrädesvis som byggnadsanknutet eller en del av tempelbyggnaden.
+
+Då som kolonnerna med stylobatens tre trappsteg. Överst bär arkitraven föremålet. Denna vilar på en triglyf och har ofta en metopfris. Metoperna är reliefer eller en fris med samtidens hjältar i olika situationer. Frisen och arkitraven tillsammans bildar visuellt underlag till de fullt ut skulpterade gudarna som placeras i tympanon.
 
 Sivert Lindbloms socklar eller torn framhäver inget annat än tornet i sig.
 
-Tidens konventioner påverkar seendet av ett torn. De skapar en förankring till platsen, marken runt tornet separerar skulpturen från omgivningen och bildar en rumsbildande gräns och samtidigt blir tornet eller sockeln en fokuseringspunkt i ett större sammanhang.
+Tidens konventioner påverkar seendet av ett torn. Det samma gäller när den är lägre uppbyggnaden när den ses som en sockel. Dessa har oavsett höjd onekligen fler funktioner än den primära att bära något ovanpå sig.
 
-Sockel — eller Socculus — betyder liten sko på latin.`,
+De skapar en förankringen till platsen, marken runt tornet separerar skulpturen från omgivningen och bildar en rumsbildande gräns och samtidigt blir tornet eller sockeln en fokuseringspunkt i ett större sammanhang.
+
+Sockel eller Socculus betyder liten sko på latin.`,
     images: [
       { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/03/Sivert-Lindblom-Torn-A1-.jpg', alt: 'Tornmodell A1' },
       { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/03/Sivert-Lindblom-Torn-A2-.jpg', alt: 'Tornmodell A2' },
@@ -294,7 +325,7 @@ Sockel — eller Socculus — betyder liten sko på latin.`,
     title: 'Arbetsmodeller',
     years: '1960–2000',
     description: 'Arbetsmodeller i gips, lera och trä som dokumenterar skulpturprocessen.',
-    body: 'Arbetsmodellerna ger en inblick i Sivert Lindbloms kreativa process. Dessa skalmodeller — i gips, lera, trä och plast — utgör en bro mellan idé och slutfört verk. Många av de offentliga skulpturerna föregicks av noggranna modellstudier.',
+    body: '',
     images: [
       { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/05/ModellWasa014.jpg', alt: 'Wasamuseet tävlingsförslag — modell' },
       { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/05/ModellWasa020.jpg', alt: 'Wasamuseet modell 2' },
@@ -314,7 +345,7 @@ Sockel — eller Socculus — betyder liten sko på latin.`,
     title: 'Grafik i urval',
     years: '1966–2018',
     description: 'Teckningar, grafikblad och studier som dokumenterar det konstnärliga arbetet.',
-    body: 'Grafiken utgör ett komplement till skulpturarbetet — teckningar, studier och grafikblad som visar det konstnärliga tänkandets rörelser. Bland de tidiga bladen finns profilstudier, axonometriska skisser och geometriska kompositioner från 1960-talet. Senare tillkom digitala kompositioner med variationer av rutnät och strukturer (2018).',
+    body: '',
     images: [
       { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Sivert-Linje-profil002.jpg', alt: 'Linjeprofil' },
       { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Skrynkligneg001.jpg', alt: 'Skrynklig, negativ' },

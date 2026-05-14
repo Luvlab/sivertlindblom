@@ -5,7 +5,8 @@ import { locales } from '@/i18n/config'
 import type { Locale } from '@/i18n/config'
 import { getDictionary } from '@/i18n/getDictionary'
 import { SCULPTURE_PROJECTS } from '@/lib/sculpture-projects'
-import TextImageSlideshow from '@/components/TextImageSlideshow'
+import GalleryGrid from '@/components/gallery/GalleryGrid'
+import type { LightboxImage } from '@/components/gallery/Lightbox'
 
 export function generateStaticParams() {
   return locales.flatMap((locale) =>
@@ -38,7 +39,10 @@ export default async function SculptureSeriesPage({
   const project = SCULPTURE_PROJECTS.find((p) => p.slug === slug)
   if (!project) notFound()
 
-  const imageUrls = project.images.map((img) => img.url)
+  const lightboxImages: LightboxImage[] = project.images.map((img) => ({
+    url: img.url,
+    alt: img.alt,
+  }))
 
   return (
     <div className="section-gap">
@@ -66,7 +70,7 @@ export default async function SculptureSeriesPage({
         <hr className="divider" style={{ marginBottom: '1.5rem' }} />
 
         <div style={{ maxWidth: '72ch' }}>
-          {project.body.split('\n\n').map((para, i) => (
+          {project.body.split('\n\n').filter(Boolean).map((para, i) => (
             <p key={i} style={{ fontSize: 'var(--fs-base)', lineHeight: 1.75, marginBottom: '1.25em', color: 'var(--color-text)' }}>
               {para}
             </p>
@@ -101,13 +105,13 @@ export default async function SculptureSeriesPage({
         </div>
       </div>
 
-      {imageUrls.length > 0 && (
-        <div className="page-pad" style={{ paddingBottom: '2rem', maxWidth: '860px' }}>
-          <TextImageSlideshow images={imageUrls} title={project.title} thumbnailAspect="4/3" />
+      {lightboxImages.length > 0 && (
+        <div className="page-pad" style={{ paddingBottom: '2rem' }}>
+          <GalleryGrid images={lightboxImages} aspectRatio="4/3" columns="sm" />
         </div>
       )}
 
-      {imageUrls.length === 0 && (
+      {lightboxImages.length === 0 && (
         <div className="page-pad" style={{ paddingBottom: '2rem' }}>
           <p style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-sm)', fontStyle: 'italic' }}>
             {dict.references?.no_images ?? 'Inga bilder tillgängliga för tillfället.'}
