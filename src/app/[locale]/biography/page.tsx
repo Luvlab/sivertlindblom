@@ -6,6 +6,19 @@ import { locales } from '@/i18n/config'
 import type { Locale } from '@/i18n/config'
 import MasonryGallery from '@/components/gallery/MasonryGallery'
 import TabsLayout from '@/components/TabsLayout'
+import { createAdminClient } from '@/lib/supabase/admin'
+import { FALLBACK_SETTINGS } from '@/lib/db'
+
+async function getBiographyIntro(): Promise<string> {
+  try {
+    const supabase = createAdminClient()
+    if (supabase) {
+      const { data } = await supabase.from('settings').select('value').eq('key', 'biography_intro').single()
+      if (data?.value) return data.value as string
+    }
+  } catch { /* ignore */ }
+  return FALLBACK_SETTINGS.biography_intro ?? ''
+}
 
 export const metadata: Metadata = { title: 'Biography' }
 
@@ -147,7 +160,10 @@ export default async function BiographyPage({
   params: Promise<{ locale: string }>
 }) {
   const { locale } = await params
-  const dict = await getDictionary(locale as Locale)
+  const [dict, bioIntro] = await Promise.all([
+    getDictionary(locale as Locale),
+    getBiographyIntro(),
+  ])
 
   return (
     <div className="section-gap">
@@ -169,9 +185,11 @@ export default async function BiographyPage({
           <h1 style={{ fontFamily: 'Georgia, serif', fontWeight: 400, fontSize: 'clamp(1.8rem,4vw,3rem)', marginBottom: '1rem' }}>
             {dict.biography?.title ?? 'Sivert Lindblom'}
           </h1>
-          <p style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-base)', lineHeight: 1.8 }}>
-            {dict.biography?.intro ?? ''}
-          </p>
+          {(bioIntro || dict.biography?.intro) && (
+            <p style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-base)', lineHeight: 1.8 }}>
+              {bioIntro || dict.biography?.intro}
+            </p>
+          )}
         </div>
 
         {/* Portrait image — same height as text block */}

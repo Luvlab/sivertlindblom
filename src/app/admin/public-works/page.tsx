@@ -5,10 +5,10 @@ import Link from 'next/link'
 
 interface WorkEntry {
   title: string
-  year: number
+  year: string
   location: string
   slug?: string
-  section: 'exterior' | 'interior'
+  category: 'exterior' | 'interior' | 'scenography'
 }
 
 export default function AdminPublicWorks() {
@@ -39,8 +39,8 @@ export default function AdminPublicWorks() {
     })
   }
 
-  function addEntry(section: 'exterior' | 'interior') {
-    setWorks(prev => [...prev, { title: 'Ny post', year: new Date().getFullYear(), location: '', section }])
+  function addEntry(category: 'exterior' | 'interior') {
+    setWorks(prev => [...prev, { title: 'Ny post', year: String(new Date().getFullYear()), location: '', category }])
   }
 
   function removeEntry(idx: number) {
@@ -64,8 +64,8 @@ export default function AdminPublicWorks() {
     finally { setSaving(false) }
   }
 
-  const exteriors = works.map((w, i) => ({ ...w, _idx: i })).filter(w => w.section === 'exterior')
-  const interiors = works.map((w, i) => ({ ...w, _idx: i })).filter(w => w.section === 'interior')
+  const exteriors = works.map((w, i) => ({ ...w, _idx: i })).filter(w => w.category === 'exterior')
+  const interiors = works.map((w, i) => ({ ...w, _idx: i })).filter(w => w.category === 'interior')
 
   const thStyle: React.CSSProperties = {
     padding: '0.6rem 0.75rem 0.6rem 0', color: 'var(--color-muted)', fontWeight: 400,
@@ -82,8 +82,8 @@ export default function AdminPublicWorks() {
                 value={w.title} onChange={e => updateField(w._idx, 'title', e.target.value)} />
             </td>
             <td style={{ padding: '0.5rem 0.75rem', width: 80 }}>
-              <input className="input" type="number" style={{ width: '100%', fontSize: 'var(--fs-sm)' }}
-                value={w.year} onChange={e => updateField(w._idx, 'year', Number(e.target.value))} />
+              <input className="input" type="text" style={{ width: '100%', fontSize: 'var(--fs-sm)' }}
+                value={w.year} onChange={e => updateField(w._idx, 'year', e.target.value)} />
             </td>
             <td style={{ padding: '0.5rem 0.75rem' }}>
               <input className="input" style={{ width: '100%', fontSize: 'var(--fs-sm)' }}
@@ -155,7 +155,7 @@ export default function AdminPublicWorks() {
                   <th style={thStyle}></th>
                 </tr>
               </thead>
-              <tbody>{renderRows(filtered.map((w, i) => ({ ...w, _idx: works.indexOf(w) })).filter(w => w.section === 'exterior'))}</tbody>
+              <tbody>{renderRows(filtered.map((w) => ({ ...w, _idx: works.indexOf(w) })).filter(w => w.category === 'exterior'))}</tbody>
             </table>
           </section>
 
@@ -175,7 +175,7 @@ export default function AdminPublicWorks() {
                   <th style={thStyle}></th>
                 </tr>
               </thead>
-              <tbody>{renderRows(filtered.map((w) => ({ ...w, _idx: works.indexOf(w) })).filter(w => w.section === 'interior'))}</tbody>
+              <tbody>{renderRows(filtered.map((w) => ({ ...w, _idx: works.indexOf(w) })).filter(w => w.category === 'interior'))}</tbody>
             </table>
           </section>
         </>

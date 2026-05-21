@@ -35,6 +35,7 @@ export default function AdminMap() {
   const [filter, setFilter] = useState('')
   const [loading, setLoading] = useState(true)
   const [view, setView] = useState<'map' | 'list'>('map')
+  const [deleting, setDeleting] = useState<string | null>(null)
   const [leafletReady, setLeafletReady] = useState(false)
   const mapRef = useRef<HTMLDivElement>(null)
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -107,6 +108,17 @@ export default function AdminMap() {
       mapInstance.current = null
     }
   }, [view])
+
+  async function deletePin(id: string, title: string) {
+    if (!confirm(`Radera "${title}" från kartan?`)) return
+    setDeleting(id)
+    try {
+      await fetch(`/api/admin/map-pins/${id}`, { method: 'DELETE' })
+      setPins(prev => prev.filter(p => p.id !== id))
+    } finally {
+      setDeleting(null)
+    }
+  }
 
   const filtered = pins.filter(p =>
     !filter || p.title.toLowerCase().includes(filter.toLowerCase()) || p.city.toLowerCase().includes(filter.toLowerCase())
@@ -225,10 +237,17 @@ export default function AdminMap() {
                   </td>
                   <td style={{ padding: '0.8rem 0.75rem', fontFamily: 'monospace', fontSize: '0.75rem', color: 'var(--color-muted)' }}>{p.lat.toFixed(4)}</td>
                   <td style={{ padding: '0.8rem 0.75rem', fontFamily: 'monospace', fontSize: '0.75rem', color: 'var(--color-muted)' }}>{p.lng.toFixed(4)}</td>
-                  <td style={{ padding: '0.8rem 0 0.8rem 0.75rem' }}>
+                  <td style={{ padding: '0.8rem 0 0.8rem 0.75rem', whiteSpace: 'nowrap' }}>
                     <Link href={`/admin/map/${p.id}`}>
-                      <button className="btn" style={{ fontSize: '0.7rem', padding: '0.3em 0.8em' }}>Redigera</button>
+                      <button className="btn" style={{ fontSize: '0.7rem', padding: '0.3em 0.8em', marginRight: 6 }}>Redigera</button>
                     </Link>
+                    <button
+                      onClick={() => deletePin(p.id, p.title)}
+                      disabled={deleting === p.id}
+                      style={{ fontSize: '0.7rem', padding: '0.3em 0.6em', background: 'none', border: '1px solid #c00', color: deleting === p.id ? '#666' : '#c00', cursor: 'pointer' }}
+                    >
+                      {deleting === p.id ? '…' : '✕'}
+                    </button>
                   </td>
                 </tr>
               ))}

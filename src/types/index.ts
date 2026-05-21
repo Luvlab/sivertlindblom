@@ -93,6 +93,8 @@ export interface SiteSettings {
   hero_tagline: string
   contact_email: string
   about_short: string
+  biography_intro?: string
+  contact_intro?: string
 }
 
 export const CATEGORY_LABELS: Record<WorkCategory, string> = {

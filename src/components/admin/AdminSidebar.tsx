@@ -8,9 +8,11 @@ const NAV_ITEMS = [
   { href: '/admin/home',           label: 'Startsida',          icon: '⌂' },
   { href: '/admin/exhibitions',    label: 'Utställningar',      icon: '◻' },
   { href: '/admin/public-works',   label: 'Offentliga arbeten', icon: '▦' },
+  { href: '/admin/references',     label: 'Referenser',         icon: '◧' },
   { href: '/admin/texts',          label: 'Texter',             icon: '≡' },
   { href: '/admin/biography',      label: 'Biografi',           icon: '◉' },
   { href: '/admin/map',            label: 'Karta',              icon: '◎' },
+  { href: '/admin/contact',        label: 'Kontakt',            icon: '✉' },
   { href: '/admin/media',          label: 'Media',              icon: '▣' },
   { href: '/admin/settings',       label: 'Inställningar',      icon: '⚙' },
 ]

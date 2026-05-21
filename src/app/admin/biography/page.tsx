@@ -1,7 +1,9 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import Link from 'next/link'
+
+const PORTRAIT_URL = 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Portratt-SivertMattias.jpg'
 
 interface BioCmsEntry {
   id: string
@@ -26,6 +28,11 @@ export default function AdminBiography() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
+  // Intro text (stored in settings as biography_intro)
+  const [intro, setIntro] = useState('')
+  const [introSaving, setIntroSaving] = useState(false)
+  const [introSaved, setIntroSaved] = useState(false)
+
   useEffect(() => {
     fetch('/api/admin/biography')
       .then(r => r.json())
@@ -35,7 +42,29 @@ export default function AdminBiography() {
       })
       .catch(e => setError(String(e)))
       .finally(() => setLoading(false))
+
+    // Load intro text from settings
+    fetch('/api/admin/settings')
+      .then(r => r.json())
+      .then((s: Record<string, string>) => { if (s.biography_intro) setIntro(s.biography_intro) })
+      .catch(() => {})
   }, [])
+
+  const saveIntro = useCallback(async () => {
+    setIntroSaving(true)
+    try {
+      const settingsRes = await fetch('/api/admin/settings')
+      const current = await settingsRes.json() as Record<string, string>
+      await fetch('/api/admin/settings', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...current, biography_intro: intro }),
+      })
+      setIntroSaved(true)
+      setTimeout(() => setIntroSaved(false), 3000)
+    } catch { /* ignore */ }
+    finally { setIntroSaving(false) }
+  }, [intro])
 
   const filtered = items
     .filter(b => !filter || b.title.toLowerCase().includes(filter.toLowerCase()))
@@ -61,6 +90,35 @@ export default function AdminBiography() {
           {error}
         </div>
       )}
+
+      {/* ── Page intro editor ── */}
+      <div style={{ border: '1px solid var(--color-border)', background: 'var(--color-bg-surface)', marginBottom: '2.5rem', borderRadius: 2 }}>
+        <div style={{ padding: '1rem 1.25rem', borderBottom: '1px solid var(--color-border)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <span style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-sm)' }}>Sidans introduktionstext</span>
+          <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
+            {introSaved && <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-accent)' }}>✓ Sparad</span>}
+            <button className="btn btn-primary" style={{ fontSize: 'var(--fs-xs)', padding: '0.3em 0.8em' }} onClick={saveIntro} disabled={introSaving}>
+              {introSaving ? 'Sparar…' : 'Spara text'}
+            </button>
+          </div>
+        </div>
+        <div style={{ display: 'flex', gap: '1.5rem', padding: '1.25rem', alignItems: 'flex-start' }}>
+          <textarea
+            className="input"
+            rows={5}
+            value={intro}
+            onChange={e => setIntro(e.target.value)}
+            placeholder="Skriv en kort presentation av Sivert Lindblom som visas längst upp på biografisidan…"
+            style={{ flex: 1, resize: 'vertical', fontSize: 'var(--fs-sm)', lineHeight: 1.7 }}
+          />
+          {/* Portrait preview */}
+          <div style={{ flexShrink: 0, width: 100, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem' }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={PORTRAIT_URL} alt="Sivert Lindblom" style={{ width: 100, height: 120, objectFit: 'cover', objectPosition: 'top center', borderRadius: 2, border: '1px solid var(--color-border)', display: 'block' }} />
+            <span style={{ fontSize: '0.6rem', color: 'var(--color-muted)', textAlign: 'center' }}>Porträtt (visas till höger om texten)</span>
+          </div>
+        </div>
+      </div>
 
       <div style={{ display: 'flex', gap: '1rem', marginBottom: '2rem', flexWrap: 'wrap' }}>
         <input
