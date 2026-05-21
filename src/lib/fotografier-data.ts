@@ -7,6 +7,7 @@ export interface FotografiImage {
 export const FOTOGRAFIER_IMAGES: FotografiImage[] = [
   { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/media/2015/03/Sivert-Lindblom-gjuts-1-.jpg', caption: 'Sivert gjuts' },
   { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Sivert541-kopia.jpg' },
+  { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Sivert542-kopia.jpg' },
   { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Siverts-Scarabe-kopia.jpg', caption: 'Egyptisk skulptur av en mänsklig scarabé. Kairos museum.' },
   { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Stenar081-kopia.jpg', caption: 'Flyttblock, Gotland' },
   { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Sten-pa-marken-kopia.jpg' },

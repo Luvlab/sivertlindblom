@@ -17,8 +17,8 @@ interface Props {
 }
 
 const TYPE_COLORS: Record<string, string> = {
-  exterior: '#c9a84c',
-  interior: '#7a8fa6',
+  exterior: '#0952f7',
+  interior: '#ffd00d',
   metro: '#a084c9',
 }
 
@@ -82,13 +82,13 @@ export default function SculptureMap({ locations, locale }: Props) {
         return L.divIcon({
           html: `<div style="
             width:32px;height:32px;
-            background:#c9a84c;
+            background:#0952f7;
             border:2px solid #0a0a0a;
             border-radius:50%;
             display:flex;align-items:center;justify-content:center;
-            font-size:11px;color:#0a0a0a;font-weight:600;
+            font-size:11px;color:#fff;font-weight:600;
             font-family:Georgia,serif;
-            box-shadow:0 0 0 3px #c9a84c60;
+            box-shadow:0 0 0 3px #0952f760;
           ">${count}</div>`,
           className: '',
           iconSize: [32, 32],
@@ -137,13 +137,13 @@ export default function SculptureMap({ locations, locale }: Props) {
       const typeLabel = TYPE_LABELS[loc.type]?.[locale] ?? loc.type
       marker.bindPopup(`
         <div style="font-family:Georgia,serif;min-width:200px">
-          <div style="font-size:11px;color:#c9a84c;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:4px">
+          <div style="font-size:11px;color:#0952f7;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:4px">
             ${loc.year} · ${typeLabel}
           </div>
           <div style="font-size:14px;line-height:1.4;margin-bottom:6px;font-weight:500">${loc.title}</div>
           <div style="font-size:12px;color:#888;margin-bottom:${loc.description ? '8px' : '0'}">${loc.city}, ${loc.country}</div>
           ${loc.description ? `<div style="font-size:12px;color:#aaa;line-height:1.5;border-top:1px solid #333;padding-top:8px">${loc.description}</div>` : ''}
-          ${loc.slug ? `<a href="/${locale}/portfolio/public-works/${loc.slug}" style="display:inline-block;margin-top:8px;font-size:11px;color:#c9a84c;text-decoration:none;letter-spacing:0.06em;text-transform:uppercase;border-bottom:1px solid #c9a84c60;padding-bottom:2px">→ Läs mer</a>` : ''}
+          ${loc.slug ? `<a href="/${locale}/portfolio/public-works/${loc.slug}" style="display:inline-block;margin-top:8px;font-size:11px;color:#0952f7;text-decoration:none;letter-spacing:0.06em;text-transform:uppercase;border-bottom:1px solid #0952f760;padding-bottom:2px">→ Läs mer</a>` : ''}
         </div>
       `, { maxWidth: 280, className: 'sculpture-popup' })
 
@@ -206,13 +206,13 @@ export default function SculptureMap({ locations, locale }: Props) {
       const typeLabel = TYPE_LABELS[loc.type]?.[locale] ?? loc.type
       marker.bindPopup(`
         <div style="font-family:Georgia,serif;min-width:200px">
-          <div style="font-size:11px;color:#c9a84c;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:4px">
+          <div style="font-size:11px;color:#0952f7;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:4px">
             ${loc.year} · ${typeLabel}
           </div>
           <div style="font-size:14px;line-height:1.4;margin-bottom:6px;font-weight:500">${loc.title}</div>
           <div style="font-size:12px;color:#888;margin-bottom:${loc.description ? '8px' : '0'}">${loc.city}, ${loc.country}</div>
           ${loc.description ? `<div style="font-size:12px;color:#aaa;line-height:1.5;border-top:1px solid #333;padding-top:8px">${loc.description}</div>` : ''}
-          ${loc.slug ? `<a href="/${locale}/portfolio/public-works/${loc.slug}" style="display:inline-block;margin-top:8px;font-size:11px;color:#c9a84c;text-decoration:none;letter-spacing:0.06em;text-transform:uppercase;border-bottom:1px solid #c9a84c60;padding-bottom:2px">→ Läs mer</a>` : ''}
+          ${loc.slug ? `<a href="/${locale}/portfolio/public-works/${loc.slug}" style="display:inline-block;margin-top:8px;font-size:11px;color:#0952f7;text-decoration:none;letter-spacing:0.06em;text-transform:uppercase;border-bottom:1px solid #0952f760;padding-bottom:2px">→ Läs mer</a>` : ''}
         </div>
       `, { maxWidth: 280, className: 'sculpture-popup' })
       clusterGroup.addLayer(marker)

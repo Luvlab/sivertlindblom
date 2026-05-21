@@ -127,7 +127,7 @@ export const PUBLICATIONS: Publication[] = [
     title: 'Peter Celsing',
     publisher: 'LiberFörlaget / Arkitekturmuseet',
     isbn: '91-38-05276-8',
-    imageUrl: undefined,
+    imageUrl: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/02/Peter-Celsing-bok.jpg',
   },
   {
     title: 'Konsthögskolan — Galleri Mejan',
@@ -186,5 +186,168 @@ export const PUBLICATIONS: Publication[] = [
     title: 'IBID II',
     year: '1983',
     imageUrl: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/03/Ibid-1983-.jpg',
+  },
+  {
+    title: 'Galerie Burén Nr. 10 Nov. 1963',
+    year: '1963',
+    imageUrl: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Ulrik-och-Sivert.jpg',
+  },
+  {
+    title: 'North',
+    year: '1978',
+    imageUrl: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/North-1978.jpg',
+  },
+  {
+    title: 'Norrköpings Museum',
+    year: '1999',
+    imageUrl: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Norrkopings-museum-1-1999.jpg',
+  },
+  {
+    title: 'Gimpel & Hanover Galerie',
+    imageUrl: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Gimpel-2.jpg',
+  },
+  {
+    title: 'Katalog',
+    imageUrl: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/page_1.jpg',
+  },
+  {
+    title: 'Obskyr tidskrift UPA',
+    imageUrl: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/02/Labelle-.jpg',
+  },
+  {
+    title: 'Multikonst — Moderna Museets Vänner',
+    year: '1968',
+    imageUrl: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/03/Multi-1-2.jpg',
+  },
+  {
+    title: 'Medelhavsmuseet',
+    imageUrl: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/03/Sivert-Lindblom-Medelhavsmuseet-1.jpg',
+  },
+  {
+    title: 'Konstnärscentrum Nr 2',
+    year: '1982',
+    imageUrl: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/03/Sivert-Lindblom-Konstnarscentrum-Nr-2-82-1.jpg',
+  },
+  {
+    title: 'Staffan Cullberg',
+    imageUrl: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/03/Sivert-Lindblom-Staffan-Cullberg-1.jpg',
+  },
+  {
+    title: 'Arkitekturmuseet',
+    imageUrl: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/03/Sivert-Lindblom-Arkitekturmuseet-11.jpg',
+  },
+  {
+    title: 'Raum',
+    imageUrl: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/03/Sivert-Lindblom-Raum-1.jpg',
+  },
+  {
+    title: 'Paletten Nr 2',
+    year: '1968',
+    imageUrl: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/03/Sivert-Lindblom-Paletten-Nr-2-1968-1-.jpg',
+  },
+  {
+    title: 'Här och Nu',
+    imageUrl: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/03/Har-och-Nu-1.jpg',
+  },
+  {
+    title: 'Katalog',
+    imageUrl: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/03/img154-.jpg',
+  },
+  {
+    title: 'Images du Nord, Dakar',
+    year: '1973',
+    imageUrl: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/03/Dakar-7.jpg',
+  },
+  {
+    title: 'Kalejdoskop',
+    imageUrl: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/04/Kalejdoskop.jpg',
+  },
+  {
+    title: 'Liljevalchs',
+    imageUrl: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/04/Liljevalchs-1.jpg',
+  },
+  {
+    title: 'Årby',
+    imageUrl: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/04/Arby-1-1.jpg',
+  },
+  {
+    title: 'Konstrevy',
+    year: '1964',
+    imageUrl: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/02/Konstrevy-omslaget-1964.jpg',
+  },
+  {
+    title: 'Heute',
+    imageUrl: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/03/Heute-1-1.jpg',
+  },
+  {
+    title: 'Suède 63',
+    year: '1963',
+    imageUrl: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/03/Suede-63.jpg',
+  },
+  {
+    title: 'Material',
+    imageUrl: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/03/Material-Omslag.jpg',
+  },
+  {
+    title: 'Kalejdoskop',
+    imageUrl: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/03/Kalejdoskop.jpg',
+  },
+  {
+    title: 'Galleri Östergren',
+    year: '1969',
+    imageUrl: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/03/Galleri-Ostergren-69.jpg',
+  },
+  {
+    title: 'Under Jorden',
+    imageUrl: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/03/Under-jorden.jpg',
+  },
+  {
+    title: 'Moderna Museet Bulletin',
+    imageUrl: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/03/Moderna-Museet-bulletin.jpg',
+  },
+  {
+    title: 'Haninge Konst',
+    imageUrl: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/03/Haninge-konst.jpg',
+  },
+  {
+    title: 'Forum',
+    imageUrl: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/03/Forum.jpg',
+  },
+  {
+    title: 'Gestaltningar, Universitetet',
+    imageUrl: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/03/Gestaltningar-Universitetet.jpg',
+  },
+  {
+    title: 'Offentliga Rummet',
+    imageUrl: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/03/Offentliga-rummet.jpg',
+  },
+  {
+    title: 'Skannad bild',
+    imageUrl: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/03/Skannad-bild-150610011.jpg',
+  },
+  {
+    title: 'Eskilstuna-Kuriren Kulturpris',
+    imageUrl: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/03/Sivert-Lindblom-Eskilstuna-Kuriren-Kulturpris-1-.jpg',
+  },
+  {
+    title: 'Vandalorum 2016',
+    year: '2016',
+    imageUrl: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2017/11/20171016_163452.jpg',
+  },
+  {
+    title: 'Peter Celsing — Celsingarkivet',
+    imageUrl: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/03/Celsingarkivet-1.jpg',
+  },
+  {
+    title: 'Malmö Konsthall',
+    imageUrl: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/03/Malmo-konsthall.jpg',
+  },
+  {
+    title: 'Lunds Konsthall — fasad',
+    imageUrl: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/03/Lund-fasad.jpg',
+  },
+  {
+    title: 'Katalog',
+    imageUrl: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/00.jpg',
   },
 ]

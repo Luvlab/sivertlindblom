@@ -11,8 +11,8 @@ export function generateStaticParams() {
   return locales.map((locale) => ({ locale }))
 }
 
-// Base URL for original WP images (all verified accessible)
-const WP = 'https://sivertlindblom.se/wp-content/uploads'
+// Base URL — all images hosted on Supabase
+const WP = 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp'
 
 interface Work {
   year: number
@@ -52,15 +52,15 @@ const WORKS: Work[] = [
     type: 'Koreografi',
     desc: 'Tillsammans med Margaretha Åsbergs första egna koreografiska produktion, efter det att hon slutat på Kungl. Operan, gjorde Sivert scenografi till "Sand – 10 rörelsedikter" 1974. Denna produktion räknas som den första "Performance-föreställningen" inom den moderna dansteatern i Sverige. Sand var ett sceniskt verk uppbyggt av 10 rörelsedikter som alla hade sitt ursprung från den Chilenska militärjuntans angrepp 1973. Bland de objekt som ingick var Siverts konstruerade gråmålade "skal till stol" med vitt inre, ett antal vita "träd rekonstruktioner" och trossar. Urpremiär: Fylkingens lokaler, Östgötagatan 33, Stockholm.',
     images: [
-      `${WP}/2018/07/10-rörelsedikter-x-4.jpg`,
-      `${WP}/2018/06/Margareta-2-Lutfi-Özkök.jpg`,
-      `${WP}/2018/06/Margareta-8-Lutfi-Özkök.jpg`,
-      `${WP}/2018/06/Margareta-14-André-Lafolie.jpg`,
-      `${WP}/2018/06/Margareta-4-Lutfi-Özkök.jpg`,
-      `${WP}/2018/06/Margareta-3-Lutfi-Özkök.jpg`,
-      `${WP}/2018/06/Margareta-5-Lutfi-Özkök.jpg`,
-      `${WP}/2018/06/Margareta-9-Lutfi-Özkök.jpg`,
-      `${WP}/2018/06/Margareta-10-Lutfi-Özkök.jpg`,
+      `${WP}/2018/07/10-rorelsedikter-x-4.jpg`,
+      `${WP}/2018/06/Margareta-2-Lutfi-Ozkok.jpg`,
+      `${WP}/2018/06/Margareta-8-Lutfi-Ozkok.jpg`,
+      `${WP}/2018/06/Margareta-14-Andre-Lafolie.jpg`,
+      `${WP}/2018/06/Margareta-4-Lutfi-Ozkok.jpg`,
+      `${WP}/2018/06/Margareta-3-Lutfi-Ozkok.jpg`,
+      `${WP}/2018/06/Margareta-5-Lutfi-Ozkok.jpg`,
+      `${WP}/2018/06/Margareta-9-Lutfi-Ozkok.jpg`,
+      `${WP}/2018/06/Margareta-10-Lutfi-Ozkok.jpg`,
     ],
   },
   {
@@ -88,10 +88,10 @@ const WORKS: Work[] = [
     type: 'Koreografi',
     desc: 'Margaretha Åsberg sammanställde 1987 en koreografi byggd på tidigare koreografier med samlingsnamnet "Drivved". Föreställningen var uppbyggd av dekonstruerade fragment ur koreografierna Sand (1974), Life Boat (1976) och Natten innan (1978). I denna föreställning ingick ett antal skulpturala element ur den tidigare koreografin Sand: kraftigt uppbundna vitmålade grenar på gråmålade stag, en rostfri pendel och ett par långa störar med väskhandtag med arbetsnamnet "Spänger". Urpremiär: 1987-11-06 på Moderna Dansteatern med dansarna Anja Birnbaum och Cecilia Roos förutom Margaretha själv. Margaretha Åsberg var initiativtagare till att skapa en egen scen för den moderna dansen i Sverige och var konstnärlig ledare för Moderna Dansteatern under nära två decennier.',
     images: [
-      `${WP}/2018/06/Margareta-15-Sven-Åsberg.jpg`,
-      `${WP}/2018/06/Margareta-16-Sven-Åsberg.jpg`,
-      `${WP}/2018/06/Margareta-12-Sven-Åsberg.jpg`,
-      `${WP}/2018/06/Margareta-13-Sven-Åsberg.jpg`,
+      `${WP}/2018/06/Margareta-15-Sven-Asberg.jpg`,
+      `${WP}/2018/06/Margareta-16-Sven-Asberg.jpg`,
+      `${WP}/2018/06/Margareta-12-Sven-Asberg.jpg`,
+      `${WP}/2018/06/Margareta-13-Sven-Asberg.jpg`,
     ],
   },
   {

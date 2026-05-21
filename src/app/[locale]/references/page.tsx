@@ -59,9 +59,9 @@ const FILMS: Array<{ year: number; title: string; director?: string; venue?: str
   {
     year: 1974,
     title: 'Vad var Multikonst?',
-    venue: 'SVT / Öppet Arkiv',
-    desc: 'Program från SVT om Multikonst-projektet 1967 — en vandringsutsällning i samarbete med Moderna Museet och Riksutställningar. Finns att se hos SVT Öppet Arkiv (extern länk, kan inte bäddas in).',
-    videoUrl: 'https://www.oppetarkiv.se/video/10872733/multikonst-hela-sverige-gar-pa-utstallning',
+    venue: 'SVT Play',
+    desc: 'Program från SVT om Multikonst-projektet 1967 — en vandringsutställning i samarbete med Moderna Museet och Riksutställningar. Finns att se hos SVT Play (extern länk, kan inte bäddas in).',
+    videoUrl: 'https://www.svtplay.se/video/eEgzYWK/multikonst-hela-sverige-gar-pa-utstallning',
   },
   {
     year: 1993,
@@ -119,34 +119,34 @@ const FILMS: Array<{ year: number; title: string; director?: string; venue?: str
 
 // Ögonblick — candid / behind-the-scenes photos (scraped from sivertlindblom.se)
 const OGONBLICK_IMAGES = [
-  'https://sivertlindblom.se/wp-content/uploads/2018/07/20180714_181121.jpg',
-  'https://sivertlindblom.se/wp-content/uploads/2018/07/20180714_181104.jpg',
-  'https://sivertlindblom.se/wp-content/uploads/2018/07/20180714_181039.jpg',
-  'https://sivertlindblom.se/wp-content/uploads/2018/07/20180714_181150.jpg',
-  'https://sivertlindblom.se/wp-content/uploads/2018/10/20181018_195227.jpg',
-  'https://sivertlindblom.se/wp-content/uploads/2018/10/20181018_195108.jpg',
-  'https://sivertlindblom.se/wp-content/uploads/2018/10/20181018_195148.jpg',
-  'https://sivertlindblom.se/wp-content/uploads/2018/02/20180203_160556.jpg',
-  'https://sivertlindblom.se/wp-content/uploads/2018/02/20180203_160613.jpg',
-  'https://sivertlindblom.se/wp-content/uploads/2018/02/20180203_160538.jpg',
-  'https://sivertlindblom.se/wp-content/uploads/2018/02/20180203_160518.jpg',
-  'https://sivertlindblom.se/wp-content/uploads/2018/02/20180203_160623_001.jpg',
-  'https://sivertlindblom.se/wp-content/uploads/2018/02/Lykta-Konstakademin.jpg',
-  'https://sivertlindblom.se/wp-content/uploads/2018/02/img296.jpg',
-  'https://sivertlindblom.se/wp-content/uploads/2018/08/20180817_135602.jpg',
-  'https://sivertlindblom.se/wp-content/uploads/2018/08/20180817_135547.jpg',
-  'https://sivertlindblom.se/wp-content/uploads/2018/08/20180817_135534.jpg',
-  'https://sivertlindblom.se/wp-content/uploads/2018/08/20180817_135458.jpg',
-  'https://sivertlindblom.se/wp-content/uploads/2018/08/20180817_135440.jpg',
-  'https://sivertlindblom.se/wp-content/uploads/2018/02/20180131_111554.jpg',
-  'https://sivertlindblom.se/wp-content/uploads/2018/02/20180131_111159.jpg',
-  'https://sivertlindblom.se/wp-content/uploads/2018/02/20180131_111221.jpg',
-  'https://sivertlindblom.se/wp-content/uploads/2018/02/20180131_111324.jpg',
-  'https://sivertlindblom.se/wp-content/uploads/2018/02/20180131_111349.jpg',
-  'https://sivertlindblom.se/wp-content/uploads/2018/02/20180131_111425.jpg',
-  'https://sivertlindblom.se/wp-content/uploads/2015/01/20150118_201040.jpg',
-  'https://sivertlindblom.se/wp-content/uploads/2017/10/20170927_181311.jpg',
-  'https://sivertlindblom.se/wp-content/uploads/2017/10/20170927_181256.jpg',
+  'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/07/20180714_181121.jpg',
+  'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/07/20180714_181104.jpg',
+  'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/07/20180714_181039.jpg',
+  'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/07/20180714_181150.jpg',
+  'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/10/20181018_195227.jpg',
+  'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/10/20181018_195108.jpg',
+  'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/10/20181018_195148.jpg',
+  'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/02/20180203_160556.jpg',
+  'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/02/20180203_160613.jpg',
+  'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/02/20180203_160538.jpg',
+  'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/02/20180203_160518.jpg',
+  'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/02/20180203_160623_001.jpg',
+  'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/02/Lykta-Konstakademin.jpg',
+  'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/02/img296.jpg',
+  'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/08/20180817_135602.jpg',
+  'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/08/20180817_135547.jpg',
+  'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/08/20180817_135534.jpg',
+  'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/08/20180817_135458.jpg',
+  'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/08/20180817_135440.jpg',
+  'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/02/20180131_111554.jpg',
+  'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/02/20180131_111159.jpg',
+  'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/02/20180131_111221.jpg',
+  'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/02/20180131_111324.jpg',
+  'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/02/20180131_111349.jpg',
+  'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/02/20180131_111425.jpg',
+  'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/20150118_201040.jpg',
+  'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2017/10/20170927_181311.jpg',
+  'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2017/10/20170927_181256.jpg',
 ]
 
 export default async function ReferencesPage({
@@ -333,8 +333,8 @@ export default async function ReferencesPage({
           {/* Medal collage */}
           <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginBottom: '3rem' }}>
             {[
-              { src: 'https://sivertlindblom.se/wp-content/uploads/2018/05/Medaljer-Front.jpg',       alt: 'Medaljer åtsida' },
-              { src: 'https://sivertlindblom.se/wp-content/uploads/2018/05/20180316_172048_001.jpg',  alt: 'Medaljer' },
+              { src: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/05/Medaljer-Front.jpg',       alt: 'Medaljer åtsida' },
+              { src: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/05/20180316_172048_001.jpg',  alt: 'Medaljer' },
             ].map((img) => (
               <SafeImg key={img.src} src={img.src} alt={img.alt} loading="lazy"
                 style={{ height: 160, width: 'auto', objectFit: 'cover', border: '1px solid var(--color-border)' }} />
@@ -345,14 +345,37 @@ export default async function ReferencesPage({
             Mottagna priser
           </h3>
 
-          {[
-            { year: 1984, title: 'K A Linds Hederspris', sub: 'Moderna Museets Vänners kulturpris' },
-            { year: 1985, title: 'Stenpriset', sub: 'Sveriges Stenindustriförbund' },
-            { year: 1989, title: 'Prins Eugen-medaljen' },
-            { year: 1995, title: 'Sergelpriset', sub: 'Kungl. Akademien för de fria konsterna, Stockholm', desc: 'Priset inrättades 1945 till minne av skulptören Johan Tobias Sergel. Det utdelas vart femte år på Sergels dödsdag den 26 februari och består av en guldmedalj med Sergels porträtt.' },
-            { year: 2002, title: 'S:t Eriksmedaljen', sub: 'Stockholm stad', quote: '»Kreativ konstnär vars många sköna och spännande skulpturer på torg och broar är viktiga inslag i kulturstaden Stockholm«' },
-            { year: 2002, title: 'Eskilstunakurirens kulturpris', sub: 'Eskilstuna-Kuriren' },
-          ].map((p) => (
+          {([
+            {
+              year: 1984, title: 'K A Linds Hederspris', sub: 'Moderna Museets Vänners kulturpris',
+              links: [{ label: 'K A Linds Hederspris — Moderna Museets vänners skulpturpris', url: 'https://sv.wikipedia.org/wiki/Moderna_museets_v%C3%A4nners_skulpturpris' }],
+            },
+            {
+              year: 1985, title: 'Stenpriset', sub: 'Sveriges Stenindustriförbund',
+              links: [
+                { label: 'Om Stenpriset (sten.se)', url: 'https://www.sten.se/stenpriset/' },
+                { label: 'Sten nr 2, 1985 — artikel om Stenpriset (PDF)', url: 'https://media.sivertlindblom.se/2015/02/Sten-1985opt-.pdf' },
+                { label: 'Om Stenpriset till Sivert Lindblom 1985', url: 'https://sivertlindblom.se/biografi/egna-texter/pdf-fil-att-skriva-ut-om-stenpriset-till-sivert-lindblom-av-sveriges-stenindustriforbund-1985/' },
+              ],
+            },
+            {
+              year: 1989, title: 'Prins Eugen-medaljen',
+              desc: 'Prins Eugen-medaljen instiftades av Konung Gustaf V i samband med Prins Eugens 80-årsdag år 1945. Medaljen tilldelas för framstående konstnärlig verksamhet. Medaljförläningen sker på Eugendagen den 5 november och själva utdelningen en kort tid därefter. Medaljen utdelas i guld (förgyllt silver) av 8:e storleken och bärs på bröstet i vitt-gult-vitt band med blå kantränder. Medaljmottagarens namn och årtal präglas på medaljens nedre rand.',
+              links: [{ label: 'LÄS MER om medaljen och målarprinsen (Kungl. Maj:ts Orden)', url: 'https://kungligmajestatsorden.se/medaljer/prins-eugen-medaljen' }],
+            },
+            {
+              year: 1995, title: 'Sergelpriset', sub: 'Kungl. Akademien för de fria konsterna, Stockholm',
+              desc: 'Priset inrättades 1945 till minne av skulptören Johan Tobias Sergel. Det utdelas vart femte år på Sergels dödsdag den 26 februari och består av en guldmedalj med Sergels porträtt.',
+            },
+            {
+              year: 2002, title: 'S:t Eriksmedaljen', sub: 'Stockholm stad',
+              quote: '»Kreativ konstnär vars många sköna och spännande skulpturer på torg och broar är viktiga inslag i kulturstaden Stockholm«',
+              links: [{ label: 'LÄS MER om S:t Eriksmedaljen 2002', url: 'https://sivertlindblom.se/st-eriksmedaljen-2002/' }],
+            },
+            {
+              year: 2002, title: 'Eskilstunakurirens kulturpris', sub: 'Eskilstuna-Kuriren',
+            },
+          ] as Array<{ year: number; title: string; sub?: string; desc?: string; quote?: string; links?: Array<{ label: string; url: string }> }>).map((p) => (
             <div key={p.title} style={{ padding: '1.5rem 0', borderBottom: '1px solid var(--color-border)' }}>
               <div style={{ display: 'grid', gridTemplateColumns: '5rem 1fr', gap: '1rem' }}>
                 <span style={{ color: 'var(--color-accent)', fontFamily: 'Georgia, serif', fontSize: 'var(--fs-sm)' }}>{p.year}</span>
@@ -361,6 +384,16 @@ export default async function ReferencesPage({
                   {p.sub && <div style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)' }}>{p.sub}</div>}
                   {p.desc && <p style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-muted)', lineHeight: 1.7, marginTop: '0.5rem', maxWidth: '55ch' }}>{p.desc}</p>}
                   {p.quote && <p style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-muted)', fontStyle: 'italic', lineHeight: 1.7, marginTop: '0.5rem', maxWidth: '55ch' }}>{p.quote}</p>}
+                  {p.links && (
+                    <div style={{ marginTop: '0.75rem', display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
+                      {p.links.map((link) => (
+                        <a key={link.url} href={link.url} target="_blank" rel="noopener noreferrer"
+                          style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-accent)', textDecoration: 'none', borderBottom: '1px solid var(--color-accent-dim)', paddingBottom: '0.1em', alignSelf: 'flex-start' }}>
+                          {link.label} →
+                        </a>
+                      ))}
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -381,10 +414,10 @@ export default async function ReferencesPage({
                 </p>
                 <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', marginBottom: '1rem' }}>
                   {[
-                    { src: 'https://sivertlindblom.se/wp-content/uploads/2018/05/Asplund-medalj-1.jpg', alt: 'IVA medalj åtsida — Gunnar Asplund' },
-                    { src: 'https://sivertlindblom.se/wp-content/uploads/2018/05/Asplund-medalj-2.jpg', alt: 'IVA medalj frånsida' },
-                    { src: 'https://sivertlindblom.se/wp-content/uploads/2018/05/Isis-gudinna.jpg',      alt: 'Isis gudinna — inspiration' },
-                    { src: 'https://sivertlindblom.se/wp-content/uploads/2018/05/Balusterdockor-1-1.jpg', alt: 'Balusterdockor' },
+                    { src: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/05/Asplund-medalj-1.jpg', alt: 'IVA medalj åtsida — Gunnar Asplund' },
+                    { src: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/05/Asplund-medalj-2.jpg', alt: 'IVA medalj frånsida' },
+                    { src: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/05/Isis-gudinna.jpg',      alt: 'Isis gudinna — inspiration' },
+                    { src: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/05/Balusterdockor-1-1.jpg', alt: 'Balusterdockor' },
                   ].map(img => (
                     <SafeImg key={img.src} src={img.src} alt={img.alt} loading="lazy"
                       style={{ height: 120, width: 'auto', border: '1px solid var(--color-border)' }} />
@@ -409,10 +442,10 @@ export default async function ReferencesPage({
                 </p>
                 <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
                   {[
-                    { src: 'https://sivertlindblom.se/wp-content/uploads/2018/05/Akademien-Viridis-1.jpg', alt: 'Jubileumsmedalj åtsida — SEMPER VIRIDES' },
-                    { src: 'https://sivertlindblom.se/wp-content/uploads/2018/05/Akademien-Viridis-2.jpg', alt: 'Jubileumsmedalj frånsida' },
-                    { src: 'https://sivertlindblom.se/wp-content/uploads/2018/05/Jubileumsmedalj-1.jpeg',  alt: 'Jubileumsmedalj' },
-                    { src: 'https://sivertlindblom.se/wp-content/uploads/2018/05/Jubileumsmedalj-2.jpeg',  alt: 'Jubileumsmedalj detalj' },
+                    { src: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/05/Akademien-Viridis-1.jpg', alt: 'Jubileumsmedalj åtsida — SEMPER VIRIDES' },
+                    { src: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/05/Akademien-Viridis-2.jpg', alt: 'Jubileumsmedalj frånsida' },
+                    { src: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/05/Jubileumsmedalj-1.jpeg',  alt: 'Jubileumsmedalj' },
+                    { src: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/05/Jubileumsmedalj-2.jpeg',  alt: 'Jubileumsmedalj detalj' },
                   ].map(img => (
                     <SafeImg key={img.src} src={img.src} alt={img.alt} loading="lazy"
                       style={{ height: 120, width: 'auto', border: '1px solid var(--color-border)' }} />

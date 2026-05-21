@@ -4,8 +4,9 @@ import type { Metadata } from 'next'
 import { locales } from '@/i18n/config'
 import type { Locale } from '@/i18n/config'
 import { getDictionary } from '@/i18n/getDictionary'
-import { getPublicWork, getPublicWorkSlugs, getMapPinForWork } from '@/lib/data-server'
-import TextImageSlideshow from '@/components/TextImageSlideshow'
+import { getPublicWork, getPublicWorkSlugs, getPublicWorks, getMapPinForWork } from '@/lib/data-server'
+import GalleryGrid from '@/components/gallery/GalleryGrid'
+import type { LightboxImage } from '@/components/gallery/Lightbox'
 
 export async function generateStaticParams() {
   const slugs = await getPublicWorkSlugs()
@@ -21,7 +22,7 @@ export async function generateMetadata({
   const work = await getPublicWork(slug)
   if (!work) return {}
   return {
-    title: work.title,
+    title: `${work.title} — Sivert Lindblom`,
     description: work.description,
   }
 }
@@ -34,59 +35,108 @@ export default async function PublicWorkDetailPage({
   const { locale, slug } = await params
   const dict = await getDictionary(locale as Locale)
 
-  const [work, mapPin] = await Promise.all([
+  const [work, allWorks, mapPin] = await Promise.all([
     getPublicWork(slug),
+    getPublicWorks(),
     getMapPinForWork(slug),
   ])
   if (!work) notFound()
+
+  // Prev / next within all public works that have slugs
+  const withSlugs = allWorks.filter((w) => w.slug)
+  const idx  = withSlugs.findIndex((w) => w.slug === slug)
+  const prev = idx > 0                       ? withSlugs[idx - 1] : null
+  const next = idx < withSlugs.length - 1   ? withSlugs[idx + 1] : null
+
+  const heroImage = work.images[0]?.url ?? null
+
+  const galleryImages: LightboxImage[] = work.images.map((img, i) => ({
+    url: img.url,
+    alt: img.alt ?? `${work.title} — bild ${i + 1}`,
+  }))
 
   const googleMapsUrl = mapPin
     ? `https://www.google.com/maps?q=${mapPin.lat},${mapPin.lng}&z=16`
     : `https://www.google.com/maps/search/${encodeURIComponent(work.title + ' ' + work.location)}`
 
-  const imageUrls = work.images.map((img) => img.url)
-
   return (
-    <div className="section-gap">
-      <div className="page-pad" style={{ marginBottom: '2rem' }}>
-        {/* Back link above post */}
-        <Link href={`/${locale}/portfolio/public-works`} className="back-link" style={{ marginBottom: '2rem', display: 'inline-flex' }}>
-          <span className="back-link-arrow">←</span>
-          <span className="back-link-label">{dict.portfolio?.cat_public ?? 'Offentliga arbeten'}</span>
-        </Link>
-
-        {/* Breadcrumb */}
-        <nav aria-label="Breadcrumb" style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '2rem' }}>
-          <Link href={`/${locale}/portfolio`} style={{ color: 'var(--color-muted)' }}>
-            {dict.nav?.portfolio ?? 'Portfolio'}
-          </Link>
-          <span style={{ margin: '0 0.5rem' }}>›</span>
-          <Link href={`/${locale}/portfolio/public-works`} style={{ color: 'var(--color-muted)' }}>
-            {dict.portfolio?.cat_public ?? 'Offentliga arbeten'}
-          </Link>
-          <span style={{ margin: '0 0.5rem' }}>›</span>
-          <span style={{ color: 'var(--color-text)' }}>{work.title}</span>
-        </nav>
-
-        {/* Year badge + location */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap', marginBottom: '0.75rem' }}>
-          <span className="badge" style={{ color: 'var(--color-accent)', borderColor: 'var(--color-accent-dim)' }}>
-            {work.year}
-          </span>
-          <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
-            {work.location}
-          </span>
+    <div>
+      {/* ── Hero — bleeds under the fixed header ── */}
+      {heroImage && (
+        <div style={{
+          position: 'relative',
+          height: '60vh',
+          minHeight: 320,
+          overflow: 'hidden',
+          marginBottom: '4rem',
+          marginTop: 'calc(-1 * (var(--header-h) + 1.5rem))',
+        }}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={heroImage}
+            alt={work.title}
+            style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 40%' }}
+          />
+          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, transparent 25%, rgba(10,10,10,0.92) 100%)' }} />
+          <div className="page-pad" style={{ position: 'absolute', bottom: '2.5rem', left: 0, right: 0 }}>
+            <Link
+              href={`/${locale}/portfolio/public-works`}
+              className="back-link"
+              style={{ color: 'rgba(255,255,255,0.8)' }}
+            >
+              <span className="back-link-arrow">←</span>
+              <span className="back-link-label">{dict.portfolio?.cat_public ?? 'Offentliga arbeten'}</span>
+            </Link>
+            <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-accent)', letterSpacing: '0.14em', textTransform: 'uppercase', marginTop: '0.75rem', marginBottom: '0.5rem' }}>
+              {work.year} · {work.location}
+            </p>
+            <h1 style={{ fontFamily: 'Georgia, serif', fontWeight: 400, fontSize: 'clamp(1.6rem,3.5vw,2.8rem)', margin: 0, maxWidth: '26ch' }}>
+              {work.title}
+            </h1>
+          </div>
         </div>
+      )}
 
-        {/* Title */}
-        <h1 style={{ fontFamily: 'Georgia, serif', fontWeight: 400, fontSize: 'clamp(1.8rem,4vw,3rem)', marginBottom: '1rem' }}>
-          {work.title}
-        </h1>
+      {/* ── No-hero fallback ── */}
+      {!heroImage && (
+        <div className="page-pad" style={{ paddingTop: '2rem', marginBottom: '3rem' }}>
+          <Link href={`/${locale}/portfolio/public-works`} className="back-link">
+            <span className="back-link-arrow">←</span>
+            <span className="back-link-label">{dict.portfolio?.cat_public ?? 'Offentliga arbeten'}</span>
+          </Link>
+          <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-accent)', letterSpacing: '0.14em', textTransform: 'uppercase', marginTop: '0.75rem', marginBottom: '0.5rem' }}>
+            {work.year} · {work.location}
+          </p>
+          <h1 style={{ fontFamily: 'Georgia, serif', fontWeight: 400, fontSize: 'clamp(1.6rem,3.5vw,2.8rem)', margin: 0 }}>
+            {work.title}
+          </h1>
+        </div>
+      )}
 
+      <div className="page-pad">
         {/* Description */}
-        <p style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-base)', maxWidth: '60ch', marginBottom: '2rem' }}>
-          {work.description}
-        </p>
+        {work.description && (
+          <p style={{
+            color: 'var(--color-muted)',
+            fontSize: 'var(--fs-base)',
+            lineHeight: 1.85,
+            maxWidth: '68ch',
+            marginBottom: '1.5rem',
+          }}>
+            {work.description}
+          </p>
+        )}
+
+        {/* Body text */}
+        {work.body && (
+          <div style={{ maxWidth: '68ch', marginBottom: '1.5rem' }}>
+            {work.body.split('\n\n').filter(Boolean).map((para, i) => (
+              <p key={i} style={{ fontSize: 'var(--fs-base)', lineHeight: 1.85, marginBottom: '1.1em', color: 'var(--color-muted)' }}>
+                {para}
+              </p>
+            ))}
+          </div>
+        )}
 
         {/* Location button */}
         <a
@@ -104,48 +154,65 @@ export default async function PublicWorkDetailPage({
             border: '1px solid var(--color-accent-dim)',
             padding: '0.4em 0.9em',
             textDecoration: 'none',
-            marginBottom: '2rem',
+            marginBottom: '3.5rem',
           }}
         >
           ⊙ {dict.portfolio?.view_location ?? 'Visa platsen'}
         </a>
 
-        <hr className="divider" style={{ marginBottom: '2rem' }} />
+        {/* Gallery */}
+        {galleryImages.length > 0 && (
+          <section style={{ marginBottom: '4rem' }}>
+            <GalleryGrid
+              images={galleryImages}
+              aspectRatio="4/3"
+              columns="sm"
+            />
+          </section>
+        )}
 
-        {/* Body */}
-        <div style={{ maxWidth: '72ch', marginBottom: '3rem' }}>
-          {work.body.split('\n\n').map((para, i) => (
-            <p key={i} style={{ fontSize: 'var(--fs-base)', lineHeight: 1.75, marginBottom: '1.25em', color: 'var(--color-text)' }}>
-              {para}
-            </p>
-          ))}
+        {/* Prev / Next */}
+        <nav style={{
+          display: 'grid',
+          gridTemplateColumns: '1fr 1fr',
+          gap: '1.5rem',
+          borderTop: '1px solid var(--color-border)',
+          paddingTop: '2rem',
+          marginBottom: '4rem',
+        }}>
+          <div>
+            {prev && (
+              <Link href={`/${locale}/portfolio/public-works/${prev.slug}`} style={{ textDecoration: 'none', display: 'block' }}>
+                <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '0.25rem' }}>
+                  ← {prev.year}
+                </p>
+                <p style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-text)' }}>{prev.title}</p>
+              </Link>
+            )}
+          </div>
+          <div style={{ textAlign: 'right' }}>
+            {next && (
+              <Link href={`/${locale}/portfolio/public-works/${next.slug}`} style={{ textDecoration: 'none', display: 'block' }}>
+                <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '0.25rem' }}>
+                  {next.year} →
+                </p>
+                <p style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-text)' }}>{next.title}</p>
+              </Link>
+            )}
+          </div>
+        </nav>
+
+        {/* Back links */}
+        <div style={{ display: 'flex', gap: '2rem', flexWrap: 'wrap', paddingBottom: '4rem' }}>
+          <Link href={`/${locale}/portfolio/public-works`} className="back-link">
+            <span className="back-link-arrow">←</span>
+            <span className="back-link-label">{dict.portfolio?.cat_public ?? 'Offentliga arbeten'}</span>
+          </Link>
+          <Link href={`/${locale}/portfolio/map`} className="back-link">
+            <span className="back-link-arrow">⊙</span>
+            <span className="back-link-label">{dict.portfolio?.map_label ?? 'Karta'}</span>
+          </Link>
         </div>
-      </div>
-
-      {imageUrls.length > 0 && (
-        <div className="page-pad" style={{ paddingBottom: '4rem', maxWidth: '900px' }}>
-          <TextImageSlideshow images={imageUrls} title={work.title} thumbnailAspect="4/3" />
-        </div>
-      )}
-
-      {imageUrls.length === 0 && (
-        <div className="page-pad" style={{ paddingBottom: '4rem' }}>
-          <p style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-sm)', fontStyle: 'italic' }}>
-            {dict.portfolio?.no_images ?? 'Inga bilder tillgängliga för tillfället.'}
-          </p>
-        </div>
-      )}
-
-      {/* Back links */}
-      <div className="page-pad" style={{ paddingBottom: '4rem', display: 'flex', gap: '2rem', flexWrap: 'wrap' }}>
-        <Link href={`/${locale}/portfolio/public-works`} className="back-link">
-          <span className="back-link-arrow">←</span>
-          <span className="back-link-label">{dict.portfolio?.cat_public ?? 'Offentliga arbeten'}</span>
-        </Link>
-        <Link href={`/${locale}/portfolio/map`} className="back-link">
-          <span className="back-link-arrow">⊙</span>
-          <span className="back-link-label">{dict.portfolio?.map_label ?? 'Karta'}</span>
-        </Link>
       </div>
     </div>
   )

@@ -77,12 +77,16 @@ export default async function SculptureSeriesPage({
           ))}
           {project.links && project.links.length > 0 && (
             <div style={{ marginTop: '2rem', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-              {project.links.map((link, i) => (
+              {project.links.map((link, i) => {
+                // Internal links (starting with /) get locale prefix; external get _blank
+                const isInternal = link.url.startsWith('/')
+                const href = isInternal ? `/${locale}${link.url}` : link.url
+                return (
                 <a
                   key={i}
-                  href={link.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  href={href}
+                  target={isInternal ? undefined : '_blank'}
+                  rel={isInternal ? undefined : 'noopener noreferrer'}
                   style={{
                     display: 'inline-flex',
                     alignItems: 'center',
@@ -99,7 +103,8 @@ export default async function SculptureSeriesPage({
                   <span style={{ fontStyle: 'italic', color: 'var(--color-text)' }}>{link.label}</span>
                   <span>→</span>
                 </a>
-              ))}
+                )
+              })}
             </div>
           )}
         </div>

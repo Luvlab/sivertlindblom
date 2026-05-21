@@ -1058,6 +1058,21 @@ SL: I should like to be able to take part in a positive and progressive creation
 
 Konstrevy Nr 2, 1967`,
   },
+  {
+    slug: 'birger-vikstrom-kofes',
+    type: 'essay',
+    year: 1993,
+    title: 'Vad är en "kofes"? — ur 13 Historier',
+    author: 'Birger Vikström',
+    publication: '13 Historier',
+    lang: 'sv',
+    body: '',
+    images: [
+      'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/03/Sivert-Lindblom-Kofes-1-.jpg',
+      'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/03/Sivert-Lindblom-Kofes-2-.jpg',
+      'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/03/Sivert-Lindblom-Kofes-3-.jpg',
+    ],
+  },
 ]
 
 export const TEXTS_DATA: TextItem[] = RAW_TEXTS_DATA.map(item => ({

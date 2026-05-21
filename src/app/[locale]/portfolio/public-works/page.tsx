@@ -29,6 +29,7 @@ const EXTERIORS: Array<{ title: string; year: number; location: string; slug?: s
   { title: 'SEB Banken Huvudkontor',            year: 1992, location: 'Rissne' },
   { title: 'Sveriges ambassad, entré',          year: 1990, location: 'Tokyo' },
   { title: 'Stockholms Universitet Campus',     year: 1987, location: 'Stockholm',  slug: 'frescati-1987' },
+  { title: 'Lindros gård / Kvarteret Svärdet',  year: 1988, location: 'Stockholm', slug: 'ringvagen-1989' },
   { title: 'SAS Huvudkontor, Frösundavik',      year: 1988, location: 'Stockholm' },
   { title: 'Skissernas Museum, fasad',          year: 1988, location: 'Lund' },
   { title: 'Pharmacia entréplats',              year: 1984, location: 'Uppsala' },
