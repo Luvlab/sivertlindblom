@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef } from 'react'
+import { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import FontSizeSlider from '../FontSizeSlider'
@@ -19,18 +19,7 @@ interface HeaderProps {
 export default function Header({ locale, dict }: HeaderProps) {
   const [open, setOpen] = useState(false)
   const [openSub, setOpenSub] = useState<string | null>(null) // mobile accordion
-  const [hovered, setHovered] = useState<string | null>(null)  // desktop dropdown
-  const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const pathname = usePathname()
-
-  function openDropdown(href: string) {
-    if (closeTimer.current) clearTimeout(closeTimer.current)
-    setHovered(href)
-  }
-
-  function scheduleClose() {
-    closeTimer.current = setTimeout(() => setHovered(null), 120)
-  }
 
   const isAdmin = pathname?.startsWith('/admin')
   if (isAdmin) return null
@@ -113,8 +102,6 @@ export default function Header({ locale, dict }: HeaderProps) {
               <div
                 key={item.href}
                 className="nav-item-wrap"
-                onMouseEnter={() => item.sub && openDropdown(item.href)}
-                onMouseLeave={scheduleClose}
               >
                 <Link
                   href={item.href}
@@ -129,15 +116,11 @@ export default function Header({ locale, dict }: HeaderProps) {
                   )}
                 </Link>
 
-                {/* Desktop dropdown */}
-                {item.sub && hovered === item.href && (
-                  <div
-                    className="nav-dropdown"
-                    onMouseEnter={() => openDropdown(item.href)}
-                    onMouseLeave={scheduleClose}
-                  >
+                {/* Desktop dropdown — shown via CSS :hover on nav-item-wrap */}
+                {item.sub && (
+                  <div className="nav-dropdown">
                     {item.sub.map((s) => (
-                      <Link key={s.href} href={s.href} className="nav-dropdown-item" onClick={() => setHovered(null)}>
+                      <Link key={s.href} href={s.href} className="nav-dropdown-item">
                         {s.label}
                       </Link>
                     ))}

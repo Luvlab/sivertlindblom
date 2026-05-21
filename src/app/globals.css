@@ -562,7 +562,11 @@ a:hover { opacity: 0.7; }
   position: relative;
 }
 
+/* Hidden by default; shown when the wrapper (or any child) is hovered.
+   CSS :hover includes absolutely-positioned descendants, so no timer/bridge needed. */
 .nav-dropdown {
+  display: none;
+  pointer-events: none;
   position: absolute;
   top: 100%;
   left: 50%;
@@ -572,20 +576,13 @@ a:hover { opacity: 0.7; }
   box-shadow: 0 8px 32px rgba(0,0,0,0.45);
   min-width: 180px;
   padding: 0.5rem 0;
-  padding-top: calc(0.5rem + 0.75rem); /* top visual gap as internal padding so no dead zone */
   z-index: 200;
   white-space: nowrap;
 }
 
-/* Bridge the gap between trigger and dropdown so mouse doesn't escape */
-.nav-item-wrap::after {
-  content: '';
-  position: absolute;
-  top: 100%;
-  left: -20%;
-  width: 140%;
-  height: 0.85rem;
+.nav-item-wrap:hover .nav-dropdown {
   display: block;
+  pointer-events: auto;
 }
 
 .nav-dropdown-item {
