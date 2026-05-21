@@ -53,6 +53,19 @@ export default function ImageListEditor({ images, onChange, label = 'Bilder (URL
             <span style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-xs)', width: '1.5rem', flexShrink: 0, textAlign: 'right' }}>
               {idx + 1}
             </span>
+            {/* Thumbnail preview */}
+            <div style={{ flexShrink: 0, width: 44, height: 44, borderRadius: 2, overflow: 'hidden', background: 'var(--color-bg)', border: '1px solid var(--color-border)' }}>
+              {url ? (
+                <img
+                  src={url}
+                  alt=""
+                  style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                  onError={ev => { (ev.target as HTMLImageElement).style.opacity = '0' }}
+                />
+              ) : (
+                <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', opacity: 0.2, fontSize: 20 }}>□</div>
+              )}
+            </div>
             <input
               type="url"
               className="input"
