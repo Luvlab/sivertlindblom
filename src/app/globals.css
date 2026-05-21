@@ -558,12 +558,20 @@ a:hover { opacity: 0.7; }
 }
 
 /* ── Nav dropdown ────────────────────────────────────────────────────────── */
+
+/* Stretch the wrapper to fill the full header height so there is zero gap
+   between the bottom of the trigger area and the top of the dropdown panel.
+   The link inside is centered vertically. */
 .nav-item-wrap {
   position: relative;
+  display: flex;
+  align-items: center;
+  align-self: stretch;   /* fills the header height */
 }
 
-/* Hidden by default; shown when the wrapper (or any child) is hovered.
-   CSS :hover includes absolutely-positioned descendants, so no timer/bridge needed. */
+/* Hidden by default; shown via CSS :hover — no JS timers needed.
+   The wrapper fills the full header height so the mouse can never escape
+   between the link text and the dropdown panel. */
 .nav-dropdown {
   display: none;
   pointer-events: none;
@@ -607,8 +615,8 @@ a:hover { opacity: 0.7; }
   top: var(--header-h);
   left: 0; right: 0;
   height: var(--subnav-h);
-  z-index: 98; /* below mobile-nav (99) and header (300), above content */
-  background: var(--color-bg);
+  z-index: 299; /* just below header (300) so it sits flush under it, above scrim */
+  background: var(--color-bg-surface); /* solid, clearly distinct from transparent header */
   border-bottom: 1px solid var(--color-border);
   --font-scale: 1; /* lock font scale regardless of user preference */
 }
@@ -631,24 +639,25 @@ a:hover { opacity: 0.7; }
   font-size: 0.69rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--color-muted);
+  color: var(--color-text);   /* bright — clearly readable */
   text-decoration: none;
   white-space: nowrap;
   border-bottom: 2px solid transparent;
   margin-bottom: -1px;
   transition: color 0.15s, border-color 0.15s;
-  opacity: 1 !important; /* override global a:hover opacity */
+  opacity: 0.7;
   flex-shrink: 0;
 }
 
 .sub-nav-item:hover {
   color: var(--color-text);
-  opacity: 1 !important;
+  opacity: 1;
 }
 
 .sub-nav-item.active {
-  color: var(--color-text);
+  color: var(--color-accent);
   border-bottom-color: var(--color-accent);
+  opacity: 1;
 }
 
 /* mobile sub-items */

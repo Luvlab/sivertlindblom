@@ -25,12 +25,18 @@ interface Props {
 export default function TabsLayout({ tabs, defaultTab, children }: Props) {
   const [active, setActive] = useState(defaultTab ?? tabs[0]?.id ?? '')
 
-  // On mount: check URL hash and activate matching tab
+  // Activate the tab matching the current URL hash.
+  // Runs on mount AND whenever the hash changes (e.g. SubNav click).
   useEffect(() => {
-    const hash = window.location.hash.replace('#', '')
-    if (hash && tabs.some((t) => t.id === hash)) {
-      setActive(hash)
+    function syncFromHash() {
+      const hash = window.location.hash.replace('#', '')
+      if (hash && tabs.some((t) => t.id === hash)) {
+        setActive(hash)
+      }
     }
+    syncFromHash()
+    window.addEventListener('hashchange', syncFromHash)
+    return () => window.removeEventListener('hashchange', syncFromHash)
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
