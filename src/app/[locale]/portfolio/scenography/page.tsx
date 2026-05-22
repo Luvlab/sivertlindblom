@@ -4,6 +4,7 @@ import { getDictionary } from '@/i18n/getDictionary'
 import { locales } from '@/i18n/config'
 import type { Locale } from '@/i18n/config'
 import TextImageSlideshow from '@/components/TextImageSlideshow'
+import ExhibitionsHeroSlideshow from '@/components/gallery/ExhibitionsHeroSlideshow'
 
 export const metadata: Metadata = { title: 'Scenography' }
 
@@ -118,26 +119,42 @@ export default async function ScenographyPage({
   const { locale } = await params
   const dict = await getDictionary(locale as Locale)
 
-  const HERO = 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/03/Sivert-Triumf-Paris.jpg'
+  // Pool all scenography images for the hero slideshow
+  const heroImages = WORKS.flatMap(w => w.images).filter(Boolean)
 
   return (
     <div>
-      {/* Hero */}
-      <div style={{ position: 'relative', height: '55vh', minHeight: 300, overflow: 'hidden', marginBottom: '4rem', marginTop: 'calc(-1 * (var(--header-h) + 1.5rem))' }}>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={HERO} alt="Scenografi — Sivert Lindblom" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 30%' }} />
-        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, transparent 20%, rgba(10,10,10,0.88) 100%)' }} />
-        <div className="page-pad" style={{ position: 'absolute', bottom: '2.5rem', left: 0, right: 0 }}>
-          <Link href={`/${locale}/portfolio`} className="back-link" style={{ color: 'rgba(255,255,255,0.75)' }}>
+      {/* Hero — full viewport, bleeds under header + subnav */}
+      <div style={{ position: 'relative', height: '100vh', minHeight: 480, overflow: 'hidden', marginBottom: '4rem', marginTop: 'calc(-1 * (var(--header-h) + var(--subnav-h) + 1.5rem))' }}>
+        <ExhibitionsHeroSlideshow images={heroImages} />
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.45) 55%, rgba(0,0,0,0.88) 100%)' }} />
+
+        {/* Title block */}
+        <div className="page-pad" style={{ position: 'absolute', bottom: '3.5rem', left: 0, right: 0 }}>
+          <Link href={`/${locale}/portfolio`} className="back-link" style={{ color: 'rgba(255,255,255,0.85)' }}>
             <span className="back-link-arrow">←</span>
             <span className="back-link-label">{dict.nav?.portfolio ?? 'Portfolio'}</span>
           </Link>
-          <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-accent)', letterSpacing: '0.14em', textTransform: 'uppercase', marginTop: '0.75rem', marginBottom: '0.4rem' }}>
-            1970–1998
-          </p>
-          <h1 style={{ fontFamily: 'Georgia, serif', fontWeight: 400, fontSize: 'clamp(1.6rem,3.5vw,2.8rem)', margin: 0 }}>
+          <h1 style={{ fontFamily: 'Georgia, serif', fontWeight: 400, fontSize: 'clamp(1.8rem,3vw,3rem)', marginTop: '0.5rem', marginBottom: '0.25rem' }}>
             {dict.portfolio?.cat_scenography ?? 'Scenografi'}
           </h1>
+          <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: 'var(--fs-sm)' }}>
+            {WORKS.length} {dict.portfolio?.cat_scenography?.toLowerCase() ?? 'scenografier'}, 1970–1998
+          </p>
+        </div>
+
+        {/* Scroll indicator */}
+        <div style={{
+          position: 'absolute', bottom: '1.1rem', left: '50%',
+          transform: 'translateX(-50%)',
+          display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.3rem',
+          pointerEvents: 'none', zIndex: 2,
+        }}>
+          <div style={{ width: 1, height: 22, background: 'rgba(255,255,255,0.22)' }} />
+          <svg className="scroll-hint-chevron" width="14" height="8" viewBox="0 0 14 8"
+            fill="none" xmlns="http://www.w3.org/2000/svg" style={{ color: 'rgba(200,169,126,0.75)' }}>
+            <path d="M1 1L7 7L13 1" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
         </div>
       </div>
 
