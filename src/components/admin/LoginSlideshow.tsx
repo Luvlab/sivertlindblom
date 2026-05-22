@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import AdminLoginForm from './AdminLoginForm'
 
 const SLIDES = [
@@ -14,62 +14,74 @@ const SLIDES = [
   'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Sivert-Lindblom-Blasieholms-Torg-71.jpg',
 ]
 
+const HOLD_MS = 6000
+const FADE_MS = 1200
+
+/**
+ * Two-layer crossfade — base always opaque, overlay fades in on top.
+ * After overlay reaches opacity:1 the base silently swaps to the new
+ * image and the overlay instantly resets to opacity:0.  No black flash.
+ */
 export default function LoginSlideshow() {
-  const [current, setCurrent] = useState(0)
-  const [prev, setPrev]       = useState<number | null>(null)
-  const [fading, setFading]   = useState(false)
+  const [idx,    setIdx]    = useState(0)
+  const [fading, setFading] = useState(false)
+  const swapRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  function advance(to?: number) {
+    if (swapRef.current) clearTimeout(swapRef.current)
+    setFading(true)
+    swapRef.current = setTimeout(() => {
+      setIdx(i => to ?? (i + 1) % SLIDES.length)
+      setFading(false)
+    }, FADE_MS + 50)
+  }
 
   useEffect(() => {
-    const id = setInterval(() => {
-      setPrev(current)
-      setFading(true)
-      setCurrent((c) => (c + 1) % SLIDES.length)
-      // clear fading flag after transition completes
-      setTimeout(() => {
-        setPrev(null)
-        setFading(false)
-      }, 1200)
-    }, 6000)
-    return () => clearInterval(id)
+    const timer = setInterval(() => advance(), HOLD_MS)
+    return () => {
+      clearInterval(timer)
+      if (swapRef.current) clearTimeout(swapRef.current)
+    }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [current])
+  }, [])
+
+  const baseUrl    = SLIDES[idx]
+  const overlayUrl = SLIDES[(idx + 1) % SLIDES.length]
+
+  const layerBase: React.CSSProperties = {
+    position: 'absolute',
+    inset: 0,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+  }
 
   return (
     <div style={{ position: 'fixed', inset: 0, overflow: 'hidden' }}>
 
-      {/* ── Slideshow layers ─────────────────────────────────── */}
-      {SLIDES.map((src, i) => {
-        const isActive  = i === current
-        const isPrev    = i === prev
+      {/* Base — always visible, slow Ken-Burns zoom */}
+      <div
+        aria-hidden="true"
+        style={{
+          ...layerBase,
+          backgroundImage: `url(${baseUrl})`,
+          opacity: 1,
+          transform: 'scale(1.06)',
+          transition: `transform ${HOLD_MS * 2}ms ease-in-out`,
+        }}
+      />
 
-        return (
-          <div
-            key={src}
-            aria-hidden="true"
-            style={{
-              position: 'absolute',
-              inset: 0,
-              backgroundImage: `url(${src})`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-              opacity: isActive ? 1 : isPrev && fading ? 0 : 0,
-              transition: isActive
-                ? 'opacity 1.2s ease-in-out'
-                : isPrev && fading
-                ? 'opacity 1.2s ease-in-out'
-                : 'none',
-              // Ken-Burns: active slide slowly zooms in
-              transform: isActive ? 'scale(1.06)' : 'scale(1)',
-              transformOrigin: 'center center',
-              transitionProperty: isActive ? 'opacity, transform' : 'opacity',
-              transitionDuration: isActive ? '1.2s, 8s' : '1.2s',
-              transitionTimingFunction: isActive ? 'ease-in-out, ease-in-out' : 'ease-in-out',
-            }}
-          />
-        )
-      })}
+      {/* Overlay — fades in over base, no background ever exposed */}
+      <div
+        aria-hidden="true"
+        style={{
+          ...layerBase,
+          backgroundImage: `url(${overlayUrl})`,
+          opacity: fading ? 1 : 0,
+          transition: fading ? `opacity ${FADE_MS}ms ease-in-out` : 'none',
+        }}
+      />
 
-      {/* ── Dark overlay ─────────────────────────────────────── */}
+      {/* Dark overlay */}
       <div
         aria-hidden="true"
         style={{
@@ -79,7 +91,7 @@ export default function LoginSlideshow() {
         }}
       />
 
-      {/* ── Centered login card ──────────────────────────────── */}
+      {/* Centered login card */}
       <div
         style={{
           position: 'relative',
@@ -105,7 +117,6 @@ export default function LoginSlideshow() {
             boxShadow: '0 32px 80px rgba(0,0,0,0.6)',
           }}
         >
-          {/* Brand */}
           <div style={{ textAlign: 'center', marginBottom: '2.25rem' }}>
             <div
               style={{
@@ -134,12 +145,9 @@ export default function LoginSlideshow() {
               Logga in för att hantera innehållet
             </p>
           </div>
-
-          {/* Form */}
           <AdminLoginForm />
         </div>
 
-        {/* Back link */}
         <p style={{ marginTop: '1.75rem', fontSize: 'var(--fs-xs)', color: 'rgba(255,255,255,0.35)' }}>
           ←{' '}
           <a href="/sv" style={{ color: 'rgba(255,255,255,0.5)', textDecoration: 'none' }}>
@@ -147,19 +155,19 @@ export default function LoginSlideshow() {
           </a>
         </p>
 
-        {/* Slide indicator dots */}
+        {/* Dot indicators */}
         <div style={{ display: 'flex', gap: '6px', marginTop: '1.5rem' }}>
           {SLIDES.map((_, i) => (
             <button
               key={i}
               aria-label={`Bild ${i + 1}`}
-              onClick={() => { setPrev(current); setFading(true); setCurrent(i); setTimeout(() => { setPrev(null); setFading(false) }, 1200) }}
+              onClick={() => advance(i)}
               style={{
-                width: i === current ? 20 : 6,
+                width: i === idx ? 20 : 6,
                 height: 6,
                 borderRadius: 3,
                 border: 'none',
-                background: i === current ? 'var(--color-accent)' : 'rgba(255,255,255,0.25)',
+                background: i === idx ? 'var(--color-accent)' : 'rgba(255,255,255,0.25)',
                 cursor: 'pointer',
                 padding: 0,
                 transition: 'width 0.4s ease, background 0.4s ease',

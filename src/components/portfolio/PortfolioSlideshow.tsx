@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 
 interface Props {
   images: string[]
@@ -8,9 +8,11 @@ interface Props {
   objectFit?: 'cover' | 'contain'
   background?: string
   padding?: string
-  /** ms between fades, default 6000 */
+  /** ms between transitions, default 6000 */
   interval?: number
 }
+
+const FADE_MS = 900
 
 export default function PortfolioSlideshow({
   images,
@@ -20,49 +22,27 @@ export default function PortfolioSlideshow({
   padding = '0',
   interval = 6000,
 }: Props) {
-  // Two slots always in DOM — we alternate which one is "top"
-  const [slots, setSlots] = useState<[string, string]>([
-    images[0] ?? '',
-    images[1] ?? images[0] ?? '',
-  ])
-  const [topSlot, setTopSlot] = useState<0 | 1>(0)
-  const idxRef = useRef(0)
-  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const [idx,    setIdx]    = useState(0)
+  const [fading, setFading] = useState(false)
 
   useEffect(() => {
     if (images.length < 2) return
 
-    const tick = () => {
-      timerRef.current = setTimeout(() => {
-        const nextIdx = (idxRef.current + 1) % images.length
-        idxRef.current = nextIdx
-        const backSlot = topSlot === 0 ? 1 : 0
+    const timer = setInterval(() => {
+      setFading(true)                                   // overlay fades in
 
-        // Write next image src into the back slot first, then flip
-        setSlots((prev) => {
-          const s: [string, string] = [prev[0], prev[1]]
-          s[backSlot] = images[nextIdx]
-          return s
-        })
+      const swap = setTimeout(() => {
+        setIdx(i => (i + 1) % images.length)           // promote overlay → base
+        setFading(false)                                // instantly hide overlay
+      }, FADE_MS + 50)
 
-        // Two rAFs ensure the src update has painted before we transition opacity
-        requestAnimationFrame(() => {
-          requestAnimationFrame(() => {
-            setTopSlot(backSlot as 0 | 1)
-          })
-        })
-      }, interval)
-    }
+      return () => clearTimeout(swap)
+    }, interval)
 
-    tick()
-    return () => {
-      if (timerRef.current) clearTimeout(timerRef.current)
-    }
-  // topSlot changing restarts the timer for the next cycle
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [topSlot, images.length, interval])
+    return () => clearInterval(timer)
+  }, [images.length, interval])
 
-  const imgStyle = (slotIdx: 0 | 1): React.CSSProperties => ({
+  const base: React.CSSProperties = {
     position: 'absolute',
     inset: 0,
     width: '100%',
@@ -71,17 +51,24 @@ export default function PortfolioSlideshow({
     padding,
     boxSizing: 'border-box',
     display: 'block',
-    opacity: topSlot === slotIdx ? 1 : 0,
-    transition: 'opacity 0.9s ease',
-    zIndex: topSlot === slotIdx ? 1 : 0,
-  })
+  }
 
   return (
     <div style={{ position: 'relative', width: '100%', height: '100%', background, overflow: 'hidden' }}>
+      {/* Base — always opaque; never exposes background */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={slots[0]} alt={alt} style={imgStyle(0)} />
+      <img src={images[idx]} alt={alt} style={{ ...base, opacity: 1 }} />
+      {/* Overlay — fades in on top, then base takes over */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={slots[1]} alt={alt} style={imgStyle(1)} />
+      <img
+        src={images[(idx + 1) % images.length]}
+        alt={alt}
+        style={{
+          ...base,
+          opacity: fading ? 1 : 0,
+          transition: fading ? `opacity ${FADE_MS}ms ease-in-out` : 'none',
+        }}
+      />
     </div>
   )
 }

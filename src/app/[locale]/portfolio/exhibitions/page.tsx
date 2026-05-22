@@ -4,6 +4,7 @@ import { getDictionary } from '@/i18n/getDictionary'
 import { locales } from '@/i18n/config'
 import type { Locale } from '@/i18n/config'
 import { getExhibitions } from '@/lib/data-server'
+import ExhibitionsHeroSlideshow from '@/components/gallery/ExhibitionsHeroSlideshow'
 
 export const metadata: Metadata = { title: 'Exhibitions' }
 
@@ -21,17 +22,17 @@ export default async function ExhibitionsPage({
 
   const sorted = await getExhibitions()
 
+  // One hero image per exhibition, deduped — fed to the client slideshow
+  const heroImages = sorted
+    .map(ex => ex.images[0])
+    .filter((url): url is string => Boolean(url))
+
   return (
     <div>
       {/* Hero — bleeds under the fixed header, no top padding */}
-      <div style={{ position: 'relative', height: '55vh', minHeight: 300, overflow: 'hidden', marginBottom: '4rem', marginTop: 'calc(-1 * (var(--header-h) + 1.5rem))' }}>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src="https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Siverts-exit.jpg"
-          alt="Sivert Lindblom"
-          style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 30%' }}
-        />
-        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, transparent 30%, rgba(10,10,10,0.9) 100%)' }} />
+      <div style={{ position: 'relative', height: '88vh', minHeight: 420, overflow: 'hidden', marginBottom: '4rem', marginTop: 'calc(-1 * (var(--header-h) + var(--subnav-h) + 1.5rem))' }}>
+        <ExhibitionsHeroSlideshow images={heroImages} />
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.45) 55%, rgba(0,0,0,0.88) 100%)' }} />
         <div className="page-pad" style={{ position: 'absolute', bottom: '2.5rem', left: 0, right: 0 }}>
           <Link href={`/${locale}/portfolio`} className="back-link" style={{ color: 'rgba(255,255,255,0.85)' }}>
             <span className="back-link-arrow">←</span>

@@ -146,6 +146,24 @@ export default async function ExhibitionDetailPage({
           </div>
         )}
 
+        {/* Audio player */}
+        {ex.audioUrl && (
+          <div style={{ marginBottom: '3rem', maxWidth: '52ch' }}>
+            {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
+            <audio
+              controls
+              style={{ width: '100%', display: 'block', marginBottom: ex.audioCaption ? '0.6rem' : 0 }}
+            >
+              <source src={ex.audioUrl} type="audio/mpeg" />
+            </audio>
+            {ex.audioCaption && (
+              <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', fontStyle: 'italic', margin: 0 }}>
+                {ex.audioCaption}
+              </p>
+            )}
+          </div>
+        )}
+
         {/* Gallery */}
         {galleryImages.length > 1 && (
           <section style={{ marginBottom: '4rem' }}>

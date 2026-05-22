@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useMemo, useCallback } from 'react'
 import type { PublicWork } from '@/lib/public-works'
+import ImageEnhancer from '@/components/admin/ImageEnhancer'
 
 interface MediaImage {
   url: string
@@ -20,6 +21,7 @@ export default function AdminMedia() {
   const [view, setView] = useState<'grid' | 'slideshow'>('grid')
   const [slideIdx, setSlideIdx] = useState(0)
   const [autoplay, setAutoplay] = useState(false)
+  const [enhancerUrl, setEnhancerUrl] = useState<string | null>(null)
 
   useEffect(() => {
     async function load() {
@@ -226,6 +228,14 @@ export default function AdminMedia() {
               </div>
             </div>
             <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', flexShrink: 0 }}>
+              {currentSlide?.url && (
+                <button className="btn" onClick={() => setEnhancerUrl(currentSlide.url)} style={{
+                  background: 'rgba(180,140,60,0.15)', color: 'var(--color-accent)',
+                  border: '1px solid var(--color-accent)', fontSize: 'var(--fs-xs)',
+                }}>
+                  ✨ Förbättra
+                </button>
+              )}
               <button className="btn" onClick={() => setAutoplay(a => !a)} style={{
                 background: autoplay ? 'var(--color-accent)' : 'transparent',
                 color: autoplay ? '#0a0a0a' : 'var(--color-muted)',
@@ -274,11 +284,11 @@ export default function AdminMedia() {
               return (
                 <div
                   key={`${img.url}-${i}`}
-                  style={{ border: '1px solid var(--color-border)', overflow: 'hidden', background: 'var(--color-bg-surface)', cursor: 'pointer' }}
+                  style={{ border: '1px solid var(--color-border)', overflow: 'hidden', background: 'var(--color-bg-surface)', cursor: 'pointer', position: 'relative' }}
                   onClick={() => openSlideshow(globalIdx)}
                   title="Klicka för bildspel"
                 >
-                  <div style={{ aspectRatio: '4/3', overflow: 'hidden', background: '#111' }}>
+                  <div style={{ aspectRatio: '4/3', overflow: 'hidden', background: '#111', position: 'relative' }}>
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={img.url}
@@ -289,6 +299,20 @@ export default function AdminMedia() {
                         (e.currentTarget as HTMLImageElement).style.display = 'none'
                       }}
                     />
+                    {/* Enhance button — stops propagation so it doesn't open slideshow */}
+                    <button
+                      onClick={e => { e.stopPropagation(); setEnhancerUrl(img.url) }}
+                      title="Förbättra med AI"
+                      style={{
+                        position: 'absolute', bottom: 4, right: 4,
+                        background: 'rgba(0,0,0,0.72)', color: 'var(--color-accent)',
+                        border: '1px solid rgba(180,140,60,0.5)', borderRadius: 2,
+                        fontSize: 10, padding: '2px 6px', cursor: 'pointer', lineHeight: 1.4,
+                        opacity: 0.85,
+                      }}
+                    >
+                      ✨
+                    </button>
                   </div>
                   <div style={{ padding: '0.5rem 0.6rem' }}>
                     {img.alt && (
@@ -326,6 +350,15 @@ export default function AdminMedia() {
             </p>
           )}
         </>
+      )}
+
+      {/* AI Image Enhancer overlay */}
+      {enhancerUrl && (
+        <ImageEnhancer
+          imageUrl={enhancerUrl}
+          onClose={() => setEnhancerUrl(null)}
+          onSaved={() => setEnhancerUrl(null)}
+        />
       )}
     </div>
   )

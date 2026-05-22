@@ -18,6 +18,8 @@ export interface Exhibition {
   description: string;
   body?: string;
   links?: ExhibitionLink[];
+  audioUrl?: string;
+  audioCaption?: string;
 }
 
 export const exhibitions: Exhibition[] = [
@@ -346,6 +348,8 @@ export const exhibitions: Exhibition[] = [
     ],
     description:
       "Till Körsbärsgården på Gotland brukar Sivert Lindblom återkomma. Det är alltid värt ett besök när man ändå har vägarna genom Sudret och kanske på väg till den kända rauken Hoburgsgubben nästan längst ned på ön.",
+    audioUrl: 'http://media.sivertlindblom.se/2015/03/Arvo-P%C3%A4rt-Miserere-02-Festina-Lente.mp3',
+    audioCaption: 'Arvo Pärt, Miserere — "Festina Lente", The Hilliard Ensemble (1991)',
   },
   {
     slug: "galerie-aronowitsch-2005",
@@ -388,7 +392,6 @@ export const exhibitions: Exhibition[] = [
       "Utställningen på Historiska muséet var en av de 32 utställningar som presenterades under kulturhuvudstadsåret, då Stockholm var Europas kulturhuvudstad 1998. I detta sammanhang ställde Sivert Lindblom ut den enögde – cyklopen.",
     links: [
       { prefix: 'LÄS MER', label: 'Arkipelag — Stockholm, Europas kulturhuvudstad 1998', url: 'https://sivertlindblom.se/folio/utstallningar/arkipelag-stockholms-europas-kulturhuvudstad-1998/', external: true },
-      { prefix: 'SE MER', label: 'Cyklopen — Historiska museet, Kulturåret Stockholm 1998', url: 'https://sivertlindblom.se/folio/utstallningar/historiska-museet-kulturaret-stockholm-1998/', external: true },
     ],
   },
   {
@@ -464,6 +467,9 @@ export const exhibitions: Exhibition[] = [
       "Parallellt med utställningen på Lunds konsthall visades Lindbloms modeller och skisser samt en retrospektiv av hans offentliga verk på Skissernas museum. Fasaden till Skissernas museum som Sivert utformat blev uppmärksammat i och med dessa utställningar.",
     links: [
       { prefix: 'SE ÄVEN', label: 'Skissernas museum 1993 — modeller, skisser och retrospektiv', url: 'https://sivertlindblom.se/skissernas-museum-19/', external: true },
+      { prefix: 'SE HÄR', label: 'Film från Lunds Konsthall — Sivert Lindblom visar modeller på Skissernas museum', url: 'https://sivertlindblom.se/biografi-kontakt/sivert-lindblom-visar-modeller-pa-skissernas-museum-lund-1993/', external: true },
+      { prefix: 'SE FASADEN', label: 'Skissernas museum fasad 1988', url: 'https://sivertlindblom.se/folio/offentliga-arbeten/exteriorer/skissernas-museum-fasad-1988/', external: true },
+      { prefix: 'SE FILMADE INSLAG', label: 'Sivert Lindblom visar modeller på Skissernas museum, Lund 1993', url: 'https://sivertlindblom.se/biografi/sivert-lindblom-visar-modeller-pa-skissernas-museum-lund-1993/', external: true },
     ],
   },
   {

@@ -133,17 +133,18 @@ a:hover { opacity: 0.7; }
   --font-scale: 1;
 }
 
-/* Top gradient scrim — keeps logo/nav legible over the hero image.
-   Clipped to exactly the header height so it never bleeds over the subnav. */
+/* Top gradient scrim — spans both the header AND the sub-nav so the
+   gradient is continuous from top to the bottom of the sub-nav with
+   no visible line or gap between the two fixed bars. */
 .site-header::before {
   content: '';
   position: absolute;
   top: 0; left: 0; right: 0;
-  height: var(--header-h);
+  height: calc(var(--header-h) + var(--subnav-h));
   background: linear-gradient(
     180deg,
-    rgba(0,0,0,0.75) 0%,
-    rgba(0,0,0,0.30) 100%
+    rgba(0,0,0,0.72) 0%,
+    rgba(0,0,0,0)     100%
   );
   pointer-events: none;
   z-index: -1;
@@ -487,7 +488,7 @@ a:hover { opacity: 0.7; }
 }
 
 /* Page content pushed below fixed header — extra 1.5 rem breathing room */
-.main-content { padding-top: calc(var(--header-h) + var(--subnav-h) + 1.5rem); }
+.main-content { padding-top: calc(var(--header-h) + var(--subnav-h) + 1.5rem - 1px); }
 
 /* ─── Texts page responsive row ─────────────────────────── */
 /* Mobile-first: stack vertically. Desktop: 3-column grid. */
@@ -611,18 +612,18 @@ a:hover { opacity: 0.7; }
 /* ── Sub-navigation bar (fixed below main header) ──────────────────────────── */
 .sub-nav {
   position: fixed;
-  top: var(--header-h);
+  top: calc(var(--header-h) - 1px); /* -1px closes any subpixel gap */
   left: 0; right: 0;
   height: var(--subnav-h);
-  z-index: 299; /* just below header (300) so it sits flush under it, above scrim */
-  background: var(--color-bg-surface); /* solid, clearly distinct from transparent header */
-  border-bottom: 1px solid var(--color-border);
-  --font-scale: 1; /* lock font scale regardless of user preference */
+  z-index: 299;
+  background: transparent;
+  border-bottom: none;
+  --font-scale: 1;
 }
 
 .sub-nav-inner {
   display: flex;
-  align-items: stretch;
+  align-items: center;
   height: 100%;
   overflow-x: auto;
   scrollbar-width: none;
@@ -634,29 +635,28 @@ a:hover { opacity: 0.7; }
 .sub-nav-item {
   display: inline-flex;
   align-items: center;
-  padding: 0 0.9rem;
+  padding: 0.25rem 0.75rem;
+  margin: 0 0.1rem;
   font-size: 0.69rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--color-text);   /* bright — clearly readable */
+  color: var(--color-text);
   text-decoration: none;
   white-space: nowrap;
-  border-bottom: 2px solid transparent;
-  margin-bottom: -1px;
-  transition: color 0.15s, border-color 0.15s;
-  opacity: 0.7;
+  border-radius: 4px;
+  transition: color 0.15s, background 0.15s;
+  opacity: 1;
   flex-shrink: 0;
 }
 
 .sub-nav-item:hover {
   color: var(--color-text);
-  opacity: 1;
+  background: rgba(0,0,0,0.35);
 }
 
 .sub-nav-item.active {
   color: var(--color-accent);
-  border-bottom-color: var(--color-accent);
-  opacity: 1;
+  background: rgba(0,0,0,0.25);
 }
 
 /* mobile sub-items */
