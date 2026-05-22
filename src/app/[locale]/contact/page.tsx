@@ -10,6 +10,8 @@ export function generateStaticParams() {
   return locales.map((locale) => ({ locale }))
 }
 
+const ALPS_IMAGE = 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/contact/siverts-alper.jpg'
+
 export default async function ContactPage({
   params,
 }: {
@@ -19,19 +21,42 @@ export default async function ContactPage({
   const dict = await getDictionary(locale as Locale)
 
   return (
-    <div className="section-gap">
-      <div className="page-pad" style={{ marginBottom: '3rem' }}>
-        <p style={{ fontSize: 'var(--fs-xs)', letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--color-accent)', marginBottom: '0.75rem' }}>
-          {dict.nav?.contact ?? 'Kontakt'}
-        </p>
-        <h1 style={{ fontFamily: 'Georgia, serif', fontWeight: 400, fontSize: 'clamp(1.8rem,4vw,3rem)' }}>
-          {dict.contact?.title ?? 'Ta kontakt'}
-        </h1>
-        <p style={{ color: 'var(--color-muted)', marginTop: '1rem', maxWidth: '55ch', fontSize: 'var(--fs-base)' }}>
-          {dict.contact?.intro ?? ''}
-        </p>
+    <div>
+      {/* Hero — Alps background, full viewport */}
+      <div style={{
+        position: 'relative',
+        height: '60vh',
+        minHeight: 380,
+        overflow: 'hidden',
+        marginBottom: '4rem',
+        marginTop: 'calc(-1 * (var(--header-h) + var(--subnav-h) + 1.5rem))',
+      }}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={ALPS_IMAGE}
+          alt="Schweiziska alper — Sivert Lindblom"
+          style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 55%' }}
+        />
+        {/* Gradient overlay */}
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(0,0,0,0.08) 0%, rgba(0,0,0,0.38) 50%, rgba(0,0,0,0.82) 100%)' }} />
+
+        {/* Title block */}
+        <div className="page-pad" style={{ position: 'absolute', bottom: '3rem', left: 0, right: 0 }}>
+          <p style={{ fontSize: 'var(--fs-xs)', letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--color-accent)', marginBottom: '0.75rem' }}>
+            {dict.nav?.contact ?? 'Kontakt'}
+          </p>
+          <h1 style={{ fontFamily: 'Georgia, serif', fontWeight: 400, fontSize: 'clamp(1.8rem,4vw,3rem)', margin: 0 }}>
+            {dict.contact?.title ?? 'Ta kontakt'}
+          </h1>
+          {dict.contact?.intro && (
+            <p style={{ color: 'rgba(255,255,255,0.72)', marginTop: '0.75rem', maxWidth: '55ch', fontSize: 'var(--fs-base)' }}>
+              {dict.contact.intro}
+            </p>
+          )}
+        </div>
       </div>
 
+      <div className="section-gap" style={{ paddingTop: 0 }}>
       <hr className="divider" />
 
       <div className="page-pad" style={{ paddingTop: '3rem', paddingBottom: '5rem' }}>
@@ -102,6 +127,7 @@ export default async function ContactPage({
           <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)' }}>(web-ansvarig)</span>
         </p>
       </section>
+      </div>
     </div>
   )
 }
