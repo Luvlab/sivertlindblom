@@ -22,11 +22,10 @@ export default async function ContactPage({
 
   return (
     <div>
-      {/* Hero — Alps background, full viewport */}
+      {/* Hero — Alps background, full viewport height */}
       <div style={{
         position: 'relative',
-        height: '60vh',
-        minHeight: 380,
+        height: '100vh',
         overflow: 'hidden',
         marginBottom: '4rem',
         marginTop: 'calc(-1 * (var(--header-h) + var(--subnav-h) + 1.5rem))',
@@ -38,10 +37,10 @@ export default async function ContactPage({
           style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 55%' }}
         />
         {/* Gradient overlay */}
-        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(0,0,0,0.08) 0%, rgba(0,0,0,0.38) 50%, rgba(0,0,0,0.82) 100%)' }} />
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.28) 40%, rgba(0,0,0,0.78) 100%)' }} />
 
         {/* Title block */}
-        <div className="page-pad" style={{ position: 'absolute', bottom: '3rem', left: 0, right: 0 }}>
+        <div className="page-pad" style={{ position: 'absolute', bottom: '5rem', left: 0, right: 0 }}>
           <p style={{ fontSize: 'var(--fs-xs)', letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--color-accent)', marginBottom: '0.75rem' }}>
             {dict.nav?.contact ?? 'Kontakt'}
           </p>
@@ -53,6 +52,25 @@ export default async function ContactPage({
               {dict.contact.intro}
             </p>
           )}
+        </div>
+
+        {/* Scroll-down arrow */}
+        <div style={{
+          position: 'absolute',
+          bottom: '2rem',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: '0.3rem',
+          opacity: 0.7,
+          animation: 'scrollDrop 2.4s ease-in-out infinite',
+        }}>
+          <svg width="20" height="28" viewBox="0 0 20 28" fill="none" style={{ display: 'block' }}>
+            <line x1="10" y1="0" x2="10" y2="20" stroke="white" strokeWidth="1.5" strokeLinecap="round"/>
+            <polyline points="4,14 10,21 16,14" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
+          </svg>
         </div>
       </div>
 
@@ -70,7 +88,6 @@ export default async function ContactPage({
             {[
               { label: dict.contact?.email ?? 'E-post', value: 'info@sivertlindblom.se', href: 'mailto:info@sivertlindblom.se' },
               { label: dict.contact?.editor ?? 'Redaktör', value: 'Jan Öqvist', href: null },
-              { label: 'Webb', value: 'sivertlindblom.se', href: 'https://sivertlindblom.se' },
             ].map((item) => (
               <div key={item.label} style={{ marginBottom: '1.5rem' }}>
                 <div style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-accent)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '0.25rem' }}>{item.label}</div>

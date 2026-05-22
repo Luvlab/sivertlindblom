@@ -27,6 +27,8 @@ export default function SubNav({ locale, dict }: Props) {
   if (!pathname) return null
   if (pathname.startsWith('/admin')) return null
 
+  // Note: references, texts, and biography use TabsLayout for in-page navigation —
+  // no SubNav duplication needed for those routes.
   const SECTIONS: { prefix: string; items: SubItem[] }[] = [
     {
       prefix: `/${locale}/portfolio`,
@@ -35,38 +37,6 @@ export default function SubNav({ locale, dict }: Props) {
         { label: dict?.portfolio?.cat_public      ?? 'Offentliga arbeten', href: `/${locale}/portfolio/public-works` },
         { label: dict?.portfolio?.cat_scenography ?? 'Scenografier', href: `/${locale}/portfolio/scenography` },
         { label: dict?.portfolio?.cat_watercolors ?? 'Akvareller', href: `/${locale}/portfolio/watercolors` },
-      ],
-    },
-    {
-      prefix: `/${locale}/references`,
-      items: [
-        { label: 'Skulptur',                                    href: `/${locale}/references#skulptur` },
-        { label: 'Grafik',                                      href: `/${locale}/references#grafik` },
-        { label: dict?.references?.fotografier ?? 'Fotografier', href: `/${locale}/references#fotografi` },
-        { label: dict?.references?.film_tv     ?? 'Film & TV',  href: `/${locale}/references#film-tv` },
-        { label: dict?.references?.publicerat  ?? 'Publicerat', href: `/${locale}/references#publicerat` },
-        { label: 'Utmärkelser',                                  href: `/${locale}/references#utmarkelser` },
-        { label: 'Ögonblick',                                    href: `/${locale}/references#ogonblick` },
-      ],
-    },
-    {
-      prefix: `/${locale}/texts`,
-      items: [
-        { label: dict?.texts?.others_texts ?? 'Andras texter', href: `/${locale}/texts#andras_texter` },
-        { label: dict?.texts?.own_writing  ?? 'Egna texter',   href: `/${locale}/texts#own_writing` },
-        { label: dict?.texts?.interview    ?? 'Intervjuer',    href: `/${locale}/texts#interview` },
-        { label: dict?.texts?.review       ?? 'Recensioner',   href: `/${locale}/texts#review` },
-        { label: dict?.texts?.translated   ?? 'Översatt text', href: `/${locale}/texts#translated` },
-      ],
-    },
-    {
-      prefix: `/${locale}/biography`,
-      items: [
-        { label: dict?.biography?.timeline           ?? 'Biografi',                    href: `/${locale}/biography#biografi` },
-        { label: dict?.biography?.public_commissions ?? 'Offentliga uppdrag',          href: `/${locale}/biography#offentliga-uppdrag` },
-        { label: dict?.biography?.group_exhibitions  ?? 'Grupputställningar',          href: `/${locale}/biography#grupputstallningar` },
-        { label: 'Litteraturförteckning',                                               href: `/${locale}/biography#litteratur` },
-        { label: dict?.biography?.photographs        ?? 'Bilder på Sivert',            href: `/${locale}/biography#fotografier` },
       ],
     },
   ]

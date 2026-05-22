@@ -343,8 +343,6 @@ export default async function ReferencesPage({
               year: 1985, title: 'Stenpriset', sub: 'Sveriges Stenindustriförbund',
               links: [
                 { label: 'Om Stenpriset (sten.se)', url: 'https://www.sten.se/stenpriset/' },
-                { label: 'Sten nr 2, 1985 — artikel om Stenpriset (PDF)', url: 'https://media.sivertlindblom.se/2015/02/Sten-1985opt-.pdf' },
-                { label: 'Om Stenpriset till Sivert Lindblom 1985', url: 'https://sivertlindblom.se/biografi/egna-texter/pdf-fil-att-skriva-ut-om-stenpriset-till-sivert-lindblom-av-sveriges-stenindustriforbund-1985/' },
               ],
             },
             {
@@ -359,7 +357,6 @@ export default async function ReferencesPage({
             {
               year: 2002, title: 'S:t Eriksmedaljen', sub: 'Stockholm stad',
               quote: '»Kreativ konstnär vars många sköna och spännande skulpturer på torg och broar är viktiga inslag i kulturstaden Stockholm«',
-              links: [{ label: 'LÄS MER om S:t Eriksmedaljen 2002', url: 'https://sivertlindblom.se/st-eriksmedaljen-2002/' }],
             },
             {
               year: 2002, title: 'Eskilstunakurirens kulturpris', sub: 'Eskilstuna-Kuriren',

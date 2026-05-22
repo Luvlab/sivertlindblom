@@ -312,16 +312,20 @@ a:hover { opacity: 0.7; }
 /* ─── Form inputs (admin) ────────────────────────────────── */
 .input {
   background: var(--color-bg-surface);
-  border: 1px solid var(--color-border);
+  border: 1.5px solid rgba(255, 255, 255, 0.22);
   color: var(--color-text);
-  padding: 0.5rem 0.75rem;
+  padding: 0.6rem 0.85rem;
   font-size: var(--fs-sm);
   border-radius: 2px;
   width: 100%;
   outline: none;
-  transition: border-color 0.15s;
+  transition: border-color 0.15s, box-shadow 0.15s;
 }
-.input:focus { border-color: var(--color-accent); }
+.input:hover { border-color: rgba(255, 255, 255, 0.38); }
+.input:focus {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 2px rgba(200, 169, 126, 0.18);
+}
 .input::placeholder { color: var(--color-muted); }
 
 .btn {
