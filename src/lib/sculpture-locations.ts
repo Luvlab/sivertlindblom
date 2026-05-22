@@ -23,7 +23,7 @@ export const SCULPTURE_LOCATIONS: SculptureLocation[] = [
     lat: 59.3310,
     lng: 18.0745,
     type: 'exterior',
-    slug: 'blasieholmstorg-1989',
+    slug: 'blasieholmstorg-stockholm-1989',
     description: 'Två grönpatinerade bronshästar inspirerade av San Marcoshästarna i Venedig.',
   },
   {
@@ -36,6 +36,7 @@ export const SCULPTURE_LOCATIONS: SculptureLocation[] = [
     lng: 18.0658,
     type: 'exterior',
     description: 'Monument på Sergels torg, centrala Stockholm.',
+    slug: 'sergels-torg-sergel-monumentet-stockholm-1998',
   },
   {
     id: 'kungliga-biblioteket-1998',
@@ -47,6 +48,7 @@ export const SCULPTURE_LOCATIONS: SculptureLocation[] = [
     lng: 18.0718,
     type: 'exterior',
     description: 'Skulptur vid Kungliga Bibliotekets fasad, Humlegården.',
+    slug: 'kungl-biblioteket-stockholm-1998',
   },
   {
     id: 'synagogan-1998',
@@ -58,6 +60,7 @@ export const SCULPTURE_LOCATIONS: SculptureLocation[] = [
     lng: 18.0735,
     type: 'exterior',
     description: 'Minnesmärke för Förintelsen vid Stockholms synagoga, Wahrendorffsgatan 3.',
+    slug: 'synagoga-forintelsemonumentet-stockholm-1998',
   },
   {
     id: 'frescati-1987',
@@ -68,7 +71,7 @@ export const SCULPTURE_LOCATIONS: SculptureLocation[] = [
     lat: 59.3653,
     lng: 18.0553,
     type: 'exterior',
-    slug: 'frescati-1987',
+    slug: 'stockholms-universitet-campus-1987-91',
     description: 'Skulpturer på Stockholms Universitets campus i Frescati.',
   },
   {
@@ -81,6 +84,7 @@ export const SCULPTURE_LOCATIONS: SculptureLocation[] = [
     lng: 18.0234,
     type: 'exterior',
     description: 'Utomhusskulptur vid SAS huvudkontor i Frösundavik, Solna.',
+    slug: 'sas-huvudkontor-frosundavik-stockholm-1988',
   },
   {
     id: 'haga-norra-1993',
@@ -92,6 +96,7 @@ export const SCULPTURE_LOCATIONS: SculptureLocation[] = [
     lng: 18.0253,
     type: 'exterior',
     description: 'Skulptur på gångbro vid Haga Norra, Solna.',
+    slug: 'haga-norra-gangbro-stockholm-1993',
   },
   {
     id: 'seb-banken-1992',
@@ -103,6 +108,7 @@ export const SCULPTURE_LOCATIONS: SculptureLocation[] = [
     lng: 17.9370,
     type: 'exterior',
     description: 'Skulptur vid SEB:s huvudkontor i Rissne, Rissneleden 110, Sundbyberg.',
+    slug: 'seb-banken-huvudkontor-rissne-1992',
   },
   {
     id: 'kungstradgarden-1997',
@@ -114,6 +120,7 @@ export const SCULPTURE_LOCATIONS: SculptureLocation[] = [
     lng: 18.0708,
     type: 'exterior',
     description: 'Skulptur i Kungsträdgårdens norra del.',
+    slug: 'kungstradgarden-norra-delen-1997-98',
   },
   {
     id: 'fersenska-palatset-1975',
@@ -125,6 +132,7 @@ export const SCULPTURE_LOCATIONS: SculptureLocation[] = [
     lng: 18.0747,
     type: 'exterior',
     description: 'Skulptur i Fersenska Palatsets innergård, Blasieholmstorg.',
+    slug: 'fersenska-palatset-handelsbanken-stockholm-1975',
   },
   {
     id: 'garnisonen-1972',
@@ -136,6 +144,7 @@ export const SCULPTURE_LOCATIONS: SculptureLocation[] = [
     lng: 18.0952,
     type: 'exterior',
     description: 'Skulptur vid Garnisonen på Östermalm, Karlavägen.',
+    slug: 'garnisonen-stockholm-1972',
   },
   {
     id: 'kungstradgarden-norra-1997',
@@ -146,6 +155,7 @@ export const SCULPTURE_LOCATIONS: SculptureLocation[] = [
     lat: 59.3350,
     lng: 18.0418,
     type: 'exterior',
+    slug: 'st-erik-grubbens-trappa-kungsholmen-stockholm-2000',
     description: 'Skulptur vid Grubbens Trappor, S:t Eriksgatan, Kungsholmen.',
   },
   {
@@ -180,7 +190,7 @@ export const SCULPTURE_LOCATIONS: SculptureLocation[] = [
     lat: 59.3099,
     lng: 18.0617,
     type: 'exterior',
-    slug: 'ringvagen-1989',
+    slug: 'kvarteret-svardet-stockholm1989',
     description: 'Tegelmonolit med tre klot i triangelformation på innergården, Ringvägen–Maria Bangata, Södermalm.',
   },
   {
@@ -193,6 +203,7 @@ export const SCULPTURE_LOCATIONS: SculptureLocation[] = [
     lng: 17.8707,
     type: 'exterior',
     description: 'Skulptur vid Vällingby backe (vid sidan om biografen Fontänen).',
+    slug: 'vallingby-backe-1966-67',
   },
   {
     id: 'dagens-nyheter-1965',
@@ -204,6 +215,7 @@ export const SCULPTURE_LOCATIONS: SculptureLocation[] = [
     lng: 18.0154,
     type: 'exterior',
     description: 'Bronsgaller vid Dagens Nyheters redaktion, Gjörwellsgatan 30, Marieberg.',
+    slug: 'bronsgaller-dagens-nyheter-stockholm-1965',
   },
 
   // ── Stockholm interiors / tunnelbana ────────────────────────
@@ -216,7 +228,7 @@ export const SCULPTURE_LOCATIONS: SculptureLocation[] = [
     lat: 59.3475,
     lng: 18.0040,
     type: 'metro',
-    slug: 'vastra-skogen-1975',
+    slug: 'vastra-skogen-t-banestation-1975-1985',
     description: 'Konstverk i Västra skogens tunnelbanestation på den gröna linjen.',
   },
   {
@@ -229,6 +241,7 @@ export const SCULPTURE_LOCATIONS: SculptureLocation[] = [
     lng: 18.0680,
     type: 'interior',
     description: 'Konstverk i Riksbanken, Gustav Adolfs Torg, Stockholm.',
+    slug: 'sveriges-riksbank-stockholm-1973',
   },
   {
     id: 'medborgarplatsen-1984',
@@ -240,6 +253,7 @@ export const SCULPTURE_LOCATIONS: SculptureLocation[] = [
     lng: 18.0709,
     type: 'interior',
     description: 'Konstverk i Riksbyggens kontorshus vid Medborgarplatsen.',
+    slug: 'riksbyggen-gota-ark-medborgarplatsen-stockholm-1984',
   },
   {
     id: 'stadsteatern-1970',
@@ -251,6 +265,7 @@ export const SCULPTURE_LOCATIONS: SculptureLocation[] = [
     lng: 18.0648,
     type: 'interior',
     description: 'Konstverk i Stockholms Stadsteaterns förbindelsegång, Kulturhuset vid Sergels torg.',
+    slug: 'stadsteatern-stockholm-1970',
   },
   {
     id: 'nk-ljusgard-1968',
@@ -262,6 +277,7 @@ export const SCULPTURE_LOCATIONS: SculptureLocation[] = [
     lng: 18.0686,
     type: 'interior',
     description: 'Konstverk i NK:s ljusgård på Hamngatan.',
+    slug: 'nk-ljusgard-1968',
   },
   {
     id: 'berns-1991',
@@ -273,6 +289,7 @@ export const SCULPTURE_LOCATIONS: SculptureLocation[] = [
     lng: 18.0738,
     type: 'interior',
     description: 'Konstverk i Berns salongers ljusgård, Berzelii park.',
+    slug: 'berns-ljusgard-1991',
   },
   {
     id: 'medelhavsmuseet-1982',
@@ -284,6 +301,7 @@ export const SCULPTURE_LOCATIONS: SculptureLocation[] = [
     lng: 18.0674,
     type: 'interior',
     description: 'Konstverk i Medelhavsmuseet, Fredsgatan 2, Stockholm.',
+    slug: 'medelhavsmuseet-stockholm-1982-utstallning-ar-numera-utbytt',
   },
 
   // ── Solna ──────────────────────────────────────────────────
@@ -297,6 +315,7 @@ export const SCULPTURE_LOCATIONS: SculptureLocation[] = [
     lng: 18.0227,
     type: 'interior',
     description: 'Konstverk i Nobel Forum, Karolinska Institutet, Solna.',
+    slug: 'nobel-forum',
   },
   {
     id: 'norra-begravningsplatsen',
@@ -320,7 +339,7 @@ export const SCULPTURE_LOCATIONS: SculptureLocation[] = [
     lat: 55.6050,
     lng: 13.0022,
     type: 'exterior',
-    slug: 'gustav-adolfs-torg-2002',
+    slug: 'gustav-adolfs-torg-malmo-2002',
     description: 'Fontäner på Gustav Adolfs torg i centrala Malmö.',
   },
   {
@@ -333,6 +352,7 @@ export const SCULPTURE_LOCATIONS: SculptureLocation[] = [
     lng: 12.9571,
     type: 'exterior',
     description: 'Profilskulptur i Potatisåkerns park, Limhamnsvägen × Köpenhamnsvägen, Malmö.',
+    slug: 'potatisakern-bostadsomrade-malmo-2001',
   },
 
   // ── Lund ────────────────────────────────────────────────────
@@ -346,6 +366,7 @@ export const SCULPTURE_LOCATIONS: SculptureLocation[] = [
     lng: 13.1982,
     type: 'exterior',
     description: 'Skulptur på Skissernas Museums fasad i Lund, Finngatan 2.',
+    slug: 'skissernas-museum-fasad-1988',
   },
 
   // ── Göteborg ────────────────────────────────────────────────
@@ -358,7 +379,7 @@ export const SCULPTURE_LOCATIONS: SculptureLocation[] = [
     lat: 57.6988,
     lng: 11.9641,
     type: 'exterior',
-    slug: 'baltesspaennarparken-2013',
+    slug: 'baltesspannarparken-goteborg-2013',
     description: 'Skulptur i Bältesspännarparken, Göteborg.',
   },
   {
@@ -371,6 +392,7 @@ export const SCULPTURE_LOCATIONS: SculptureLocation[] = [
     lng: 11.9561,
     type: 'interior',
     description: 'Konstverk i Göteborgs Universitetsbibliotek, Seminariegatan 1D.',
+    slug: 'goteborgs-universitetsbibliotek-1985',
   },
   {
     id: 'lindholmsallen-goteborg',
@@ -382,6 +404,7 @@ export const SCULPTURE_LOCATIONS: SculptureLocation[] = [
     lng: 11.9432,
     type: 'exterior',
     description: 'Skulptur längs Lindholmsallén, Göteborg.',
+    slug: 'lindholmsallen-regnbagsgatan-goteborg',
   },
 
   // ── Uppsala ─────────────────────────────────────────────────
@@ -395,6 +418,7 @@ export const SCULPTURE_LOCATIONS: SculptureLocation[] = [
     lng: 17.6971,
     type: 'exterior',
     description: 'Konstverk vid Pharmacias entré i Fyrislund, Uppsala.',
+    slug: 'pharmacia-entreplats-uppsala-1984-85',
   },
   {
     id: 'uppsala-stadsbibliotek-1986',
@@ -406,6 +430,7 @@ export const SCULPTURE_LOCATIONS: SculptureLocation[] = [
     lng: 17.6353,
     type: 'interior',
     description: 'Konstverk i Uppsala Stadsbibliotek, Svartbäcksgatan 17.',
+    slug: 'uppsala-stadsbibliotek-1986',
   },
 
   // ── Eskilstuna ──────────────────────────────────────────────
@@ -419,6 +444,7 @@ export const SCULPTURE_LOCATIONS: SculptureLocation[] = [
     lng: 16.5153,
     type: 'exterior',
     description: 'Profilskulptur i rondellen Hamngatan–Nybrogatan, Eskilstuna.',
+    slug: 'eskilstuna-rondellen-profilen-2002',
   },
   {
     id: 'arbyparken-1973',
@@ -430,6 +456,7 @@ export const SCULPTURE_LOCATIONS: SculptureLocation[] = [
     lng: 16.5176,
     type: 'exterior',
     description: 'Lekplatsskulptur i Årbysområdet, Eskilstuna.',
+    slug: 'lekplats-arby-omradet-eskilstuna-1973',
   },
 
   // ── Skövde ──────────────────────────────────────────────────
@@ -443,6 +470,7 @@ export const SCULPTURE_LOCATIONS: SculptureLocation[] = [
     lng: 13.8514,
     type: 'exterior',
     description: 'Cavallo-brunn vid Resecentrum i Skövde, Stationsgatan.',
+    slug: 'cavallobrunnen-resecentrum-skovde-1995-96',
   },
 
   // ── Norrtälje ───────────────────────────────────────────────
@@ -456,6 +484,7 @@ export const SCULPTURE_LOCATIONS: SculptureLocation[] = [
     lng: 18.7027,
     type: 'interior',
     description: 'Konstverk i Norrtälje Stadsbibliotek / Roslagens Sparbank, Billborgsgatan 3.',
+    slug: 'roslagens-sparbank-norrtalje-2004',
   },
 
   // ── Other Swedish cities ─────────────────────────────────────
@@ -469,6 +498,7 @@ export const SCULPTURE_LOCATIONS: SculptureLocation[] = [
     lng: 14.1540,
     type: 'exterior',
     description: 'Skulpturgrupp i Tivoliparken med sortimentsträdgården, Kristianstad.',
+    slug: 'kristianstad-tivoliparken-1989',
   },
   {
     id: 'trollhattan-1989',
@@ -480,6 +510,7 @@ export const SCULPTURE_LOCATIONS: SculptureLocation[] = [
     lng: 12.2664,
     type: 'exterior',
     description: 'Skulptur vid Norra Älvsborgs Länssjukhus, Lärketorpsvägen, Trollhättan.',
+    slug: 'norra-alvsborgs-lanssjukhus-trollhattan-1989-91',
   },
   {
     id: 'kalmar-1990',
@@ -491,6 +522,7 @@ export const SCULPTURE_LOCATIONS: SculptureLocation[] = [
     lng: 16.3651,
     type: 'exterior',
     description: 'Skulptur i Kvarteret Baronen, Skeppsbrogatan 12, Kalmar.',
+    slug: 'kvarteret-baronen-kalmar-1990',
   },
   {
     id: 'norrkoping-1986',
@@ -502,6 +534,7 @@ export const SCULPTURE_LOCATIONS: SculptureLocation[] = [
     lng: 16.1791,
     type: 'exterior',
     description: 'Skulptur i innergården vid Vrinnevisjukhuset, Gamla Övägen 25, Norrköping.',
+    slug: 'lanssjukhuset-vrinnevi-innergard-norrkoping-1986',
   },
   {
     id: 'haninge-1970',
@@ -513,6 +546,7 @@ export const SCULPTURE_LOCATIONS: SculptureLocation[] = [
     lng: 18.1399,
     type: 'interior',
     description: 'Skulptur i Haninge Kulturhus, Poseidons Torg 8, Handen.',
+    slug: 'vasterhaninge-bibliotek-haninge-kulturhus-1970',
   },
   {
     id: 'vadsbo-museum-1962',
@@ -546,6 +580,7 @@ export const SCULPTURE_LOCATIONS: SculptureLocation[] = [
     lng: 18.3009,
     type: 'exterior',
     description: 'Skulptur vid Visby Lasarett, S:t Göransgatan 5, Visby.',
+    slug: 'visby-lasarett-urna',
   },
 
   // ── International ─────────────────────────────────────────────
@@ -571,6 +606,7 @@ export const SCULPTURE_LOCATIONS: SculptureLocation[] = [
     lng: 139.7418,
     type: 'exterior',
     description: 'Entréskulptur vid Sveriges ambassad, 1-10-3 Roppongi, Minato-ku, Tokyo.',
+    slug: 'sveriges-ambassaden-entre-tokyo-1990-91',
   },
   {
     id: 'tetra-pak-1984',
@@ -582,6 +618,7 @@ export const SCULPTURE_LOCATIONS: SculptureLocation[] = [
     lng: 6.6440,
     type: 'interior',
     description: 'Konstverk i Tetra Paks huvudkontor, Avenue Général-Guisan 70, Pully/Lausanne.',
+    slug: 'tetra-pak-lausanne-schweiz-1984-85',
   },
   {
     id: 'paris-ccs-1980',
@@ -593,5 +630,165 @@ export const SCULPTURE_LOCATIONS: SculptureLocation[] = [
     lng: 2.3623,
     type: 'exterior',
     description: 'Skulptur vid Institut Suédois, 11 Rue Payenne, Paris.',
+    slug: 'sans-titre-centre-culturel-suedois-ccs-paris-1980',
+  },
+
+
+  // ── Additional works (added by migration script) ─────────────
+  {
+    id: 'aterinvigning-av-ulriksdalsbron',
+    title: 'Återinvigning Haga Norra gångbro 2015',
+    year: 2015,
+    city: 'Solna',
+    country: 'Sweden',
+    lat: 59.3633,
+    lng: 18.0253,
+    type: 'exterior',
+    slug: 'aterinvigning-av-ulriksdalsbron',
+    description: 'Återinvigning av Haga Norra gångbro med rekonstruerade bronssfärer och urna.',
+  },
+  {
+    id: 'st-erik-grubbens-trappa',
+    title: 'S:t Erik, Grubbens trappa',
+    year: 2000,
+    city: 'Stockholm',
+    country: 'Sweden',
+    lat: 59.335,
+    lng: 18.0418,
+    type: 'exterior',
+    slug: 'st-erik-grubbens-trappa-kungsholmen-stockholm-2000',
+    description: 'Bronsprofilhuvuden längs trappan på f.d. S:t Eriks sjukhustomt.',
+  },
+  {
+    id: 'farsta-sjukhus-1967',
+    title: 'Farsta sjukhus — Kepler',
+    year: 1967,
+    city: 'Farsta',
+    country: 'Sweden',
+    lat: 59.2405,
+    lng: 18.0977,
+    type: 'exterior',
+    slug: 'farsta-sjukhus-1967',
+    description: 'Balanserad skulptur "Kepler" utanför Farsta sjukhus.',
+  },
+  {
+    id: 'lugnet-park',
+    title: 'Lugnet park',
+    year: 1980,
+    city: 'Falun',
+    country: 'Sweden',
+    lat: 60.5931,
+    lng: 15.6319,
+    type: 'exterior',
+    slug: 'lugnet-park-projektforslag-1979-80',
+    description: 'Projektförslag för parkgestaltning i Lugnet.',
+  },
+  {
+    id: 'celsingarkivet',
+    title: 'Celsingarkivet',
+    year: 1980,
+    city: 'Stockholm',
+    country: 'Sweden',
+    lat: 59.322,
+    lng: 18.0694,
+    type: 'interior',
+    slug: 'celsingarkivet-kornhamnstorg-49-3tr',
+    description: 'Arkiv med ritningar och modeller från Peter Celsings produktion.',
+  },
+  {
+    id: 'drivved-1987',
+    title: 'Scenografi: Drivved',
+    year: 1987,
+    city: 'Stockholm',
+    country: 'Sweden',
+    lat: 59.3198,
+    lng: 18.072,
+    type: 'interior',
+    slug: 'drivved-fragment-ur-tidigare-koreografier-av-och-med-margareta-asberg',
+    description: 'Scenografi för Margaretha Åsbergs koreografiska verk på Moderna Dansteatern.',
+  },
+  {
+    id: 'sand-1974',
+    title: 'Scenografi: Sand',
+    year: 1974,
+    city: 'Stockholm',
+    country: 'Sweden',
+    lat: 59.3198,
+    lng: 18.0715,
+    type: 'interior',
+    slug: 'sand-10-rorelsedikter-med-koreograf-margareta-asberg-1974',
+    description: 'Scenografi till "Sand" av Margaretha Åsberg på Fylkingen.',
+  },
+  {
+    id: 'falska-fortroenden-1982',
+    title: 'Scenografi: Falska förtroenden',
+    year: 1982,
+    city: 'Stockholm',
+    country: 'Sweden',
+    lat: 59.3318,
+    lng: 18.0648,
+    type: 'interior',
+    slug: 'scenografi-falska-fortroenden-av-marivaux-stockholms-stadsteater-1982',
+    description: 'Scenografi till Marivaux pjäs på Stockholms Stadsteater.',
+  },
+  {
+    id: 'motala-folkets-hus',
+    title: 'Motala Folkets Hus',
+    year: 1978,
+    city: 'Motala',
+    country: 'Sweden',
+    lat: 58.5381,
+    lng: 15.0428,
+    type: 'interior',
+    slug: 'motala-folkets-hus-motala-i-samarbete-med-ulrik-samuelson-1978',
+    description: 'Tegelvägginstallationer i Motala Folkets Hus.',
+  },
+  {
+    id: 'norrlands-nationshus-1972',
+    title: 'Norrlands Nationshus — takmålning',
+    year: 1972,
+    city: 'Uppsala',
+    country: 'Sweden',
+    lat: 59.8591,
+    lng: 17.6372,
+    type: 'interior',
+    slug: 'takmalning-norrlands-nationshus-uppsala-i-samarbete-med-ulrik-samuelson-1972',
+    description: 'Stor takmålning av målade glasrutor i Norrlands Nationshus.',
+  },
+  {
+    id: 'tegelvagg-boras-1957',
+    title: 'Tegelvägg, Gustav Adolfs församlingshem',
+    year: 1957,
+    city: 'Borås',
+    country: 'Sweden',
+    lat: 57.721,
+    lng: 12.9407,
+    type: 'interior',
+    slug: 'tegelvagg-gustav-adolfs-forsamlingshem-boras-med-olle-adrin-1957',
+    description: 'Inre tegelvägg i Gustav Adolfs församlingshem, ett av Lindbloms tidigaste offentliga verk.',
+  },
+  {
+    id: 'krucifix-smogen',
+    title: 'Krucifix — frikyrka på Smögen',
+    year: 1955,
+    city: 'Smögen',
+    country: 'Sweden',
+    lat: 58.3583,
+    lng: 11.2268,
+    type: 'interior',
+    slug: 'krucefix-frikyrka-pa-smogen',
+    description: 'Tidigt krucifix för en frikyrka på Smögen.',
+  },
+  {
+    id: 'kulturhuset-stadsteatern-passage',
+    title: 'Förbindelsegång Kulturhuset–Stadsteatern',
+    year: 1989,
+    city: 'Stockholm',
+    country: 'Sweden',
+    lat: 59.3318,
+    lng: 18.0648,
+    type: 'interior',
+    slug: 'forbindelsegang-mellan-kulturhuset-och-stadsteaterns-stora-scen-stockholm-1989-92',
+    description: 'Passage som förbinder Kulturhuset med Stadsteaterns Stora Scen.',
   },
 ]
