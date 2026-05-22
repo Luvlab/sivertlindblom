@@ -95,6 +95,11 @@ export interface SiteSettings {
   about_short: string
   biography_intro?: string
   contact_intro?: string
+  // SEO / Social sharing
+  og_title?: string
+  og_description?: string
+  og_image?: string
+  meta_description?: string
 }
 
 export const CATEGORY_LABELS: Record<WorkCategory, string> = {

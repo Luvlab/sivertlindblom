@@ -9,6 +9,10 @@ export const FALLBACK_SETTINGS: SiteSettings = {
   about_short:  'Sivert Lindblom (f. 1931) är en av Sveriges mest betydande skulptörer. Han studerade vid Kungliga Konsthögskolan 1958–1963 och har sedan dess skapat ett omfattande verk av skulpturer, offentliga installationer, akvareller och scenografi.',
   biography_intro: '',
   contact_intro: '',
+  og_title: '',
+  og_description: '',
+  og_image: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Sivert-Lindblom-Blasieholms-Torg-01.jpg',
+  meta_description: '',
 }
 
 // Key highlight works used on the homepage when DB is empty

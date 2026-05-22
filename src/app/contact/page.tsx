@@ -34,7 +34,6 @@ export default function ContactPage() {
             {[
               { label: 'E-post', value: 'info@sivertlindblom.se', href: 'mailto:info@sivertlindblom.se' },
               { label: 'Redaktör', value: 'Jan Öqvist', href: null },
-              { label: 'Webbplats', value: 'sivertlindblom.se', href: 'https://sivertlindblom.se' },
             ].map((item) => (
               <div key={item.label} style={{ marginBottom: '1.5rem' }}>
                 <div style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-accent)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '0.25rem' }}>{item.label}</div>

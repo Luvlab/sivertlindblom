@@ -6,6 +6,9 @@ import type { Locale } from '@/i18n/config'
 import Header from '@/components/nav/Header'
 import SubNav from '@/components/nav/SubNav'
 import { getDictionary } from '@/i18n/getDictionary'
+import { createAdminClient } from '@/lib/supabase/admin'
+import { FALLBACK_SETTINGS } from '@/lib/db'
+import type { SiteSettings } from '@/types'
 import '../globals.css'
 
 const inter = Inter({
@@ -14,54 +17,75 @@ const inter = Inter({
   display: 'swap',
 })
 
-const OG_IMAGE =
+const DEFAULT_OG_IMAGE =
   'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Sivert-Lindblom-Blasieholms-Torg-01.jpg'
 
-export const metadata: Metadata = {
-  metadataBase: new URL('https://sivertlindblom.se'),
-  title: {
-    default: 'Sivert Lindblom — Skulptör',
-    template: '%s | Sivert Lindblom',
-  },
-  description:
-    'Officiell webbplats för skulptören Sivert Lindblom (f. 1931). Skulptur, offentlig konst, akvareller och scenografi sedan 1963.',
-  keywords: [
-    'Sivert Lindblom', 'skulptör', 'sculptor', 'Stockholm', 'Blasieholmstorg',
-    'offentlig konst', 'public art', 'akvareller', 'watercolours', 'scenografi',
-  ],
-  authors: [{ name: 'Sivert Lindblom' }],
-  creator: 'Sivert Lindblom',
-  openGraph: {
-    title: 'Sivert Lindblom — Skulptör',
-    description:
-      'Skulptur, offentlig konst, akvareller och scenografi sedan 1963. Offentliga verk i Stockholm, New York, Malmö och Tokyo.',
-    url: 'https://sivertlindblom.se',
-    siteName: 'Sivert Lindblom',
-    type: 'website',
-    locale: 'sv_SE',
-    alternateLocale: ['en_US', 'de_DE', 'fr_FR'],
-    images: [
-      {
-        url: OG_IMAGE,
-        width: 1200,
-        height: 800,
-        alt: 'Blasieholmstorg, Stockholm 1989 — Sivert Lindblom',
-      },
+async function getSiteSettings(): Promise<SiteSettings> {
+  try {
+    const supabase = createAdminClient()
+    if (supabase) {
+      const { data, error } = await supabase.from('settings').select('key, value')
+      if (!error && data?.length) {
+        const raw: Record<string, string> = {}
+        data.forEach(({ key, value }: { key: string; value: string }) => { raw[key] = value ?? '' })
+        return { ...FALLBACK_SETTINGS, ...raw } as SiteSettings
+      }
+    }
+  } catch {}
+  return FALLBACK_SETTINGS
+}
+
+export async function generateMetadata(): Promise<Metadata> {
+  const s = await getSiteSettings()
+
+  const title  = (s.og_title?.trim())        || 'Sivert Lindblom — Skulptör'
+  const desc   = (s.og_description?.trim())  || 'Skulptur, offentlig konst, akvareller och scenografi sedan 1963. Offentliga verk i Stockholm, New York, Malmö och Tokyo.'
+  const metaDesc = (s.meta_description?.trim()) || (s.og_description?.trim()) || 'Officiell webbplats för skulptören Sivert Lindblom (f. 1931). Skulptur, offentlig konst, akvareller och scenografi sedan 1963.'
+  const image  = (s.og_image?.trim())        || DEFAULT_OG_IMAGE
+
+  return {
+    metadataBase: new URL('https://sivertlindblom.se'),
+    title: {
+      default: title,
+      template: '%s | Sivert Lindblom',
+    },
+    description: metaDesc,
+    keywords: [
+      'Sivert Lindblom', 'skulptör', 'sculptor', 'Stockholm', 'Blasieholmstorg',
+      'offentlig konst', 'public art', 'akvareller', 'watercolours', 'scenografi',
     ],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Sivert Lindblom — Skulptör',
-    description:
-      'Skulptur, offentlig konst, akvareller och scenografi sedan 1963.',
-    images: [OG_IMAGE],
-    creator: '@sivertlindblom',
-  },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: { index: true, follow: true },
-  },
+    authors: [{ name: 'Sivert Lindblom' }],
+    creator: 'Sivert Lindblom',
+    openGraph: {
+      title,
+      description: desc,
+      url: 'https://sivertlindblom.se',
+      siteName: 'Sivert Lindblom',
+      type: 'website',
+      locale: 'sv_SE',
+      alternateLocale: ['en_US', 'de_DE', 'fr_FR'],
+      images: [
+        {
+          url: image,
+          width: 1200,
+          height: 630,
+          alt: `${title} — officiell webbplats`,
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description: desc,
+      images: [image],
+      creator: '@sivertlindblom',
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: { index: true, follow: true },
+    },
+  }
 }
 
 export function generateStaticParams() {

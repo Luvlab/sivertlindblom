@@ -14,6 +14,7 @@ const NAV_ITEMS = [
   { href: '/admin/map',            label: 'Karta',              icon: '◎' },
   { href: '/admin/contact',        label: 'Kontakt',            icon: '✉' },
   { href: '/admin/media',          label: 'Media',              icon: '▣' },
+  { href: '/admin/seo',            label: 'SEO & Delning',      icon: '◈' },
   { href: '/admin/settings',       label: 'Inställningar',      icon: '⚙' },
 ]
 

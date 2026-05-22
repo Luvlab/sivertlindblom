@@ -28,7 +28,7 @@ export const exhibitions: Exhibition[] = [
     title: "Vandalorum retrospektiv utställning 2012, 11 juni–28 augusti 2016",
     year: 2016,
     location: "Värnamo",
-    url: "https://sivertlindblom.se/vandalorum-11-juni-28-augusti-2016/",
+    url: "",
     images: [
       "https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/media/2016/07/SAM_7062-1.jpg",
       "https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/media/2016/07/SAM_7066-1.jpg",
@@ -142,7 +142,7 @@ export const exhibitions: Exhibition[] = [
     title: "Kungl. Konstakademien för de fria konsterna, Stockholm 2012",
     year: 2012,
     location: "Stockholm",
-    url: "https://sivertlindblom.se/folio/utstallningar/kungl-konstakademien-for-de-fria-konsterna-stockholm-2012/",
+    url: "",
     images: [
       "https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/SAM_7851.jpg",
       "https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/SAM_7846.jpg",
@@ -326,16 +326,13 @@ export const exhibitions: Exhibition[] = [
     ],
     description:
       "Sedan 70-talet har Sivert Lindblom parallellt med sitt skulpterande och sina offentliga konstnärliga uppdrag sökt metod och teknik för att undersöka hur rumsliga gestalter påverkas av rummet och hur rummet påverkas av de tredimensionella objekten. Utställningen presenterade ca 200 akvarellverk skapade med strängt styrd grafisk teknik under en fritt tillämpad axiometri. Samlingen 'akvareller m.m.' visade 100 utvalda verk i en icke-kronologisk följd i en 70 m lång obruten svit längs galleriväggar, åtföljd av skulpturer som fysiska referenser. Utställningen pågick 6 OKT – 4 NOV 2012 i SALARNA. Katalogtexter skrevs av Catharina Gabrielsson, Peter Cornell och Jan Öqvist.",
-    links: [
-      { prefix: 'SE MER', label: 'från Förberedelserna — inför, under och efter vernissage 2012', url: 'https://sivertlindblom.se/folio/utstallningar/kungl-konstakademien-for-de-fria-konsterna-stockholm-2012/infor-under-och-efter-vernissage-pa-kungl-konstakademin-2012/', external: true },
-    ],
   },
   {
     slug: "korsbarsgarden-gotland-2010",
     title: "Körsbärsgården, Sundre Gotland 2010",
     year: 2010,
     location: "Gotland",
-    url: "https://sivertlindblom.se/folio/utstallningar/korsbarsgarden-gotland-2010/",
+    url: "",
     images: [
       "https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/02/SNC00849.jpg",
       "https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/02/SNC00848-390x390.jpg",
@@ -356,7 +353,7 @@ export const exhibitions: Exhibition[] = [
     title: "Galerie Aronowitsch 2005",
     year: 2005,
     location: "Stockholm",
-    url: "https://sivertlindblom.se/folio/utstallningar/galerie-aronowitsch-2005/",
+    url: "",
     images: [
       "https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Aronowitch061-kopia.jpg",
       "https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Aronow.Mattias01667.jpg",
@@ -376,7 +373,7 @@ export const exhibitions: Exhibition[] = [
     title: "Historiska museet – Kulturåret Stockholm 1998",
     year: 1998,
     location: "Stockholm",
-    url: "https://sivertlindblom.se/folio/utstallningar/historiska-museet-kulturaret-stockholm-1998/",
+    url: "",
     images: [
       "https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Kultur%C3%A5ret-Ume%C3%A5.jpg",
       "https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/img052.jpg",
@@ -390,16 +387,13 @@ export const exhibitions: Exhibition[] = [
     ],
     description:
       "Utställningen på Historiska muséet var en av de 32 utställningar som presenterades under kulturhuvudstadsåret, då Stockholm var Europas kulturhuvudstad 1998. I detta sammanhang ställde Sivert Lindblom ut den enögde – cyklopen.",
-    links: [
-      { prefix: 'LÄS MER', label: 'Arkipelag — Stockholm, Europas kulturhuvudstad 1998', url: 'https://sivertlindblom.se/folio/utstallningar/arkipelag-stockholms-europas-kulturhuvudstad-1998/', external: true },
-    ],
   },
   {
     slug: "eskilstuna-konstforening-1996",
     title: "Eskilstuna konstförening 1996",
     year: 1996,
     location: "Eskilstuna",
-    url: "https://sivertlindblom.se/folio/utstallningar/eskilstuna-konstforening-1996/",
+    url: "",
     images: [
       "https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/02/Sivert-Lindblom-Eskilstuna-011-H-390x390.jpg",
       "https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/02/Sivert-Lindblom-Eskilstuna-005-390x390.jpg",
@@ -421,7 +415,7 @@ export const exhibitions: Exhibition[] = [
     title: "Skövde konsthall 1996",
     year: 1996,
     location: "Skövde",
-    url: "https://sivertlindblom.se/folio/utstallningar/skovde-konsthall-1996/",
+    url: "",
     images: [
       "https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/02/Skannad-bild-150310007.jpg",
       "https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/02/Skannad-bild-150310004.jpg",
@@ -443,7 +437,7 @@ export const exhibitions: Exhibition[] = [
     title: "Lunds konsthall 1993",
     year: 1993,
     location: "Lund",
-    url: "https://sivertlindblom.se/folio/utstallningar/lunds-konsthall-1993/",
+    url: "",
     images: [
       "https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Sivert-Lindblom-Lunds-konsthall-2-390x390.jpg",
       "https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Sivert-Lindblom-Lunds-konsthall-12-390x390.jpg",
@@ -465,19 +459,13 @@ export const exhibitions: Exhibition[] = [
     ],
     description:
       "Parallellt med utställningen på Lunds konsthall visades Lindbloms modeller och skisser samt en retrospektiv av hans offentliga verk på Skissernas museum. Fasaden till Skissernas museum som Sivert utformat blev uppmärksammat i och med dessa utställningar.",
-    links: [
-      { prefix: 'SE ÄVEN', label: 'Skissernas museum 1993 — modeller, skisser och retrospektiv', url: 'https://sivertlindblom.se/skissernas-museum-19/', external: true },
-      { prefix: 'SE HÄR', label: 'Film från Lunds Konsthall — Sivert Lindblom visar modeller på Skissernas museum', url: 'https://sivertlindblom.se/biografi-kontakt/sivert-lindblom-visar-modeller-pa-skissernas-museum-lund-1993/', external: true },
-      { prefix: 'SE FASADEN', label: 'Skissernas museum fasad 1988', url: 'https://sivertlindblom.se/folio/offentliga-arbeten/exteriorer/skissernas-museum-fasad-1988/', external: true },
-      { prefix: 'SE FILMADE INSLAG', label: 'Sivert Lindblom visar modeller på Skissernas museum, Lund 1993', url: 'https://sivertlindblom.se/biografi/sivert-lindblom-visar-modeller-pa-skissernas-museum-lund-1993/', external: true },
-    ],
   },
   {
     slug: "skissernas-museum-1993",
     title: "Skissernas museum 1993",
     year: 1993,
     location: "Lund",
-    url: "https://sivertlindblom.se/skissernas-museum-19/",
+    url: "",
     images: [
       "https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Sivert-Lindblom-Skissenas-museum_0056-390x390.jpg",
       "https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Sivert-Lindblom-Skissenas-museum_0063-390x390.jpg",
@@ -502,20 +490,13 @@ export const exhibitions: Exhibition[] = [
     ],
     description:
       "Parallell utställning till Lunds konsthall med Lindbloms modeller och skisser samt en retrospektiv av hans offentliga verk. Museets fasad mot Sölvesgatan är också formgiven av Lindblom och uppmärksammades i samband med dessa utställningar.",
-    links: [
-      { prefix: 'SE UTSTÄLLNINGEN', label: 'Lunds konsthall 1993', url: 'https://sivertlindblom.se/folio/utstallningar/lunds-konsthall-1993/', external: true },
-      { prefix: 'SE FASADEN', label: 'Skissernas museum fasad 1988', url: 'https://sivertlindblom.se/folio/offentliga-arbeten/exteriorer/skissernas-museum-fasad-1988/', external: true },
-      { prefix: 'SE', label: 'Skissernas museum Lunds fasad 1987', url: 'https://sivertlindblom.se/skissernas-museum-fasad-1987/', external: true },
-      { prefix: 'VAR NÅGONSTANS?', label: 'Location — Skissernas museum, Lund 1988', url: 'http://sivertlindblom.se/folio/offentliga-arbeten/exteriorer/skissernas-museum-fasad-1988/location-skissernas-museum-lund-1988/', external: true },
-      { prefix: 'SE MER', label: 'Sivert Lindblom visar modeller på Skissernas museum, Lund 1993', url: 'http://sivertlindblom.se/biografi/sivert-lindblom-visar-modeller-pa-skissernas-museum-lund-1993/', external: true },
-    ],
   },
   {
     slug: "bildmuseet-umea-1993",
     title: "Bildmuseet Umeå 1993",
     year: 1993,
     location: "Umeå",
-    url: "https://sivertlindblom.se/folio/utstallningar/bildmuseet-umea-1993/",
+    url: "",
     images: [
       "https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Sivert-Lindblom-Ume%C3%A5-2.jpg",
       "https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Sivert-Lindblom-Ume%C3%A5-5.jpg",
@@ -530,7 +511,7 @@ export const exhibitions: Exhibition[] = [
     title: "Galleri Wallner 1987",
     year: 1987,
     location: "Stockholm",
-    url: "https://sivertlindblom.se/folio/utstallningar/galleri-wallner-1987/",
+    url: "",
     images: [
       "https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Sivert-Lindblom-Sivert-Lindblom-Wallner-050.jpg",
       "https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Sivert-Lindblom-Sivert-Lindblom-Wallner-054.jpg",
@@ -547,7 +528,7 @@ export const exhibitions: Exhibition[] = [
     title: "Malmö konsthall 'Metapolis' 1986",
     year: 1986,
     location: "Malmö",
-    url: "https://sivertlindblom.se/folio/utstallningar/malmo-konsthall-metapolis-1986/",
+    url: "",
     images: [
       "https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Bok-Skulptur102-kopia1.jpg",
       "https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Bok-Skulptur104-kopia.jpg",
@@ -562,7 +543,7 @@ export const exhibitions: Exhibition[] = [
     title: "Liljevalchs konsthall 'Skulpturer' Stockholm 1986",
     year: 1986,
     location: "Stockholm",
-    url: "https://sivertlindblom.se/folio/utstallningar/liljevalchs-konsthall-skulpturer-stockholm-1986/",
+    url: "",
     images: [
       "https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Bok-Skulptur107-kopia.jpg",
       "https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Bok-Skulptur109-kopia.jpg",
@@ -604,7 +585,7 @@ export const exhibitions: Exhibition[] = [
     title: "IBID* I Linoljefabriken Danviken Stockholm 1982",
     year: 1983,
     location: "Stockholm",
-    url: "https://sivertlindblom.se/folio/utstallningar/ibid-linoljefabriken-danviken-stockholm-1982/",
+    url: "",
     images: [
       "https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/03/Ibid-1982-.jpg",
       "https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Bok-Skulptur088-kopia.jpg",
@@ -626,7 +607,7 @@ export const exhibitions: Exhibition[] = [
     title: "IBID II, Münchenbryggeriet, Stockholm 1983",
     year: 1983,
     location: "Stockholm",
-    url: "https://sivertlindblom.se/folio/utstallningar/ibid-ii-linoljefabriken-danviken-1983/",
+    url: "",
     images: [
       "https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/03/Ibid-1983-.jpg",
       "https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Bok-Skulptur098-kopia.jpg",
@@ -641,24 +622,20 @@ export const exhibitions: Exhibition[] = [
     title: "Galerie Aronowitsch 1981",
     year: 1981,
     location: "Stockholm",
-    url: "https://sivertlindblom.se/folio/utstallningar/galerie-aronowitsch-1981/",
+    url: "",
     images: [
       "https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Aronowitsch-1.jpg",
       "https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Aronowitsch-.jpg",
     ],
     description:
       "Utställning på Galerie Aronowitsch 1981.",
-    links: [
-      { prefix: 'LÄS', label: 'Lars Nittve recension i SvD', url: 'https://sivertlindblom.se/biografi/recensioner/recension-galleri-aronowitsch-1981-lars-nittve/', external: true },
-      { prefix: 'LÄS', label: 'Torsten Ekboms recension i DN', url: 'https://sivertlindblom.se/biografi/recensioner/recension-galleri-aronowitsch-dn-torsten-ekbom-1981/', external: true },
-    ],
   },
   {
     slug: "galeri-asbaek-kopenhamn-1981",
     title: "Galeri Asbæk, Köpenhamn 1981",
     year: 1981,
     location: "Köpenhamn",
-    url: "https://sivertlindblom.se/texter/andras-texter/stig-larsson-om-sivert-lindblom-galeri-asbaek-kopenhamn-1981/",
+    url: "",
     images: [
       "https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/media/2015/03/Aesbeck-Stig-Larsson-2-.jpg",
       "https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/media/2015/03/Aesbeck-Stig-Larsson-3-.jpg",
@@ -673,7 +650,7 @@ export const exhibitions: Exhibition[] = [
     title: "'Sans Titre' Centre Culturel Suédois (CCS) Paris 1980",
     year: 1980,
     location: "Paris",
-    url: "https://sivertlindblom.se/folio/offentliga-arbeten/exteriorer/sans-titre-centre-culturel-suedois-ccs-paris-1980/",
+    url: "",
     images: [
       "https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Sivert-Lindblom-Paris-l%C3%B6vsittare.jpg",
       "https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Sivert-Lindblom-Paris-sittare.jpg",
@@ -682,27 +659,13 @@ export const exhibitions: Exhibition[] = [
     ],
     description:
       "Utställning på Svenska Kulturcentret i Paris 1980. Inkluderar förord av Lars Bergquist och text av Torsten Ekbom.",
-    links: [
-      {
-        prefix: "LÄS",
-        label: "Lars Bergquist — Préface pour l'exposition CCS 1980",
-        url: "http://sivertlindblom.se/texter/andras-texter/preface-pour-la-exhibition-a-centre-culturel-suedois-lars-berquist-1980/",
-        external: true,
-      },
-      {
-        prefix: "LÄS",
-        label: "Torsten Ekbom — text pour CCS Paris 1980",
-        url: "http://sivertlindblom.se/texter/andras-texter-2/torsten-ekbom-pour-ccs-paris-1980/",
-        external: true,
-      },
-    ],
   },
   {
     slug: "biennale-middelheim-antwerpen-1979",
     title: "Biennale Middelheim Antwerpen 1979",
     year: 1979,
     location: "Antwerpen",
-    url: "https://sivertlindblom.se/folio/utstallningar/biennale-middelheim-antwerpen-1979/",
+    url: "",
     images: [
       "https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Bok-Skulptur068-kopia-2.jpg",
       "https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Bok-Skulptur069-kopia-2.jpg",
@@ -723,7 +686,7 @@ export const exhibitions: Exhibition[] = [
     title: "Galleri Wallner 1978",
     year: 1978,
     location: "Stockholm",
-    url: "https://sivertlindblom.se/folio/utstallningar/galleri-wallner-1978/",
+    url: "",
     images: [
       "https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Wallner-1.jpg",
       "https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Wallner037.jpg",
@@ -736,7 +699,7 @@ export const exhibitions: Exhibition[] = [
     title: "Galleri Doktor Glas, Kungsträdgården 1978",
     year: 1978,
     location: "Stockholm",
-    url: "https://sivertlindblom.se/folio/utstallningar/doktor-glas-kungstradgarden-1978/",
+    url: "",
     images: [
       "https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Skannad-bild-150260013-390x390.jpg",
       "https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Sivert-Lindblom-Dr-Glas-1-390x390.jpg",
@@ -759,21 +722,13 @@ export const exhibitions: Exhibition[] = [
     ],
     description:
       "På Galleri Doktor Glas i Stockholms Kungsträdgården 1978 presenterade Sivert Lindblom sina 'Azteker'-skulpturer och blyarbeten för Stockholmspubliken.",
-    links: [
-      {
-        prefix: "LÄS OM",
-        label: "Azteker i Kalejdoskop Nr 1 1978",
-        url: "https://sivertlindblom.se/texter/azteker-i-kalejdoskop-nr-178/",
-        external: true,
-      },
-    ],
   },
   {
     slug: "kunstmuseum-luzern-live-show-ii-1977",
     title: "Kunstmuseum Luzern 'Live Show II' Schweiz 1977",
     year: 1977,
     location: "Luzern",
-    url: "https://sivertlindblom.se/folio/utstallningar/kunstmuseum-luzern-live-show-ii-schweiz-1977/",
+    url: "",
     images: [
       "https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/03/Sivert-Lindblom-innan-Live-Show.jpg",
       "https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Sivert-Lindblom-Lund-_0088BW.jpg",
@@ -788,18 +743,13 @@ export const exhibitions: Exhibition[] = [
     description:
       "Live Show II var en något mindre version av Live Show som uppfördes på Moderna Museet 1974. Till denna utställning knöts även Sten Eklund med grafiska blad över ett övergivet samhälle och ett antal anonyma, ansiktslösa dockor i olika kroppsliga positioner med titeln: 'Aus den Gesammelten Verken von J.M.G. Paléen' och 'II Fragments zur Kullahusregion'. Konsthistorikern och utställningskuratorn Jean-Christophe Ammann har till katalogen skrivit en initierad text till var och en av konstnärerna. Utställningen väckte uppmärksamhet på grund av sin undergångsstämning som starkt berörde besökarna. Genomfördes med bidrag från NUNSKU (9 oktober – 13 november 1977).",
     body: '"Live Show" war eine 1974 im Moderna Museet in Stockholm organisierte Ausstellung, welche die Künstler Sivert Lindblom, Björn Lövin und Ulrik Samuelson konzipiert und realisiert hatten.\n\n– Für Lindblom bot die Ausstellung Anlass, eine mentale Situation, die bisher vornehmlich in Aquarellen zum Ausdruck gelangte, räumlich umzusetzen.\n\nLövin zeigte neben dem "Esszimmer seiner Eltern" ("To the Memory of the Time") die Maschinerie eines Traumes, der ihn immer wieder beschäftige.\n\nSamuelson setzte einem Heuschochen gleich einem ausgestopften Tier in einen Glaskasten, um die stereotyp die schwedische Landschaft durchsetzenden Schochen endgültig als ein "schwedisches Bild" zu bannen.',
-    links: [
-      { prefix: 'LESEN SIE', label: 'Jean-Christophe Ammann: Katalogtext till Live Show II, Kunstmuseum Luzern', url: 'https://sivertlindblom.se/texter/andras-texter-2/jean-christophe-ammann-katalogtext-till-live-show-ii-kunstmuseum-luzern-1977/', external: true },
-      { prefix: 'LOOK AT', label: 'Catalogue North-Information No 30 — 1977', url: 'https://sivertlindblom.se/texter/katalog-live-show-ii-north-information-no-30-1977/', external: true },
-      { prefix: 'SE ÄVEN', label: 'Live Show, Moderna Museet 1974', url: 'https://sivertlindblom.se/folio/utstallningar/moderna-museet-live-show-stockholm-1974/', external: true },
-    ],
   },
   {
     slug: "edition-leger-malmo-1977",
     title: "Edition Leger Malmö 1977",
     year: 1977,
     location: "Malmö",
-    url: "https://sivertlindblom.se/folio/utstallningar/edition-leger-malmo-1977/",
+    url: "",
     images: [
       "https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/03/Skannad-bild-150610011.jpg",
       "https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/03/Skannad-bild-150610012.jpg",
@@ -812,7 +762,7 @@ export const exhibitions: Exhibition[] = [
     title: "12 svenska skulptörer, Malmö Konsthall 1975",
     year: 1975,
     location: "Malmö",
-    url: "https://sivertlindblom.se/12-svenska-skulptorer-malmo-konsthall-1975/",
+    url: "",
     images: [
       "https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Sivert-Lindblom-Malm%C3%B6-konsthall_0003.jpg",
       "https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Sivert-Lindblom-Malm%C3%B6-konsthall_0004.jpg",
@@ -831,7 +781,7 @@ export const exhibitions: Exhibition[] = [
     title: "Moderna Museet 'Live Show' Stockholm 1974",
     year: 1974,
     location: "Stockholm",
-    url: "https://sivertlindblom.se/folio/utstallningar/moderna-museet-live-show-stockholm-1974/",
+    url: "",
     images: [
       "https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/03/Sivert-Lindblom-innan-Live-Show.jpg",
       "https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Sivert-Lindblom-Moderna-museet-12-390x390.jpg",
@@ -851,20 +801,13 @@ export const exhibitions: Exhibition[] = [
     ],
     description:
       "Live Show på Moderna Museet var en utställning i den tidigare gymnastikhallen i gamla Moderna Museets huvudbyggnad under perioden 4 maj till den 3 juni 1974. Utställningen gjordes av tre konstnärer förutom Sivert: Björn Lövin och Ulrik Samuelson. Live Show var en idéutställning där tre temperament samsades om ett gemensamt och integrerat upplevelselandskap – ett scenograferat tillstånd av rumsligheter med objekt och installationer som anspelade på den omgivande världens sammanstörtning eller likriktning. Museichef Philip von Schantz: 'För konstnärerna bakom utställningen Live Show är konst inget entydigt begrepp. Deras förhållningssätt är intellektuellt, litterärt om man så vill.' Live Show II uppfördes på Kunstmuseum Luzern 9 oktober – 13 november 1977.",
-    links: [
-      { prefix: 'LÄS MER', label: 'Sivert Lindbloms katalogtext — om Live Show, Moderna Museet 1974', url: 'http://sivertlindblom.se/biografi-kontakt/egna-texter/sivert-lindblom-katalogtext-till-live-show-moderna-museet-1974/', external: true },
-      { prefix: 'LÄS MER', label: 'Bengt Nerman om Live Show 1974: Vi är i ett Pompeji', url: 'https://sivertlindblom.se/biografi/recensioner/bengt-nerman-om-live-show-19-maj-1974/', external: true },
-      { prefix: 'SE BILDER', label: 'Live Show II i Luzern, Schweiz', url: 'http://sivertlindblom.se/folio/utstallningar/live-show-ii-luzern-1977-schweiz/', external: true },
-      { prefix: 'LESEN SIE', label: 'Jean-Christophe Ammann: Katalogtext till Live Show II, Kunstmuseum Luzern', url: 'https://sivertlindblom.se/texter/andras-texter-2/jean-christophe-ammann-katalogtext-till-live-show-ii-kunstmuseum-luzern-1977/', external: true },
-      { prefix: 'LÄS', label: 'Jan Håfström om Live Show, Moderna Museet 1976', url: 'https://sivertlindblom.se/texter/andras-texter/jan-hafstrom-om-live-show-moderna-museet-1976/', external: true },
-    ],
   },
   {
     slug: "images-du-nord-dakar-1973",
     title: "Images du Nord – Art Suédois, Musée Dynamique Dakar 1973",
     year: 1973,
     location: "Dakar",
-    url: "https://sivertlindblom.se/folio/utstallningar/images-du-nord-art-suedois-musee-dynamique-dakar-1973/",
+    url: "",
     images: [
       "https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/03/Dakar-1.jpg",
       "https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/03/Dakar-2.jpg",
@@ -908,7 +851,7 @@ Président du Comité National pour les Expositions d'Art Suédois Contemporain 
     title: "Galerie Burén 'Föreslagna åtgärder' Stockholm 1973",
     year: 1973,
     location: "Stockholm",
-    url: "https://sivertlindblom.se/folio/utstallningar/galerie-buren-foreslagna-atgarder-stockholm-1973/",
+    url: "",
     images: [
       "https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Bok-Skulptur051-kopia.jpg",
       "https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Bok-Skulptur055-kopia.jpg",
@@ -922,23 +865,19 @@ Président du Comité National pour les Expositions d'Art Suédois Contemporain 
     title: "Galerie Belle Västerås – vandringsutställningar 1973–75",
     year: 1973,
     location: "Västerås",
-    url: "https://sivertlindblom.se/folio/utstallningar/galerie-belle-malmo-vandringsutstallningar-1973-75/",
+    url: "",
     images: [
       "https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/media/2015/04/Galerie-Belle-.jpg",
     ],
     description:
       "Kommentar till utställningarna ur Paletten 2/79 av Stellan Wiberg. Se även kommentar av Lasse Lasson till utställningen 1974.",
-    links: [
-      { prefix: 'SE ÄVEN', label: 'Kommentarer till utställningarna, Paletten 2/79 av Stellan Wiberg', url: 'https://sivertlindblom.se/folio/utstallningar/galerie-belle-malmo-vandringsutstallningar-1973-75/', external: true },
-      { prefix: 'SE ÄVEN', label: 'Kommentarer av Lasse Lasson 1974', url: 'https://sivertlindblom.se/galerie-belle-vasteras-1974/', external: true },
-    ],
   },
   {
     slug: "swedish-art-1972-tokyo-kyoto",
     title: "Swedish Art 1972 – Tokyo–Kyoto",
     year: 1972,
     location: "Tokyo / Kyoto",
-    url: "https://sivertlindblom.se/swedish-art-1972-tokyo-kyoto/",
+    url: "",
     images: [
       "https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/05/Japan-1972.jpg",
       "https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/05/SW-in-Japan-1.jpg",
@@ -953,7 +892,7 @@ Président du Comité National pour les Expositions d'Art Suédois Contemporain 
     title: "Galerie Gimpel & Hanover, Zürich 1971",
     year: 1971,
     location: "Zürich",
-    url: "https://sivertlindblom.se/folio/utstallningar/galerie-gimpel-hanover-zurich-1971/",
+    url: "",
     images: [
       "https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/media/2015/03/Sivert-Lindblom-Gimpel-Hanover-.jpg",
       "https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/media/2015/06/Tages-Anzeiger-1971-15.10-.jpg",
@@ -982,7 +921,7 @@ Président du Comité National pour les Expositions d'Art Suédois Contemporain 
     title: "Gotlands fornsal 'Ars Baltica IV' Visby 1970",
     year: 1970,
     location: "Visby",
-    url: "https://sivertlindblom.se/folio/utstallningar/gotlands-fornsal-ars-baltica-iv-visby-1970/",
+    url: "",
     images: [
       "https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/media/2015/03/Sivert-Lindblom-Ars-Baltica-1970.jpg",
       "https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/media/2015/03/Sivert-Lindblom-Ars-Baltica-1970-1.jpg",
@@ -1005,7 +944,7 @@ Président du Comité National pour les Expositions d'Art Suédois Contemporain 
     title: "La 34 Biennale di Venezia 1968",
     year: 1968,
     location: "Venedig",
-    url: "https://sivertlindblom.se/folio/utstallningar/la-34-biennale-di-venezia-1968/",
+    url: "",
     images: [
       "https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Sivert424.jpg",
       "https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Sivert333.jpg",
@@ -1026,10 +965,7 @@ Président du Comité National pour les Expositions d'Art Suédois Contemporain 
     description:
       "Den 34 Venedigbiennalen blev ett kaos med kravaller och polischocker. På grund av det övervåld som utspelades på torg och i gränderna i Venedig valde flera utställarna att protestera och stänga sina utställningar. Sivert Lindblom och Arne Jones stängde den svenska paviljongen i protest. Alla av Siverts skulpturer täcktes med svart plast och fönstren täcktes för. Fotografierna är tagna av Pål-Nils Nilsson utom ett foto med Sivert Lindblom, Olle Granath och Arne Jones taget av Wilhelm Rapp.",
     links: [
-      { prefix: 'LÄS MER', label: 'Leif Nyléns erinran — Mot vänster med Venedigs karabinjärer', url: 'https://sivertlindblom.se/dn-23-04-95-leif-nylen-om-venedigbiennalen-1968/', external: true },
-      { prefix: 'LÄS MER', label: 'Bildens emancipation — Sivert Lindbloms kommentarer till händelserna', url: 'https://sivertlindblom.se/texter/bildens-emancipation-sivert-lindblom-ur-paletten-nr-2-1968/', external: true },
       { prefix: 'SE REPORTAGET', label: 'Kristian Romare — utställningsprotesten på svenska paviljongen (SVT)', url: 'https://youtu.be/5GvdoEYox-k', external: true },
-      { prefix: 'SE KATALOGEN', label: 'Venedigbiennalens katalog 1968 — den som i protest aldrig delades ut', url: 'http://sivertlindblom.se/venedigbiennalen-katalog-1968/', external: true },
     ],
   },
   {
@@ -1037,7 +973,7 @@ Président du Comité National pour les Expositions d'Art Suédois Contemporain 
     title: "Konsthallen, Eskilstuna 1968 – Edmund Bade",
     year: 1968,
     location: "Eskilstuna",
-    url: "https://sivertlindblom.se/folio/utstallningar/konsthallen-eskilstuna-1968/",
+    url: "",
     images: [
       "https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/media/2015/03/Eskilstuna-kuriren-X.jpg",
       "https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/03/Sivert-Lindblom-Eskilstuna-1968-.jpg",
@@ -1050,7 +986,7 @@ Président du Comité National pour les Expositions d'Art Suédois Contemporain 
     title: "Galerie Burén 1968",
     year: 1968,
     location: "Stockholm",
-    url: "https://sivertlindblom.se/folio/utstallningar/galerie-buren-1968/",
+    url: "",
     images: [
       "https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/04/Buren-66-4-390x390.jpg",
       "https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/04/Buren-68-2-390x390.jpg",
@@ -1067,7 +1003,7 @@ Président du Comité National pour les Expositions d'Art Suédois Contemporain 
     title: "Här och Nu – Gävle Museum i samarbete med Moderna Museet 1967",
     year: 1967,
     location: "Gävle",
-    url: "https://sivertlindblom.se/folio/utstallningar/har-och-nu-gavle-museum-i-samarbete-med-moderna-museet-1967/",
+    url: "",
     images: [
       "https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/media/2015/03/H%C3%A4r-och-Nu-1.jpg",
       "https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/media/2015/03/H%C3%A4r-och-Nu-2.jpg",
@@ -1081,7 +1017,7 @@ Président du Comité National pour les Expositions d'Art Suédois Contemporain 
     title: "Galleri Löwendahl 1967 med Ulrik Samuelson",
     year: 1967,
     location: "Uppsala",
-    url: "https://sivertlindblom.se/galleri-lowendahl-1967-med-ulrik-samuelson/",
+    url: "",
     images: [
       "https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/05/Galleri-L%C3%B6wendahl-2.jpg",
       "https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/05/L%C3%B6wendahl.jpg",
@@ -1094,7 +1030,7 @@ Président du Comité National pour les Expositions d'Art Suédois Contemporain 
     title: "Hantverkshuset – Västerbottens Läns Konstförening, Umeå 1966",
     year: 1966,
     location: "Umeå",
-    url: "https://sivertlindblom.se/folio/utstallningar/hantverkshuset-vasterbottens-lans-konstforening-umea-1966/",
+    url: "",
     images: [
       "https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/03/Sivert-Lindblom-Hantverkshuset-Ume%C3%A5-1-390x390.jpg",
       "https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/03/Sivert-Lindblom-Hantverkshuset-Ume%C3%A5-2-390x390.jpg",
@@ -1109,7 +1045,7 @@ Président du Comité National pour les Expositions d'Art Suédois Contemporain 
     title: "Galerie Burén 1966",
     year: 1966,
     location: "Stockholm",
-    url: "https://sivertlindblom.se/folio/utstallningar/galerie-buren-1966/",
+    url: "",
     images: [
       "https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Profiler-utst.062-kopia.jpg",
       "https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/04/Buren-66-3.jpg",
@@ -1125,7 +1061,7 @@ Président du Comité National pour les Expositions d'Art Suédois Contemporain 
     title: "Konsthallen Göteborg 1964 med bl.a. Ulrik Samuelson",
     year: 1964,
     location: "Göteborg",
-    url: "https://sivertlindblom.se/konsthallen-goteborg-1964/",
+    url: "",
     images: [
       "https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/02/Konsthallen-Goteborg-.jpg",
     ],
@@ -1137,7 +1073,7 @@ Président du Comité National pour les Expositions d'Art Suédois Contemporain 
     title: "Galerie Burén 1963",
     year: 1963,
     location: "Stockholm",
-    url: "https://sivertlindblom.se/folio/utstallningar/galerie-buren-1963/",
+    url: "",
     images: [
       "https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Buren-1963.jpg",
       "https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Buren-1963-2.jpg",
@@ -1153,7 +1089,7 @@ Président du Comité National pour les Expositions d'Art Suédois Contemporain 
     title: "Norrköpings museum 1962 med Ulrik Samuelson",
     year: 1962,
     location: "Norrköping",
-    url: "https://sivertlindblom.se/folio/utstallningar/norrkopings-museum-1962/",
+    url: "",
     images: [
       "https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Norrk%C3%B6pings-museum-1-1999.jpg",
       "https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Norrk%C3%B6pings-museum-3-1999.jpg",
@@ -1167,7 +1103,7 @@ Président du Comité National pour les Expositions d'Art Suédois Contemporain 
     title: "Vadsbo Museum, Mariestad 1962 – med Ulrik Samuelson",
     year: 1962,
     location: "Mariestad",
-    url: "https://sivertlindblom.se/folio/utstallningar/vadsbo-museum-mariestad-1962/",
+    url: "",
     images: [
       "https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/media/2015/03/Sivert-Lindblom-Mariestad-1962.jpg",
       "https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/media/2015/03/Rodin-1-.jpg",
@@ -1183,7 +1119,7 @@ Président du Comité National pour les Expositions d'Art Suédois Contemporain 
     title: "Skara konstförening 1961 med Ulrik Samuelson och Mårten Hultenberg",
     year: 1961,
     location: "Skara",
-    url: "https://sivertlindblom.se/skara-konstforening-1961-med-ulrik-samuelson-och-marten-hultenberg/",
+    url: "",
     images: [
       "https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/05/Sivert-Ulrik-5.jpg",
       "https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/05/Sivert-Ulrik-1.jpg",
