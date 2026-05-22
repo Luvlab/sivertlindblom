@@ -88,28 +88,15 @@ export default async function TextsPage({
       {/* Saves + restores scroll position so ← back keeps your place */}
       <ScrollSaver storageKey="texts-list-scroll" />
 
-      {/* Page header */}
-      <div className="page-pad" style={{ marginBottom: '2rem' }}>
-        <p style={{ fontSize: 'var(--fs-xs)', letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--color-accent)', marginBottom: '0.75rem' }}>
-          {dict.texts?.subtitle ?? 'Texter'}
-        </p>
-        <h1 style={{ fontFamily: 'Georgia, serif', fontWeight: 400, fontSize: 'clamp(1.8rem,4vw,3rem)' }}>
-          {dict.texts?.title ?? 'Kritik, essays & intervjuer'}
-        </h1>
-        {dict.texts?.intro && (
-          <p style={{ color: 'var(--color-muted)', marginTop: '1rem', maxWidth: '60ch', fontSize: 'var(--fs-base)' }}>
-            {dict.texts.intro}
-          </p>
-        )}
-      </div>
-
-      {/* Tabs */}
-      <TabsLayout tabs={TABS} defaultTab={grouped[0]?.type ?? 'andras_texter'}>
+      {/* Tabs — label + description embedded in tab strip row */}
+      <TabsLayout
+        tabs={TABS}
+        defaultTab={grouped[0]?.type ?? 'andras_texter'}
+        label={dict.texts?.title ?? 'Texter'}
+        description={dict.texts?.intro}
+      >
         {grouped.map((group) => (
           <section key={group.type} className="page-pad" style={{ paddingTop: '2.5rem', paddingBottom: '3rem' }}>
-            <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-2xl)', marginBottom: '2rem' }}>
-              {group.label}
-            </h2>
             <div>
               {group.items.map((t, i) => {
                 const related = t.slug ? RELATED_PATHS[t.slug] : undefined

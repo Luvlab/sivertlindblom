@@ -184,23 +184,12 @@ export default async function ReferencesPage({
 
   return (
     <div className="section-gap">
-      {/* Page header */}
-      <div className="page-pad" style={{ marginBottom: '2rem' }}>
-        <p style={{ fontSize: 'var(--fs-xs)', letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--color-accent)', marginBottom: '0.75rem' }}>
-          {dict.references?.subtitle ?? 'Skulptur & Grafik'}
-        </p>
-        <h1 style={{ fontFamily: 'Georgia, serif', fontWeight: 400, fontSize: 'clamp(1.8rem,4vw,3rem)' }}>
-          {dict.references?.title ?? 'Referensmaterial'}
-        </h1>
-        {dict.references?.intro && (
-          <p style={{ color: 'var(--color-muted)', marginTop: '1rem', maxWidth: '60ch', fontSize: 'var(--fs-base)' }}>
-            {dict.references.intro}
-          </p>
-        )}
-      </div>
-
-      {/* Tabs */}
-      <TabsLayout tabs={TABS} defaultTab="skulptur">
+      {/* Tabs — label embedded in tab strip row */}
+      <TabsLayout
+        tabs={TABS}
+        defaultTab="skulptur"
+        label={dict.references?.title ?? 'Referensmaterial'}
+      >
 
         {/* ── 1. Skulptur ───────────────────────────────────── */}
         <section className="page-pad" style={{ paddingTop: '3rem', paddingBottom: '3rem' }}>
