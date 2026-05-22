@@ -479,6 +479,17 @@ a:hover { opacity: 0.7; }
   100% { transform: rotate(0deg);   }
 }
 
+/* ─── Scroll hint (hero pages) ──────────────────────────────────────── */
+@keyframes scrollDrop {
+  0%   { transform: translateY(0);   opacity: 0.5; }
+  55%  { transform: translateY(7px); opacity: 1;   }
+  100% { transform: translateY(0);   opacity: 0.5; }
+}
+.scroll-hint-chevron {
+  animation: scrollDrop 2.4s ease-in-out infinite;
+}
+}
+
 /* ─── Utilities ──────────────────────────────────────────── */
 .truncate-2 {
   display: -webkit-box;
