@@ -258,3 +258,30 @@ export async function getHeroSlides(): Promise<Array<{ url: string; alt: string 
   }
   return FALLBACK_HERO_SLIDES
 }
+
+// ─── All media images (hero slideshow) ──────────────────────────────────────
+// Collects every image from exhibitions + public works so the home hero can
+// cycle through the full media vault in random order.
+export async function getAllMediaImages(): Promise<Array<{ url: string; alt: string }>> {
+  const [exhibitions, publicWorks] = await Promise.all([
+    getExhibitions(),
+    getPublicWorks(),
+  ])
+
+  const out: Array<{ url: string; alt: string }> = []
+
+  for (const ex of exhibitions) {
+    for (const url of ex.images) {
+      if (url) out.push({ url, alt: ex.title })
+    }
+  }
+
+  for (const work of publicWorks) {
+    for (const img of work.images) {
+      if (img.url) out.push({ url: img.url, alt: img.alt || work.title })
+    }
+  }
+
+  // Fall back to the curated hero slides if nothing came back from the DB
+  return out.length > 0 ? out : FALLBACK_HERO_SLIDES
+}

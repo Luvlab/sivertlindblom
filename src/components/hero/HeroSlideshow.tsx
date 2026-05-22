@@ -52,7 +52,7 @@ function shuffle<T>(arr: T[]): T[] {
 }
 
 const DISPLAY_MS = 6000  // hold time per slide
-const FADE_MS    = 2000  // fade-out duration
+const FADE_MS    = 3000  // fade-out duration — matches exhibitions hero
 
 interface Props {
   children?: React.ReactNode
@@ -79,11 +79,19 @@ interface Props {
  * Because BACK is always opacity:1, the background is never exposed.
  */
 export default function HeroSlideshow({ children, slides }: Props) {
-  const [images]              = useState<typeof ALL_IMAGES>(() => shuffle(slides && slides.length > 0 ? slides : ALL_IMAGES))
+  // Start unshuffled to avoid SSR/client hydration mismatch; shuffle on mount
+  const [images, setImages]     = useState<typeof ALL_IMAGES>(slides && slides.length > 0 ? slides : ALL_IMAGES)
   const [frontIdx, setFrontIdx] = useState(0)
   const [backIdx,  setBackIdx]  = useState(1)
   const [fading,   setFading]   = useState(false)
   const [paused,   setPaused]   = useState(false)
+
+  // Client-side shuffle — runs once after hydration to avoid mismatch
+  useEffect(() => {
+    const src = slides && slides.length > 0 ? slides : ALL_IMAGES
+    setImages(shuffle(src))
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const nextRef     = useRef(2)
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
@@ -193,40 +201,42 @@ export default function HeroSlideshow({ children, slides }: Props) {
         {children}
       </div>
 
-      {/* ── Dot indicators ── */}
-      <div
-        aria-hidden="true"
-        style={{
-          position: 'absolute',
-          bottom: '1.5rem',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          display: 'flex',
-          gap: '6px',
-          zIndex: 4,
-        }}
-      >
-        {images.map((_, i) => (
-          <button
-            key={i}
-            aria-label={`Bild ${i + 1}`}
-            onClick={() => jumpTo(i)}
-            style={{
-              width:      i === activeIdx ? 20 : 6,
-              height:     6,
-              borderRadius: 3,
-              background: i === activeIdx
-                ? 'var(--color-accent)'
-                : 'rgba(255,255,255,0.35)',
-              border:  'none',
-              padding: 0,
-              cursor:  'pointer',
-              transition: 'width 0.3s ease, background 0.3s ease',
-              flexShrink: 0,
-            }}
-          />
-        ))}
-      </div>
+      {/* ── Dot indicators — only shown for small curated sets (≤ 20 slides) ── */}
+      {images.length <= 20 && (
+        <div
+          aria-hidden="true"
+          style={{
+            position: 'absolute',
+            bottom: '1.5rem',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            display: 'flex',
+            gap: '6px',
+            zIndex: 4,
+          }}
+        >
+          {images.map((_, i) => (
+            <button
+              key={i}
+              aria-label={`Bild ${i + 1}`}
+              onClick={() => jumpTo(i)}
+              style={{
+                width:      i === activeIdx ? 20 : 6,
+                height:     6,
+                borderRadius: 3,
+                background: i === activeIdx
+                  ? 'var(--color-accent)'
+                  : 'rgba(255,255,255,0.35)',
+                border:  'none',
+                padding: 0,
+                cursor:  'pointer',
+                transition: 'width 0.3s ease, background 0.3s ease',
+                flexShrink: 0,
+              }}
+            />
+          ))}
+        </div>
+      )}
 
       {/* ── Caption ── */}
       <div

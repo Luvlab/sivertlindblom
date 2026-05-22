@@ -4,7 +4,7 @@ import { locales } from '@/i18n/config'
 import type { Locale } from '@/i18n/config'
 import { FALLBACK_SETTINGS } from '@/lib/db'
 import HeroSlideshow from '@/components/hero/HeroSlideshow'
-import { getHeroSlides } from '@/lib/data-server'
+import { getAllMediaImages } from '@/lib/data-server'
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }))
@@ -18,7 +18,7 @@ export default async function HomePage({
   const { locale } = await params
   const dict = await getDictionary(locale as Locale)
   const settings = FALLBACK_SETTINGS
-  const heroSlides = await getHeroSlides()
+  const heroSlides = await getAllMediaImages()
 
   const sections = [
     {
