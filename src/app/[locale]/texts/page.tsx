@@ -84,7 +84,7 @@ export default async function TextsPage({
   }))
 
   return (
-    <div style={{ paddingBottom: '5rem', marginTop: 'calc(-1.5rem + 1px)' }}>
+    <div style={{ paddingBottom: '5rem', marginTop: 'calc(-1 * (var(--subnav-h) + 1.5rem - 1px))' }}>
       {/* Saves + restores scroll position so ← back keeps your place */}
       <ScrollSaver storageKey="texts-list-scroll" />
 

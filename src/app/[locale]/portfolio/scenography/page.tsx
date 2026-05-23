@@ -125,7 +125,7 @@ export default async function ScenographyPage({
   return (
     <div>
       {/* Hero — full viewport, bleeds under header + subnav */}
-      <div style={{ position: 'relative', height: '100vh', minHeight: 480, overflow: 'hidden', marginBottom: '4rem' }}>
+      <div style={{ position: 'relative', height: '100vh', minHeight: 480, overflow: 'hidden', marginBottom: '4rem', marginTop: 'calc(-1 * (var(--subnav-h) + 1.5rem - 1px))' }}>
         <ExhibitionsHeroSlideshow images={heroImages} />
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.45) 55%, rgba(0,0,0,0.88) 100%)' }} />
 
