@@ -69,7 +69,6 @@ export default async function PublicWorkDetailPage({
           minHeight: 320,
           overflow: 'hidden',
           marginBottom: '4rem',
-          marginTop: 'calc(-1 * (var(--header-h) + 1.5rem))',
         }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
