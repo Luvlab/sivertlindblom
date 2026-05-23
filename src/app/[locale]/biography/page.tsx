@@ -167,56 +167,37 @@ export default async function BiographyPage({
 
   return (
     <div style={{ paddingBottom: '5rem', marginTop: 'calc(-1.5rem + 1px)' }}>
-      {/* ── Intro header with portrait ─────────────────────────── */}
-      <div
-        className="page-pad"
-        style={{
-          display: 'flex',
-          alignItems: 'stretch',
-          gap: '2.5rem',
-          marginBottom: '2rem',
-        }}
-      >
-        {/* Text block */}
-        <div style={{ flex: 1 }}>
-          <p style={{ fontSize: 'var(--fs-xs)', letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--color-accent)', marginBottom: '0.75rem' }}>
-            {dict.nav?.biography ?? 'Biografi'}
-          </p>
-          <h1 style={{ fontFamily: 'Georgia, serif', fontWeight: 400, fontSize: 'clamp(1.8rem,4vw,3rem)', marginBottom: '1rem' }}>
-            {dict.biography?.title ?? 'Sivert Lindblom'}
-          </h1>
-          {(bioIntro || dict.biography?.intro) && (
-            <p style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-base)', lineHeight: 1.8 }}>
-              {bioIntro || dict.biography?.intro}
-            </p>
-          )}
-        </div>
-
-        {/* Portrait image — same height as text block */}
-        <div
-          style={{
-            flexShrink: 0,
-            width: 'clamp(120px, 16vw, 220px)',
-            position: 'relative',
-            borderRadius: '2px',
-            overflow: 'hidden',
-          }}
-        >
-          <Image
-            src={PORTRAIT_URL}
-            alt="Sivert Lindblom. Foto: Mathias Johansson"
-            fill
-            sizes="(max-width: 640px) 120px, 220px"
-            style={{ objectFit: 'cover', objectPosition: 'top center' }}
-          />
-        </div>
-      </div>
-
-      {/* ── Tabs ───────────────────────────────────────────────── */}
+      {/* ── Tabs — strip sits flush under fixed header ─────────── */}
       <TabsLayout tabs={TABS} defaultTab="biografi">
 
-        {/* ── Tab 1: Biografi (timeline) ── */}
+        {/* ── Tab 1: Biografi ── */}
         <section className="page-pad" style={{ paddingTop: '2.5rem', paddingBottom: '3rem' }}>
+
+          {/* Intro header with portrait */}
+          <div style={{ display: 'flex', alignItems: 'stretch', gap: '2.5rem', marginBottom: '2.5rem' }}>
+            <div style={{ flex: 1 }}>
+              <p style={{ fontSize: 'var(--fs-xs)', letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--color-accent)', marginBottom: '0.75rem' }}>
+                {dict.nav?.biography ?? 'Biografi'}
+              </p>
+              <h1 style={{ fontFamily: 'Georgia, serif', fontWeight: 400, fontSize: 'clamp(1.8rem,4vw,3rem)', marginBottom: '1rem' }}>
+                {dict.biography?.title ?? 'Sivert Lindblom'}
+              </h1>
+              {(bioIntro || dict.biography?.intro) && (
+                <p style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-base)', lineHeight: 1.8 }}>
+                  {bioIntro || dict.biography?.intro}
+                </p>
+              )}
+            </div>
+            <div style={{ flexShrink: 0, width: 'clamp(120px, 16vw, 220px)', position: 'relative', borderRadius: '2px', overflow: 'hidden' }}>
+              <Image
+                src={PORTRAIT_URL}
+                alt="Sivert Lindblom. Foto: Mathias Johansson"
+                fill
+                sizes="(max-width: 640px) 120px, 220px"
+                style={{ objectFit: 'cover', objectPosition: 'top center' }}
+              />
+            </div>
+          </div>
           <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-2xl)', marginBottom: '2rem' }}>
             {dict.biography?.timeline ?? 'Kronologi'}
           </h2>
