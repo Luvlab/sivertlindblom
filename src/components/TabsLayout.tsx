@@ -66,8 +66,10 @@ export default function TabsLayout({ tabs, defaultTab, label, description, child
           overflowX: 'auto',
           scrollbarWidth: 'none',
           WebkitOverflowScrolling: 'touch',
-          background: 'var(--color-bg)',
-          borderBottom: '1px solid var(--color-border)',
+          background: 'rgba(10,10,10,0.72)',
+          backdropFilter: 'blur(12px)',
+          WebkitBackdropFilter: 'blur(12px)',
+          borderBottom: '1px solid rgba(255,255,255,0.05)',
         }}
       >
         {/* Optional section label before tabs */}

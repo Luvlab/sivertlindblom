@@ -123,14 +123,15 @@ a:hover { opacity: 0.7; }
   top: 0; left: 0; right: 0;
   height: var(--header-h);
   z-index: 300;
-  background: var(--color-bg);
-  border-bottom: none;
+  background: rgba(10,10,10,0.72);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
   display: flex;
   align-items: center;
   --font-scale: 1;
 }
 
-/* No gradient scrim needed — solid black bar covers both header and subnav */
 .site-header::before { display: none; }
 
 /* ─── Hero ──────────────────────────────────────────────── */
@@ -611,7 +612,10 @@ a:hover { opacity: 0.7; }
   left: 0; right: 0;
   height: var(--subnav-h);
   z-index: 299;
-  background: var(--color-bg);
+  background: rgba(10,10,10,0.68);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
   border-bottom: none;
   --font-scale: 1;
 }
