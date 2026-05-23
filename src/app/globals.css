@@ -123,32 +123,15 @@ a:hover { opacity: 0.7; }
   top: 0; left: 0; right: 0;
   height: var(--header-h);
   z-index: 300;
-  /* fully transparent — gradient scrim below handles legibility */
-  background: transparent;
+  background: #000;
   border-bottom: none;
   display: flex;
   align-items: center;
-  /* Lock font scale to 1 inside the header so it never reflows
-     regardless of the user's chosen font size */
   --font-scale: 1;
 }
 
-/* Top gradient scrim — spans both the header AND the sub-nav so the
-   gradient is continuous from top to the bottom of the sub-nav with
-   no visible line or gap between the two fixed bars. */
-.site-header::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: calc(var(--header-h) + var(--subnav-h));
-  background: linear-gradient(
-    180deg,
-    rgba(0,0,0,0.72) 0%,
-    rgba(0,0,0,0)     100%
-  );
-  pointer-events: none;
-  z-index: -1;
-}
+/* No gradient scrim needed — solid black bar covers both header and subnav */
+.site-header::before { display: none; }
 
 /* ─── Hero ──────────────────────────────────────────────── */
 .hero {
@@ -630,7 +613,7 @@ a:hover { opacity: 0.7; }
   left: 0; right: 0;
   height: var(--subnav-h);
   z-index: 299;
-  background: transparent;
+  background: #000;
   border-bottom: none;
   --font-scale: 1;
 }
