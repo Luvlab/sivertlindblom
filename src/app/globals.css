@@ -136,6 +136,9 @@ a:hover { opacity: 0.7; }
 /* ─── Hero ──────────────────────────────────────────────── */
 .hero {
   height: 100dvh;
+  /* Pull up past the subnav reservation — home page has no subnav,
+     so the main-content padding leaves a gap that the hero must reclaim. */
+  margin-top: calc(-1 * (var(--subnav-h) + 1.5rem - 1px));
   width: 100%;
   display: flex;
   flex-direction: column;

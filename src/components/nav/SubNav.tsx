@@ -26,6 +26,8 @@ export default function SubNav({ locale, dict }: Props) {
 
   if (!pathname) return null
   if (pathname.startsWith('/admin')) return null
+  // Home page has no submenu — hide the bar entirely
+  if (pathname === `/${locale}` || pathname === `/${locale}/`) return null
 
   // Note: references, texts, and biography use TabsLayout for in-page navigation —
   // no SubNav duplication needed for those routes.
