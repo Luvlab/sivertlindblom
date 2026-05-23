@@ -6,6 +6,7 @@ import type { Locale } from '@/i18n/config'
 import PortfolioSlideshow from '@/components/portfolio/PortfolioSlideshow'
 import SculptureMap from '@/components/SculptureMap'
 import { getMapPins, getPublicWorks } from '@/lib/data-server'
+import type { PublicWork } from '@/lib/public-works'
 
 export const metadata: Metadata = { title: 'Public Works' }
 
@@ -13,57 +14,26 @@ export function generateStaticParams() {
   return locales.map((locale) => ({ locale }))
 }
 
-const EXTERIORS: Array<{ title: string; year: number; location: string; slug?: string }> = [
-  { title: 'Blasieholmstorg — Hästar i brons', year: 1989, location: 'Stockholm',  slug: 'blasieholmstorg-1989' },
-  { title: 'Bältesspännarparken',               year: 2013, location: 'Göteborg',  slug: 'baltesspaennarparken-2013' },
-  { title: 'Nobelmonument',                     year: 2003, location: 'New York',  slug: 'nobelmonument-new-york-2003' },
-  { title: 'Gustav Adolfs torg, fontäner',      year: 2002, location: 'Malmö',     slug: 'gustav-adolfs-torg-2002' },
-  { title: 'Eskilstuna rondellen — Profilen',   year: 2002, location: 'Eskilstuna' },
-  { title: 'Potatisåkern — Profilen',           year: 2001, location: 'Malmö' },
-  { title: 'Kungsträdgården, norra delen',      year: 1997, location: 'Stockholm' },
-  { title: 'Cavallobrunnen, Resecentrum',       year: 1995, location: 'Skövde' },
-  { title: 'Haga Norra gångbro',                year: 1993, location: 'Stockholm' },
-  { title: 'Kungliga Biblioteket',              year: 1998, location: 'Stockholm' },
-  { title: 'Sergels torg — Sergel monumentet',  year: 1998, location: 'Stockholm' },
-  { title: 'Synagoga — Förintelsenmonumentet',  year: 1998, location: 'Stockholm' },
-  { title: 'SEB Banken Huvudkontor',            year: 1992, location: 'Rissne' },
-  { title: 'Sveriges ambassad, entré',          year: 1990, location: 'Tokyo' },
-  { title: 'Stockholms Universitet Campus',     year: 1987, location: 'Stockholm',  slug: 'frescati-1987' },
-  { title: 'Lindros gård / Kvarteret Svärdet',  year: 1988, location: 'Stockholm', slug: 'ringvagen-1989' },
-  { title: 'SAS Huvudkontor, Frösundavik',      year: 1988, location: 'Stockholm' },
-  { title: 'Skissernas Museum, fasad',          year: 1988, location: 'Lund' },
-  { title: 'Pharmacia entréplats',              year: 1984, location: 'Uppsala' },
-  { title: 'Fersenska Palatset, Handelsbanken', year: 1975, location: 'Stockholm' },
-  { title: 'Garnisonen',                        year: 1972, location: 'Stockholm' },
-]
-
-const INTERIORS: Array<{ title: string; year: number; location: string; slug?: string }> = [
-  { title: 'Nobel Forum',                           year: 1993, location: 'Solna' },
-  { title: 'Berns Ljusgård',                        year: 1991, location: 'Stockholm' },
-  { title: 'Västra skogen T-banestation',           year: 1975, location: 'Stockholm', slug: 'vastra-skogen-1975' },
-  { title: 'Sveriges Riksbank',                     year: 1973, location: 'Stockholm' },
-  { title: 'Riksbyggen/Göta Ark, Medborgarplatsen', year: 1984, location: 'Stockholm' },
-  { title: 'Tetra Pak',                             year: 1984, location: 'Lausanne' },
-  { title: 'Göteborgs Universitetsbibliotek',       year: 1985, location: 'Göteborg' },
-  { title: 'NK Ljusgård',                           year: 1968, location: 'Stockholm' },
-  { title: 'Stadsteatern Stockholm',                year: 1970, location: 'Stockholm' },
-]
-
 function WorkCard({
-  title, year, location, slug, locale, images, idx,
+  work,
+  locale,
+  idx,
 }: {
-  title: string; year: number; location: string; slug?: string; locale: string; images?: string[]; idx: number
+  work: PublicWork
+  locale: string
+  idx: number
 }) {
-  const hasImages = images && images.length > 0
+  const images = work.images.slice(0, 8).map((i) => i.url)
+  const hasImages = images.length > 0
 
   const inner = (
     <>
-      {/* Thumbnail slideshow */}
+      {/* Thumbnail */}
       {hasImages ? (
         <div style={{ aspectRatio: '4/3', position: 'relative', overflow: 'hidden', borderBottom: '1px solid var(--color-border)' }}>
           <PortfolioSlideshow
             images={images}
-            alt={title}
+            alt={work.title}
             objectFit="cover"
             interval={4000 + idx * 350}
           />
@@ -78,16 +48,16 @@ function WorkCard({
           borderBottom: '1px solid var(--color-border)',
         }}>
           <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-border)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
-            {year}
+            {work.year}
           </span>
         </div>
       )}
 
       {/* Text */}
       <div style={{ padding: '1rem 1.25rem' }}>
-        <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-accent)', fontFamily: 'Georgia, serif', lineHeight: 1 }}>{year}</span>
-        <div style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-text)', lineHeight: 1.35, marginTop: '0.3rem' }}>{title}</div>
-        <div style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', marginTop: '0.25rem' }}>{location}</div>
+        <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-accent)', fontFamily: 'Georgia, serif', lineHeight: 1 }}>{work.year}</span>
+        <div style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-text)', lineHeight: 1.35, marginTop: '0.3rem' }}>{work.title}</div>
+        <div style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', marginTop: '0.25rem' }}>{work.location}</div>
       </div>
     </>
   )
@@ -100,14 +70,11 @@ function WorkCard({
     borderBottom: '1px solid var(--color-border)',
   } as const
 
-  if (slug) {
-    return (
-      <Link href={`/${locale}/portfolio/public-works/${slug}`} className="card-hover" style={cardStyle}>
-        {inner}
-      </Link>
-    )
-  }
-  return <div className="card-hover" style={cardStyle}>{inner}</div>
+  return (
+    <Link href={`/${locale}/portfolio/public-works/${work.slug}`} className="card-hover" style={cardStyle}>
+      {inner}
+    </Link>
+  )
 }
 
 export default async function PublicWorksPage({
@@ -122,21 +89,18 @@ export default async function PublicWorksPage({
     getPublicWorks(),
   ])
 
-  // Build slug → image URLs lookup from DB works
-  const imagesBySlug: Record<string, string[]> = {}
-  for (const w of allWorks) {
-    if (w.slug && w.images.length > 0) {
-      imagesBySlug[w.slug] = w.images.slice(0, 8).map((i) => i.url)
-    }
-  }
+  const exteriors = allWorks
+    .filter((w) => w.category === 'exterior')
+    .sort((a, b) => parseInt(b.year) - parseInt(a.year))
+
+  const interiors = allWorks
+    .filter((w) => w.category === 'interior')
+    .sort((a, b) => parseInt(b.year) - parseInt(a.year))
 
   const counts = {
     total: locations.length,
     countries: new Set(locations.map((l) => l.country)).size,
   }
-
-  const sortedExteriors = [...EXTERIORS].sort((a, b) => b.year - a.year)
-  const sortedInteriors = [...INTERIORS].sort((a, b) => b.year - a.year)
 
   return (
     <div>
@@ -156,10 +120,10 @@ export default async function PublicWorksPage({
         </div>
       </div>
 
-      {/* ── Map — natural height, no 100dvh wrapper ───────────── */}
+      {/* ── Map ───────────────────────────────────────────────── */}
       <SculptureMap locations={locations} locale={locale} />
 
-      {/* ── Exteriörer — thumbnail grid ───────────────────────── */}
+      {/* ── Exteriörer ────────────────────────────────────────── */}
       <div style={{ borderTop: '1px solid var(--color-border)', borderBottom: '1px solid var(--color-border)' }}>
         <div className="page-pad" style={{
           display: 'flex',
@@ -173,7 +137,7 @@ export default async function PublicWorksPage({
             {dict.portfolio?.exteriors ?? 'Exteriörer'}
           </h2>
           <span style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-sm)' }}>
-            {EXTERIORS.length} {dict.portfolio?.count_works ?? 'verk'}
+            {exteriors.length} {dict.portfolio?.count_works ?? 'verk'}
           </span>
         </div>
         <div className="page-pad" style={{
@@ -182,19 +146,13 @@ export default async function PublicWorksPage({
           paddingTop: '1.5rem',
           paddingBottom: '1.5rem',
         }}>
-          {sortedExteriors.map((w, i) => (
-            <WorkCard
-              key={w.title}
-              {...w}
-              locale={locale}
-              images={w.slug ? imagesBySlug[w.slug] : undefined}
-              idx={i}
-            />
+          {exteriors.map((w, i) => (
+            <WorkCard key={w.slug} work={w} locale={locale} idx={i} />
           ))}
         </div>
       </div>
 
-      {/* ── Interiörer — thumbnail grid ───────────────────────── */}
+      {/* ── Interiörer ────────────────────────────────────────── */}
       <div style={{ borderBottom: '1px solid var(--color-border)' }}>
         <div className="page-pad" style={{
           display: 'flex',
@@ -208,7 +166,7 @@ export default async function PublicWorksPage({
             {dict.portfolio?.interiors ?? 'Interiörer'}
           </h2>
           <span style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-sm)' }}>
-            {INTERIORS.length} {dict.portfolio?.count_works ?? 'verk'}
+            {interiors.length} {dict.portfolio?.count_works ?? 'verk'}
           </span>
         </div>
         <div className="page-pad" style={{
@@ -217,14 +175,8 @@ export default async function PublicWorksPage({
           paddingTop: '1.5rem',
           paddingBottom: '1.5rem',
         }}>
-          {sortedInteriors.map((w, i) => (
-            <WorkCard
-              key={w.title}
-              {...w}
-              locale={locale}
-              images={w.slug ? imagesBySlug[w.slug] : undefined}
-              idx={i}
-            />
+          {interiors.map((w, i) => (
+            <WorkCard key={w.slug} work={w} locale={locale} idx={i} />
           ))}
         </div>
       </div>
