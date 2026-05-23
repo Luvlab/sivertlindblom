@@ -326,6 +326,7 @@ export const SCULPTURE_LOCATIONS: SculptureLocation[] = [
     lat: 59.3556,
     lng: 18.0279,
     type: 'exterior',
+    slug: 'norra-begravningsplatsen-solna',
     description: 'Skulptur vid Norra Begravningsplatsen, Solna.',
   },
 
@@ -484,7 +485,7 @@ export const SCULPTURE_LOCATIONS: SculptureLocation[] = [
     lng: 18.7027,
     type: 'interior',
     description: 'Konstverk i Norrtälje Stadsbibliotek / Roslagens Sparbank, Billborgsgatan 3.',
-    slug: 'roslagens-sparbank-norrtalje-2004',
+    slug: 'norrtalje-stadsbibliotek',
   },
 
   // ── Other Swedish cities ─────────────────────────────────────

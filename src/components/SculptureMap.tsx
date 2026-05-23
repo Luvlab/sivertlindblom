@@ -60,10 +60,10 @@ export default function SculptureMap({ locations, locale }: Props) {
     const L = window.L
     if (!L || !L.markerClusterGroup) return
 
-    // Init map centered on southern Sweden + international coverage
+    // Init map — will fitBounds to all markers after adding them
     const map = L.map(mapRef.current, {
       center: [56.5, 14.5],
-      zoom: 5,
+      zoom: 3,
       zoomControl: true,
     })
 
@@ -157,6 +157,12 @@ export default function SculptureMap({ locations, locale }: Props) {
     })
 
     clusterGroup.addTo(map)
+
+    // Fit view to all markers so every project (incl. NY, Tokyo) is visible
+    if (locations.length > 0) {
+      const bounds = L.latLngBounds(locations.map((l: SculptureLocation) => [l.lat, l.lng]))
+      map.fitBounds(bounds, { padding: [40, 40], maxZoom: 6 })
+    }
 
     return () => {
       map.remove()
