@@ -183,7 +183,7 @@ export default async function ReferencesPage({
   ]
 
   return (
-    <div className="section-gap">
+    <div style={{ paddingBottom: '5rem', marginTop: 'calc(-1.5rem + 1px)' }}>
       {/* Tabs — label embedded in tab strip row */}
       <TabsLayout
         tabs={TABS}
