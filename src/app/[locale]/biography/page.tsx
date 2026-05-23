@@ -166,7 +166,7 @@ export default async function BiographyPage({
   ])
 
   return (
-    <div className="section-gap">
+    <div style={{ paddingBottom: '5rem', marginTop: 'calc(-1.5rem + 1px)' }}>
       {/* ── Intro header with portrait ─────────────────────────── */}
       <div
         className="page-pad"

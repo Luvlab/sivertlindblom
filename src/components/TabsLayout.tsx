@@ -55,29 +55,32 @@ export default function TabsLayout({ tabs, defaultTab, label, description, child
 
   return (
     <div>
-      {/* ── Tab strip ────────────────────────────────────────── */}
+      {/* ── Tab strip — matches SubNav styling ───────────────── */}
       <div
         className="page-pad"
         style={{
           display: 'flex',
           alignItems: 'center',
+          height: 'var(--subnav-h)',
           gap: 0,
           overflowX: 'auto',
-          borderBottom: '1px solid var(--color-border)',
           scrollbarWidth: 'none',
           WebkitOverflowScrolling: 'touch',
+          background: 'var(--color-bg)',
+          borderBottom: '1px solid var(--color-border)',
         }}
       >
         {/* Optional section label before tabs */}
         {label && (
           <span style={{
-            fontFamily: 'Georgia, serif',
-            fontSize: 'var(--fs-sm)',
-            color: 'var(--color-text)',
+            fontSize: '0.69rem',
+            letterSpacing: '0.1em',
+            textTransform: 'uppercase',
+            color: 'rgba(255,255,255,0.92)',
             whiteSpace: 'nowrap',
-            paddingRight: '1.5rem',
-            paddingBottom: '1px',
+            paddingRight: '1rem',
             flexShrink: 0,
+            opacity: 0.62,
           }}>
             {label}
           </span>
@@ -87,9 +90,9 @@ export default function TabsLayout({ tabs, defaultTab, label, description, child
         {label && (
           <span style={{
             width: 1,
-            height: '1.1em',
+            height: '1em',
             background: 'var(--color-border)',
-            marginRight: '0.5rem',
+            marginRight: '0.25rem',
             flexShrink: 0,
           }} />
         )}
@@ -106,32 +109,37 @@ export default function TabsLayout({ tabs, defaultTab, label, description, child
                 aria-controls={`panel-${tab.id}`}
                 onClick={() => switchTab(tab.id)}
                 style={{
-                  background: 'none',
+                  background: isActive ? 'rgba(255,255,255,0.07)' : 'none',
                   border: 'none',
-                  borderBottom: isActive
-                    ? '2px solid var(--color-accent)'
-                    : '2px solid transparent',
+                  borderRadius: 4,
                   cursor: 'pointer',
-                  padding: '0.85rem 1.35rem',
-                  fontSize: 'var(--fs-sm)',
-                  fontFamily: isActive ? 'Georgia, serif' : 'inherit',
-                  color: isActive ? 'var(--color-text)' : 'var(--color-muted)',
-                  marginBottom: '-1px',
+                  padding: '0.25rem 0.75rem',
+                  margin: '0 0.1rem',
+                  fontSize: '0.69rem',
+                  letterSpacing: '0.1em',
+                  textTransform: 'uppercase',
+                  color: isActive ? 'var(--color-accent)' : 'rgba(255,255,255,0.92)',
+                  opacity: isActive ? 1 : 0.62,
                   whiteSpace: 'nowrap',
-                  transition: 'color 0.15s, border-color 0.15s',
+                  transition: 'color 0.15s, background 0.15s, opacity 0.15s',
                   flexShrink: 0,
+                }}
+                onMouseEnter={e => {
+                  if (!isActive) {
+                    (e.currentTarget as HTMLButtonElement).style.opacity = '1'
+                    ;(e.currentTarget as HTMLButtonElement).style.color = '#fff'
+                  }
+                }}
+                onMouseLeave={e => {
+                  if (!isActive) {
+                    (e.currentTarget as HTMLButtonElement).style.opacity = '0.62'
+                    ;(e.currentTarget as HTMLButtonElement).style.color = 'rgba(255,255,255,0.92)'
+                  }
                 }}
               >
                 {tab.label}
                 {tab.count !== undefined && (
-                  <span
-                    style={{
-                      marginLeft: '0.4rem',
-                      fontSize: 'var(--fs-xs)',
-                      color: 'var(--color-muted)',
-                      opacity: 0.7,
-                    }}
-                  >
+                  <span style={{ marginLeft: '0.35rem', opacity: 0.55 }}>
                     {tab.count}
                   </span>
                 )}
@@ -143,11 +151,11 @@ export default function TabsLayout({ tabs, defaultTab, label, description, child
         {/* Optional description after tabs */}
         {description && (
           <span style={{
-            fontSize: 'var(--fs-xs)',
-            color: 'var(--color-muted)',
+            fontSize: '0.69rem',
+            letterSpacing: '0.06em',
+            color: 'rgba(255,255,255,0.45)',
             whiteSpace: 'nowrap',
-            paddingLeft: '1.5rem',
-            paddingBottom: '1px',
+            paddingLeft: '1rem',
             flexShrink: 0,
             maxWidth: '28ch',
             overflow: 'hidden',
