@@ -24,7 +24,7 @@ export default async function FotografierPage({
   const dict = await getDictionary(locale as Locale)
 
   return (
-    <div className="section-gap">
+    <div style={{ paddingBottom: '5rem', marginTop: 'calc(-1.5rem + 1px)' }}>
       <div className="page-pad" style={{ marginBottom: '3rem' }}>
         <Link href={`/${locale}/references`} className="back-link">
           <span className="back-link-arrow">←</span>
