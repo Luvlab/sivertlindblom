@@ -123,7 +123,7 @@ a:hover { opacity: 0.7; }
   top: 0; left: 0; right: 0;
   height: var(--header-h);
   z-index: 300;
-  background: #000;
+  background: var(--color-bg);
   border-bottom: none;
   display: flex;
   align-items: center;
@@ -613,7 +613,7 @@ a:hover { opacity: 0.7; }
   left: 0; right: 0;
   height: var(--subnav-h);
   z-index: 299;
-  background: #000;
+  background: var(--color-bg);
   border-bottom: none;
   --font-scale: 1;
 }
