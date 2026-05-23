@@ -93,12 +93,16 @@ export async function getPublicWorks(): Promise<PublicWork[]> {
       .select('*, public_work_images(url, alt, sort_order)')
       .order('sort_order', { ascending: true })
     if (!error && data) {
-      return data.map((w) =>
+      const dbWorks = data.map((w) =>
         dbRowToPublicWork(
           w as Record<string, unknown>,
           (w.public_work_images as Array<{ url: string; alt: string | null; sort_order: number }>) ?? []
         )
       )
+      // Merge: DB rows take priority; static works not in DB are appended
+      const dbSlugs = new Set(dbWorks.map((w) => w.slug))
+      const staticOnly = STATIC_PUBLIC_WORKS.filter((w) => !dbSlugs.has(w.slug))
+      return [...dbWorks, ...staticOnly]
     }
   }
   return STATIC_PUBLIC_WORKS

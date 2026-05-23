@@ -75,8 +75,8 @@ export default function TabsLayout({ tabs, defaultTab, label, description, child
         {/* Optional section label before tabs */}
         {label && (
           <span style={{
-            fontSize: '0.69rem',
-            letterSpacing: '0.1em',
+            fontSize: 'var(--fs-sm)',
+            letterSpacing: '0.08em',
             textTransform: 'uppercase',
             color: 'rgba(255,255,255,0.92)',
             whiteSpace: 'nowrap',
@@ -117,8 +117,8 @@ export default function TabsLayout({ tabs, defaultTab, label, description, child
                   cursor: 'pointer',
                   padding: '0.25rem 0.75rem',
                   margin: '0 0.1rem',
-                  fontSize: '0.69rem',
-                  letterSpacing: '0.1em',
+                  fontSize: 'var(--fs-sm)',
+                  letterSpacing: '0.08em',
                   textTransform: 'uppercase',
                   color: isActive ? 'var(--color-accent)' : 'rgba(255,255,255,0.92)',
                   opacity: isActive ? 1 : 0.62,
