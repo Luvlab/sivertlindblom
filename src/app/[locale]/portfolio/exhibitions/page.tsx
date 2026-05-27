@@ -35,7 +35,7 @@ export default async function ExhibitionsPage({
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.45) 55%, rgba(0,0,0,0.88) 100%)' }} />
 
         {/* Title block */}
-        <div className="page-pad" style={{ position: 'absolute', bottom: '3.5rem', left: 0, right: 0 }}>
+        <div className="page-pad" style={{ position: 'absolute', bottom: '3rem', left: 0, right: 0 }}>
           <Link href={`/${locale}/portfolio`} className="back-link" style={{ color: 'rgba(255,255,255,0.85)' }}>
             <span className="back-link-arrow">←</span>
             <span className="back-link-label">{dict.nav?.portfolio ?? 'Portfolio'}</span>
@@ -46,30 +46,21 @@ export default async function ExhibitionsPage({
           <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: 'var(--fs-sm)' }}>
             {sorted.length} {dict.portfolio?.cat_exhibitions?.toLowerCase() ?? 'utställningar'}, 1961–2016
           </p>
-        </div>
 
-        {/* Scroll indicator */}
-        <div style={{
-          position: 'absolute',
-          bottom: '1.1rem',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          gap: '0.3rem',
-          pointerEvents: 'none',
-          zIndex: 2,
-        }}>
-          <div style={{ width: 1, height: 22, background: 'rgba(255,255,255,0.22)' }} />
-          <svg
-            className="scroll-hint-chevron"
-            width="14" height="8" viewBox="0 0 14 8"
-            fill="none" xmlns="http://www.w3.org/2000/svg"
-            style={{ color: 'rgba(200,169,126,0.75)' }}
-          >
-            <path d="M1 1L7 7L13 1" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
+          {/* Scroll-down arrow — left-aligned under titles */}
+          <div style={{
+            marginTop: '1.5rem',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'flex-start',
+            opacity: 0.7,
+            animation: 'scrollDrop 2.4s ease-in-out infinite',
+          }}>
+            <svg width="20" height="28" viewBox="0 0 20 28" fill="none" style={{ display: 'block' }}>
+              <line x1="10" y1="0" x2="10" y2="20" stroke="white" strokeWidth="1.5" strokeLinecap="round"/>
+              <polyline points="4,14 10,21 16,14" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
+            </svg>
+          </div>
         </div>
       </div>
 
