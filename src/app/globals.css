@@ -136,10 +136,9 @@ a:hover { opacity: 0.7; }
 
 /* ─── Hero ──────────────────────────────────────────────── */
 .hero {
+  height: 100vh;
   height: 100dvh;
-  /* Pull up past the subnav reservation — home page has no subnav,
-     so the main-content padding leaves a gap that the hero must reclaim. */
-  margin-top: calc(-1 * (var(--subnav-h) + 1.5rem - 1px));
+  min-height: 100vh;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -483,8 +482,8 @@ a:hover { opacity: 0.7; }
   overflow: hidden;
 }
 
-/* Page content pushed below fixed header — extra 1.5 rem breathing room */
-.main-content { padding-top: calc(var(--header-h) + var(--subnav-h) + 1.5rem - 1px); }
+/* Page content pushed below fixed header */
+.main-content { padding-top: var(--header-h); }
 
 /* ─── Texts page responsive row ─────────────────────────── */
 /* Mobile-first: stack vertically. Desktop: 3-column grid. */
@@ -553,57 +552,6 @@ a:hover { opacity: 0.7; }
   }
 }
 
-/* ── Nav dropdown ────────────────────────────────────────────────────────── */
-
-/* Stretch the wrapper to fill the full header height so there is zero gap
-   between the bottom of the trigger area and the top of the dropdown panel.
-   The link inside is centered vertically. */
-.nav-item-wrap {
-  position: relative;
-  display: flex;
-  align-items: center;
-  align-self: stretch;   /* fills the header height */
-}
-
-/* Hidden by default; shown via CSS :hover — no JS timers needed.
-   The wrapper fills the full header height so the mouse can never escape
-   between the link text and the dropdown panel. */
-.nav-dropdown {
-  display: none;
-  pointer-events: none;
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  transform: translateX(-50%);
-  background: var(--color-bg-card);
-  border: 1px solid var(--color-border);
-  box-shadow: 0 8px 32px rgba(0,0,0,0.45);
-  min-width: 180px;
-  padding: 0.5rem 0;
-  z-index: 200;
-  white-space: nowrap;
-}
-
-.nav-item-wrap:hover .nav-dropdown {
-  display: block;
-  pointer-events: auto;
-}
-
-.nav-dropdown-item {
-  display: block;
-  padding: 0.55rem 1.2rem;
-  font-size: var(--fs-xs);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--color-muted);
-  text-decoration: none;
-  transition: color 0.15s, background 0.15s;
-}
-
-.nav-dropdown-item:hover {
-  color: var(--color-text);
-  background: var(--color-bg-surface);
-}
 
 /* ── Sub-navigation bar (fixed below main header) ──────────────────────────── */
 .sub-nav {

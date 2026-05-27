@@ -55,10 +55,15 @@ export default function TabsLayout({ tabs, defaultTab, label, description, child
 
   return (
     <div>
-      {/* ── Tab strip — matches SubNav styling ───────────────── */}
+      {/* ── Tab strip — fixed under main header ──────────────── */}
       <div
         className="page-pad"
         style={{
+          position: 'fixed',
+          top: 'calc(var(--header-h) - 1px)',
+          left: 0,
+          right: 0,
+          zIndex: 299,
           display: 'flex',
           alignItems: 'center',
           height: 'var(--subnav-h)',
@@ -167,6 +172,9 @@ export default function TabsLayout({ tabs, defaultTab, label, description, child
           </span>
         )}
       </div>
+
+      {/* Spacer so panel content isn't hidden behind the fixed header + strip */}
+      <div style={{ height: 'calc(var(--header-h) + var(--subnav-h))' }} />
 
       {/* ── Tab panels ───────────────────────────────────────── */}
       {childArray.map((child, i) => {

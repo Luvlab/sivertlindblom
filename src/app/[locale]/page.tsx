@@ -53,7 +53,8 @@ export default async function HomePage({
 
   return (
     <>
-      {/* HERO — full-viewport slideshow */}
+      {/* HERO — full-viewport slideshow, bleeds behind transparent header */}
+      <div style={{ marginTop: 'calc(-1 * var(--header-h))' }}>
       <HeroSlideshow slides={heroSlides}>
         <div className="hero-content page-pad">
           <p style={{
@@ -93,6 +94,7 @@ export default async function HomePage({
           </div>
         </div>
       </HeroSlideshow>
+      </div>
 
       {/* PRESS QUOTE + AUDIO — Karsten Thurfjell, Kulturnytt P1 2016 */}
       <section style={{
@@ -240,27 +242,50 @@ export default async function HomePage({
         </div>
       </section>
 
-      {/* CONTACT CTA */}
+      {/* CONTACT CTA — Alps image stripe */}
       <section style={{
-        margin: '0 clamp(1rem,4vw,5rem) 5rem',
-        border: '1px solid var(--color-border)',
-        padding: '3rem',
+        position: 'relative',
+        overflow: 'hidden',
+        padding: '5rem clamp(1rem,4vw,5rem)',
         display: 'flex',
         flexWrap: 'wrap',
         gap: '2rem',
         justifyContent: 'space-between',
         alignItems: 'center',
-        background: 'var(--color-bg-surface)',
+        minHeight: '280px',
       }}>
-        <div>
-          <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-2xl)', marginBottom: '0.5rem' }}>
+        {/* Background — Alps photo from contact page */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/contact/siverts-alper.jpg"
+          alt=""
+          aria-hidden="true"
+          style={{
+            position: 'absolute',
+            inset: 0,
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+            objectPosition: 'center 40%',
+          }}
+        />
+        {/* Gradient overlay — darker on left so text stays legible */}
+        <div style={{
+          position: 'absolute',
+          inset: 0,
+          background: 'linear-gradient(100deg, rgba(10,10,10,0.78) 0%, rgba(10,10,10,0.48) 60%, rgba(10,10,10,0.32) 100%)',
+        }} />
+
+        {/* Content */}
+        <div style={{ position: 'relative', zIndex: 1 }}>
+          <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-2xl)', marginBottom: '0.5rem', color: 'var(--color-text)' }}>
             {dict.home?.contact_title ?? 'Kontakt'}
           </h2>
-          <p style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-sm)' }}>
+          <p style={{ color: 'rgba(245,245,240,0.68)', fontSize: 'var(--fs-sm)' }}>
             {dict.home?.contact_sub ?? 'Frågor om verk, utlåning eller samarbeten'}
           </p>
         </div>
-        <Link href={`/${locale}/contact`} className="btn btn-primary">
+        <Link href={`/${locale}/contact`} className="btn btn-primary" style={{ position: 'relative', zIndex: 1 }}>
           {dict.home?.contact_btn ?? 'Kontakta oss'}
         </Link>
       </section>

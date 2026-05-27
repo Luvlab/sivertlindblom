@@ -123,14 +123,14 @@ export default async function ScenographyPage({
   const heroImages = WORKS.flatMap(w => w.images).filter(Boolean)
 
   return (
-    <div>
+    <div style={{ marginTop: 'calc(-1 * var(--header-h))' }}>
       {/* Hero — full viewport, bleeds under header + subnav */}
-      <div style={{ position: 'relative', height: '100vh', minHeight: 480, overflow: 'hidden', marginBottom: '4rem', marginTop: 'calc(-1 * (var(--subnav-h) + 1.5rem - 1px))' }}>
+      <div style={{ position: 'relative', height: '100vh', minHeight: 480, overflow: 'hidden', marginBottom: '4rem' }}>
         <ExhibitionsHeroSlideshow images={heroImages} />
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.45) 55%, rgba(0,0,0,0.88) 100%)' }} />
 
         {/* Title block */}
-        <div className="page-pad" style={{ position: 'absolute', bottom: '3.5rem', left: 0, right: 0 }}>
+        <div className="page-pad" style={{ position: 'absolute', bottom: '5.5rem', left: 0, right: 0 }}>
           <Link href={`/${locale}/portfolio`} className="back-link" style={{ color: 'rgba(255,255,255,0.85)' }}>
             <span className="back-link-arrow">←</span>
             <span className="back-link-label">{dict.nav?.portfolio ?? 'Portfolio'}</span>

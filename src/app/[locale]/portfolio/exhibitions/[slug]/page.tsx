@@ -49,10 +49,10 @@ export default async function ExhibitionDetailPage({
   }))
 
   return (
-    <div>
+    <div style={{ marginTop: 'calc(-1 * var(--header-h))' }}>
       {/* Hero — bleeds under the fixed header, no top padding */}
       {heroImage && (
-        <div style={{ position: 'relative', height: '60vh', minHeight: 320, overflow: 'hidden', marginBottom: '4rem', marginTop: 'calc(-1 * (var(--subnav-h) + 1.5rem - 1px))' }}>
+        <div style={{ position: 'relative', height: '60vh', minHeight: 320, overflow: 'hidden', marginBottom: '4rem' }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={heroImage}
@@ -166,13 +166,27 @@ export default async function ExhibitionDetailPage({
 
         {/* Gallery */}
         {galleryImages.length > 1 && (
-          <section style={{ marginBottom: '4rem' }}>
+          <section style={{ marginBottom: ex.photographerCredit ? '0.75rem' : '4rem' }}>
             <GalleryGrid
               images={galleryImages}
               aspectRatio="4/3"
               columns="sm"
             />
           </section>
+        )}
+
+        {/* Photographer credit — bottom-right of gallery */}
+        {ex.photographerCredit && (
+          <p style={{
+            fontSize: 'var(--fs-xs)',
+            color: 'var(--color-muted)',
+            textAlign: 'right',
+            letterSpacing: '0.06em',
+            marginBottom: '4rem',
+            fontStyle: 'italic',
+          }}>
+            Fotograf: {ex.photographerCredit}
+          </p>
         )}
 
         {/* Prev / Next navigation */}

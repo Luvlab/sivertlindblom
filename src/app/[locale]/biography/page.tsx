@@ -166,7 +166,7 @@ export default async function BiographyPage({
   ])
 
   return (
-    <div style={{ paddingBottom: '5rem', marginTop: 'calc(-1 * (var(--subnav-h) + 1.5rem - 1px))' }}>
+    <div style={{ paddingBottom: '5rem', marginTop: 'calc(-1 * var(--header-h))' }}>
       {/* ── Tabs — strip sits flush under fixed header ─────────── */}
       <TabsLayout tabs={TABS} defaultTab="biografi">
 

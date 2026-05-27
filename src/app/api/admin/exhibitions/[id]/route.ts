@@ -18,6 +18,9 @@ function dbToExhibition(w: Record<string, unknown>): Exhibition {
     location: (w.location as string) ?? '',
     url: (w.source_url as string) ?? '',
     description: (w.description as string) ?? '',
+    links: (w.links as Exhibition['links']) ?? undefined,
+    body: (w.body as string) ?? undefined,
+    photographerCredit: (w.photographer_credit as string) ?? undefined,
     images: ((w.images as { url: string; sort_order?: number }[]) ?? [])
       .sort((a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0))
       .map(img => img.url),
@@ -72,10 +75,10 @@ export async function PUT(
         .single()
 
       if (!error && work) {
-        // Replace images
+        // Replace images — delete old, insert new
         await supabase.from('images').delete().eq('work_id', work.id)
         if (body.images?.length) {
-          await supabase.from('images').insert(
+          const { error: imgErr } = await supabase.from('images').insert(
             body.images.map((url: string, i: number) => ({
               work_id: work.id,
               url,
@@ -83,6 +86,9 @@ export async function PUT(
               sort_order: i,
             }))
           )
+          if (imgErr) {
+            return NextResponse.json({ error: `Bilder sparades inte: ${imgErr.message}` }, { status: 500 })
+          }
         }
         return NextResponse.json(body)
       }

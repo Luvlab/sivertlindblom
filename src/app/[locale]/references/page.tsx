@@ -183,7 +183,7 @@ export default async function ReferencesPage({
   ]
 
   return (
-    <div style={{ paddingBottom: '5rem', marginTop: 'calc(-1 * (var(--subnav-h) + 1.5rem - 1px))' }}>
+    <div style={{ paddingBottom: '5rem', marginTop: 'calc(-1 * var(--header-h))' }}>
       {/* Tabs — label embedded in tab strip row */}
       <TabsLayout
         tabs={TABS}

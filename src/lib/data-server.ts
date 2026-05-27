@@ -25,6 +25,7 @@ function dbRowToExhibition(w: Record<string, unknown>): Exhibition {
     description: (w.description as string) ?? '',
     body: (w.body as string) ?? undefined,
     links: (w.links as ExhibitionLink[]) ?? undefined,
+    photographerCredit: (w.photographer_credit as string) ?? undefined,
     images: imgs
       .sort((a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0))
       .map((img) => img.url),
@@ -37,7 +38,7 @@ export async function getExhibitions(): Promise<Exhibition[]> {
     const { data, error } = await supabase
       .from('works')
       .select('*, images(url, sort_order)')
-      .order('year_start', { ascending: false })
+      .order('sort_order', { ascending: true })
     if (!error && data) return data.map((r) => dbRowToExhibition(r as Record<string, unknown>))
   }
   return [...STATIC_EXHIBITIONS].sort((a, b) => b.year - a.year)
@@ -99,10 +100,9 @@ export async function getPublicWorks(): Promise<PublicWork[]> {
           (w.public_work_images as Array<{ url: string; alt: string | null; sort_order: number }>) ?? []
         )
       )
-      // Merge: DB rows take priority; static works not in DB are appended
-      const dbSlugs = new Set(dbWorks.map((w) => w.slug))
-      const staticOnly = STATIC_PUBLIC_WORKS.filter((w) => !dbSlugs.has(w.slug))
-      return [...dbWorks, ...staticOnly]
+      // DB is the source of truth — return DB works directly.
+      // (Static fallback for images removed: all DB works now have correct images.)
+      return dbWorks
     }
   }
   return STATIC_PUBLIC_WORKS
@@ -117,10 +117,18 @@ export async function getPublicWork(slug: string): Promise<PublicWork | null> {
       .eq('slug', slug)
       .single()
     if (!error && data) {
-      return dbRowToPublicWork(
+      const work = dbRowToPublicWork(
         data as Record<string, unknown>,
         (data.public_work_images as Array<{ url: string; alt: string | null; sort_order: number }>) ?? []
       )
+      // Fall back to static images if DB entry has none
+      if (work.images.length === 0) {
+        const staticMatch = STATIC_PUBLIC_WORKS.find((s) => s.slug === slug)
+        if (staticMatch && staticMatch.images.length > 0) {
+          return { ...work, images: staticMatch.images }
+        }
+      }
+      return work
     }
   }
   return STATIC_PUBLIC_WORKS.find((w) => w.slug === slug) ?? null

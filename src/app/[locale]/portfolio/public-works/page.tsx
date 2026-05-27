@@ -120,9 +120,6 @@ export default async function PublicWorksPage({
         </div>
       </div>
 
-      {/* ── Map ───────────────────────────────────────────────── */}
-      <SculptureMap locations={locations} locale={locale} />
-
       {/* ── Exteriörer ────────────────────────────────────────── */}
       <div style={{ borderTop: '1px solid var(--color-border)', borderBottom: '1px solid var(--color-border)' }}>
         <div className="page-pad" style={{
@@ -180,6 +177,9 @@ export default async function PublicWorksPage({
           ))}
         </div>
       </div>
+
+      {/* ── Map ───────────────────────────────────────────────── */}
+      <SculptureMap locations={locations} locale={locale} />
 
       {/* ── Back link ──────────────────────────────────────────── */}
       <div className="page-pad" style={{ paddingTop: '3rem', paddingBottom: '4rem' }}>

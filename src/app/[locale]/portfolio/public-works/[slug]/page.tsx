@@ -60,7 +60,7 @@ export default async function PublicWorkDetailPage({
     : `https://www.google.com/maps/search/${encodeURIComponent(work.title + ' ' + work.location)}`
 
   return (
-    <div>
+    <div style={{ marginTop: 'calc(-1 * var(--header-h))' }}>
       {/* ── Hero — bleeds under the fixed header ── */}
       {heroImage && (
         <div style={{
@@ -69,7 +69,6 @@ export default async function PublicWorkDetailPage({
           minHeight: 320,
           overflow: 'hidden',
           marginBottom: '4rem',
-          marginTop: 'calc(-1 * (var(--subnav-h) + 1.5rem - 1px))',
         }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img

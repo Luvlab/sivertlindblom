@@ -57,7 +57,8 @@ export default function NewExhibitionPage() {
         setError(String(data.error))
         setSaving(false)
       } else {
-        router.push('/admin/exhibitions')
+        // Go directly to edit page so images can be added right away
+        router.push(`/admin/exhibitions/${form.slug}`)
       }
     } catch (err) {
       setError(String(err))

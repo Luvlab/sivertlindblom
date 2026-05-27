@@ -20,6 +20,7 @@ export interface Exhibition {
   links?: ExhibitionLink[];
   audioUrl?: string;
   audioCaption?: string;
+  photographerCredit?: string;
 }
 
 export const exhibitions: Exhibition[] = [
@@ -136,6 +137,7 @@ export const exhibitions: Exhibition[] = [
     ],
     description:
       "Sommarens huvudutställning på Vandalorum är en solopresentation av Sivert Lindblom, en av Sveriges främsta skulptörer. Utställningen, som fyller Vandalorums Lada 1, presenterar skulptur, installation och akvarell från 1960-talet till idag.\n\nSedan början av sin karriär har Lindblom arbetat med den tvådimensionella linjens förvandling till tredimensionell yta. Hans unika formspråk har ett närmast tidlöst uttryck, med kopplingar till klassicism såväl som nutida industri. Ofta har den abstrakta formen sitt ursprung i konstnärens egen profil.\n\nLindbloms intresse för arkitektur genomsyrar allt han gör. Han har jobbat med några av Sveriges främsta arkitekter, först för Sigurd Lewerentz och därefter i nära samarbete med Peter Celsing. Hans konstnärliga gestaltningar av offentliga miljöer är många och spridda över landet, exempelvis Kungsträdgården, Blasieholmstorg och Västra Skogens tunnelbanestation i Stockholm samt Gustaf Adolfs torg i Malmö. Lindblom har en stark tro på behovet av bra gemensamma rum som möjliggör och uppmuntrar möten mellan medborgarna.\n\nLindblom är till lika delar skulptör och hantverkare. Han har genom åren tillbringat otaliga timmar i verkstäder och industrier, noga studerande hur material förädlas och förvandlas. Ofta har tillverkningsmetoderna inverkan på idén. Lindblom månar om att avdramatisera den konstnärliga processen och vill genom sitt arbete visa att den på många sätt har samma förlopp som den industriella tillverkningen.\n\nUtställningen på Vandalorum är formgiven av konstnären själv. Han ser varje utställning som en installation, där skulpturerna samspelar med varandra, med rummet och med publiken.",
+    photographerCredit: 'Jan Öqvist',
   },
   {
     slug: "kungl-konstakademien-2012",
@@ -326,6 +328,11 @@ export const exhibitions: Exhibition[] = [
     ],
     description:
       "Sedan 70-talet har Sivert Lindblom parallellt med sitt skulpterande och sina offentliga konstnärliga uppdrag sökt metod och teknik för att undersöka hur rumsliga gestalter påverkas av rummet och hur rummet påverkas av de tredimensionella objekten. Utställningen presenterade ca 200 akvarellverk skapade med strängt styrd grafisk teknik under en fritt tillämpad axiometri. Samlingen 'akvareller m.m.' visade 100 utvalda verk i en icke-kronologisk följd i en 70 m lång obruten svit längs galleriväggar, åtföljd av skulpturer som fysiska referenser. Utställningen pågick 6 OKT – 4 NOV 2012 i SALARNA. Katalogtexter skrevs av Catharina Gabrielsson, Peter Cornell och Jan Öqvist.",
+    links: [
+      { prefix: 'SE MER', label: 'Inför, under och efter vernissagen på Kungl. Konstakademien 2012', url: 'https://sivertlindblom.se/folio/utstallningar/kungl-konstakademien-for-de-fria-konsterna-stockholm-2012/infor-under-och-efter-vernissage-pa-kungl-konstakademin-2012/', external: true },
+      { prefix: 'LÄS', label: 'Catharina Gabrielsson — katalogtext Akvareller 2012', url: 'https://sivertlindblom.se/folio/akvareller-1975-2012/', external: true },
+    ],
+    photographerCredit: 'Jan Öqvist',
   },
   {
     slug: "korsbarsgarden-gotland-2010",
@@ -347,6 +354,9 @@ export const exhibitions: Exhibition[] = [
       "Till Körsbärsgården på Gotland brukar Sivert Lindblom återkomma. Det är alltid värt ett besök när man ändå har vägarna genom Sudret och kanske på väg till den kända rauken Hoburgsgubben nästan längst ned på ön.",
     audioUrl: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/media/2015/03/Arvo-P%C3%A4rt-Miserere-02-Festina-Lente.mp3',
     audioCaption: 'Arvo Pärt, Miserere — "Festina Lente", The Hilliard Ensemble (1991)',
+    links: [
+      { prefix: 'SE', label: 'Körsbärsgården — konst och trädgård på Gotland', url: 'https://www.korsbarsgarden.se/konst/start/', external: true },
+    ],
   },
   {
     slug: "galerie-aronowitsch-2005",
@@ -367,6 +377,7 @@ export const exhibitions: Exhibition[] = [
       "https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/05/img275.jpg",
     ],
     description: "",
+    photographerCredit: 'Jan Öqvist',
   },
   {
     slug: "historiska-museet-1998",
@@ -387,6 +398,10 @@ export const exhibitions: Exhibition[] = [
     ],
     description:
       "Utställningen på Historiska muséet var en av de 32 utställningar som presenterades under kulturhuvudstadsåret, då Stockholm var Europas kulturhuvudstad 1998. I detta sammanhang ställde Sivert Lindblom ut den enögde – cyklopen.",
+    links: [
+      { prefix: 'LÄS MER', label: 'Konstutställningsprojekten under kulturhuvudstadsåret: Arkipelag', url: 'https://sivertlindblom.se/folio/utstallningar/arkipelag-stockholms-europas-kulturhuvudstad-1998/', external: true },
+      { prefix: 'LÄS MER', label: 'Cyklopen — Wikipedia', url: 'https://sv.wikipedia.org/wiki/Cykloper', external: true },
+    ],
   },
   {
     slug: "eskilstuna-konstforening-1996",
@@ -405,10 +420,12 @@ export const exhibitions: Exhibition[] = [
       "https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/02/Sivert-Lindblom-Eskilstuna-003-H-390x390.jpg",
       "https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/02/Sivert-Lindblom-Eskilstuna-006-H-390x390.jpg",
       "https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/02/Sivert-Lindblom-Eskilstuna-002-H-390x390.jpg",
-      "https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/02/Sivert-Lindblom-Eskilstuna-001-H-390x390.jpg",
     ],
     description:
-      "Utställning på Eskilstuna konstförening 1996. Se även bilder från rondellen med Sivert Lindbloms 12 meter höga skulptur Profilen.",
+      "Utställning på Eskilstuna konstförening 1996.",
+    links: [
+      { prefix: 'SE ÄVEN', label: 'Bilder från rondellen med Sivert Lindbloms 12 meter höga skulptur Profilen i Eskilstuna', url: '/sv/portfolio/public-works/eskilstuna-rondellen-profilen-2002' },
+    ],
   },
   {
     slug: "skovde-konsthall-1996",
@@ -459,6 +476,10 @@ export const exhibitions: Exhibition[] = [
     ],
     description:
       "Parallellt med utställningen på Lunds konsthall visades Lindbloms modeller och skisser samt en retrospektiv av hans offentliga verk på Skissernas museum. Fasaden till Skissernas museum som Sivert utformat blev uppmärksammat i och med dessa utställningar.",
+    links: [
+      { prefix: 'SE ÄVEN', label: 'Skissernas museum 1993', url: '/sv/portfolio/exhibitions/skissernas-museum-1993' },
+      { prefix: 'SE', label: 'Skissernas museum — fasad, exteriör 1988', url: 'https://sivertlindblom.se/folio/offentliga-arbeten/exteriorer/skissernas-museum-fasad-1988/', external: true },
+    ],
   },
   {
     slug: "skissernas-museum-1993",
@@ -490,6 +511,13 @@ export const exhibitions: Exhibition[] = [
     ],
     description:
       "Parallell utställning till Lunds konsthall med Lindbloms modeller och skisser samt en retrospektiv av hans offentliga verk. Museets fasad mot Sölvesgatan är också formgiven av Lindblom och uppmärksammades i samband med dessa utställningar.",
+    links: [
+      { prefix: 'SE UTSTÄLLNINGEN', label: 'Lunds konsthall 1993', url: '/sv/portfolio/exhibitions/lunds-konsthall-1993' },
+      { prefix: 'SE FASADEN', label: 'Skissernas museum — fasad, exteriör 1988', url: 'https://sivertlindblom.se/folio/offentliga-arbeten/exteriorer/skissernas-museum-fasad-1988/', external: true },
+      { prefix: 'SE', label: 'Skissernas museum Lunds fasad 1987', url: 'https://sivertlindblom.se/skissernas-museum-fasad-1987/', external: true },
+      { prefix: 'VAR NÅGONSTANS?', label: 'Plats — Skissernas museum Lund 1988', url: 'https://sivertlindblom.se/folio/offentliga-arbeten/exteriorer/skissernas-museum-fasad-1988/location-skissernas-museum-lund-1988/', external: true },
+      { prefix: 'SE MER', label: 'Sivert Lindblom visar modeller på Skissernas museum Lund 1993', url: 'https://sivertlindblom.se/biografi/sivert-lindblom-visar-modeller-pa-skissernas-museum-lund-1993/', external: true },
+    ],
   },
   {
     slug: "bildmuseet-umea-1993",
@@ -629,6 +657,10 @@ export const exhibitions: Exhibition[] = [
     ],
     description:
       "Utställning på Galerie Aronowitsch 1981.",
+    links: [
+      { prefix: 'LÄS', label: 'Torsten Ekboms recension, Dagens Nyheter', url: 'https://sivertlindblom.se/biografi/recensioner/recension-galleri-aronowitsch-dn-torsten-ekbom-1981/', external: true },
+      { prefix: 'LÄS', label: 'Lars Nittves recension, Svenska Dagbladet 24.10.1981', url: 'https://sivertlindblom.se/biografi/recensioner/recension-galleri-aronowitsch-1981-lars-nittve/', external: true },
+    ],
   },
   {
     slug: "galeri-asbaek-kopenhamn-1981",
@@ -722,6 +754,9 @@ export const exhibitions: Exhibition[] = [
     ],
     description:
       "På Galleri Doktor Glas i Stockholms Kungsträdgården 1978 presenterade Sivert Lindblom sina 'Azteker'-skulpturer och blyarbeten för Stockholmspubliken.",
+    links: [
+      { prefix: 'LÄS OM', label: 'Azteker — Kalejdoskop Nr 1, 1978', url: 'https://sivertlindblom.se/texter/azteker-i-kalejdoskop-nr-178/', external: true },
+    ],
   },
   {
     slug: "kunstmuseum-luzern-live-show-ii-1977",
@@ -743,6 +778,12 @@ export const exhibitions: Exhibition[] = [
     description:
       "Live Show II var en något mindre version av Live Show som uppfördes på Moderna Museet 1974. Till denna utställning knöts även Sten Eklund med grafiska blad över ett övergivet samhälle och ett antal anonyma, ansiktslösa dockor i olika kroppsliga positioner med titeln: 'Aus den Gesammelten Verken von J.M.G. Paléen' och 'II Fragments zur Kullahusregion'. Konsthistorikern och utställningskuratorn Jean-Christophe Ammann har till katalogen skrivit en initierad text till var och en av konstnärerna. Utställningen väckte uppmärksamhet på grund av sin undergångsstämning som starkt berörde besökarna. Genomfördes med bidrag från NUNSKU (9 oktober – 13 november 1977).",
     body: '"Live Show" war eine 1974 im Moderna Museet in Stockholm organisierte Ausstellung, welche die Künstler Sivert Lindblom, Björn Lövin und Ulrik Samuelson konzipiert und realisiert hatten.\n\n– Für Lindblom bot die Ausstellung Anlass, eine mentale Situation, die bisher vornehmlich in Aquarellen zum Ausdruck gelangte, räumlich umzusetzen.\n\nLövin zeigte neben dem "Esszimmer seiner Eltern" ("To the Memory of the Time") die Maschinerie eines Traumes, der ihn immer wieder beschäftige.\n\nSamuelson setzte einem Heuschochen gleich einem ausgestopften Tier in einen Glaskasten, um die stereotyp die schwedische Landschaft durchsetzenden Schochen endgültig als ein "schwedisches Bild" zu bannen.',
+    links: [
+      { prefix: 'LESEN SIE mehr', label: 'Jean-Christophe Ammann — katalogtext till Live Show II, Kunstmuseum Luzern 1977', url: 'https://sivertlindblom.se/texter/andras-texter/jean-christophe-ammann-katalogtext-till-live-show-ii-kunstmuseum-luzern-1977/', external: true },
+      { prefix: 'SEHEN SIE', label: 'Bilder från utställningen Live Show II, Luzern 1977', url: 'https://sivertlindblom.se/folio/utstallningar/kunstmuseum-luzern-live-show-ii-schweiz-1977/', external: true },
+      { prefix: 'LOOK AT', label: 'Catalogue North-Information No. 30 — Live Show II, 1977', url: 'https://sivertlindblom.se/texter/katalog-live-show-ii-north-information-no-30-1977/', external: true },
+      { prefix: 'SE ÄVEN', label: 'Live Show Moderna Museet 1974', url: 'https://sivertlindblom.se/folio/utstallningar/moderna-museet-live-show-stockholm-1974/', external: true },
+    ],
   },
   {
     slug: "edition-leger-malmo-1977",
@@ -801,6 +842,9 @@ export const exhibitions: Exhibition[] = [
     ],
     description:
       "Live Show på Moderna Museet var en utställning i den tidigare gymnastikhallen i gamla Moderna Museets huvudbyggnad under perioden 4 maj till den 3 juni 1974. Utställningen gjordes av tre konstnärer förutom Sivert: Björn Lövin och Ulrik Samuelson. Live Show var en idéutställning där tre temperament samsades om ett gemensamt och integrerat upplevelselandskap – ett scenograferat tillstånd av rumsligheter med objekt och installationer som anspelade på den omgivande världens sammanstörtning eller likriktning. Museichef Philip von Schantz: 'För konstnärerna bakom utställningen Live Show är konst inget entydigt begrepp. Deras förhållningssätt är intellektuellt, litterärt om man så vill.' Live Show II uppfördes på Kunstmuseum Luzern 9 oktober – 13 november 1977.",
+    links: [
+      { prefix: 'LÄS', label: 'Jan Håfström om Live Show, Moderna Museet 1976', url: 'https://sivertlindblom.se/texter/andras-texter/jan-hafstrom-om-live-show-moderna-museet-1976/', external: true },
+    ],
   },
   {
     slug: "images-du-nord-dakar-1973",
@@ -871,6 +915,9 @@ Président du Comité National pour les Expositions d'Art Suédois Contemporain 
     ],
     description:
       "Kommentar till utställningarna ur Paletten 2/79 av Stellan Wiberg. Se även kommentar av Lasse Lasson till utställningen 1974.",
+    links: [
+      { prefix: 'SE ÄVEN', label: 'Kommentarer till utställningarna i Paletten 2/79 av Stellan Wiberg', url: 'https://sivertlindblom.se/folio/utstallningar/galerie-belle-malmo-vandringsutstallningar-1973-75/', external: true },
+    ],
   },
   {
     slug: "swedish-art-1972-tokyo-kyoto",
@@ -964,7 +1011,10 @@ Président du Comité National pour les Expositions d'Art Suédois Contemporain 
     ],
     description:
       "Den 34 Venedigbiennalen blev ett kaos med kravaller och polischocker. På grund av det övervåld som utspelades på torg och i gränderna i Venedig valde flera utställarna att protestera och stänga sina utställningar. Sivert Lindblom och Arne Jones stängde den svenska paviljongen i protest. Alla av Siverts skulpturer täcktes med svart plast och fönstren täcktes för. Fotografierna är tagna av Pål-Nils Nilsson utom ett foto med Sivert Lindblom, Olle Granath och Arne Jones taget av Wilhelm Rapp.",
+    body: "Sivert Lindblom ställde tillsammans med skulptören Arne Jones ut på Biennalen i Venedig 1968. I samband med studentupproren som pågick i Italien skedde stora demonstrationer även i Venedig. Stängningen av den svenska delen av utställningspaviljongen skedde i protest mot de massiva polisinsatserna och godtyckliga arresteringar som utspelades i staden och på festivalområdet Giardini där Biennalen hade en stor verksamhet.\n\nDetta reportage av konstkritikern och journalisten Kristian Romare beskriver den svenska aktionen med konstnärerna och med den svenske utställningskommisarien Olle Granath när de förklarar sitt beslut att stänga utställningen för publik och massmedia. Programmet som ursprungligen sändes på SVT (1 Dokumentär) presenterades av Lennart Ehrenborg.",
     links: [
+      { prefix: 'LÄS MER', label: 'Leif Nylén — erinran (DN 23 april 1995)', url: 'https://sivertlindblom.se/dn-23-04-95-leif-nylen-om-venedigbiennalen-1968/', external: true },
+      { prefix: 'LÄS MER', label: 'Bildens emancipation — Sivert Lindbloms kommentarer (Paletten nr 2, 1968)', url: 'https://sivertlindblom.se/texter/bildens-emancipation-sivert-lindblom-ur-paletten-nr-2-1968/', external: true },
       { prefix: 'SE REPORTAGET', label: 'Kristian Romare — utställningsprotesten på svenska paviljongen (SVT)', url: 'https://youtu.be/5GvdoEYox-k', external: true },
     ],
   },

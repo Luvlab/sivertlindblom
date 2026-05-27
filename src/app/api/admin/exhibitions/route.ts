@@ -22,7 +22,7 @@ export async function GET() {
       .from('works')
       .select(`*, images(url, alt, sort_order)`)
       .eq('category', 'exhibition')
-      .order('year_start', { ascending: false })
+      .order('sort_order', { ascending: true })
 
     if (!error && data) {
       // Map Supabase rows → Exhibition shape
@@ -33,6 +33,9 @@ export async function GET() {
         location: w.location ?? '',
         url: w.source_url ?? '',
         description: w.description ?? '',
+        body: w.body ?? undefined,
+        links: (w.links as Exhibition['links']) ?? undefined,
+        photographerCredit: (w.photographer_credit as string) ?? undefined,
         images: ((w.images as { url: string; sort_order?: number }[]) ?? [])
           .sort((a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0))
           .map((img) => img.url),
@@ -56,6 +59,15 @@ export async function POST(request: Request) {
     // Try Supabase first
     const supabase = createAdminClient()
     if (supabase) {
+      // Find current max sort_order so new exhibition lands at the end
+      const { data: maxRow } = await supabase
+        .from('works')
+        .select('sort_order')
+        .order('sort_order', { ascending: false })
+        .limit(1)
+        .single()
+      const nextSortOrder = ((maxRow?.sort_order as number) ?? 0) + 10
+
       const { data: work, error } = await supabase
         .from('works')
         .insert({
@@ -66,6 +78,7 @@ export async function POST(request: Request) {
           location: body.location,
           source_url: body.url,
           description: body.description,
+          sort_order: nextSortOrder,
         })
         .select()
         .single()

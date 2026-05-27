@@ -7,8 +7,7 @@ import FontSizeSlider from '../FontSizeSlider'
 import LanguageSwitcher from './LanguageSwitcher'
 import type { Locale } from '@/i18n/config'
 
-interface SubItem { label: string; href: string }
-interface NavItem  { label: string; href: string; sub?: SubItem[] }
+interface NavItem  { label: string; href: string }
 
 interface HeaderProps {
   locale: Locale
@@ -18,59 +17,17 @@ interface HeaderProps {
 
 export default function Header({ locale, dict }: HeaderProps) {
   const [open, setOpen] = useState(false)
-  const [openSub, setOpenSub] = useState<string | null>(null) // mobile accordion
   const pathname = usePathname()
 
   const isAdmin = pathname?.startsWith('/admin')
   if (isAdmin) return null
 
   const NAV: NavItem[] = [
-    {
-      label: dict?.nav?.portfolio ?? 'Portfolio',
-      href: `/${locale}/portfolio`,
-      sub: [
-        { label: dict?.portfolio?.cat_exhibitions ?? 'Utställningar ett urval', href: `/${locale}/portfolio/exhibitions` },
-        { label: dict?.portfolio?.cat_public      ?? 'Offentliga arbeten',      href: `/${locale}/portfolio/public-works` },
-        { label: dict?.portfolio?.cat_scenography ?? 'Scenografier',            href: `/${locale}/portfolio/scenography` },
-        { label: dict?.portfolio?.cat_watercolors ?? 'Akvareller',              href: `/${locale}/portfolio/watercolors` },
-      ],
-    },
-    {
-      label: dict?.nav?.references ?? dict?.nav?.sculpture ?? 'Referenser',
-      href: `/${locale}/references`,
-      sub: [
-        { label: 'Skulptur',                                href: `/${locale}/references#skulptur` },
-        { label: 'Grafik',                                  href: `/${locale}/references#grafik` },
-        { label: dict?.references?.fotografier ?? 'Fotografi', href: `/${locale}/references#fotografi` },
-        { label: dict?.references?.film_tv     ?? 'Film & TV', href: `/${locale}/references#film-tv` },
-        { label: dict?.references?.publicerat  ?? 'Publicerat', href: `/${locale}/references#publicerat` },
-        { label: 'Utmärkelser',                             href: `/${locale}/references#utmarkelser` },
-        { label: 'Ögonblick',                               href: `/${locale}/references#ogonblick` },
-      ],
-    },
-    {
-      label: dict?.nav?.texts ?? 'Texter',
-      href: `/${locale}/texts`,
-      sub: [
-        { label: dict?.texts?.others_texts ?? 'Andras texter', href: `/${locale}/texts#andras_texter` },
-        { label: dict?.texts?.own_writing  ?? 'Egna texter',   href: `/${locale}/texts#own_writing` },
-        { label: dict?.texts?.interview    ?? 'Intervjuer',    href: `/${locale}/texts#interview` },
-        { label: dict?.texts?.translated   ?? 'Översatt text', href: `/${locale}/texts#translated` },
-        { label: dict?.texts?.review       ?? 'Recensioner',   href: `/${locale}/texts#review` },
-      ],
-    },
-    {
-      label: dict?.nav?.biography ?? 'Biografi',
-      href: `/${locale}/biography`,
-      sub: [
-        { label: dict?.biography?.timeline          ?? 'Biografi',                      href: `/${locale}/biography#biografi` },
-        { label: dict?.biography?.public_commissions ?? 'Offentliga uppdrag i urval',   href: `/${locale}/biography#offentliga-uppdrag` },
-        { label: dict?.biography?.group_exhibitions  ?? 'Grupputställningar i urval',   href: `/${locale}/biography#grupputstallningar` },
-        { label: 'Litteraturförteckning i urval',                                        href: `/${locale}/biography#litteratur` },
-        { label: dict?.biography?.photographs        ?? 'Bilder på Sivert',             href: `/${locale}/biography#fotografier` },
-      ],
-    },
-    { label: dict?.nav?.contact ?? 'Kontakt', href: `/${locale}/contact` },
+    { label: dict?.nav?.portfolio  ?? 'Portfolio',  href: `/${locale}/portfolio`  },
+    { label: dict?.nav?.references ?? 'Referenser', href: `/${locale}/references` },
+    { label: dict?.nav?.texts      ?? 'Texter',     href: `/${locale}/texts`      },
+    { label: dict?.nav?.biography  ?? 'Biografi',   href: `/${locale}/biography`  },
+    { label: dict?.nav?.contact    ?? 'Kontakt',    href: `/${locale}/contact`    },
   ]
 
   return (
@@ -99,34 +56,13 @@ export default function Header({ locale, dict }: HeaderProps) {
             className="hidden-mobile"
           >
             {NAV.map((item) => (
-              <div
+              <Link
                 key={item.href}
-                className="nav-item-wrap"
+                href={item.href}
+                className={`nav-link${pathname?.startsWith(item.href) ? ' active' : ''}`}
               >
-                <Link
-                  href={item.href}
-                  className={`nav-link${pathname?.startsWith(item.href) ? ' active' : ''}`}
-                  style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}
-                >
-                  {item.label}
-                  {item.sub && (
-                    <svg width="8" height="5" viewBox="0 0 8 5" fill="none" style={{ opacity: 0.5, marginTop: '1px' }}>
-                      <path d="M1 1l3 3 3-3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                  )}
-                </Link>
-
-                {/* Desktop dropdown — shown via CSS :hover on nav-item-wrap */}
-                {item.sub && (
-                  <div className="nav-dropdown">
-                    {item.sub.map((s) => (
-                      <Link key={s.href} href={s.href} className="nav-dropdown-item">
-                        {s.label}
-                      </Link>
-                    ))}
-                  </div>
-                )}
-              </div>
+                {item.label}
+              </Link>
             ))}
           </nav>
 
@@ -189,53 +125,21 @@ export default function Header({ locale, dict }: HeaderProps) {
       >
         <div className="page-pad" style={{ paddingTop: '2rem', paddingBottom: '2rem' }}>
           {NAV.map((item) => (
-            <div key={item.href}>
-              {/* Top-level row */}
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid var(--color-border)' }}>
-                <Link
-                  href={item.href}
-                  onClick={() => setOpen(false)}
-                  style={{
-                    display: 'block',
-                    padding: '1rem 0',
-                    fontSize: 'var(--fs-2xl)',
-                    fontFamily: 'Georgia, serif',
-                    color: pathname?.startsWith(item.href) ? 'var(--color-accent)' : 'var(--color-text)',
-                    flex: 1,
-                  }}
-                >
-                  {item.label}
-                </Link>
-                {item.sub && (
-                  <button
-                    onClick={() => setOpenSub(openSub === item.href ? null : item.href)}
-                    aria-label="Visa undermeny"
-                    style={{
-                      background: 'none',
-                      border: 'none',
-                      cursor: 'pointer',
-                      padding: '1rem 0 1rem 1rem',
-                      color: 'var(--color-muted)',
-                    }}
-                  >
-                    <svg width="12" height="8" viewBox="0 0 12 8" fill="none" style={{ transform: openSub === item.href ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s' }}>
-                      <path d="M1 1l5 5 5-5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                  </button>
-                )}
-              </div>
-
-              {/* Sub-items accordion */}
-              {item.sub && openSub === item.href && (
-                <div>
-                  {item.sub.map((s) => (
-                    <Link key={s.href} href={s.href} className="mobile-sub-item" onClick={() => setOpen(false)}>
-                      {s.label}
-                    </Link>
-                  ))}
-                </div>
-              )}
-            </div>
+            <Link
+              key={item.href}
+              href={item.href}
+              onClick={() => setOpen(false)}
+              style={{
+                display: 'block',
+                padding: '1rem 0',
+                fontSize: 'var(--fs-2xl)',
+                fontFamily: 'Georgia, serif',
+                color: pathname?.startsWith(item.href) ? 'var(--color-accent)' : 'var(--color-text)',
+                borderBottom: '1px solid var(--color-border)',
+              }}
+            >
+              {item.label}
+            </Link>
           ))}
 
           {/* Language switcher in mobile menu */}
