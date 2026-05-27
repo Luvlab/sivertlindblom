@@ -7,6 +7,7 @@ import { getDictionary } from '@/i18n/getDictionary'
 import { getPublicWork, getPublicWorkSlugs, getPublicWorks, getMapPinForWork } from '@/lib/data-server'
 import GalleryGrid from '@/components/gallery/GalleryGrid'
 import type { LightboxImage } from '@/components/gallery/Lightbox'
+import { renderInlineLinks } from '@/lib/render-text'
 
 export async function generateStaticParams() {
   const slugs = await getPublicWorkSlugs()
@@ -131,7 +132,9 @@ export default async function PublicWorkDetailPage({
           <div style={{ maxWidth: '68ch', marginBottom: '1.5rem' }}>
             {work.body.split('\n\n').filter(Boolean).map((para, i) => (
               <p key={i} style={{ fontSize: 'var(--fs-base)', lineHeight: 1.85, marginBottom: '1.1em', color: 'var(--color-muted)' }}>
-                {para}
+                {para.split('\n').map((line, j) => (
+                  <span key={j}>{j > 0 && <br />}{renderInlineLinks(line)}</span>
+                ))}
               </p>
             ))}
           </div>

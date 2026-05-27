@@ -3,6 +3,7 @@
 import { useState, useEffect, use } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import LinkTextarea from '@/components/admin/LinkTextarea'
 
 interface BioEntry {
   id: string
@@ -62,8 +63,8 @@ export default function EditBioPage({ params }: { params: Promise<{ id: string }
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),
       })
-      const data = await res.json() as { ok?: boolean; message?: string; error?: string }
-      if (data.ok) { setSaved(true); setDirty(false); setTimeout(() => setSaved(false), 3000) }
+      const data = await res.json() as { error?: string; message?: string }
+      if (res.ok && !data.error) { setSaved(true); setDirty(false); setTimeout(() => setSaved(false), 3000) }
       else setError(data.error ?? data.message ?? 'Fel vid sparning')
     } catch (e) { setError(String(e)) }
     finally { setSaving(false) }
@@ -118,7 +119,12 @@ export default function EditBioPage({ params }: { params: Promise<{ id: string }
 
         <div>
           {lbl('Beskrivning')}
-          <textarea className="input" rows={4} style={{ ...inp, resize: 'vertical' }} value={form.description ?? ''} onChange={e => set('description', e.target.value)} />
+          <LinkTextarea
+            value={form.description ?? ''}
+            onChange={v => set('description', v)}
+            rows={4}
+            hint="Markera text + 🔗 Länk för att infoga hyperlänk."
+          />
         </div>
 
         <div>

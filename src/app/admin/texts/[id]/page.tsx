@@ -3,6 +3,7 @@
 import { useState, useEffect, use } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import LinkTextarea from '@/components/admin/LinkTextarea'
 
 interface TextItem {
   slug: string
@@ -62,8 +63,8 @@ export default function EditTextPage({ params }: { params: Promise<{ id: string 
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),
       })
-      const data = await res.json() as { ok?: boolean; message?: string; error?: string }
-      if (data.ok) { setSaved(true); setDirty(false); setTimeout(() => setSaved(false), 3000) }
+      const data = await res.json() as { error?: string; message?: string }
+      if (res.ok && !data.error) { setSaved(true); setDirty(false); setTimeout(() => setSaved(false), 3000) }
       else setError(data.error ?? data.message ?? 'Fel vid sparning')
     } catch (e) { setError(String(e)) }
     finally { setSaving(false) }
@@ -138,16 +139,14 @@ export default function EditTextPage({ params }: { params: Promise<{ id: string 
         </div>
 
         <div>
-          {label('Brödtext (markdown / ny rad = ny rad)')}
-          <textarea
-            className="input"
-            style={{ ...inp, resize: 'vertical', minHeight: 400, fontFamily: 'Georgia, serif', fontSize: '0.9rem', lineHeight: 1.7 }}
+          {label('Brödtext')}
+          <LinkTextarea
             value={form.body}
-            onChange={e => set('body', e.target.value)}
+            onChange={v => set('body', v)}
+            rows={18}
+            style={{ fontFamily: 'Georgia, serif', fontSize: '0.9rem', lineHeight: 1.7, minHeight: 400 }}
+            hint="Dubbelt radbrytning = nytt stycke. Enkelt radbrytning = ny rad. Markera text + 🔗 Länk för att infoga hyperlänk."
           />
-          <p style={{ fontSize: '0.7rem', color: 'var(--color-muted)', marginTop: '0.4rem' }}>
-            Dubbelt radbrytning = nytt stycke. Enkelt radbrytning = ny rad i samma stycke.
-          </p>
         </div>
 
         <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', paddingTop: '1rem', borderTop: '1px solid var(--color-border)' }}>

@@ -7,6 +7,7 @@ import { getDictionary } from '@/i18n/getDictionary'
 import { TEXTS_DATA } from '@/lib/texts-data'
 import { getTextSlugs, getText, getTexts } from '@/lib/data-server'
 import TextImageSlideshow from '@/components/TextImageSlideshow'
+import { renderInlineLinks } from '@/lib/render-text'
 
 export async function generateStaticParams() {
   const slugs = await getTextSlugs()
@@ -144,7 +145,7 @@ export default async function TextDetailPage({
                   return (
                     <p key={i} style={{ fontSize: 'var(--fs-sm)', lineHeight: 1.75, marginBottom: '1.2em', color: 'var(--color-muted)' }}>
                       {lines.map((line, j) => (
-                        <span key={j}>{j > 0 && <br />}{line}</span>
+                        <span key={j}>{j > 0 && <br />}{renderInlineLinks(line)}</span>
                       ))}
                     </p>
                   )
@@ -168,7 +169,7 @@ export default async function TextDetailPage({
                   {lines.map((line, j) => (
                     <span key={j}>
                       {j > 0 && <br />}
-                      {line}
+                      {renderInlineLinks(line)}
                     </span>
                   ))}
                 </p>

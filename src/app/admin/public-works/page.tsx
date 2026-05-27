@@ -113,8 +113,8 @@ export default function AdminPublicWorks() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(works),
       })
-      const data = await res.json() as { ok?: boolean; message?: string; error?: string }
-      if (data.ok) { setSaved(true); setTimeout(() => setSaved(false), 3000) }
+      const data = await res.json() as { error?: string; message?: string }
+      if (res.ok && !data.error) { setSaved(true); setTimeout(() => setSaved(false), 3000) }
       else setError(data.error ?? data.message ?? 'Fel')
     } catch (e) { setError(String(e)) }
     finally { setSaving(false) }
@@ -185,7 +185,7 @@ export default function AdminPublicWorks() {
         </div>
 
         {/* ── Overview map ── */}
-        {!loading && works.some(w => w.lat && w.lng) && (
+        {!loading && (
           <div style={{ marginBottom: '2.5rem' }}>
             <p style={{ fontSize: '0.7rem', color: 'var(--color-muted)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '0.5rem' }}>
               Karta — klicka på en nål för att redigera

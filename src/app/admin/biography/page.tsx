@@ -1,9 +1,9 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import Link from 'next/link'
 
-const PORTRAIT_URL = 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Portratt-SivertMattias.jpg'
+const DEFAULT_PORTRAIT = 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Portratt-SivertMattias.jpg'
 
 interface BioCmsEntry {
   id: string
@@ -28,10 +28,13 @@ export default function AdminBiography() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
-  // Intro text (stored in settings as biography_intro)
+  // Intro text + portrait (stored in settings)
   const [intro, setIntro] = useState('')
+  const [portrait, setPortrait] = useState(DEFAULT_PORTRAIT)
+  const [portraitUploading, setPortraitUploading] = useState(false)
   const [introSaving, setIntroSaving] = useState(false)
   const [introSaved, setIntroSaved] = useState(false)
+  const portraitInputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     fetch('/api/admin/biography')
@@ -46,7 +49,10 @@ export default function AdminBiography() {
     // Load intro text from settings
     fetch('/api/admin/settings')
       .then(r => r.json())
-      .then((s: Record<string, string>) => { if (s.biography_intro) setIntro(s.biography_intro) })
+      .then((s: Record<string, string>) => {
+        if (s.biography_intro) setIntro(s.biography_intro)
+        if (s.biography_portrait) setPortrait(s.biography_portrait)
+      })
       .catch(() => {})
   }, [])
 
@@ -58,13 +64,41 @@ export default function AdminBiography() {
       await fetch('/api/admin/settings', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...current, biography_intro: intro }),
+        body: JSON.stringify({ ...current, biography_intro: intro, biography_portrait: portrait }),
       })
       setIntroSaved(true)
       setTimeout(() => setIntroSaved(false), 3000)
     } catch { /* ignore */ }
     finally { setIntroSaving(false) }
   }, [intro])
+
+  async function handlePortraitUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    if (!file) return
+    setPortraitUploading(true)
+    try {
+      const fd = new FormData()
+      fd.append('file', file)
+      fd.append('alt', 'Sivert Lindblom portrait')
+      const res = await fetch('/api/admin/upload', { method: 'POST', body: fd })
+      const data = await res.json() as { url?: string; error?: string }
+      if (data.url) {
+        setPortrait(data.url)
+        // Auto-save immediately
+        const settingsRes = await fetch('/api/admin/settings')
+        const current = await settingsRes.json() as Record<string, string>
+        await fetch('/api/admin/settings', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ ...current, biography_portrait: data.url }),
+        })
+      }
+    } catch { /* ignore */ }
+    finally {
+      setPortraitUploading(false)
+      if (portraitInputRef.current) portraitInputRef.current.value = ''
+    }
+  }
 
   const filtered = items
     .filter(b => !filter || b.title.toLowerCase().includes(filter.toLowerCase()))
@@ -111,11 +145,31 @@ export default function AdminBiography() {
             placeholder="Skriv en kort presentation av Sivert Lindblom som visas längst upp på biografisidan…"
             style={{ flex: 1, resize: 'vertical', fontSize: 'var(--fs-sm)', lineHeight: 1.7 }}
           />
-          {/* Portrait preview */}
-          <div style={{ flexShrink: 0, width: 100, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem' }}>
+          {/* Portrait preview + upload */}
+          <div style={{ flexShrink: 0, width: 160, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.75rem' }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={PORTRAIT_URL} alt="Sivert Lindblom" style={{ width: 100, height: 120, objectFit: 'cover', objectPosition: 'top center', borderRadius: 2, border: '1px solid var(--color-border)', display: 'block' }} />
-            <span style={{ fontSize: '0.6rem', color: 'var(--color-muted)', textAlign: 'center' }}>Porträtt (visas till höger om texten)</span>
+            <img
+              src={portrait}
+              alt="Sivert Lindblom"
+              style={{ width: 160, height: 200, objectFit: 'cover', objectPosition: 'top center', borderRadius: 2, border: '1px solid var(--color-border)', display: 'block' }}
+            />
+            <input
+              ref={portraitInputRef}
+              type="file"
+              accept="image/*"
+              style={{ display: 'none' }}
+              onChange={handlePortraitUpload}
+            />
+            <button
+              type="button"
+              className="btn"
+              style={{ fontSize: '0.65rem', padding: '0.3em 0.8em', width: '100%' }}
+              onClick={() => portraitInputRef.current?.click()}
+              disabled={portraitUploading}
+            >
+              {portraitUploading ? 'Laddar upp…' : '↑ Byt porträtt'}
+            </button>
+            <span style={{ fontSize: '0.6rem', color: 'var(--color-muted)', textAlign: 'center' }}>Porträtt (visas på biografisidan)</span>
           </div>
         </div>
       </div>

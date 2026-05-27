@@ -9,15 +9,24 @@ import TabsLayout from '@/components/TabsLayout'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { FALLBACK_SETTINGS } from '@/lib/db'
 
-async function getBiographyIntro(): Promise<string> {
+const DEFAULT_PORTRAIT = 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Portratt-SivertMattias.jpg'
+
+async function getBiographySettings(): Promise<{ intro: string; portrait: string }> {
   try {
     const supabase = createAdminClient()
     if (supabase) {
-      const { data } = await supabase.from('settings').select('value').eq('key', 'biography_intro').single()
-      if (data?.value) return data.value as string
+      const { data } = await supabase.from('settings').select('key, value').in('key', ['biography_intro', 'biography_portrait'])
+      if (data?.length) {
+        const map: Record<string, string> = {}
+        data.forEach(({ key, value }: { key: string; value: string }) => { map[key] = value })
+        return {
+          intro: map.biography_intro ?? FALLBACK_SETTINGS.biography_intro ?? '',
+          portrait: map.biography_portrait ?? DEFAULT_PORTRAIT,
+        }
+      }
     }
   } catch { /* ignore */ }
-  return FALLBACK_SETTINGS.biography_intro ?? ''
+  return { intro: FALLBACK_SETTINGS.biography_intro ?? '', portrait: FALLBACK_SETTINGS.biography_portrait ?? DEFAULT_PORTRAIT }
 }
 
 export const metadata: Metadata = { title: 'Biography' }
@@ -25,8 +34,6 @@ export const metadata: Metadata = { title: 'Biography' }
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }))
 }
-
-const PORTRAIT_URL = 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Portratt-SivertMattias.jpg'
 
 const TIMELINE = [
   { year: '1931',      label: 'Född i Husby-Rekarne, Södermanland' },
@@ -160,10 +167,11 @@ export default async function BiographyPage({
   params: Promise<{ locale: string }>
 }) {
   const { locale } = await params
-  const [dict, bioIntro] = await Promise.all([
+  const [dict, bioSettings] = await Promise.all([
     getDictionary(locale as Locale),
-    getBiographyIntro(),
+    getBiographySettings(),
   ])
+  const { intro: bioIntro, portrait: PORTRAIT_URL } = bioSettings
 
   return (
     <div style={{ paddingBottom: '5rem', marginTop: 'calc(-1 * var(--header-h))' }}>

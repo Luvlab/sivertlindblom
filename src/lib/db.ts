@@ -8,6 +8,7 @@ export const FALLBACK_SETTINGS: SiteSettings = {
   contact_email:'info@sivertlindblom.se',
   about_short:  'Sivert Lindblom (f. 1931) är en av Sveriges mest betydande skulptörer. Han studerade vid Kungliga Konsthögskolan 1958–1963 och har sedan dess skapat ett omfattande verk av skulpturer, offentliga installationer, akvareller och scenografi.',
   biography_intro: '',
+  biography_portrait: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Portratt-SivertMattias.jpg',
   contact_intro: '',
   og_title: '',
   og_description: '',

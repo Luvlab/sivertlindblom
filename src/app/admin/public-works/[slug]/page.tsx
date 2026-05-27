@@ -6,6 +6,7 @@ import Script from 'next/script'
 import type { PublicWork } from '@/lib/public-works'
 import AdminForm, { FieldLabel } from '@/components/admin/AdminForm'
 import ImageListEditor from '@/components/admin/ImageListEditor'
+import LinkTextarea from '@/components/admin/LinkTextarea'
 
 declare global {
   interface Window { L: any } // eslint-disable-line @typescript-eslint/no-explicit-any
@@ -235,9 +236,13 @@ export default function EditPublicWorkPage({ params }: Props) {
 
             <div>
               <FieldLabel>Brödtext (svenska)</FieldLabel>
-              <textarea className="input" rows={6} style={{ width: '100%', resize: 'vertical' }}
-                value={form.body ?? ''} onChange={e => update('body', e.target.value)}
-                placeholder="Längre beskrivning — visas på detaljsidan" />
+              <LinkTextarea
+                value={form.body ?? ''}
+                onChange={v => update('body', v)}
+                rows={6}
+                placeholder="Längre beskrivning — visas på detaljsidan"
+                hint="Markera text + 🔗 Länk för att infoga hyperlänk."
+              />
             </div>
 
           </div>
