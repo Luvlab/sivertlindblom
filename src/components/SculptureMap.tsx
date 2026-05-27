@@ -14,6 +14,10 @@ declare global {
 interface Props {
   locations: SculptureLocation[]
   locale: string
+  /** Override map container height. Default 480. Accept number (px) or CSS string. */
+  mapHeight?: number | string
+  /** Remove outer horizontal margins (for use inside a panel). */
+  compact?: boolean
 }
 
 const TYPE_COLORS: Record<string, string> = {
@@ -28,7 +32,7 @@ const TYPE_LABELS: Record<string, Record<string, string>> = {
   metro: { sv: 'Tunnelbana', en: 'Metro', de: 'U-Bahn', fr: 'Métro', es: 'Metro', it: 'Metro', zh: '地铁', ja: '地下鉄', ar: 'مترو', pt: 'Metro', ru: 'Метро', nl: 'Metro', pl: 'Metro', ko: '지하철', th: 'รถไฟใต้ดิน' },
 }
 
-export default function SculptureMap({ locations, locale }: Props) {
+export default function SculptureMap({ locations, locale, mapHeight = 480, compact = false }: Props) {
   const mapRef = useRef<HTMLDivElement>(null)
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const mapInstance = useRef<any>(null)
@@ -259,7 +263,7 @@ export default function SculptureMap({ locations, locale }: Props) {
       />
 
       {/* Type filter */}
-      <div style={{ padding: '0 3rem 1rem', display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
+      <div style={{ padding: compact ? '0.75rem 1rem' : '0 3rem 1rem', display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
         <button
           onClick={() => setSelectedType(null)}
           style={{
@@ -307,12 +311,13 @@ export default function SculptureMap({ locations, locale }: Props) {
       <div
         ref={mapRef}
         style={{
-          height: 480,
+          height: mapHeight,
           background: '#111',
-          margin: '0 clamp(1rem,3vw,3rem)',
-          borderRadius: 2,
+          margin: compact ? 0 : '0 clamp(1rem,3vw,3rem)',
+          borderRadius: compact ? 0 : 2,
           overflow: 'hidden',
-          border: '1px solid var(--color-border)',
+          border: compact ? 'none' : '1px solid var(--color-border)',
+          borderTop: compact ? '1px solid var(--color-border)' : undefined,
         }}
       />
 
