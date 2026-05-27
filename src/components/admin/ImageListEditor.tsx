@@ -14,6 +14,8 @@ export default function ImageListEditor({ images, onChange, label = 'Bilder (URL
   const [uploading, setUploading] = useState(false)
   const [uploadError, setUploadError] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const [draggingIdx, setDraggingIdx] = useState<number | null>(null)
+  const [dragOverIdx, setDragOverIdx] = useState<number | null>(null)
 
   function addImage() {
     const trimmed = newUrl.trim()
@@ -53,6 +55,32 @@ export default function ImageListEditor({ images, onChange, label = 'Bilder (URL
       ;[next[i], next[j]] = [next[j], next[i]]
     }
     onChange(next)
+  }
+
+  function handleDragStart(idx: number) {
+    setDraggingIdx(idx)
+  }
+
+  function handleDragOver(e: React.DragEvent, idx: number) {
+    e.preventDefault()
+    e.dataTransfer.dropEffect = 'move'
+    if (idx !== dragOverIdx) setDragOverIdx(idx)
+  }
+
+  function handleDrop(e: React.DragEvent, idx: number) {
+    e.preventDefault()
+    if (draggingIdx === null || draggingIdx === idx) return
+    const next = [...images]
+    const [removed] = next.splice(draggingIdx, 1)
+    next.splice(idx, 0, removed)
+    onChange(next)
+    setDraggingIdx(null)
+    setDragOverIdx(null)
+  }
+
+  function handleDragEnd() {
+    setDraggingIdx(null)
+    setDragOverIdx(null)
   }
 
   async function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -115,7 +143,32 @@ export default function ImageListEditor({ images, onChange, label = 'Bilder (URL
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginBottom: '0.75rem' }}>
         {images.map((url, idx) => (
-          <div key={idx} style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+          <div
+            key={idx}
+            onDragOver={e => handleDragOver(e, idx)}
+            onDrop={e => handleDrop(e, idx)}
+            style={{
+              display: 'flex', gap: '0.5rem', alignItems: 'center',
+              opacity: draggingIdx === idx ? 0.4 : 1,
+              background: dragOverIdx === idx && draggingIdx !== idx ? 'rgba(201,168,76,0.08)' : 'transparent',
+              borderRadius: 3,
+              transition: 'background 0.1s, opacity 0.1s',
+            }}
+          >
+            {/* Drag handle */}
+            <span
+              draggable
+              onDragStart={() => handleDragStart(idx)}
+              onDragEnd={handleDragEnd}
+              style={{
+                cursor: 'grab', color: 'var(--color-border)', fontSize: '0.9rem',
+                flexShrink: 0, width: '1.25rem', textAlign: 'center',
+                userSelect: 'none', touchAction: 'none',
+              }}
+              title="Dra för att ändra ordning"
+            >
+              ☰
+            </span>
             <span style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-xs)', width: '1.5rem', flexShrink: 0, textAlign: 'right' }}>
               {idx + 1}
             </span>

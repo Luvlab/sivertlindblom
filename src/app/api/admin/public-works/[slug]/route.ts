@@ -23,6 +23,8 @@ function dbToWork(
     images: images
       .sort((a, b) => a.sort_order - b.sort_order)
       .map(img => ({ url: img.url, alt: img.alt ?? '' })),
+    lat: (row.lat as number | null) ?? null,
+    lng: (row.lng as number | null) ?? null,
   }
 }
 
@@ -74,6 +76,8 @@ export async function PUT(
           subcategory: body.category === 'interior' ? 'interior' : 'exterior',
           description: body.description,
           description_sv: body.body,
+          lat: body.lat ?? null,
+          lng: body.lng ?? null,
           published: true,
         })
         .eq('slug', slug)

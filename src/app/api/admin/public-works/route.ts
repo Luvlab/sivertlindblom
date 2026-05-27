@@ -22,6 +22,8 @@ function dbToWork(row: Record<string, unknown>, images: Array<{ url: string; alt
     images: images
       .sort((a, b) => a.sort_order - b.sort_order)
       .map(img => ({ url: img.url, alt: img.alt ?? '' })),
+    lat: (row.lat as number | null) ?? null,
+    lng: (row.lng as number | null) ?? null,
   }
 }
 

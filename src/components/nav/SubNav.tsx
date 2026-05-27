@@ -7,6 +7,8 @@ import type { Locale } from '@/i18n/config'
 
 interface SubItem { label: string; href: string }
 
+interface Section { prefix: string; label?: string; items: SubItem[] }
+
 interface Props {
   locale: Locale
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -31,9 +33,10 @@ export default function SubNav({ locale, dict }: Props) {
 
   // Note: references, texts, and biography use TabsLayout for in-page navigation —
   // no SubNav duplication needed for those routes.
-  const SECTIONS: { prefix: string; items: SubItem[] }[] = [
+  const SECTIONS: Section[] = [
     {
       prefix: `/${locale}/portfolio`,
+      label: dict?.nav?.portfolio ?? 'Portfolio',
       items: [
         { label: dict?.portfolio?.cat_exhibitions ?? 'Utställningar', href: `/${locale}/portfolio/exhibitions` },
         { label: dict?.portfolio?.cat_public      ?? 'Offentliga arbeten', href: `/${locale}/portfolio/public-works` },
@@ -62,6 +65,31 @@ export default function SubNav({ locale, dict }: Props) {
   return (
     <div className="sub-nav" aria-label="Undersektioner">
       <nav className="sub-nav-inner page-pad">
+        {/* Optional section label — mirrors TabsLayout label pattern */}
+        {section.label && (
+          <span style={{
+            fontSize: 'var(--fs-sm)',
+            letterSpacing: '0.08em',
+            textTransform: 'uppercase',
+            color: 'rgba(255,255,255,0.92)',
+            whiteSpace: 'nowrap',
+            paddingRight: '1rem',
+            flexShrink: 0,
+            opacity: 0.62,
+          }}>
+            {section.label}
+          </span>
+        )}
+        {section.label && (
+          <span style={{
+            width: 1,
+            height: '1em',
+            background: 'var(--color-border)',
+            marginRight: '0.25rem',
+            flexShrink: 0,
+            alignSelf: 'center',
+          }} />
+        )}
         {section.items.map((item) => (
           <Link
             key={item.href}
