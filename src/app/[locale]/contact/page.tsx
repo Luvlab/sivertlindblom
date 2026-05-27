@@ -40,7 +40,7 @@ export default async function ContactPage({
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.28) 40%, rgba(0,0,0,0.78) 100%)' }} />
 
         {/* Title block */}
-        <div className="page-pad" style={{ position: 'absolute', bottom: '5rem', left: 0, right: 0 }}>
+        <div className="page-pad" style={{ position: 'absolute', bottom: '3rem', left: 0, right: 0 }}>
           <p style={{ fontSize: 'var(--fs-xs)', letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--color-accent)', marginBottom: '0.75rem' }}>
             {dict.nav?.contact ?? 'Kontakt'}
           </p>
@@ -52,25 +52,21 @@ export default async function ContactPage({
               {dict.contact.intro}
             </p>
           )}
-        </div>
 
-        {/* Scroll-down arrow */}
-        <div style={{
-          position: 'absolute',
-          bottom: '2rem',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          gap: '0.3rem',
-          opacity: 0.7,
-          animation: 'scrollDrop 2.4s ease-in-out infinite',
-        }}>
-          <svg width="20" height="28" viewBox="0 0 20 28" fill="none" style={{ display: 'block' }}>
-            <line x1="10" y1="0" x2="10" y2="20" stroke="white" strokeWidth="1.5" strokeLinecap="round"/>
-            <polyline points="4,14 10,21 16,14" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
-          </svg>
+          {/* Scroll-down arrow — left-aligned under titles */}
+          <div style={{
+            marginTop: '1.5rem',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'flex-start',
+            opacity: 0.7,
+            animation: 'scrollDrop 2.4s ease-in-out infinite',
+          }}>
+            <svg width="20" height="28" viewBox="0 0 20 28" fill="none" style={{ display: 'block' }}>
+              <line x1="10" y1="0" x2="10" y2="20" stroke="white" strokeWidth="1.5" strokeLinecap="round"/>
+              <polyline points="4,14 10,21 16,14" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
+            </svg>
+          </div>
         </div>
       </div>
 
