@@ -77,48 +77,20 @@ export default function AdminPublicWorks() {
   function renderRows(list: (WorkEntry & { _idx: number })[]) {
     return list.map(w => (
       <tr key={w._idx} style={{ borderBottom: '1px solid var(--color-border)' }}>
-        {editing === w._idx ? (
-          <>
-            <td style={{ padding: '0.5rem 0.75rem 0.5rem 0' }}>
-              <input className="input" style={{ width: '100%', fontSize: 'var(--fs-sm)' }}
-                value={w.title} onChange={e => updateField(w._idx, 'title', e.target.value)} />
-            </td>
-            <td style={{ padding: '0.5rem 0.75rem', width: 80 }}>
-              <input className="input" type="text" style={{ width: '100%', fontSize: 'var(--fs-sm)' }}
-                value={w.year} onChange={e => updateField(w._idx, 'year', e.target.value)} />
-            </td>
-            <td style={{ padding: '0.5rem 0.75rem' }}>
-              <input className="input" style={{ width: '100%', fontSize: 'var(--fs-sm)' }}
-                value={w.location} onChange={e => updateField(w._idx, 'location', e.target.value)} />
-            </td>
-            <td style={{ padding: '0.5rem 0.75rem' }}>
-              <input className="input" style={{ width: '100%', fontSize: 'var(--fs-sm)' }}
-                value={w.slug ?? ''} onChange={e => updateField(w._idx, 'slug', e.target.value)} placeholder="valfri-slug" />
-            </td>
-            <td style={{ padding: '0.5rem 0 0.5rem 0.75rem', whiteSpace: 'nowrap' }}>
-              <button className="btn btn-primary" style={{ fontSize: '0.7rem', padding: '0.3em 0.7em', marginRight: 6 }}
-                onClick={() => setEditing(null)}>✓</button>
-              <button onClick={() => removeEntry(w._idx)}
-                style={{ background: 'none', border: '1px solid #c00', color: '#c00', cursor: 'pointer', padding: '0.3em 0.6em', fontSize: '0.7rem' }}>✕</button>
-            </td>
-          </>
-        ) : (
-          <>
-            <td style={{ padding: '0.75rem 0.75rem 0.75rem 0', fontSize: 'var(--fs-sm)' }}>{w.title}</td>
-            <td style={{ padding: '0.75rem', color: 'var(--color-accent)', fontFamily: 'Georgia, serif', fontSize: 'var(--fs-sm)' }}>{w.year}</td>
-            <td style={{ padding: '0.75rem', color: 'var(--color-muted)', fontSize: 'var(--fs-sm)' }}>{w.location || '—'}</td>
-            <td style={{ padding: '0.75rem', color: 'var(--color-muted)', fontSize: 'var(--fs-sm)' }}>{w.slug || '—'}</td>
-            <td style={{ padding: '0.75rem 0 0.75rem 0.75rem', whiteSpace: 'nowrap', display: 'flex', gap: '0.4rem' }}>
-              {w.slug && (
-                <Link href={`/admin/public-works/${w.slug}`}>
-                  <button className="btn btn-primary" style={{ fontSize: '0.7rem', padding: '0.3em 0.8em' }}>Redigera</button>
-                </Link>
-              )}
-              <button className="btn" style={{ fontSize: '0.7rem', padding: '0.3em 0.8em' }}
-                onClick={() => setEditing(w._idx)}>Snabbredigera</button>
-            </td>
-          </>
-        )}
+        <td style={{ padding: '0.75rem 0.75rem 0.75rem 0', fontSize: 'var(--fs-sm)' }}>{w.title}</td>
+        <td style={{ padding: '0.75rem', color: 'var(--color-accent)', fontFamily: 'Georgia, serif', fontSize: 'var(--fs-sm)' }}>{w.year}</td>
+        <td style={{ padding: '0.75rem', color: 'var(--color-muted)', fontSize: 'var(--fs-sm)' }}>{w.location || '—'}</td>
+        <td style={{ padding: '0.75rem 0 0.75rem 0.75rem' }}>
+          {w.slug
+            ? (
+              <Link href={`/admin/public-works/${w.slug}`}>
+                <button className="btn btn-primary" style={{ fontSize: '0.7rem', padding: '0.3em 0.8em' }}>Redigera</button>
+              </Link>
+            ) : (
+              <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)' }}>ingen slug</span>
+            )
+          }
+        </td>
       </tr>
     ))
   }
@@ -158,7 +130,6 @@ export default function AdminPublicWorks() {
                   <th style={thStyle}>Titel</th>
                   <th style={{ ...thStyle, width: 80 }}>År</th>
                   <th style={thStyle}>Plats</th>
-                  <th style={thStyle}>Slug</th>
                   <th style={thStyle}></th>
                 </tr>
               </thead>

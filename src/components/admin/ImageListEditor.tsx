@@ -46,6 +46,15 @@ export default function ImageListEditor({ images, onChange, label = 'Bilder (URL
     onChange(next)
   }
 
+  function shuffle() {
+    const next = [...images]
+    for (let i = next.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1))
+      ;[next[i], next[j]] = [next[j], next[i]]
+    }
+    onChange(next)
+  }
+
   async function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
     const files = Array.from(e.target.files ?? [])
     if (!files.length) return
@@ -79,7 +88,30 @@ export default function ImageListEditor({ images, onChange, label = 'Bilder (URL
 
   return (
     <div>
-      <FieldLabel>{label} ({images.length})</FieldLabel>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.75rem' }}>
+        <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+          {label} ({images.length})
+        </span>
+        {images.length > 1 && (
+          <button
+            type="button"
+            onClick={shuffle}
+            style={{
+              background: 'none',
+              border: '1px solid var(--color-border)',
+              color: 'var(--color-muted)',
+              padding: '0.2em 0.6em',
+              fontSize: 'var(--fs-xs)',
+              cursor: 'pointer',
+              letterSpacing: '0.05em',
+              textTransform: 'uppercase',
+            }}
+            title="Slumpa bildordningen"
+          >
+            ⇄ Slumpa ordning
+          </button>
+        )}
+      </div>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginBottom: '0.75rem' }}>
         {images.map((url, idx) => (
