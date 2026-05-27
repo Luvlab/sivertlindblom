@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import Script from 'next/script'
+import { useRouter } from 'next/navigation'
 
 declare global {
   interface Window {
@@ -31,15 +32,19 @@ const TYPE_COLORS: Record<string, string> = {
 }
 
 export default function AdminMap() {
+  const router = useRouter()
   const [pins, setPins] = useState<Pin[]>([])
   const [filter, setFilter] = useState('')
   const [loading, setLoading] = useState(true)
   const [view, setView] = useState<'map' | 'list'>('map')
   const [deleting, setDeleting] = useState<string | null>(null)
   const [leafletReady, setLeafletReady] = useState(false)
+  const [clickHint, setClickHint] = useState<{ lat: number; lng: number } | null>(null)
   const mapRef = useRef<HTMLDivElement>(null)
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const mapInstance = useRef<any>(null)
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const previewMarkerRef = useRef<any>(null)
   const scriptsLoaded = useRef(0)
 
   const handleScriptLoad = () => {
@@ -99,6 +104,30 @@ export default function AdminMap() {
     if (bounds.length > 1) {
       mapInstance.current.fitBounds(bounds, { padding: [40, 40] })
     }
+
+    // Click on empty map → show preview marker + hint popup
+    mapInstance.current.off('click')
+    mapInstance.current.on('click', (e: any) => { // eslint-disable-line @typescript-eslint/no-explicit-any
+      const { lat, lng } = e.latlng
+      const L = window.L
+
+      // Remove any existing preview marker
+      if (previewMarkerRef.current) {
+        mapInstance.current.removeLayer(previewMarkerRef.current)
+        previewMarkerRef.current = null
+      }
+
+      // Drop a pulsing preview marker
+      const icon = L.divIcon({
+        html: `<div style="width:16px;height:16px;background:#c9a84c;border:2px solid #fff;border-radius:50%;box-shadow:0 0 0 4px rgba(201,168,76,0.4),0 2px 8px rgba(0,0,0,.6);animation:pulse 1s ease-in-out infinite alternate"></div>`,
+        className: '', iconSize: [16, 16], iconAnchor: [8, 8],
+      })
+      const preview = L.marker([lat, lng], { icon, zIndexOffset: 2000 })
+      preview.addTo(mapInstance.current)
+      previewMarkerRef.current = preview
+
+      setClickHint({ lat: +lat.toFixed(6), lng: +lng.toFixed(6) })
+    })
   }, [leafletReady, pins, view])
 
   // Destroy map when switching to list
@@ -144,10 +173,11 @@ export default function AdminMap() {
       <style>{`
         .sculpture-tooltip { background:#1a1a1a!important;border:1px solid #3a3a3a!important;color:#e8e8e4!important;font-family:Georgia,serif!important;font-size:11px!important;padding:4px 8px!important;border-radius:2px!important;box-shadow:0 2px 8px rgba(0,0,0,.5)!important;white-space:nowrap!important; }
         .sculpture-tooltip::before { display:none!important; }
-        .leaflet-container { background:#111!important;font-family:Georgia,serif; }
+        .leaflet-container { background:#111!important;font-family:Georgia,serif;cursor:crosshair!important; }
         .leaflet-control-attribution { background:rgba(10,10,10,.8)!important;color:#666!important;font-size:10px!important; }
         .leaflet-control-zoom a { background:#1a1a1a!important;color:#e8e8e4!important;border-color:#333!important; }
         .leaflet-control-zoom a:hover { background:#2a2a2a!important; }
+        @keyframes pulse { from { box-shadow:0 0 0 2px rgba(201,168,76,0.6),0 2px 8px rgba(0,0,0,.6); } to { box-shadow:0 0 0 8px rgba(201,168,76,0),0 2px 8px rgba(0,0,0,.6); } }
       `}</style>
 
       {/* Header */}
@@ -193,18 +223,59 @@ export default function AdminMap() {
       ) : view === 'map' ? (
         <>
           {/* Leaflet map */}
-          <div ref={mapRef} style={{
-            height: 520, background: '#111', borderRadius: 2, overflow: 'hidden',
-            border: '1px solid var(--color-border)', marginBottom: '1.5rem',
-          }} />
-          {/* Legend */}
-          <div style={{ display: 'flex', gap: '1.5rem', fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', marginBottom: '0.5rem' }}>
-            {Object.entries(TYPE_COLORS).map(([t, c]) => (
-              <span key={t} style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                <span style={{ width: 10, height: 10, borderRadius: '50%', background: c, display: 'inline-block' }} />
-                {t} ({typeCounts[t] ?? 0})
-              </span>
-            ))}
+          <div style={{ position: 'relative' }}>
+            <div ref={mapRef} style={{
+              height: 520, background: '#111', borderRadius: 2, overflow: 'hidden',
+              border: '1px solid var(--color-border)',
+            }} />
+
+            {/* Click-to-create popup */}
+            {clickHint && (
+              <div style={{
+                position: 'absolute', bottom: '1rem', left: '50%', transform: 'translateX(-50%)',
+                background: '#1a1a1a', border: '1px solid var(--color-accent)',
+                padding: '0.75rem 1.25rem', borderRadius: 2, zIndex: 1000,
+                display: 'flex', alignItems: 'center', gap: '1rem',
+                boxShadow: '0 4px 20px rgba(0,0,0,.7)',
+                fontSize: 'var(--fs-sm)',
+              }}>
+                <span style={{ color: 'var(--color-muted)', fontFamily: 'monospace', fontSize: 'var(--fs-xs)' }}>
+                  {clickHint.lat.toFixed(4)}, {clickHint.lng.toFixed(4)}
+                </span>
+                <button
+                  className="btn btn-primary"
+                  style={{ fontSize: 'var(--fs-xs)', padding: '0.3em 0.9em', whiteSpace: 'nowrap' }}
+                  onClick={() => router.push(`/admin/map/new?lat=${clickHint.lat}&lng=${clickHint.lng}`)}
+                >
+                  + Skapa nål här
+                </button>
+                <button
+                  onClick={() => {
+                    setClickHint(null)
+                    if (previewMarkerRef.current && mapInstance.current) {
+                      mapInstance.current.removeLayer(previewMarkerRef.current)
+                      previewMarkerRef.current = null
+                    }
+                  }}
+                  style={{ background: 'none', border: 'none', color: 'var(--color-muted)', cursor: 'pointer', fontSize: '1rem', padding: '0 0.25rem' }}
+                >✕</button>
+              </div>
+            )}
+          </div>
+
+          {/* Legend + hint */}
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '0.75rem', marginBottom: '0.5rem', flexWrap: 'wrap', gap: '0.5rem' }}>
+            <div style={{ display: 'flex', gap: '1.5rem', fontSize: 'var(--fs-xs)', color: 'var(--color-muted)' }}>
+              {Object.entries(TYPE_COLORS).map(([t, c]) => (
+                <span key={t} style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                  <span style={{ width: 10, height: 10, borderRadius: '50%', background: c, display: 'inline-block' }} />
+                  {t} ({typeCounts[t] ?? 0})
+                </span>
+              ))}
+            </div>
+            <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', fontStyle: 'italic' }}>
+              Klicka på kartan för att lägga till en nål
+            </span>
           </div>
         </>
       ) : (

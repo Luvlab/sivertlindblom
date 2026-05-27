@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef, use } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import Script from 'next/script'
 
@@ -35,6 +35,7 @@ const lbl = (text: string) => (
 export default function EditMapPinPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params)
   const router = useRouter()
+  const searchParams = useSearchParams()
   const [form, setForm] = useState<Pin | null>(null)
   const [allPins, setAllPins] = useState<Pin[]>([])
   const [loading, setLoading] = useState(true)
@@ -63,8 +64,10 @@ export default function EditMapPinPage({ params }: { params: Promise<{ id: strin
   // Load this pin + all pins for context
   useEffect(() => {
     const loadAll = fetch('/api/admin/map-pins').then(r => r.json())
+    const qLat = parseFloat(searchParams.get('lat') ?? '') || 59.33
+    const qLng = parseFloat(searchParams.get('lng') ?? '') || 18.07
     const loadOne = isNew
-      ? Promise.resolve({ id: '', title: '', year: new Date().getFullYear(), city: '', country: 'Sweden', lat: 59.33, lng: 18.07, type: 'exterior' as const, description: '' })
+      ? Promise.resolve({ id: '', title: '', year: new Date().getFullYear(), city: '', country: 'Sweden', lat: qLat, lng: qLng, type: 'exterior' as const, description: '' })
       : fetch(`/api/admin/map-pins/${id}`).then(r => r.json())
 
     Promise.all([loadOne, loadAll])
