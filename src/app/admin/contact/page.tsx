@@ -6,6 +6,7 @@ import Link from 'next/link'
 interface ContactSettings {
   contact_email: string
   contact_intro: string
+  contact_hero_height_vh: string
 }
 
 const lbl = (text: string) => (
@@ -26,6 +27,7 @@ export default function AdminContact() {
         setForm({
           contact_email: s.contact_email ?? '',
           contact_intro: s.contact_intro ?? '',
+          contact_hero_height_vh: s.contact_hero_height_vh ?? '100',
         })
       })
       .catch(e => setError(String(e)))
@@ -103,6 +105,27 @@ export default function AdminContact() {
             onChange={e => setForm(f => ({ ...f, contact_intro: e.target.value }))}
             placeholder="En kort text som visas överst på kontaktsidan…"
           />
+        </div>
+
+        <div>
+          {lbl('Hjältebild höjd (dvh)')}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+            <input
+              type="range"
+              min={40}
+              max={150}
+              step={5}
+              value={form.contact_hero_height_vh}
+              onChange={e => setForm(f => ({ ...f, contact_hero_height_vh: e.target.value }))}
+              style={{ flex: 1 }}
+            />
+            <span style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-accent)', fontFamily: 'Georgia, serif', minWidth: '3.5rem' }}>
+              {form.contact_hero_height_vh} dvh
+            </span>
+          </div>
+          <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', marginTop: '0.4rem' }}>
+            100 = full skärmhöjd. Öka över 100 för att täcka bakom navigationen också.
+          </p>
         </div>
 
         {/* Static info (read-only display) */}

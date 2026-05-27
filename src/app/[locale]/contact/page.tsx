@@ -3,6 +3,7 @@ import { getDictionary } from '@/i18n/getDictionary'
 import { locales } from '@/i18n/config'
 import type { Locale } from '@/i18n/config'
 import ContactForm from './ContactForm'
+import { createAdminClient } from '@/lib/supabase/admin'
 
 export const metadata: Metadata = { title: 'Contact' }
 
@@ -12,20 +13,39 @@ export function generateStaticParams() {
 
 const ALPS_IMAGE = 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/contact/siverts-alper.jpg'
 
+async function getContactHeroHeight(): Promise<number> {
+  const supabase = createAdminClient()
+  if (supabase) {
+    const { data } = await supabase
+      .from('settings')
+      .select('value')
+      .eq('key', 'contact_hero_height_vh')
+      .single()
+    if (data?.value) {
+      const n = parseInt(data.value)
+      if (!isNaN(n) && n > 0) return n
+    }
+  }
+  return 100
+}
+
 export default async function ContactPage({
   params,
 }: {
   params: Promise<{ locale: string }>
 }) {
   const { locale } = await params
-  const dict = await getDictionary(locale as Locale)
+  const [dict, heroHeightVh] = await Promise.all([
+    getDictionary(locale as Locale),
+    getContactHeroHeight(),
+  ])
 
   return (
     <div>
-      {/* Hero — Alps background, full viewport height */}
+      {/* Hero — Alps background, extends behind fixed header */}
       <div style={{
         position: 'relative',
-        height: '100vh',
+        height: `calc(${heroHeightVh}dvh + var(--header-h))`,
         overflow: 'hidden',
         marginBottom: '4rem',
         marginTop: 'calc(-1 * var(--header-h))',
