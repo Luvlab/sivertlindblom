@@ -33,7 +33,20 @@ export default function AdminForm({
 }: AdminFormProps) {
   return (
     <div style={{ padding: '3rem', maxWidth: 800 }}>
-      <div style={{ marginBottom: '2rem' }}>
+      {/* Sticky save toolbar */}
+      <div style={{
+        position: 'sticky',
+        top: 0,
+        zIndex: 10,
+        background: '#0a0a0a',
+        borderBottom: '1px solid var(--color-border)',
+        padding: '0.75rem 0',
+        marginBottom: '2rem',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        gap: '1rem',
+      }}>
         <Link
           href={backHref}
           style={{
@@ -45,16 +58,28 @@ export default function AdminForm({
         >
           ← {backLabel}
         </Link>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginTop: '0.75rem', flexWrap: 'wrap', gap: '0.5rem' }}>
-          <h1 style={{ fontFamily: 'Georgia, serif', fontWeight: 400, fontSize: 'var(--fs-3xl)' }}>
-            {title}
-          </h1>
-          {dirty && (
-            <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', fontStyle: 'italic' }}>
-              Osparade ändringar
-            </span>
+        <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
+          {saved && (
+            <span style={{ color: 'var(--color-accent)', fontSize: 'var(--fs-sm)' }}>✓ Sparad</span>
           )}
+          {dirty && !saved && (
+            <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', fontStyle: 'italic' }}>Osparade ändringar</span>
+          )}
+          <button
+            form="admin-form"
+            type="submit"
+            className="btn btn-primary"
+            disabled={saving}
+          >
+            {saving ? 'Sparar...' : saveLabel}
+          </button>
         </div>
+      </div>
+
+      <div style={{ marginBottom: '2rem' }}>
+        <h1 style={{ fontFamily: 'Georgia, serif', fontWeight: 400, fontSize: 'var(--fs-3xl)' }}>
+          {title}
+        </h1>
       </div>
 
       {error && (
@@ -70,7 +95,7 @@ export default function AdminForm({
         </div>
       )}
 
-      <form onSubmit={onSave} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+      <form id="admin-form" onSubmit={onSave} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
         {children}
 
         <div style={{
