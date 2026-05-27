@@ -56,19 +56,17 @@ export default async function ContactPage({
           alt="Schweiziska alper — Sivert Lindblom"
           style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 55%' }}
         />
-        {/* Gradient overlay */}
-        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.28) 40%, rgba(0,0,0,0.78) 100%)' }} />
 
         {/* Title block */}
         <div className="page-pad" style={{ position: 'absolute', bottom: '3rem', left: 0, right: 0 }}>
-          <p style={{ fontSize: 'var(--fs-xs)', letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--color-accent)', marginBottom: '0.75rem' }}>
+          <p style={{ fontSize: 'var(--fs-xs)', letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--color-accent)', marginBottom: '0.75rem', textShadow: '0 1px 4px rgba(0,0,0,0.5)' }}>
             {dict.nav?.contact ?? 'Kontakt'}
           </p>
-          <h1 style={{ fontFamily: 'Georgia, serif', fontWeight: 400, fontSize: 'clamp(1.8rem,4vw,3rem)', margin: 0 }}>
+          <h1 style={{ fontFamily: 'Georgia, serif', fontWeight: 400, fontSize: 'clamp(1.8rem,4vw,3rem)', margin: 0, textShadow: '0 2px 8px rgba(0,0,0,0.45)' }}>
             {dict.contact?.title ?? 'Ta kontakt'}
           </h1>
           {dict.contact?.intro && (
-            <p style={{ color: 'rgba(255,255,255,0.72)', marginTop: '0.75rem', maxWidth: '55ch', fontSize: 'var(--fs-base)' }}>
+            <p style={{ color: 'rgba(255,255,255,0.9)', marginTop: '0.75rem', maxWidth: '55ch', fontSize: 'var(--fs-base)', textShadow: '0 1px 4px rgba(0,0,0,0.4)' }}>
               {dict.contact.intro}
             </p>
           )}
