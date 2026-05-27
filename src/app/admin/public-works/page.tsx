@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 
 interface WorkEntry {
   title: string
@@ -12,6 +13,7 @@ interface WorkEntry {
 }
 
 export default function AdminPublicWorks() {
+  const router = useRouter()
   const [works, setWorks] = useState<WorkEntry[]>([])
   const [loading, setLoading] = useState(true)
   const [filter, setFilter] = useState('')
@@ -106,9 +108,14 @@ export default function AdminPublicWorks() {
             <td style={{ padding: '0.75rem', color: 'var(--color-accent)', fontFamily: 'Georgia, serif', fontSize: 'var(--fs-sm)' }}>{w.year}</td>
             <td style={{ padding: '0.75rem', color: 'var(--color-muted)', fontSize: 'var(--fs-sm)' }}>{w.location || '—'}</td>
             <td style={{ padding: '0.75rem', color: 'var(--color-muted)', fontSize: 'var(--fs-sm)' }}>{w.slug || '—'}</td>
-            <td style={{ padding: '0.75rem 0 0.75rem 0.75rem' }}>
+            <td style={{ padding: '0.75rem 0 0.75rem 0.75rem', whiteSpace: 'nowrap', display: 'flex', gap: '0.4rem' }}>
+              {w.slug && (
+                <Link href={`/admin/public-works/${w.slug}`}>
+                  <button className="btn btn-primary" style={{ fontSize: '0.7rem', padding: '0.3em 0.8em' }}>Redigera</button>
+                </Link>
+              )}
               <button className="btn" style={{ fontSize: '0.7rem', padding: '0.3em 0.8em' }}
-                onClick={() => setEditing(w._idx)}>Redigera</button>
+                onClick={() => setEditing(w._idx)}>Snabbredigera</button>
             </td>
           </>
         )}
