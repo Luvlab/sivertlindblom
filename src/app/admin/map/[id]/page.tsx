@@ -36,6 +36,7 @@ export default function EditMapPinPage({ params }: { params: Promise<{ id: strin
   const { id } = use(params)
   const router = useRouter()
   const searchParams = useSearchParams()
+
   const [form, setForm] = useState<Pin | null>(null)
   const [allPins, setAllPins] = useState<Pin[]>([])
   const [loading, setLoading] = useState(true)
@@ -45,19 +46,21 @@ export default function EditMapPinPage({ params }: { params: Promise<{ id: strin
   const [dirty, setDirty] = useState(false)
   const [leafletReady, setLeafletReady] = useState(false)
 
-  const mapRef = useRef<HTMLDivElement>(null)
-  const mapInstance = useRef<any>(null) // eslint-disable-line @typescript-eslint/no-explicit-any
-  const markerRef = useRef<any>(null) // eslint-disable-line @typescript-eslint/no-explicit-any
-  // Keep a ref to the latest form so event handlers always read current values
-  const formRef = useRef(form)
-  formRef.current = form
-  // Keep a ref to allPins so the map init effect reads the latest without being in deps
+  // ── Callback ref: state fires the init effect the moment the div mounts ──
+  // Using useState instead of useRef means React will trigger the effect
+  // as soon as the map container div is in the DOM — no timing gap.
+  const [mapEl, setMapEl] = useState<HTMLDivElement | null>(null)
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const mapInstance = useRef<any>(null)
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const markerRef = useRef<any>(null)
   const allPinsRef = useRef(allPins)
   allPinsRef.current = allPins
 
   const isNew = id === 'new'
 
-  // Poll for Leaflet in case onLoad fires before React has set state
+  // Poll for Leaflet (handles cached-script case where onLoad doesn't fire)
   useEffect(() => {
     if (typeof window === 'undefined') return
     if (window.L) { setLeafletReady(true); return }
@@ -65,7 +68,7 @@ export default function EditMapPinPage({ params }: { params: Promise<{ id: strin
     return () => clearInterval(t)
   }, [])
 
-  // Load this pin + all pins for context
+  // Load pin + all pins
   useEffect(() => {
     const loadAll = fetch('/api/admin/map-pins').then(r => r.json())
     const qLat = parseFloat(searchParams.get('lat') ?? '') || 59.33
@@ -84,15 +87,18 @@ export default function EditMapPinPage({ params }: { params: Promise<{ id: strin
       .finally(() => setLoading(false))
   }, [id, isNew]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  // ─── Init map exactly once ───────────────────────────────────────────────
-  // Deps: [leafletReady, form loaded?]
-  // We deliberately do NOT include form.lat/lng here — coordinate changes are
-  // handled by the "sync marker" effect below so the map is never torn down.
+  // ── Init map exactly once ──────────────────────────────────────────────
+  // Fires when ANY of the three prerequisites become ready:
+  //   leafletReady  — Leaflet JS loaded
+  //   mapEl         — map container div mounted in DOM
+  //   form !== null — pin data fetched
+  // The mapInstance.current guard prevents double-init.
+  // form.lat/lng are NOT in deps — coordinate changes go to the sync effect.
   useEffect(() => {
-    if (!leafletReady || !form || !mapRef.current || mapInstance.current) return
+    if (!leafletReady || !form || !mapEl || mapInstance.current) return
     const L = window.L
 
-    const map = L.map(mapRef.current, {
+    const map = L.map(mapEl, {
       center: [form.lat || 59.3, form.lng || 18.07],
       zoom: form.lat ? 10 : 5,
       zoomControl: true,
@@ -102,13 +108,10 @@ export default function EditMapPinPage({ params }: { params: Promise<{ id: strin
     }).addTo(map)
     mapInstance.current = map
 
-    // Leaflet needs a tick to calculate container size; invalidateSize fixes
-    // cases where the container was hidden/zero-sized on mount.
-    requestAnimationFrame(() => {
-      map.invalidateSize()
-    })
+    // Give the browser one frame to paint the container before measuring it
+    requestAnimationFrame(() => map.invalidateSize())
 
-    // Context pins (all others as small semi-transparent dots)
+    // Context pins — other sculpture locations as faint dots
     allPinsRef.current
       .filter(p => p.id !== id)
       .forEach(p => {
@@ -122,7 +125,7 @@ export default function EditMapPinPage({ params }: { params: Promise<{ id: strin
         m.addTo(map)
       })
 
-    // Active draggable marker
+    // Active marker (draggable)
     const activeColor = TYPE_COLORS[form.type] ?? '#c9a84c'
     const activeIcon = L.divIcon({
       html: `<div style="width:16px;height:16px;background:${activeColor};border:2px solid #fff;border-radius:50%;cursor:grab;box-shadow:0 0 0 3px ${activeColor}60,0 2px 8px rgba(0,0,0,.6)"></div>`,
@@ -132,15 +135,14 @@ export default function EditMapPinPage({ params }: { params: Promise<{ id: strin
     marker.addTo(map)
     markerRef.current = marker
 
-    // Drag end → update form (does NOT recreate the map)
     marker.on('dragend', () => {
       const { lat, lng } = marker.getLatLng()
       setForm(prev => prev ? { ...prev, lat: +lat.toFixed(6), lng: +lng.toFixed(6) } : prev)
       setDirty(true)
     })
 
-    // Click on map → move marker + update form
-    map.on('click', (e: any) => { // eslint-disable-line @typescript-eslint/no-explicit-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    map.on('click', (e: any) => {
       const { lat, lng } = e.latlng
       marker.setLatLng([lat, lng])
       setForm(prev => prev ? { ...prev, lat: +lat.toFixed(6), lng: +lng.toFixed(6) } : prev)
@@ -152,9 +154,9 @@ export default function EditMapPinPage({ params }: { params: Promise<{ id: strin
       mapInstance.current = null
       markerRef.current = null
     }
-  }, [leafletReady, form !== null]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [leafletReady, mapEl, form !== null]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  // ─── Sync marker when lat/lng fields are manually edited ─────────────────
+  // ── Sync marker when lat/lng fields are typed manually ─────────────────
   useEffect(() => {
     if (!markerRef.current || !form) return
     const { lat: mLat, lng: mLng } = markerRef.current.getLatLng()
@@ -172,8 +174,7 @@ export default function EditMapPinPage({ params }: { params: Promise<{ id: strin
   async function handleSave(e: React.FormEvent) {
     e.preventDefault()
     if (!form) return
-    setSaving(true)
-    setError(null)
+    setSaving(true); setError(null)
     try {
       const url = isNew ? '/api/admin/map-pins' : `/api/admin/map-pins/${id}`
       const res = await fetch(url, {
@@ -204,14 +205,9 @@ export default function EditMapPinPage({ params }: { params: Promise<{ id: strin
 
   return (
     <div>
-      {/* Leaflet CSS — hoisted to <head> by Next.js App Router */}
+      {/* Leaflet */}
       <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossOrigin="" />
-      <Script
-        src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-        crossOrigin=""
-        strategy="afterInteractive"
-        onLoad={() => setLeafletReady(true)}
-      />
+      <Script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossOrigin="" strategy="afterInteractive" onLoad={() => setLeafletReady(true)} />
       <style>{`
         .sculpture-tooltip{background:#1a1a1a!important;border:1px solid #3a3a3a!important;color:#e8e8e4!important;font-family:Georgia,serif!important;font-size:11px!important;padding:4px 8px!important;border-radius:2px!important;white-space:nowrap!important;}
         .sculpture-tooltip::before{display:none!important;}
@@ -219,6 +215,19 @@ export default function EditMapPinPage({ params }: { params: Promise<{ id: strin
         .leaflet-control-attribution{background:rgba(10,10,10,.8)!important;color:#666!important;font-size:10px!important;}
         .leaflet-control-zoom a{background:#1a1a1a!important;color:#e8e8e4!important;border-color:#333!important;}
         .leaflet-control-zoom a:hover{background:#2a2a2a!important;}
+        /* Two-column layout: form left, map right on desktop; stacked on mobile */
+        .pin-editor-grid {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 2rem;
+          align-items: start;
+        }
+        @media (max-width: 800px) {
+          .pin-editor-grid {
+            grid-template-columns: 1fr;
+          }
+          /* On mobile map column comes after form, so it appears below */
+        }
       `}</style>
 
       {/* Sticky toolbar */}
@@ -237,8 +246,8 @@ export default function EditMapPinPage({ params }: { params: Promise<{ id: strin
         </div>
       </div>
 
-      <div style={{ padding: '2rem 3rem', maxWidth: 900 }}>
-        <h1 style={{ fontFamily: 'Georgia, serif', fontWeight: 400, fontSize: 'var(--fs-3xl)', marginBottom: '2rem' }}>
+      <div style={{ padding: '2rem 3rem' }}>
+        <h1 style={{ fontFamily: 'Georgia, serif', fontWeight: 400, fontSize: 'var(--fs-3xl)', marginBottom: '1.5rem' }}>
           {isNew ? 'Ny kartnål' : 'Redigera kartnål'}
         </h1>
 
@@ -248,106 +257,97 @@ export default function EditMapPinPage({ params }: { params: Promise<{ id: strin
           </div>
         )}
 
-        <form id="pin-form" onSubmit={handleSave} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+        {/* Two-column grid: form left, map right */}
+        <div className="pin-editor-grid">
 
-          {/* Interactive map */}
+          {/* ── Left column: form fields ── */}
+          <form id="pin-form" onSubmit={handleSave} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+              <div>
+                {lbl('Latitud')}
+                <input className="input" type="number" step="0.000001" style={{ width: '100%', fontFamily: 'monospace' }}
+                  value={form.lat} onChange={e => set('lat', Number(e.target.value))} required />
+              </div>
+              <div>
+                {lbl('Longitud')}
+                <input className="input" type="number" step="0.000001" style={{ width: '100%', fontFamily: 'monospace' }}
+                  value={form.lng} onChange={e => set('lng', Number(e.target.value))} required />
+              </div>
+            </div>
+
+            <div>
+              {lbl('Titel')}
+              <input className="input" style={{ width: '100%' }} value={form.title} onChange={e => set('title', e.target.value)} required />
+            </div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+              <div>
+                {lbl('År')}
+                <input className="input" type="number" style={{ width: '100%' }} value={form.year} onChange={e => set('year', Number(e.target.value))} required />
+              </div>
+              <div>
+                {lbl('Typ')}
+                <select className="input" style={{ width: '100%' }} value={form.type} onChange={e => set('type', e.target.value as Pin['type'])}>
+                  <option value="exterior">Exteriör</option>
+                  <option value="interior">Interiör</option>
+                  <option value="metro">T-bana</option>
+                </select>
+              </div>
+            </div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+              <div>
+                {lbl('Stad')}
+                <input className="input" style={{ width: '100%' }} value={form.city} onChange={e => set('city', e.target.value)} />
+              </div>
+              <div>
+                {lbl('Land')}
+                <input className="input" style={{ width: '100%' }} value={form.country} onChange={e => set('country', e.target.value)} />
+              </div>
+            </div>
+
+            <div>
+              {lbl('Slug (länk till detaljsida, valfri)')}
+              <input className="input" style={{ width: '100%' }} value={form.slug ?? ''} onChange={e => set('slug', e.target.value)} placeholder="t.ex. blasieholmstorg-1989" />
+            </div>
+
+            <div>
+              {lbl('Beskrivning')}
+              <textarea className="input" rows={4} style={{ width: '100%', resize: 'vertical' }} value={form.description ?? ''} onChange={e => set('description', e.target.value)} />
+            </div>
+
+            {!isNew && (
+              <div style={{ paddingTop: '0.5rem', borderTop: '1px solid var(--color-border)' }}>
+                <button type="button" onClick={handleDelete}
+                  style={{ background: 'none', border: '1px solid #c00', color: '#c00', cursor: 'pointer', padding: '0.5em 1em', fontSize: 'var(--fs-xs)' }}>
+                  Radera nål
+                </button>
+              </div>
+            )}
+          </form>
+
+          {/* ── Right column: interactive map ── */}
           <div>
-            {lbl('Placera nålen på kartan — klicka för att sätta, dra för att flytta')}
+            {lbl('Klicka för att placera · dra för att flytta')}
+            {/* callback ref: setMapEl triggers the init effect when this div mounts */}
             <div
-              ref={mapRef}
+              ref={setMapEl}
               style={{
-                height: 440,
+                height: 460,
+                width: '100%',
                 background: '#111',
                 border: '1px solid var(--color-border)',
                 borderRadius: 2,
                 overflow: 'hidden',
-                // Explicit width ensures Leaflet can measure the container
-                width: '100%',
               }}
             />
             <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', marginTop: '0.4rem' }}>
-              Koordinater uppdateras automatiskt. Övriga nålar visas som små prickar för referens.
+              Koordinaterna uppdateras automatiskt. Övriga nålar visas som prickar.
             </p>
           </div>
 
-          {/* Lat / Lng display + manual override */}
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-            <div>
-              {lbl('Latitud')}
-              <input
-                className="input"
-                type="number"
-                step="0.000001"
-                style={{ width: '100%', fontFamily: 'monospace' }}
-                value={form.lat}
-                onChange={e => set('lat', Number(e.target.value))}
-                required
-              />
-            </div>
-            <div>
-              {lbl('Longitud')}
-              <input
-                className="input"
-                type="number"
-                step="0.000001"
-                style={{ width: '100%', fontFamily: 'monospace' }}
-                value={form.lng}
-                onChange={e => set('lng', Number(e.target.value))}
-                required
-              />
-            </div>
-          </div>
-
-          <div>
-            {lbl('Titel')}
-            <input className="input" style={{ width: '100%' }} value={form.title} onChange={e => set('title', e.target.value)} required />
-          </div>
-
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: '1rem' }}>
-            <div>
-              {lbl('År')}
-              <input className="input" type="number" style={{ width: '100%' }} value={form.year} onChange={e => set('year', Number(e.target.value))} required />
-            </div>
-            <div>
-              {lbl('Stad')}
-              <input className="input" style={{ width: '100%' }} value={form.city} onChange={e => set('city', e.target.value)} />
-            </div>
-            <div>
-              {lbl('Land')}
-              <input className="input" style={{ width: '100%' }} value={form.country} onChange={e => set('country', e.target.value)} />
-            </div>
-            <div>
-              {lbl('Typ')}
-              <select className="input" style={{ width: '100%' }} value={form.type} onChange={e => set('type', e.target.value as Pin['type'])}>
-                <option value="exterior">Exteriör</option>
-                <option value="interior">Interiör</option>
-                <option value="metro">T-bana</option>
-              </select>
-            </div>
-          </div>
-
-          <div>
-            {lbl('Slug (länk till detaljsida, valfri)')}
-            <input className="input" style={{ width: '100%' }} value={form.slug ?? ''} onChange={e => set('slug', e.target.value)} placeholder="t.ex. blasieholmstorg-1989" />
-          </div>
-
-          <div>
-            {lbl('Beskrivning')}
-            <textarea className="input" rows={3} style={{ width: '100%', resize: 'vertical' }} value={form.description ?? ''} onChange={e => set('description', e.target.value)} />
-          </div>
-
-          {!isNew && (
-            <div style={{ paddingTop: '1rem', borderTop: '1px solid var(--color-border)' }}>
-              <button
-                type="button"
-                onClick={handleDelete}
-                style={{ background: 'none', border: '1px solid #c00', color: '#c00', cursor: 'pointer', padding: '0.5em 1em', fontSize: 'var(--fs-xs)' }}
-              >
-                Radera nål
-              </button>
-            </div>
-          )}
-        </form>
+        </div>{/* /pin-editor-grid */}
       </div>
     </div>
   )
