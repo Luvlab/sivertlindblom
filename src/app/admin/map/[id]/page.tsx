@@ -23,7 +23,7 @@ interface Pin {
 }
 
 const TYPE_COLORS: Record<string, string> = {
-  exterior: '#c9a84c',
+  exterior: '#2bbcd4',
   interior: '#7a8fa6',
   metro: '#a084c9',
 }
@@ -115,7 +115,7 @@ export default function EditMapPinPage({ params }: { params: Promise<{ id: strin
     allPinsRef.current
       .filter(p => p.id !== id)
       .forEach(p => {
-        const c = TYPE_COLORS[p.type] ?? '#c9a84c'
+        const c = TYPE_COLORS[p.type] ?? '#2bbcd4'
         const icon = L.divIcon({
           html: `<div style="width:8px;height:8px;background:${c};border:1px solid #0a0a0a;border-radius:50%;opacity:0.5"></div>`,
           className: '', iconSize: [8, 8], iconAnchor: [4, 4],
@@ -126,7 +126,7 @@ export default function EditMapPinPage({ params }: { params: Promise<{ id: strin
       })
 
     // Active marker (draggable)
-    const activeColor = TYPE_COLORS[form.type] ?? '#c9a84c'
+    const activeColor = TYPE_COLORS[form.type] ?? '#2bbcd4'
     const activeIcon = L.divIcon({
       html: `<div style="width:16px;height:16px;background:${activeColor};border:2px solid #fff;border-radius:50%;cursor:grab;box-shadow:0 0 0 3px ${activeColor}60,0 2px 8px rgba(0,0,0,.6)"></div>`,
       className: '', iconSize: [16, 16], iconAnchor: [8, 8],

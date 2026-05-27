@@ -26,7 +26,7 @@ interface Pin {
 }
 
 const TYPE_COLORS: Record<string, string> = {
-  exterior: '#c9a84c',
+  exterior: '#2bbcd4',
   interior: '#7a8fa6',
   metro: '#a084c9',
 }
@@ -84,7 +84,7 @@ export default function AdminMap() {
 
     const bounds: [number, number][] = []
     pins.forEach(p => {
-      const color = TYPE_COLORS[p.type] ?? '#c9a84c'
+      const color = TYPE_COLORS[p.type] ?? '#2bbcd4'
       const icon = L.divIcon({
         html: `<div style="width:10px;height:10px;background:${color};border:2px solid #0a0a0a;border-radius:50%;cursor:pointer;box-shadow:0 0 0 2px ${color}60"></div>`,
         className: '', iconSize: [10, 10], iconAnchor: [5, 5],
@@ -115,7 +115,7 @@ export default function AdminMap() {
       }
 
       const icon = L.divIcon({
-        html: `<div style="width:16px;height:16px;background:#c9a84c;border:2px solid #fff;border-radius:50%;box-shadow:0 0 0 4px rgba(201,168,76,0.4),0 2px 8px rgba(0,0,0,.6);animation:pulse 1s ease-in-out infinite alternate"></div>`,
+        html: `<div style="width:16px;height:16px;background:#2bbcd4;border:2px solid #fff;border-radius:50%;box-shadow:0 0 0 4px rgba(43,188,212,0.4),0 2px 8px rgba(0,0,0,.6);animation:pulse 1s ease-in-out infinite alternate"></div>`,
         className: '', iconSize: [16, 16], iconAnchor: [8, 8],
       })
       const preview = L.marker([lat, lng], { icon, zIndexOffset: 2000 })
@@ -165,7 +165,7 @@ export default function AdminMap() {
         .leaflet-control-attribution { background:rgba(10,10,10,.8)!important;color:#666!important;font-size:10px!important; }
         .leaflet-control-zoom a { background:#1a1a1a!important;color:#e8e8e4!important;border-color:#333!important; }
         .leaflet-control-zoom a:hover { background:#2a2a2a!important; }
-        @keyframes pulse { from { box-shadow:0 0 0 2px rgba(201,168,76,0.6),0 2px 8px rgba(0,0,0,.6); } to { box-shadow:0 0 0 8px rgba(201,168,76,0),0 2px 8px rgba(0,0,0,.6); } }
+        @keyframes pulse { from { box-shadow:0 0 0 2px rgba(43,188,212,0.6),0 2px 8px rgba(0,0,0,.6); } to { box-shadow:0 0 0 8px rgba(43,188,212,0),0 2px 8px rgba(0,0,0,.6); } }
       `}</style>
 
       {/* Header */}

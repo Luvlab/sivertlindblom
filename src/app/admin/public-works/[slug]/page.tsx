@@ -73,7 +73,7 @@ export default function EditPublicWorkPage({ params }: Props) {
     // Active marker only if coords exist
     if (hasCoords) {
       const icon = L.divIcon({
-        html: `<div style="width:16px;height:16px;background:#c9a84c;border:2px solid #fff;border-radius:50%;cursor:grab;box-shadow:0 0 0 3px rgba(201,168,76,.4),0 2px 8px rgba(0,0,0,.6)"></div>`,
+        html: `<div style="width:16px;height:16px;background:#2bbcd4;border:2px solid #fff;border-radius:50%;cursor:grab;box-shadow:0 0 0 3px rgba(43,188,212,.4),0 2px 8px rgba(0,0,0,.6)"></div>`,
         className: '', iconSize: [16, 16], iconAnchor: [8, 8],
       })
       const marker = L.marker([form.lat!, form.lng!], { icon, draggable: true, zIndexOffset: 1000 })
@@ -95,7 +95,7 @@ export default function EditPublicWorkPage({ params }: Props) {
         markerRef.current.setLatLng([lat, lng])
       } else {
         const icon = L.divIcon({
-          html: `<div style="width:16px;height:16px;background:#c9a84c;border:2px solid #fff;border-radius:50%;cursor:grab;box-shadow:0 0 0 3px rgba(201,168,76,.4),0 2px 8px rgba(0,0,0,.6)"></div>`,
+          html: `<div style="width:16px;height:16px;background:#2bbcd4;border:2px solid #fff;border-radius:50%;cursor:grab;box-shadow:0 0 0 3px rgba(43,188,212,.4),0 2px 8px rgba(0,0,0,.6)"></div>`,
           className: '', iconSize: [16, 16], iconAnchor: [8, 8],
         })
         const marker = L.marker([lat, lng], { icon, draggable: true, zIndexOffset: 1000 })

@@ -74,7 +74,7 @@ export default function AdminPublicWorks() {
     const withCoords = worksRef.current.filter(w => typeof w.lat === 'number' && typeof w.lng === 'number')
     withCoords.forEach(w => {
       const icon = L.divIcon({
-        html: `<div style="width:14px;height:14px;background:#c9a84c;border:2px solid #fff;border-radius:50%;cursor:pointer;box-shadow:0 0 0 3px rgba(201,168,76,.4),0 2px 8px rgba(0,0,0,.6)"></div>`,
+        html: `<div style="width:14px;height:14px;background:#2bbcd4;border:2px solid #fff;border-radius:50%;cursor:pointer;box-shadow:0 0 0 3px rgba(43,188,212,.4),0 2px 8px rgba(0,0,0,.6)"></div>`,
         className: '', iconSize: [14, 14], iconAnchor: [7, 7],
       })
       const marker = L.marker([w.lat!, w.lng!], { icon, title: w.title })
