@@ -187,6 +187,7 @@ export default function EditPublicWorkPage({ params }: Props) {
         error={error}
         dirty={dirty}
         deleteLabel="Radera verk"
+        maxWidth="none"
       >
         <div className="pw-editor-grid">
 

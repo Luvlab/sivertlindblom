@@ -15,6 +15,8 @@ interface AdminFormProps {
   saveLabel?: string
   dirty?: boolean
   error?: string | null
+  /** Override the default max-width (800). Pass 'none' for full width. */
+  maxWidth?: number | 'none'
 }
 
 export default function AdminForm({
@@ -30,9 +32,10 @@ export default function AdminForm({
   saveLabel = 'Spara',
   dirty = false,
   error = null,
+  maxWidth = 800,
 }: AdminFormProps) {
   return (
-    <div style={{ padding: '3rem', maxWidth: 800 }}>
+    <div style={{ padding: '3rem', maxWidth: maxWidth === 'none' ? undefined : maxWidth }}>
       {/* Sticky save toolbar */}
       <div style={{
         position: 'sticky',
