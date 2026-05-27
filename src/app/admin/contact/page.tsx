@@ -14,7 +14,7 @@ const lbl = (text: string) => (
 )
 
 export default function AdminContact() {
-  const [form, setForm] = useState<ContactSettings>({ contact_email: '', contact_intro: '' })
+  const [form, setForm] = useState<ContactSettings>({ contact_email: '', contact_intro: '', contact_hero_height_vh: '100' })
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [saved, setSaved] = useState(false)
