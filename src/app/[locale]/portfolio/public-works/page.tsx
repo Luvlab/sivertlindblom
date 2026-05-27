@@ -135,7 +135,7 @@ export default async function PublicWorksPage({
         <div className="pw-sticky">
 
           {/* Page header */}
-          <div className="page-pad" style={{ padding: '1.5rem clamp(1rem,3vw,2rem)', borderBottom: '1px solid var(--color-border)', flexShrink: 0 }}>
+          <div className="page-pad" style={{ paddingTop: '1.5rem', paddingBottom: '1.5rem', borderBottom: '1px solid var(--color-border)', flexShrink: 0 }}>
             <Link href={`/${locale}/portfolio`} className="back-link" style={{ marginBottom: '0.75rem', display: 'inline-flex' }}>
               <span className="back-link-arrow">←</span>
               <span className="back-link-label">{dict.nav?.portfolio ?? 'Portfolio'}</span>

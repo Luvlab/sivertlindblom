@@ -27,7 +27,7 @@ export default async function MapPage({ params }: Props) {
   return (
     <div style={{ minHeight: '100dvh', background: 'var(--color-bg)' }}>
       {/* Header */}
-      <div style={{ padding: '3rem 3rem 2rem' }}>
+      <div className="page-pad" style={{ paddingTop: '3rem', paddingBottom: '2rem' }}>
         <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-accent)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '0.5rem' }}>
           {dict.portfolio?.cat_public ?? 'Public Works'}
         </p>
@@ -70,7 +70,7 @@ export default async function MapPage({ params }: Props) {
       <SculptureMap locations={locations} locale={locale} />
 
       {/* Location list */}
-      <div style={{ padding: '3rem', maxWidth: 1200 }}>
+      <div className="page-pad" style={{ paddingTop: '3rem', paddingBottom: '3rem', maxWidth: 1200 }}>
         <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-xl)', marginBottom: '1.5rem', fontWeight: 400 }}>
           {locale === 'sv' ? 'Alla platser' : locale === 'th' ? 'สถานที่ทั้งหมด' : 'All locations'}
         </h2>
