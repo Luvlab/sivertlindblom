@@ -36,7 +36,6 @@ export default function AdminMap() {
   const [pins, setPins] = useState<Pin[]>([])
   const [filter, setFilter] = useState('')
   const [loading, setLoading] = useState(true)
-  const [view, setView] = useState<'map' | 'list'>('map')
   const [deleting, setDeleting] = useState<string | null>(null)
   const [leafletReady, setLeafletReady] = useState(false)
   const [clickHint, setClickHint] = useState<{ lat: number; lng: number } | null>(null)
@@ -45,19 +44,13 @@ export default function AdminMap() {
   const mapInstance = useRef<any>(null)
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const previewMarkerRef = useRef<any>(null)
-  const scriptsLoaded = useRef(0)
-
-  const handleScriptLoad = () => {
-    scriptsLoaded.current++
-    if (scriptsLoaded.current >= 1) setLeafletReady(true)
-  }
 
   // Poll for Leaflet if already cached
   useEffect(() => {
     if (typeof window === 'undefined') return
     if (window.L) { setLeafletReady(true); return }
-    const id = setInterval(() => { if (window.L) { setLeafletReady(true); clearInterval(id) } }, 100)
-    return () => clearInterval(id)
+    const t = setInterval(() => { if (window.L) { setLeafletReady(true); clearInterval(t) } }, 100)
+    return () => clearInterval(t)
   }, [])
 
   useEffect(() => {
@@ -67,9 +60,9 @@ export default function AdminMap() {
       .finally(() => setLoading(false))
   }, [])
 
-  // Init/update Leaflet map
+  // Init map + refresh markers whenever leaflet or pins change
   useEffect(() => {
-    if (!leafletReady || !mapRef.current || view !== 'map' || !pins.length) return
+    if (!leafletReady || !mapRef.current || !pins.length) return
     const L = window.L
     if (!L) return
 
@@ -79,10 +72,13 @@ export default function AdminMap() {
         attribution: '© OpenStreetMap', maxZoom: 19,
       }).addTo(map)
       mapInstance.current = map
+
+      requestAnimationFrame(() => map.invalidateSize())
     }
 
     // Clear and re-add all markers
-    mapInstance.current.eachLayer((layer: any) => { // eslint-disable-line @typescript-eslint/no-explicit-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    mapInstance.current.eachLayer((layer: any) => {
       if (layer._latlng) mapInstance.current.removeLayer(layer)
     })
 
@@ -97,6 +93,7 @@ export default function AdminMap() {
       marker.bindTooltip(`<b>${p.title}</b><br>${p.city}, ${p.country} (${p.year})`, {
         direction: 'top', offset: [0, -8], className: 'sculpture-tooltip', opacity: 0.95,
       })
+      marker.on('click', () => router.push(`/admin/map/${p.id}`))
       marker.addTo(mapInstance.current)
       bounds.push([p.lat, p.lng])
     })
@@ -107,17 +104,16 @@ export default function AdminMap() {
 
     // Click on empty map → show preview marker + hint popup
     mapInstance.current.off('click')
-    mapInstance.current.on('click', (e: any) => { // eslint-disable-line @typescript-eslint/no-explicit-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    mapInstance.current.on('click', (e: any) => {
       const { lat, lng } = e.latlng
       const L = window.L
 
-      // Remove any existing preview marker
       if (previewMarkerRef.current) {
         mapInstance.current.removeLayer(previewMarkerRef.current)
         previewMarkerRef.current = null
       }
 
-      // Drop a pulsing preview marker
       const icon = L.divIcon({
         html: `<div style="width:16px;height:16px;background:#c9a84c;border:2px solid #fff;border-radius:50%;box-shadow:0 0 0 4px rgba(201,168,76,0.4),0 2px 8px rgba(0,0,0,.6);animation:pulse 1s ease-in-out infinite alternate"></div>`,
         className: '', iconSize: [16, 16], iconAnchor: [8, 8],
@@ -128,15 +124,7 @@ export default function AdminMap() {
 
       setClickHint({ lat: +lat.toFixed(6), lng: +lng.toFixed(6) })
     })
-  }, [leafletReady, pins, view])
-
-  // Destroy map when switching to list
-  useEffect(() => {
-    if (view === 'list' && mapInstance.current) {
-      mapInstance.current.remove()
-      mapInstance.current = null
-    }
-  }, [view])
+  }, [leafletReady, pins]) // eslint-disable-line react-hooks/exhaustive-deps
 
   async function deletePin(id: string, title: string) {
     if (!confirm(`Radera "${title}" från kartan?`)) return
@@ -168,7 +156,7 @@ export default function AdminMap() {
     <div style={{ padding: '3rem' }}>
       {/* Leaflet */}
       <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossOrigin="" />
-      <Script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossOrigin="" onLoad={handleScriptLoad} strategy="afterInteractive" />
+      <Script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossOrigin="" onLoad={() => setLeafletReady(true)} strategy="afterInteractive" />
 
       <style>{`
         .sculpture-tooltip { background:#1a1a1a!important;border:1px solid #3a3a3a!important;color:#e8e8e4!important;font-family:Georgia,serif!important;font-size:11px!important;padding:4px 8px!important;border-radius:2px!important;box-shadow:0 2px 8px rgba(0,0,0,.5)!important;white-space:nowrap!important; }
@@ -194,90 +182,87 @@ export default function AdminMap() {
             ))}
           </p>
         </div>
-        <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
-          {/* View toggle */}
-          <div style={{ display: 'flex', border: '1px solid var(--color-border)', borderRadius: 1, overflow: 'hidden' }}>
-            {(['map', 'list'] as const).map(v => (
-              <button key={v} onClick={() => setView(v)} style={{
-                padding: '0.4rem 1rem', fontSize: 'var(--fs-xs)', textTransform: 'uppercase', letterSpacing: '0.08em',
-                background: view === v ? 'var(--color-accent)' : 'transparent',
-                color: view === v ? '#0a0a0a' : 'var(--color-muted)',
-                border: 'none', cursor: 'pointer',
-              }}>{v === 'map' ? '⊕ Karta' : '≡ Lista'}</button>
-            ))}
-          </div>
-          <Link href="/admin/map/new">
-            <button className="btn btn-primary">+ Ny kartnål</button>
-          </Link>
-        </div>
+        <Link href="/admin/map/new">
+          <button className="btn btn-primary">+ Ny kartnål</button>
+        </Link>
       </div>
 
-      {/* Search */}
-      <div style={{ marginBottom: '1.5rem' }}>
-        <input type="search" className="input" placeholder="Sök titel, stad…" value={filter}
-          onChange={e => setFilter(e.target.value)} style={{ maxWidth: 300 }} />
+      {/* Map — always visible */}
+      <div style={{ position: 'relative', marginBottom: '0.75rem' }}>
+        <div ref={mapRef} style={{
+          height: 500,
+          width: '100%',
+          background: '#111',
+          borderRadius: 2,
+          overflow: 'hidden',
+          border: '1px solid var(--color-border)',
+        }} />
+
+        {/* Click-to-create popup */}
+        {clickHint && (
+          <div style={{
+            position: 'absolute', bottom: '1rem', left: '50%', transform: 'translateX(-50%)',
+            background: '#1a1a1a', border: '1px solid var(--color-accent)',
+            padding: '0.75rem 1.25rem', borderRadius: 2, zIndex: 1000,
+            display: 'flex', alignItems: 'center', gap: '1rem',
+            boxShadow: '0 4px 20px rgba(0,0,0,.7)',
+            fontSize: 'var(--fs-sm)',
+          }}>
+            <span style={{ color: 'var(--color-muted)', fontFamily: 'monospace', fontSize: 'var(--fs-xs)' }}>
+              {clickHint.lat.toFixed(4)}, {clickHint.lng.toFixed(4)}
+            </span>
+            <button
+              className="btn btn-primary"
+              style={{ fontSize: 'var(--fs-xs)', padding: '0.3em 0.9em', whiteSpace: 'nowrap' }}
+              onClick={() => router.push(`/admin/map/new?lat=${clickHint.lat}&lng=${clickHint.lng}`)}
+            >
+              + Skapa nål här
+            </button>
+            <button
+              onClick={() => {
+                setClickHint(null)
+                if (previewMarkerRef.current && mapInstance.current) {
+                  mapInstance.current.removeLayer(previewMarkerRef.current)
+                  previewMarkerRef.current = null
+                }
+              }}
+              style={{ background: 'none', border: 'none', color: 'var(--color-muted)', cursor: 'pointer', fontSize: '1rem', padding: '0 0.25rem' }}
+            >✕</button>
+          </div>
+        )}
+      </div>
+
+      {/* Legend */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem', flexWrap: 'wrap', gap: '0.5rem' }}>
+        <div style={{ display: 'flex', gap: '1.5rem', fontSize: 'var(--fs-xs)', color: 'var(--color-muted)' }}>
+          {Object.entries(TYPE_COLORS).map(([t, c]) => (
+            <span key={t} style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+              <span style={{ width: 10, height: 10, borderRadius: '50%', background: c, display: 'inline-block' }} />
+              {t} ({typeCounts[t] ?? 0})
+            </span>
+          ))}
+        </div>
+        <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', fontStyle: 'italic' }}>
+          Klicka på kartan för att lägga till en nål · klicka på en nål för att redigera
+        </span>
+      </div>
+
+      {/* List — always visible below map */}
+      <hr style={{ border: 'none', borderTop: '1px solid var(--color-border)', marginBottom: '1.5rem' }} />
+
+      <div style={{ marginBottom: '1rem' }}>
+        <input
+          type="search"
+          className="input"
+          placeholder="Sök titel, stad…"
+          value={filter}
+          onChange={e => setFilter(e.target.value)}
+          style={{ maxWidth: 300 }}
+        />
       </div>
 
       {loading ? (
         <p style={{ color: 'var(--color-muted)' }}>Laddar…</p>
-      ) : view === 'map' ? (
-        <>
-          {/* Leaflet map */}
-          <div style={{ position: 'relative' }}>
-            <div ref={mapRef} style={{
-              height: 520, background: '#111', borderRadius: 2, overflow: 'hidden',
-              border: '1px solid var(--color-border)',
-            }} />
-
-            {/* Click-to-create popup */}
-            {clickHint && (
-              <div style={{
-                position: 'absolute', bottom: '1rem', left: '50%', transform: 'translateX(-50%)',
-                background: '#1a1a1a', border: '1px solid var(--color-accent)',
-                padding: '0.75rem 1.25rem', borderRadius: 2, zIndex: 1000,
-                display: 'flex', alignItems: 'center', gap: '1rem',
-                boxShadow: '0 4px 20px rgba(0,0,0,.7)',
-                fontSize: 'var(--fs-sm)',
-              }}>
-                <span style={{ color: 'var(--color-muted)', fontFamily: 'monospace', fontSize: 'var(--fs-xs)' }}>
-                  {clickHint.lat.toFixed(4)}, {clickHint.lng.toFixed(4)}
-                </span>
-                <button
-                  className="btn btn-primary"
-                  style={{ fontSize: 'var(--fs-xs)', padding: '0.3em 0.9em', whiteSpace: 'nowrap' }}
-                  onClick={() => router.push(`/admin/map/new?lat=${clickHint.lat}&lng=${clickHint.lng}`)}
-                >
-                  + Skapa nål här
-                </button>
-                <button
-                  onClick={() => {
-                    setClickHint(null)
-                    if (previewMarkerRef.current && mapInstance.current) {
-                      mapInstance.current.removeLayer(previewMarkerRef.current)
-                      previewMarkerRef.current = null
-                    }
-                  }}
-                  style={{ background: 'none', border: 'none', color: 'var(--color-muted)', cursor: 'pointer', fontSize: '1rem', padding: '0 0.25rem' }}
-                >✕</button>
-              </div>
-            )}
-          </div>
-
-          {/* Legend + hint */}
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '0.75rem', marginBottom: '0.5rem', flexWrap: 'wrap', gap: '0.5rem' }}>
-            <div style={{ display: 'flex', gap: '1.5rem', fontSize: 'var(--fs-xs)', color: 'var(--color-muted)' }}>
-              {Object.entries(TYPE_COLORS).map(([t, c]) => (
-                <span key={t} style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                  <span style={{ width: 10, height: 10, borderRadius: '50%', background: c, display: 'inline-block' }} />
-                  {t} ({typeCounts[t] ?? 0})
-                </span>
-              ))}
-            </div>
-            <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', fontStyle: 'italic' }}>
-              Klicka på kartan för att lägga till en nål
-            </span>
-          </div>
-        </>
       ) : (
         <div style={{ overflowX: 'auto' }}>
           <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 'var(--fs-sm)' }}>
@@ -295,7 +280,9 @@ export default function AdminMap() {
             </thead>
             <tbody>
               {filtered.map(p => (
-                <tr key={p.id} style={{ borderBottom: '1px solid var(--color-border)' }}
+                <tr
+                  key={p.id}
+                  style={{ borderBottom: '1px solid var(--color-border)' }}
                   onMouseEnter={e => (e.currentTarget.style.background = 'var(--color-bg-card)')}
                   onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
                 >
@@ -304,7 +291,7 @@ export default function AdminMap() {
                   <td style={{ padding: '0.8rem 0.75rem', color: 'var(--color-muted)' }}>{p.city}</td>
                   <td style={{ padding: '0.8rem 0.75rem', color: 'var(--color-muted)' }}>{p.country}</td>
                   <td style={{ padding: '0.8rem 0.75rem' }}>
-                    <span className="badge" style={{ color: TYPE_COLORS[p.type] }}>{p.type}</span>
+                    <span style={{ color: TYPE_COLORS[p.type], fontSize: 'var(--fs-xs)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>{p.type}</span>
                   </td>
                   <td style={{ padding: '0.8rem 0.75rem', fontFamily: 'monospace', fontSize: '0.75rem', color: 'var(--color-muted)' }}>{p.lat.toFixed(4)}</td>
                   <td style={{ padding: '0.8rem 0.75rem', fontFamily: 'monospace', fontSize: '0.75rem', color: 'var(--color-muted)' }}>{p.lng.toFixed(4)}</td>
