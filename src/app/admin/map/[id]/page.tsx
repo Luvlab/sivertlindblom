@@ -48,12 +48,16 @@ export default function EditMapPinPage({ params }: { params: Promise<{ id: strin
   const mapRef = useRef<HTMLDivElement>(null)
   const mapInstance = useRef<any>(null) // eslint-disable-line @typescript-eslint/no-explicit-any
   const markerRef = useRef<any>(null) // eslint-disable-line @typescript-eslint/no-explicit-any
+  // Keep a ref to the latest form so event handlers always read current values
   const formRef = useRef(form)
   formRef.current = form
+  // Keep a ref to allPins so the map init effect reads the latest without being in deps
+  const allPinsRef = useRef(allPins)
+  allPinsRef.current = allPins
 
   const isNew = id === 'new'
 
-  // Poll for Leaflet
+  // Poll for Leaflet in case onLoad fires before React has set state
   useEffect(() => {
     if (typeof window === 'undefined') return
     if (window.L) { setLeafletReady(true); return }
@@ -78,16 +82,19 @@ export default function EditMapPinPage({ params }: { params: Promise<{ id: strin
       })
       .catch(e => setError(String(e)))
       .finally(() => setLoading(false))
-  }, [id, isNew])
+  }, [id, isNew]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Init map once Leaflet + form are ready
+  // ─── Init map exactly once ───────────────────────────────────────────────
+  // Deps: [leafletReady, form loaded?]
+  // We deliberately do NOT include form.lat/lng here — coordinate changes are
+  // handled by the "sync marker" effect below so the map is never torn down.
   useEffect(() => {
     if (!leafletReady || !form || !mapRef.current || mapInstance.current) return
     const L = window.L
 
     const map = L.map(mapRef.current, {
-      center: [form.lat || 56.5, form.lng || 14.5],
-      zoom: form.lat ? 10 : 4,
+      center: [form.lat || 59.3, form.lng || 18.07],
+      zoom: form.lat ? 10 : 5,
       zoomControl: true,
     })
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -95,8 +102,14 @@ export default function EditMapPinPage({ params }: { params: Promise<{ id: strin
     }).addTo(map)
     mapInstance.current = map
 
-    // Add context pins (all others, small dots)
-    allPins
+    // Leaflet needs a tick to calculate container size; invalidateSize fixes
+    // cases where the container was hidden/zero-sized on mount.
+    requestAnimationFrame(() => {
+      map.invalidateSize()
+    })
+
+    // Context pins (all others as small semi-transparent dots)
+    allPinsRef.current
       .filter(p => p.id !== id)
       .forEach(p => {
         const c = TYPE_COLORS[p.type] ?? '#c9a84c'
@@ -112,14 +125,14 @@ export default function EditMapPinPage({ params }: { params: Promise<{ id: strin
     // Active draggable marker
     const activeColor = TYPE_COLORS[form.type] ?? '#c9a84c'
     const activeIcon = L.divIcon({
-      html: `<div id="active-pin" style="width:16px;height:16px;background:${activeColor};border:2px solid #fff;border-radius:50%;cursor:grab;box-shadow:0 0 0 3px ${activeColor}60,0 2px 8px rgba(0,0,0,.6)"></div>`,
+      html: `<div style="width:16px;height:16px;background:${activeColor};border:2px solid #fff;border-radius:50%;cursor:grab;box-shadow:0 0 0 3px ${activeColor}60,0 2px 8px rgba(0,0,0,.6)"></div>`,
       className: '', iconSize: [16, 16], iconAnchor: [8, 8],
     })
     const marker = L.marker([form.lat, form.lng], { icon: activeIcon, draggable: true, zIndexOffset: 1000 })
     marker.addTo(map)
     markerRef.current = marker
 
-    // Drag end → update form
+    // Drag end → update form (does NOT recreate the map)
     marker.on('dragend', () => {
       const { lat, lng } = marker.getLatLng()
       setForm(prev => prev ? { ...prev, lat: +lat.toFixed(6), lng: +lng.toFixed(6) } : prev)
@@ -137,10 +150,11 @@ export default function EditMapPinPage({ params }: { params: Promise<{ id: strin
     return () => {
       map.remove()
       mapInstance.current = null
+      markerRef.current = null
     }
-  }, [leafletReady, form?.lat, form?.lng]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [leafletReady, form !== null]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Update marker position when lat/lng fields are manually edited
+  // ─── Sync marker when lat/lng fields are manually edited ─────────────────
   useEffect(() => {
     if (!markerRef.current || !form) return
     const { lat: mLat, lng: mLng } = markerRef.current.getLatLng()
@@ -190,9 +204,14 @@ export default function EditMapPinPage({ params }: { params: Promise<{ id: strin
 
   return (
     <div>
-      {/* Leaflet */}
+      {/* Leaflet CSS — hoisted to <head> by Next.js App Router */}
       <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossOrigin="" />
-      <Script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossOrigin="" onLoad={() => setLeafletReady(true)} strategy="afterInteractive" />
+      <Script
+        src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        crossOrigin=""
+        strategy="afterInteractive"
+        onLoad={() => setLeafletReady(true)}
+      />
       <style>{`
         .sculpture-tooltip{background:#1a1a1a!important;border:1px solid #3a3a3a!important;color:#e8e8e4!important;font-family:Georgia,serif!important;font-size:11px!important;padding:4px 8px!important;border-radius:2px!important;white-space:nowrap!important;}
         .sculpture-tooltip::before{display:none!important;}
@@ -234,13 +253,18 @@ export default function EditMapPinPage({ params }: { params: Promise<{ id: strin
           {/* Interactive map */}
           <div>
             {lbl('Placera nålen på kartan — klicka för att sätta, dra för att flytta')}
-            <div ref={mapRef} style={{
-              height: 440,
-              background: '#111',
-              border: '1px solid var(--color-border)',
-              borderRadius: 2,
-              overflow: 'hidden',
-            }} />
+            <div
+              ref={mapRef}
+              style={{
+                height: 440,
+                background: '#111',
+                border: '1px solid var(--color-border)',
+                borderRadius: 2,
+                overflow: 'hidden',
+                // Explicit width ensures Leaflet can measure the container
+                width: '100%',
+              }}
+            />
             <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', marginTop: '0.4rem' }}>
               Koordinater uppdateras automatiskt. Övriga nålar visas som små prickar för referens.
             </p>
