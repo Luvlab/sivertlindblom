@@ -289,6 +289,9 @@ export default function AdminHome() {
 
   // Load from vault
   const [loadingVault, setLoadingVault] = useState(false)
+  const [vaultMode, setVaultMode]       = useState(false)   // true while vault set is active
+  const savedSlidesRef = useRef<Slide[]>([])                 // snapshot before vault load
+  const savedRandomRef = useRef(true)
 
   // Preview
   const [previewing, setPreviewing] = useState(false)
@@ -389,6 +392,9 @@ export default function AdminHome() {
   }
 
   async function loadAllVaultMedia() {
+    // Snapshot the current curated list so we can restore it
+    savedSlidesRef.current = [...slides]
+    savedRandomRef.current = random
     setLoadingVault(true)
     setMessage(null)
     try {
@@ -426,13 +432,21 @@ export default function AdminHome() {
       }
       setSlides(shuffled)
       setRandom(true)
-      setMessage({ type: 'ok', text: `${shuffled.length} bilder laddade från mediavaulten — slumpad ordning aktiv. Tryck Spara för att aktivera.` })
-      setTimeout(() => setMessage(null), 6000)
+      setVaultMode(true)
+      setMessage({ type: 'ok', text: `${shuffled.length} bilder laddade från mediavaulten. Tryck Spara för att aktivera, eller Tillbaka till listan för att avbryta.` })
+      setTimeout(() => setMessage(null), 8000)
     } catch (e) {
       setMessage({ type: 'error', text: String(e) })
     } finally {
       setLoadingVault(false)
     }
+  }
+
+  function restoreList() {
+    setSlides(savedSlidesRef.current)
+    setRandom(savedRandomRef.current)
+    setVaultMode(false)
+    setMessage(null)
   }
 
   // ── Drag handlers ──────────────────────────────────────────────────────────
@@ -518,30 +532,54 @@ export default function AdminHome() {
               {random ? 'Slumpad' : 'I ordning'}
             </button>
 
-            {/* Random from entire vault */}
-            <button
-              type="button"
-              onClick={loadAllVaultMedia}
-              disabled={loadingVault}
-              style={{
-                display: 'flex', alignItems: 'center', gap: '0.5rem',
-                padding: '0.45rem 0.85rem',
-                fontSize: 'var(--fs-xs)',
-                letterSpacing: '0.06em',
-                textTransform: 'uppercase',
-                border: '1px solid var(--color-border)',
-                background: 'transparent',
-                color: loadingVault ? 'var(--color-muted)' : 'var(--color-text)',
-                cursor: loadingVault ? 'default' : 'pointer',
-                borderRadius: 2,
-                opacity: loadingVault ? 0.6 : 1,
-                transition: 'all 0.15s',
-              }}
-              title="Ersätt slideshow med alla bilder från mediavaulten i slumpad ordning"
-            >
-              <span style={{ fontSize: '0.9em' }}>🎲</span>
-              {loadingVault ? 'Laddar…' : 'Hela mediavaulten'}
-            </button>
+            {/* Vault toggle: load vault OR restore curated list */}
+            {vaultMode ? (
+              <button
+                type="button"
+                onClick={restoreList}
+                style={{
+                  display: 'flex', alignItems: 'center', gap: '0.5rem',
+                  padding: '0.45rem 0.85rem',
+                  fontSize: 'var(--fs-xs)',
+                  letterSpacing: '0.06em',
+                  textTransform: 'uppercase',
+                  border: '1px solid var(--color-accent)',
+                  background: 'rgba(201,169,76,0.12)',
+                  color: 'var(--color-accent)',
+                  cursor: 'pointer',
+                  borderRadius: 2,
+                  transition: 'all 0.15s',
+                }}
+                title="Återgå till den handplockade listan"
+              >
+                <span style={{ fontSize: '0.9em' }}>↩</span>
+                Tillbaka till listan
+              </button>
+            ) : (
+              <button
+                type="button"
+                onClick={loadAllVaultMedia}
+                disabled={loadingVault}
+                style={{
+                  display: 'flex', alignItems: 'center', gap: '0.5rem',
+                  padding: '0.45rem 0.85rem',
+                  fontSize: 'var(--fs-xs)',
+                  letterSpacing: '0.06em',
+                  textTransform: 'uppercase',
+                  border: '1px solid var(--color-border)',
+                  background: 'transparent',
+                  color: loadingVault ? 'var(--color-muted)' : 'var(--color-text)',
+                  cursor: loadingVault ? 'default' : 'pointer',
+                  borderRadius: 2,
+                  opacity: loadingVault ? 0.6 : 1,
+                  transition: 'all 0.15s',
+                }}
+                title="Ersätt slideshow med alla bilder från mediavaulten i slumpad ordning"
+              >
+                <span style={{ fontSize: '0.9em' }}>🎲</span>
+                {loadingVault ? 'Laddar…' : 'Hela mediavaulten'}
+              </button>
+            )}
 
             {/* Preview button */}
             {slides.length > 0 && (
