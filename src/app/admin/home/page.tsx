@@ -287,6 +287,9 @@ export default function AdminHome() {
   const [newUrl, setNewUrl] = useState('')
   const [newAlt, setNewAlt] = useState('')
 
+  // Load from vault
+  const [loadingVault, setLoadingVault] = useState(false)
+
   // Preview
   const [previewing, setPreviewing] = useState(false)
   const [previewIdx, setPreviewIdx] = useState(0)
@@ -385,6 +388,53 @@ export default function AdminHome() {
     setTimeout(() => setMessage(null), 3000)
   }
 
+  async function loadAllVaultMedia() {
+    setLoadingVault(true)
+    setMessage(null)
+    try {
+      const collected: Slide[] = []
+      const [worksRes, textsRes, uploadsRes] = await Promise.all([
+        fetch('/api/admin/public-works'),
+        fetch('/api/admin/texts'),
+        fetch('/api/admin/upload'),
+      ])
+      const worksData = await worksRes.json() as PublicWork[] | { error: string }
+      if (!('error' in worksData)) {
+        for (const work of worksData) {
+          for (const img of work.images ?? []) {
+            collected.push({ url: img.url, alt: img.alt ?? '' })
+          }
+        }
+      }
+      const textsData = await textsRes.json() as Array<{ title: string; images?: string[] }> | { error: string }
+      if (!('error' in textsData)) {
+        for (const text of textsData) {
+          for (const url of text.images ?? []) {
+            if (typeof url === 'string' && url) collected.push({ url, alt: '' })
+          }
+        }
+      }
+      const uploadsData = await uploadsRes.json() as { files?: Array<{ url: string; alt: string }> } | { error: string }
+      if (!('error' in uploadsData) && uploadsData.files) {
+        for (const f of uploadsData.files) collected.push({ url: f.url, alt: f.alt ?? '' })
+      }
+      // Fisher-Yates shuffle
+      const shuffled = [...collected]
+      for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1))
+        ;[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
+      }
+      setSlides(shuffled)
+      setRandom(true)
+      setMessage({ type: 'ok', text: `${shuffled.length} bilder laddade från mediavaulten — slumpad ordning aktiv. Tryck Spara för att aktivera.` })
+      setTimeout(() => setMessage(null), 6000)
+    } catch (e) {
+      setMessage({ type: 'error', text: String(e) })
+    } finally {
+      setLoadingVault(false)
+    }
+  }
+
   // ── Drag handlers ──────────────────────────────────────────────────────────
   function handleDragStart(idx: number) { setDraggingIdx(idx) }
   function handleDragOver(e: React.DragEvent, idx: number) {
@@ -466,6 +516,31 @@ export default function AdminHome() {
             >
               <span style={{ fontSize: '0.9em' }}>{random ? '⇄' : '→'}</span>
               {random ? 'Slumpad' : 'I ordning'}
+            </button>
+
+            {/* Random from entire vault */}
+            <button
+              type="button"
+              onClick={loadAllVaultMedia}
+              disabled={loadingVault}
+              style={{
+                display: 'flex', alignItems: 'center', gap: '0.5rem',
+                padding: '0.45rem 0.85rem',
+                fontSize: 'var(--fs-xs)',
+                letterSpacing: '0.06em',
+                textTransform: 'uppercase',
+                border: '1px solid var(--color-border)',
+                background: 'transparent',
+                color: loadingVault ? 'var(--color-muted)' : 'var(--color-text)',
+                cursor: loadingVault ? 'default' : 'pointer',
+                borderRadius: 2,
+                opacity: loadingVault ? 0.6 : 1,
+                transition: 'all 0.15s',
+              }}
+              title="Ersätt slideshow med alla bilder från mediavaulten i slumpad ordning"
+            >
+              <span style={{ fontSize: '0.9em' }}>🎲</span>
+              {loadingVault ? 'Laddar…' : 'Hela mediavaulten'}
             </button>
 
             {/* Preview button */}
