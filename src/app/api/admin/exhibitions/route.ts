@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { cookies } from 'next/headers'
+import { revalidateTag } from 'next/cache'
 import { exhibitions } from '@/lib/exhibitions-data'
 import type { Exhibition } from '@/lib/exhibitions-data'
 import { loadCmsData, saveCmsData } from '@/lib/cms-data'
@@ -94,6 +95,7 @@ export async function POST(request: Request) {
             }))
           )
         }
+        revalidateTag('exhibitions', 'max')
         return NextResponse.json(body, { status: 201 })
       }
     }
@@ -103,6 +105,7 @@ export async function POST(request: Request) {
     const updated = [...current, body]
     const result = saveCmsData('exhibitions', updated)
     if (!result.ok) return NextResponse.json({ error: result.message }, { status: 500 })
+    revalidateTag('exhibitions', 'max')
     return NextResponse.json(body, { status: 201 })
   } catch (e) {
     return NextResponse.json({ error: String(e) }, { status: 500 })

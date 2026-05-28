@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { cookies } from 'next/headers'
+import { revalidateTag } from 'next/cache'
 import { FALLBACK_SETTINGS } from '@/lib/db'
 import type { SiteSettings } from '@/types'
 import { loadCmsObject, saveCmsObject } from '@/lib/cms-data'
@@ -46,7 +47,10 @@ export async function PUT(request: Request) {
         updated_at: new Date().toISOString(),
       }))
       const { error } = await supabase.from('settings').upsert(upserts, { onConflict: 'key' })
-      if (!error) return NextResponse.json({ ok: true })
+      if (!error) {
+        revalidateTag('hero', 'max')
+        return NextResponse.json({ ok: true })
+      }
     }
 
     // Fallback: file-based

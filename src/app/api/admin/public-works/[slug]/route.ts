@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { cookies } from 'next/headers'
+import { revalidateTag } from 'next/cache'
 import { createAdminClient } from '@/lib/supabase/admin'
 import type { PublicWork } from '@/lib/public-works'
 
@@ -102,6 +103,7 @@ export async function PUT(
             return NextResponse.json({ error: `Bilder sparades inte: ${imgErr.message}` }, { status: 500 })
           }
         }
+        revalidateTag('public-works', 'max')
         return NextResponse.json(body)
       }
       if (error) return NextResponse.json({ error: error.message }, { status: 500 })
@@ -123,7 +125,10 @@ export async function DELETE(
     const supabase = createAdminClient()
     if (supabase) {
       const { error } = await supabase.from('public_works').delete().eq('slug', slug)
-      if (!error) return NextResponse.json({ ok: true })
+      if (!error) {
+        revalidateTag('public-works', 'max')
+        return NextResponse.json({ ok: true })
+      }
       return NextResponse.json({ error: error.message }, { status: 500 })
     }
     return NextResponse.json({ error: 'Supabase ej tillgänglig' }, { status: 500 })

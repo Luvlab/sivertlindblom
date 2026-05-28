@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { cookies } from 'next/headers'
+import { revalidateTag } from 'next/cache'
 import { TEXTS_DATA } from '@/lib/texts-data'
 import type { TextItem } from '@/lib/texts-data'
 import { loadCmsData, saveCmsData } from '@/lib/cms-data'
@@ -65,13 +66,17 @@ export async function POST(request: Request) {
         content: body.body,
         published: true,
       }, { onConflict: 'slug' })
-      if (!error) return NextResponse.json(body, { status: 201 })
+      if (!error) {
+        revalidateTag('texts', 'max')
+        return NextResponse.json(body, { status: 201 })
+      }
     }
 
     const current = loadCmsData<TextItem>('texts', TEXTS_DATA)
     const updated = [...current, body]
     const result = saveCmsData('texts', updated)
     if (!result.ok) return NextResponse.json({ error: result.message }, { status: 500 })
+    revalidateTag('texts', 'max')
     return NextResponse.json(body, { status: 201 })
   } catch (e) {
     return NextResponse.json({ error: String(e) }, { status: 500 })

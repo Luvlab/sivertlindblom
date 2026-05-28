@@ -1,7 +1,12 @@
 /**
  * Server-side data fetchers — query Supabase with fallback to static data.
  * Use only in Server Components and API routes (never in client components).
+ *
+ * All exported async functions are wrapped with `'use cache'` (Next.js 16).
+ * Each is tagged so admin mutations can call revalidateTag(tag, 'max') to
+ * bust the cache immediately after a save.
  */
+import { cacheTag, cacheLife } from 'next/cache'
 import { createAdminClient } from '@/lib/supabase/admin'
 import type { Exhibition, ExhibitionLink } from '@/lib/exhibitions-data'
 import { exhibitions as STATIC_EXHIBITIONS } from '@/lib/exhibitions-data'
@@ -33,6 +38,9 @@ function dbRowToExhibition(w: Record<string, unknown>): Exhibition {
 }
 
 export async function getExhibitions(): Promise<Exhibition[]> {
+  'use cache'
+  cacheTag('exhibitions')
+  cacheLife('days')
   const supabase = createAdminClient()
   if (supabase) {
     const { data, error } = await supabase
@@ -45,6 +53,9 @@ export async function getExhibitions(): Promise<Exhibition[]> {
 }
 
 export async function getExhibition(slug: string): Promise<Exhibition | null> {
+  'use cache'
+  cacheTag('exhibitions', `exhibition-${slug}`)
+  cacheLife('days')
   const supabase = createAdminClient()
   if (supabase) {
     const { data, error } = await supabase
@@ -58,6 +69,9 @@ export async function getExhibition(slug: string): Promise<Exhibition | null> {
 }
 
 export async function getExhibitionSlugs(): Promise<string[]> {
+  'use cache'
+  cacheTag('exhibitions')
+  cacheLife('days')
   const supabase = createAdminClient()
   if (supabase) {
     const { data, error } = await supabase.from('works').select('slug')
@@ -87,6 +101,9 @@ function dbRowToPublicWork(
 }
 
 export async function getPublicWorks(): Promise<PublicWork[]> {
+  'use cache'
+  cacheTag('public-works')
+  cacheLife('days')
   const supabase = createAdminClient()
   if (supabase) {
     const { data, error } = await supabase
@@ -109,6 +126,9 @@ export async function getPublicWorks(): Promise<PublicWork[]> {
 }
 
 export async function getPublicWork(slug: string): Promise<PublicWork | null> {
+  'use cache'
+  cacheTag('public-works', `public-work-${slug}`)
+  cacheLife('days')
   const supabase = createAdminClient()
   if (supabase) {
     const { data, error } = await supabase
@@ -135,6 +155,9 @@ export async function getPublicWork(slug: string): Promise<PublicWork | null> {
 }
 
 export async function getPublicWorkSlugs(): Promise<string[]> {
+  'use cache'
+  cacheTag('public-works')
+  cacheLife('days')
   const supabase = createAdminClient()
   if (supabase) {
     const { data, error } = await supabase.from('public_works').select('slug')
@@ -161,6 +184,9 @@ function dbRowToLocation(row: Record<string, unknown>): SculptureLocation {
 }
 
 export async function getMapPins(): Promise<SculptureLocation[]> {
+  'use cache'
+  cacheTag('map-pins')
+  cacheLife('days')
   const supabase = createAdminClient()
   if (supabase) {
     const { data, error } = await supabase
@@ -189,6 +215,9 @@ function dbRowToText(row: Record<string, unknown>): TextItem {
 }
 
 export async function getTexts(): Promise<TextItem[]> {
+  'use cache'
+  cacheTag('texts')
+  cacheLife('days')
   const supabase = createAdminClient()
   if (supabase) {
     const { data, error } = await supabase
@@ -202,6 +231,9 @@ export async function getTexts(): Promise<TextItem[]> {
 }
 
 export async function getText(slug: string): Promise<TextItem | null> {
+  'use cache'
+  cacheTag('texts', `text-${slug}`)
+  cacheLife('days')
   const supabase = createAdminClient()
   if (supabase) {
     const { data, error } = await supabase
@@ -216,6 +248,9 @@ export async function getText(slug: string): Promise<TextItem | null> {
 
 // Returns the map pin for a public work slug (for coordinates / Google Maps link)
 export async function getMapPinForWork(slug: string): Promise<SculptureLocation | null> {
+  'use cache'
+  cacheTag('map-pins', `map-pin-${slug}`)
+  cacheLife('days')
   const supabase = createAdminClient()
   if (supabase) {
     const { data, error } = await supabase.from('map_pins').select('*').eq('slug', slug).single()
@@ -225,6 +260,9 @@ export async function getMapPinForWork(slug: string): Promise<SculptureLocation 
 }
 
 export async function getTextSlugs(): Promise<string[]> {
+  'use cache'
+  cacheTag('texts')
+  cacheLife('days')
   const supabase = createAdminClient()
   if (supabase) {
     const { data, error } = await supabase
@@ -252,6 +290,9 @@ const FALLBACK_HERO_SLIDES = [
 ]
 
 export async function getHeroSlides(): Promise<Array<{ url: string; alt: string }>> {
+  'use cache'
+  cacheTag('hero')
+  cacheLife('hours')
   const supabase = createAdminClient()
   if (supabase) {
     const { data, error } = await supabase
@@ -279,6 +320,9 @@ export async function getHeroConfig(): Promise<{
   slides: Array<{ url: string; alt: string }>
   random: boolean
 }> {
+  'use cache'
+  cacheTag('hero')
+  cacheLife('hours')
   const supabase = createAdminClient()
   let slides: Array<{ url: string; alt: string }> = []
   let random = true
@@ -309,6 +353,9 @@ export async function getHeroConfig(): Promise<{
 // Collects every image from exhibitions + public works so the home hero can
 // cycle through the full media vault in random order.
 export async function getAllMediaImages(): Promise<Array<{ url: string; alt: string }>> {
+  'use cache'
+  cacheTag('exhibitions', 'public-works')
+  cacheLife('days')
   const [exhibitions, publicWorks] = await Promise.all([
     getExhibitions(),
     getPublicWorks(),

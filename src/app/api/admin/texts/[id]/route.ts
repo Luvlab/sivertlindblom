@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { cookies } from 'next/headers'
+import { revalidateTag } from 'next/cache'
 import { TEXTS_DATA } from '@/lib/texts-data'
 import type { TextItem } from '@/lib/texts-data'
 import { loadCmsData, saveCmsData } from '@/lib/cms-data'
@@ -62,7 +63,10 @@ export async function PUT(
         language: body.lang,
         content: body.body,
       }).eq('slug', id)
-      if (!error) return NextResponse.json(body)
+      if (!error) {
+        revalidateTag('texts', 'max')
+        return NextResponse.json(body)
+      }
     }
 
     const current = loadCmsData<TextItem>('texts', TEXTS_DATA)
@@ -71,6 +75,7 @@ export async function PUT(
     const updated = [...current]; updated[idx] = body
     const result = saveCmsData('texts', updated)
     if (!result.ok) return NextResponse.json({ error: result.message }, { status: 500 })
+    revalidateTag('texts', 'max')
     return NextResponse.json(body)
   } catch (e) {
     return NextResponse.json({ error: String(e) }, { status: 500 })
@@ -88,7 +93,10 @@ export async function DELETE(
     const supabase = createAdminClient()
     if (supabase) {
       const { error } = await supabase.from('texts').delete().eq('slug', id)
-      if (!error) return NextResponse.json({ ok: true })
+      if (!error) {
+        revalidateTag('texts', 'max')
+        return NextResponse.json({ ok: true })
+      }
     }
 
     const current = loadCmsData<TextItem>('texts', TEXTS_DATA)
@@ -96,6 +104,7 @@ export async function DELETE(
     if (updated.length === current.length) return NextResponse.json({ error: 'Not found' }, { status: 404 })
     const result = saveCmsData('texts', updated)
     if (!result.ok) return NextResponse.json({ error: result.message }, { status: 500 })
+    revalidateTag('texts', 'max')
     return NextResponse.json({ ok: true })
   } catch (e) {
     return NextResponse.json({ error: String(e) }, { status: 500 })

@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { cookies } from 'next/headers'
+import { revalidateTag } from 'next/cache'
 import { PUBLIC_WORKS } from '@/lib/public-works'
 import type { PublicWork } from '@/lib/public-works'
 import { loadCmsData, saveCmsData } from '@/lib/cms-data'
@@ -94,11 +95,13 @@ export async function PUT(request: Request) {
           }
         }
       }
+      revalidateTag('public-works', 'max')
       return NextResponse.json(body)
     }
 
     const result = saveCmsData('public-works', body)
     if (!result.ok) return NextResponse.json({ error: result.message }, { status: 500 })
+    revalidateTag('public-works', 'max')
     return NextResponse.json(body)
   } catch (e) {
     return NextResponse.json({ error: String(e) }, { status: 500 })

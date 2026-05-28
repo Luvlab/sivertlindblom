@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { cookies } from 'next/headers'
+import { revalidateTag } from 'next/cache'
 import { createAdminClient } from '@/lib/supabase/admin'
 
 async function checkAuth(): Promise<boolean> {
@@ -54,7 +55,10 @@ export async function PUT(request: Request) {
           { key: 'hero_slides', value: JSON.stringify(body.slides) },
           { key: 'hero_random', value: (body.random ?? true) ? '1' : '0' },
         ], { onConflict: 'key' })
-      if (!error) return NextResponse.json({ ok: true })
+      if (!error) {
+        revalidateTag('hero', 'max')
+        return NextResponse.json({ ok: true })
+      }
       return NextResponse.json({ error: error.message }, { status: 500 })
     }
 

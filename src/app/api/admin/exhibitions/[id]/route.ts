@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { cookies } from 'next/headers'
+import { revalidateTag } from 'next/cache'
 import { exhibitions } from '@/lib/exhibitions-data'
 import type { Exhibition } from '@/lib/exhibitions-data'
 import { loadCmsData, saveCmsData } from '@/lib/cms-data'
@@ -90,6 +91,7 @@ export async function PUT(
             return NextResponse.json({ error: `Bilder sparades inte: ${imgErr.message}` }, { status: 500 })
           }
         }
+        revalidateTag('exhibitions', 'max')
         return NextResponse.json(body)
       }
     }
@@ -100,6 +102,7 @@ export async function PUT(
     const updated = [...current]; updated[idx] = body
     const result = saveCmsData('exhibitions', updated)
     if (!result.ok) return NextResponse.json({ error: result.message }, { status: 500 })
+    revalidateTag('exhibitions', 'max')
     return NextResponse.json(body)
   } catch (e) {
     return NextResponse.json({ error: String(e) }, { status: 500 })
@@ -117,7 +120,10 @@ export async function DELETE(
     const supabase = createAdminClient()
     if (supabase) {
       const { error } = await supabase.from('works').delete().eq('slug', id)
-      if (!error) return NextResponse.json({ ok: true })
+      if (!error) {
+        revalidateTag('exhibitions', 'max')
+        return NextResponse.json({ ok: true })
+      }
     }
 
     const current = loadCmsData<Exhibition>('exhibitions', exhibitions)
@@ -125,6 +131,7 @@ export async function DELETE(
     if (updated.length === current.length) return NextResponse.json({ error: 'Not found' }, { status: 404 })
     const result = saveCmsData('exhibitions', updated)
     if (!result.ok) return NextResponse.json({ error: result.message }, { status: 500 })
+    revalidateTag('exhibitions', 'max')
     return NextResponse.json({ ok: true })
   } catch (e) {
     return NextResponse.json({ error: String(e) }, { status: 500 })
