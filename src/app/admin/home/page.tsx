@@ -532,6 +532,16 @@ export default function AdminHome() {
               {random ? 'Slumpad' : 'I ordning'}
             </button>
 
+            {/* Save — in header, next to random toggle */}
+            <button
+              className="btn btn-primary"
+              onClick={save}
+              disabled={saving}
+              style={{ fontSize: 'var(--fs-xs)', padding: '0.45rem 0.85rem', minWidth: 80 }}
+            >
+              {saving ? 'Sparar…' : 'Spara'}
+            </button>
+
             {/* Vault toggle: load vault OR restore curated list */}
             {vaultMode ? (
               <button
@@ -880,20 +890,6 @@ export default function AdminHome() {
             </div>
           </div>
 
-          {/* ── Save ── */}
-          <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-            <button
-              className="btn btn-primary"
-              onClick={save}
-              disabled={saving}
-              style={{ minWidth: 120 }}
-            >
-              {saving ? 'Sparar…' : 'Spara'}
-            </button>
-            <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)' }}>
-              {slides.length} bilder i slideshow
-            </span>
-          </div>
         </>
       )}
     </div>
