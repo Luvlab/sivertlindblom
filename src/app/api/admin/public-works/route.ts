@@ -24,6 +24,7 @@ function dbToWork(row: Record<string, unknown>, images: Array<{ url: string; alt
       .map(img => ({ url: img.url, alt: img.alt ?? '' })),
     lat: (row.lat as number | null) ?? null,
     lng: (row.lng as number | null) ?? null,
+    temporary: (row.temporary as boolean) ?? false,
   }
 }
 

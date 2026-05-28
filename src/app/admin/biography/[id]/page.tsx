@@ -76,16 +76,16 @@ export default function EditBioPage({ params }: { params: Promise<{ id: string }
     router.push('/admin/biography')
   }
 
-  if (loading) return <div style={{ padding: '3rem', color: 'var(--color-muted)' }}>Laddar…</div>
-  if (!form) return <div style={{ padding: '3rem', color: 'var(--color-muted)' }}>{error ?? 'Hittades inte'}</div>
+  if (loading) return <div style={{ padding: 'clamp(1rem, 3vw, 3rem)', color: 'var(--color-muted)' }}>Laddar…</div>
+  if (!form) return <div style={{ padding: 'clamp(1rem, 3vw, 3rem)', color: 'var(--color-muted)' }}>{error ?? 'Hittades inte'}</div>
 
   return (
-    <div style={{ padding: '3rem', maxWidth: 700 }}>
+    <div style={{ padding: 'clamp(1rem, 3vw, 3rem)', maxWidth: 700 }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '2rem' }}>
         <Link href="/admin/biography" style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', textDecoration: 'none' }}>← Biografi</Link>
         {dirty && <span style={{ fontSize: 'var(--fs-xs)', color: '#f0a' }}>● Osparade ändringar</span>}
       </div>
-      <h1 style={{ fontFamily: 'Georgia, serif', fontWeight: 400, fontSize: 'var(--fs-3xl)', marginBottom: '2rem' }}>Redigera biografipost</h1>
+      <h1 style={{ fontFamily: 'Georgia, serif', fontWeight: 400, fontSize: 'clamp(var(--fs-xl), 4vw, var(--fs-3xl))', marginBottom: '2rem' }}>Redigera biografipost</h1>
 
       {error && <div style={{ background: '#3a0010', border: '1px solid #c00', padding: '1rem', marginBottom: '1.5rem', fontSize: 'var(--fs-sm)', color: '#f88' }}>{error}</div>}
 

@@ -4,6 +4,7 @@ import { useState, useEffect, useRef, use } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import Script from 'next/script'
+import GeoSearch, { type GeoResult } from '@/components/admin/GeoSearch'
 
 declare global {
   interface Window { L: any } // eslint-disable-line @typescript-eslint/no-explicit-any
@@ -55,6 +56,8 @@ export default function EditMapPinPage({ params }: { params: Promise<{ id: strin
   const mapInstance = useRef<any>(null)
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const markerRef = useRef<any>(null)
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const circleRef = useRef<any>(null)
   const allPinsRef = useRef(allPins)
   allPinsRef.current = allPins
 
@@ -100,16 +103,13 @@ export default function EditMapPinPage({ params }: { params: Promise<{ id: strin
 
     const map = L.map(mapEl, {
       center: [form.lat || 59.3, form.lng || 18.07],
-      zoom: form.lat ? 10 : 5,
+      zoom: 5,
       zoomControl: true,
     })
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '© OpenStreetMap', maxZoom: 19,
     }).addTo(map)
     mapInstance.current = map
-
-    // Give the browser one frame to paint the container before measuring it
-    requestAnimationFrame(() => map.invalidateSize())
 
     // Context pins — other sculpture locations as faint dots
     allPinsRef.current
@@ -123,6 +123,7 @@ export default function EditMapPinPage({ params }: { params: Promise<{ id: strin
         const m = L.marker([p.lat, p.lng], { icon })
         m.bindTooltip(`${p.title} (${p.year})`, { direction: 'top', offset: [0, -6], className: 'sculpture-tooltip', opacity: 0.85 })
         m.addTo(map)
+        L.circle([p.lat, p.lng], { radius: 500, color: c, fillColor: c, fillOpacity: 0.07, weight: 1, opacity: 0.2, interactive: false }).addTo(map)
       })
 
     // Active marker (draggable)
@@ -135,9 +136,20 @@ export default function EditMapPinPage({ params }: { params: Promise<{ id: strin
     marker.addTo(map)
     markerRef.current = marker
 
+    const activeCircle = L.circle([form.lat, form.lng], { radius: 500, color: activeColor, fillColor: activeColor, fillOpacity: 0.1, weight: 1.5, opacity: 0.35, interactive: false })
+    activeCircle.addTo(map)
+    circleRef.current = activeCircle
+
+    // Zoom to the 0.5 km radius extent, after the container is painted
+    requestAnimationFrame(() => {
+      map.invalidateSize()
+      map.fitBounds(activeCircle.getBounds(), { padding: [40, 40] })
+    })
+
     marker.on('dragend', () => {
       const { lat, lng } = marker.getLatLng()
       setForm(prev => prev ? { ...prev, lat: +lat.toFixed(6), lng: +lng.toFixed(6) } : prev)
+      circleRef.current?.setLatLng([lat, lng])
       setDirty(true)
     })
 
@@ -145,6 +157,7 @@ export default function EditMapPinPage({ params }: { params: Promise<{ id: strin
     map.on('click', (e: any) => {
       const { lat, lng } = e.latlng
       marker.setLatLng([lat, lng])
+      circleRef.current?.setLatLng([lat, lng])
       setForm(prev => prev ? { ...prev, lat: +lat.toFixed(6), lng: +lng.toFixed(6) } : prev)
       setDirty(true)
     })
@@ -153,6 +166,7 @@ export default function EditMapPinPage({ params }: { params: Promise<{ id: strin
       map.remove()
       mapInstance.current = null
       markerRef.current = null
+      circleRef.current = null
     }
   }, [leafletReady, mapEl, form !== null]) // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -162,12 +176,39 @@ export default function EditMapPinPage({ params }: { params: Promise<{ id: strin
     const { lat: mLat, lng: mLng } = markerRef.current.getLatLng()
     if (Math.abs(mLat - form.lat) > 0.0001 || Math.abs(mLng - form.lng) > 0.0001) {
       markerRef.current.setLatLng([form.lat, form.lng])
+      circleRef.current?.setLatLng([form.lat, form.lng])
       mapInstance.current?.panTo([form.lat, form.lng])
     }
   }, [form?.lat, form?.lng])
 
   function set<K extends keyof Pin>(key: K, val: Pin[K]) {
     setForm(prev => prev ? { ...prev, [key]: val } : prev)
+    setDirty(true)
+  }
+
+  function handleGeoSelect(result: GeoResult) {
+    const { lat, lng, city, country } = result
+    const roundedLat = +lat.toFixed(6)
+    const roundedLng = +lng.toFixed(6)
+
+    // Move marker + circle directly so the sync effect won't re-trigger panTo
+    if (markerRef.current) markerRef.current.setLatLng([roundedLat, roundedLng])
+    if (circleRef.current) circleRef.current.setLatLng([roundedLat, roundedLng])
+
+    // Smooth fly to location
+    mapInstance.current?.flyTo([roundedLat, roundedLng], 14)
+
+    // Update form fields
+    setForm(prev => {
+      if (!prev) return prev
+      return {
+        ...prev,
+        lat: roundedLat,
+        lng: roundedLng,
+        city: prev.city || city || prev.city,
+        country: prev.country || country || prev.country,
+      }
+    })
     setDirty(true)
   }
 
@@ -200,8 +241,8 @@ export default function EditMapPinPage({ params }: { params: Promise<{ id: strin
     router.push('/admin/map')
   }
 
-  if (loading) return <div style={{ padding: '3rem', color: 'var(--color-muted)' }}>Laddar…</div>
-  if (!form) return <div style={{ padding: '3rem', color: '#f88' }}>{error ?? 'Hittades inte'}</div>
+  if (loading) return <div style={{ padding: 'clamp(1rem, 3vw, 3rem)', color: 'var(--color-muted)' }}>Laddar…</div>
+  if (!form) return <div style={{ padding: 'clamp(1rem, 3vw, 3rem)', color: '#f88' }}>{error ?? 'Hittades inte'}</div>
 
   return (
     <div>
@@ -247,7 +288,7 @@ export default function EditMapPinPage({ params }: { params: Promise<{ id: strin
       </div>
 
       <div style={{ padding: '2rem 3rem' }}>
-        <h1 style={{ fontFamily: 'Georgia, serif', fontWeight: 400, fontSize: 'var(--fs-3xl)', marginBottom: '1.5rem' }}>
+        <h1 style={{ fontFamily: 'Georgia, serif', fontWeight: 400, fontSize: 'clamp(var(--fs-xl), 4vw, var(--fs-3xl))', marginBottom: '1.5rem' }}>
           {isNew ? 'Ny kartnål' : 'Redigera kartnål'}
         </h1>
 
@@ -263,7 +304,7 @@ export default function EditMapPinPage({ params }: { params: Promise<{ id: strin
           {/* ── Left column: form fields ── */}
           <form id="pin-form" onSubmit={handleSave} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 200px), 1fr))', gap: '1rem' }}>
               <div>
                 {lbl('Latitud')}
                 <input className="input" type="number" step="0.000001" style={{ width: '100%', fontFamily: 'monospace' }}
@@ -281,7 +322,7 @@ export default function EditMapPinPage({ params }: { params: Promise<{ id: strin
               <input className="input" style={{ width: '100%' }} value={form.title} onChange={e => set('title', e.target.value)} required />
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 200px), 1fr))', gap: '1rem' }}>
               <div>
                 {lbl('År')}
                 <input className="input" type="number" style={{ width: '100%' }} value={form.year} onChange={e => set('year', Number(e.target.value))} required />
@@ -296,7 +337,7 @@ export default function EditMapPinPage({ params }: { params: Promise<{ id: strin
               </div>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 200px), 1fr))', gap: '1rem' }}>
               <div>
                 {lbl('Stad')}
                 <input className="input" style={{ width: '100%' }} value={form.city} onChange={e => set('city', e.target.value)} />
@@ -329,6 +370,13 @@ export default function EditMapPinPage({ params }: { params: Promise<{ id: strin
 
           {/* ── Right column: interactive map ── */}
           <div>
+            {/* Geo search — fills lat/lng/city/country and flies map */}
+            <div style={{ marginBottom: '0.75rem' }}>
+              <GeoSearch
+                onSelect={handleGeoSelect}
+                placeholder="Sök adress för att flytta nålen…"
+              />
+            </div>
             {lbl('Klicka för att placera · dra för att flytta')}
             {/* callback ref: setMapEl triggers the init effect when this div mounts */}
             <div

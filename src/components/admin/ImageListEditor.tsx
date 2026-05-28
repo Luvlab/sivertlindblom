@@ -1,7 +1,6 @@
 'use client'
 
 import { useRef, useState } from 'react'
-import { FieldLabel } from './AdminForm'
 
 interface ImageListEditorProps {
   images: string[]
@@ -9,43 +8,65 @@ interface ImageListEditorProps {
   label?: string
 }
 
-export default function ImageListEditor({ images, onChange, label = 'Bilder (URL:er)' }: ImageListEditorProps) {
+export default function ImageListEditor({ images, onChange, label = 'Bilder' }: ImageListEditorProps) {
   const [newUrl, setNewUrl] = useState('')
   const [uploading, setUploading] = useState(false)
   const [uploadError, setUploadError] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
+
+  // Drag-and-drop reorder
   const [draggingIdx, setDraggingIdx] = useState<number | null>(null)
   const [dragOverIdx, setDragOverIdx] = useState<number | null>(null)
+
+  // Inline URL edit per card
+  const [editingIdx, setEditingIdx] = useState<number | null>(null)
+  const [editingUrl, setEditingUrl] = useState('')
+
+  // ── Reorder ────────────────────────────────────────────
+  function handleDragStart(idx: number) { setDraggingIdx(idx) }
+  function handleDragOver(e: React.DragEvent, idx: number) {
+    e.preventDefault()
+    e.dataTransfer.dropEffect = 'move'
+    if (idx !== dragOverIdx) setDragOverIdx(idx)
+  }
+  function handleDrop(e: React.DragEvent, idx: number) {
+    e.preventDefault()
+    if (draggingIdx === null || draggingIdx === idx) return
+    const next = [...images]
+    const [removed] = next.splice(draggingIdx, 1)
+    next.splice(idx, 0, removed)
+    onChange(next)
+    setDraggingIdx(null)
+    setDragOverIdx(null)
+  }
+  function handleDragEnd() { setDraggingIdx(null); setDragOverIdx(null) }
+
+  // ── Editing ────────────────────────────────────────────
+  function startEdit(idx: number) {
+    setEditingIdx(idx)
+    setEditingUrl(images[idx])
+  }
+  function commitEdit() {
+    if (editingIdx === null) return
+    const next = [...images]
+    const trimmed = editingUrl.trim()
+    if (trimmed) next[editingIdx] = trimmed
+    onChange(next)
+    setEditingIdx(null)
+  }
+  function cancelEdit() { setEditingIdx(null); setEditingUrl('') }
+
+  // ── CRUD ───────────────────────────────────────────────
+  function removeImage(idx: number) {
+    if (editingIdx === idx) { setEditingIdx(null) }
+    onChange(images.filter((_, i) => i !== idx))
+  }
 
   function addImage() {
     const trimmed = newUrl.trim()
     if (!trimmed) return
     onChange([...images, trimmed])
     setNewUrl('')
-  }
-
-  function removeImage(idx: number) {
-    onChange(images.filter((_, i) => i !== idx))
-  }
-
-  function moveUp(idx: number) {
-    if (idx === 0) return
-    const next = [...images]
-    ;[next[idx - 1], next[idx]] = [next[idx], next[idx - 1]]
-    onChange(next)
-  }
-
-  function moveDown(idx: number) {
-    if (idx === images.length - 1) return
-    const next = [...images]
-    ;[next[idx], next[idx + 1]] = [next[idx + 1], next[idx]]
-    onChange(next)
-  }
-
-  function updateUrl(idx: number, val: string) {
-    const next = [...images]
-    next[idx] = val
-    onChange(next)
   }
 
   function shuffle() {
@@ -57,38 +78,11 @@ export default function ImageListEditor({ images, onChange, label = 'Bilder (URL
     onChange(next)
   }
 
-  function handleDragStart(idx: number) {
-    setDraggingIdx(idx)
-  }
-
-  function handleDragOver(e: React.DragEvent, idx: number) {
-    e.preventDefault()
-    e.dataTransfer.dropEffect = 'move'
-    if (idx !== dragOverIdx) setDragOverIdx(idx)
-  }
-
-  function handleDrop(e: React.DragEvent, idx: number) {
-    e.preventDefault()
-    if (draggingIdx === null || draggingIdx === idx) return
-    const next = [...images]
-    const [removed] = next.splice(draggingIdx, 1)
-    next.splice(idx, 0, removed)
-    onChange(next)
-    setDraggingIdx(null)
-    setDragOverIdx(null)
-  }
-
-  function handleDragEnd() {
-    setDraggingIdx(null)
-    setDragOverIdx(null)
-  }
-
   async function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
     const files = Array.from(e.target.files ?? [])
     if (!files.length) return
     setUploading(true)
     setUploadError(null)
-
     const newUrls: string[] = []
     for (const file of files) {
       try {
@@ -97,26 +91,33 @@ export default function ImageListEditor({ images, onChange, label = 'Bilder (URL
         fd.append('alt', file.name)
         const res = await fetch('/api/admin/upload', { method: 'POST', body: fd })
         const data = await res.json() as { url?: string; error?: string }
-        if (data.error) {
-          setUploadError(`${file.name}: ${data.error}`)
-          break
-        }
+        if (data.error) { setUploadError(`${file.name}: ${data.error}`); break }
         if (data.url) newUrls.push(data.url)
-      } catch (err) {
-        setUploadError(String(err))
-        break
-      }
+      } catch (err) { setUploadError(String(err)); break }
     }
-
     if (newUrls.length) onChange([...images, ...newUrls])
     setUploading(false)
-    // Reset file input so the same files can be re-selected if needed
     if (fileInputRef.current) fileInputRef.current.value = ''
   }
 
+  // ── Shared button styles ───────────────────────────────
+  const overlayBtn = (extra?: React.CSSProperties): React.CSSProperties => ({
+    position: 'absolute',
+    padding: '0.2rem 0.4rem',
+    fontSize: '0.65rem',
+    lineHeight: 1,
+    border: 'none',
+    borderRadius: 2,
+    cursor: 'pointer',
+    backdropFilter: 'blur(4px)',
+    transition: 'opacity 0.12s',
+    ...extra,
+  })
+
   return (
     <div>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.75rem' }}>
+      {/* ── Header ── */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.75rem', paddingTop: '0.25rem' }}>
         <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
           {label} ({images.length})
         </span>
@@ -124,151 +125,164 @@ export default function ImageListEditor({ images, onChange, label = 'Bilder (URL
           <button
             type="button"
             onClick={shuffle}
-            style={{
-              background: 'none',
-              border: '1px solid var(--color-border)',
-              color: 'var(--color-muted)',
-              padding: '0.2em 0.6em',
-              fontSize: 'var(--fs-xs)',
-              cursor: 'pointer',
-              letterSpacing: '0.05em',
-              textTransform: 'uppercase',
-            }}
+            style={{ background: 'none', border: '1px solid var(--color-border)', color: 'var(--color-muted)', padding: '0.2em 0.6em', fontSize: 'var(--fs-xs)', cursor: 'pointer', letterSpacing: '0.05em', textTransform: 'uppercase' }}
             title="Slumpa bildordningen"
           >
-            ⇄ Slumpa ordning
+            ⇄ Slumpa
           </button>
         )}
       </div>
 
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginBottom: '0.75rem' }}>
+      {/* ── Thumbnail grid ── */}
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fill, minmax(130px, 1fr))',
+        gap: '0.5rem',
+        marginBottom: '1rem',
+      }}>
         {images.map((url, idx) => (
           <div
             key={idx}
+            draggable
+            onDragStart={() => handleDragStart(idx)}
             onDragOver={e => handleDragOver(e, idx)}
             onDrop={e => handleDrop(e, idx)}
+            onDragEnd={handleDragEnd}
             style={{
-              display: 'flex', gap: '0.5rem', alignItems: 'center',
-              opacity: draggingIdx === idx ? 0.4 : 1,
-              background: dragOverIdx === idx && draggingIdx !== idx ? 'rgba(201,168,76,0.08)' : 'transparent',
-              borderRadius: 3,
-              transition: 'background 0.1s, opacity 0.1s',
+              position: 'relative',
+              border: dragOverIdx === idx && draggingIdx !== idx
+                ? '2px solid var(--color-accent)'
+                : editingIdx === idx
+                  ? '2px solid var(--color-accent)'
+                  : '1px solid var(--color-border)',
+              background: 'var(--color-bg-surface)',
+              opacity: draggingIdx === idx ? 0.35 : 1,
+              cursor: 'grab',
+              transition: 'opacity 0.1s, border-color 0.1s',
             }}
           >
-            {/* Drag handle */}
-            <span
-              draggable
-              onDragStart={() => handleDragStart(idx)}
-              onDragEnd={handleDragEnd}
-              style={{
-                cursor: 'grab', color: 'var(--color-border)', fontSize: '0.9rem',
-                flexShrink: 0, width: '1.25rem', textAlign: 'center',
-                userSelect: 'none', touchAction: 'none',
-              }}
-              title="Dra för att ändra ordning"
-            >
-              ☰
-            </span>
-            <span style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-xs)', width: '1.5rem', flexShrink: 0, textAlign: 'right' }}>
-              {idx + 1}
-            </span>
-            {/* Thumbnail preview */}
-            <div style={{ flexShrink: 0, width: 44, height: 44, borderRadius: 2, overflow: 'hidden', background: 'var(--color-bg)', border: '1px solid var(--color-border)' }}>
+            {/* Image */}
+            <div style={{ aspectRatio: '4/3', overflow: 'hidden', background: '#111' }}>
               {url ? (
+                // eslint-disable-next-line @next/next/no-img-element
                 <img
                   src={url}
                   alt=""
-                  style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
-                  onError={ev => { (ev.target as HTMLImageElement).style.opacity = '0' }}
+                  loading="lazy"
+                  style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', pointerEvents: 'none' }}
+                  onError={e => { (e.target as HTMLImageElement).style.opacity = '0.1' }}
                 />
               ) : (
-                <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', opacity: 0.2, fontSize: 20 }}>□</div>
+                <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--color-border)', fontSize: '1.5rem' }}>□</div>
               )}
             </div>
-            <input
-              type="url"
-              className="input"
-              value={url}
-              onChange={e => updateUrl(idx, e.target.value)}
-              style={{ flex: 1, fontSize: 'var(--fs-xs)' }}
-              placeholder="https://..."
-            />
-            <button
-              type="button"
-              onClick={() => moveUp(idx)}
-              disabled={idx === 0}
-              style={{
-                background: 'none',
-                border: '1px solid var(--color-border)',
-                color: idx === 0 ? 'var(--color-border)' : 'var(--color-muted)',
-                padding: '0.25em 0.5em',
-                cursor: idx === 0 ? 'default' : 'pointer',
-                fontSize: 'var(--fs-xs)',
-              }}
-              title="Flytta upp"
-            >↑</button>
-            <button
-              type="button"
-              onClick={() => moveDown(idx)}
-              disabled={idx === images.length - 1}
-              style={{
-                background: 'none',
-                border: '1px solid var(--color-border)',
-                color: idx === images.length - 1 ? 'var(--color-border)' : 'var(--color-muted)',
-                padding: '0.25em 0.5em',
-                cursor: idx === images.length - 1 ? 'default' : 'pointer',
-                fontSize: 'var(--fs-xs)',
-              }}
-              title="Flytta ner"
-            >↓</button>
+
+            {/* Number badge — top-left */}
+            <div style={{ position: 'absolute', top: 4, left: 4, background: 'rgba(0,0,0,0.72)', color: '#fff', fontSize: '0.6rem', padding: '0.1rem 0.38rem', fontFamily: 'Georgia,serif', lineHeight: 1.4, pointerEvents: 'none' }}>
+              {idx + 1}
+            </div>
+
+            {/* Remove — top-right */}
             <button
               type="button"
               onClick={() => removeImage(idx)}
-              style={{
-                background: 'none',
-                border: '1px solid #a33',
-                color: '#f88',
-                padding: '0.25em 0.5em',
-                cursor: 'pointer',
-                fontSize: 'var(--fs-xs)',
-              }}
+              style={overlayBtn({ top: 4, right: 4, background: 'rgba(160,30,30,0.82)', color: '#fff' })}
               title="Ta bort"
             >✕</button>
+
+            {/* Edit — bottom-right */}
+            <button
+              type="button"
+              onClick={() => editingIdx === idx ? cancelEdit() : startEdit(idx)}
+              style={overlayBtn({
+                bottom: editingIdx === idx ? undefined : 4,
+                top: editingIdx === idx ? 4 : undefined,
+                right: editingIdx === idx ? 24 : 4,
+                background: editingIdx === idx ? 'rgba(201,169,76,0.9)' : 'rgba(40,40,40,0.82)',
+                color: editingIdx === idx ? '#0a0a0a' : 'var(--color-muted)',
+              })}
+              title={editingIdx === idx ? 'Avbryt redigering' : 'Redigera URL'}
+            >
+              {editingIdx === idx ? '✕' : '✎'}
+            </button>
+
+            {/* Inline URL editor — shown below image when editing */}
+            {editingIdx === idx && (
+              <div style={{ padding: '0.4rem', borderTop: '1px solid var(--color-border)', background: 'var(--color-bg-card)' }}>
+                <input
+                  type="url"
+                  value={editingUrl}
+                  onChange={e => setEditingUrl(e.target.value)}
+                  onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); commitEdit() } if (e.key === 'Escape') cancelEdit() }}
+                  autoFocus
+                  style={{
+                    width: '100%',
+                    background: 'var(--color-bg)',
+                    border: '1px solid var(--color-border)',
+                    color: 'var(--color-text)',
+                    fontSize: '0.6rem',
+                    fontFamily: 'monospace',
+                    padding: '0.3rem 0.4rem',
+                    marginBottom: '0.35rem',
+                    outline: 'none',
+                  }}
+                  placeholder="https://…"
+                />
+                <div style={{ display: 'flex', gap: '0.25rem' }}>
+                  <button
+                    type="button"
+                    onClick={commitEdit}
+                    style={{ flex: 1, padding: '0.25em', fontSize: '0.65rem', background: 'var(--color-accent)', color: '#0a0a0a', border: 'none', cursor: 'pointer', borderRadius: 1 }}
+                  >✓ Spara</button>
+                  <button
+                    type="button"
+                    onClick={cancelEdit}
+                    style={{ flex: 1, padding: '0.25em', fontSize: '0.65rem', background: 'none', color: 'var(--color-muted)', border: '1px solid var(--color-border)', cursor: 'pointer', borderRadius: 1 }}
+                  >Avbryt</button>
+                </div>
+              </div>
+            )}
           </div>
         ))}
+
+        {/* Drop zone when empty */}
+        {images.length === 0 && (
+          <div style={{ gridColumn: '1 / -1', padding: '2rem', textAlign: 'center', border: '1px dashed var(--color-border)', color: 'var(--color-muted)', fontSize: 'var(--fs-xs)' }}>
+            Inga bilder — lägg till nedan
+          </div>
+        )}
       </div>
 
-      {/* Upload error */}
+      {/* ── Upload error ── */}
       {uploadError && (
-        <div style={{ background: '#2a0a0a', border: '1px solid #a33', color: '#f88', padding: '0.5rem 0.75rem', fontSize: 'var(--fs-xs)', marginBottom: '0.5rem', borderRadius: 2 }}>
+        <div style={{ background: '#2a0a0a', border: '1px solid #a33', color: '#f88', padding: '0.5rem 0.75rem', fontSize: 'var(--fs-xs)', marginBottom: '0.5rem' }}>
           {uploadError}
         </div>
       )}
 
-      {/* Add via URL */}
-      <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '0.5rem' }}>
-        <input
-          type="url"
-          className="input"
-          value={newUrl}
-          onChange={e => setNewUrl(e.target.value)}
-          onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); addImage() } }}
-          placeholder="Klistra in bild-URL..."
-          style={{ flex: 1, fontSize: 'var(--fs-sm)' }}
-        />
-        <button
-          type="button"
-          className="btn"
-          onClick={addImage}
-          disabled={!newUrl.trim()}
-          style={{ fontSize: 'var(--fs-sm)', whiteSpace: 'nowrap' }}
-        >
-          + URL
-        </button>
-      </div>
+      {/* ── Add controls ── */}
+      <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+        {/* URL paste */}
+        <div style={{ display: 'flex', gap: '0.5rem', flex: '1 1 260px' }}>
+          <input
+            type="url"
+            className="input"
+            value={newUrl}
+            onChange={e => setNewUrl(e.target.value)}
+            onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); addImage() } }}
+            placeholder="Klistra in bild-URL…"
+            style={{ flex: 1, fontSize: 'var(--fs-sm)' }}
+          />
+          <button
+            type="button"
+            className="btn"
+            onClick={addImage}
+            disabled={!newUrl.trim()}
+            style={{ fontSize: 'var(--fs-sm)', whiteSpace: 'nowrap' }}
+          >+ URL</button>
+        </div>
 
-      {/* Upload from disk */}
-      <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+        {/* File upload */}
         <input
           ref={fileInputRef}
           type="file"
@@ -284,11 +298,8 @@ export default function ImageListEditor({ images, onChange, label = 'Bilder (URL
           disabled={uploading}
           style={{ fontSize: 'var(--fs-sm)', whiteSpace: 'nowrap' }}
         >
-          {uploading ? 'Laddar upp…' : '↑ Ladda upp bilder'}
+          {uploading ? 'Laddar upp…' : '↑ Ladda upp'}
         </button>
-        <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)' }}>
-          Välj en eller flera filer från din dator
-        </span>
       </div>
     </div>
   )

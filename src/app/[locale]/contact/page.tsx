@@ -11,7 +11,7 @@ export function generateStaticParams() {
   return locales.map((locale) => ({ locale }))
 }
 
-const ALPS_IMAGE = 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/contact/siverts-alper.jpg'
+const ALPS_IMAGE_FALLBACK = 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/contact/siverts-alper.jpg'
 
 async function getContactHeroHeight(): Promise<number> {
   const supabase = createAdminClient()
@@ -29,15 +29,29 @@ async function getContactHeroHeight(): Promise<number> {
   return 100
 }
 
+async function getContactHeroImage(): Promise<string> {
+  const supabase = createAdminClient()
+  if (supabase) {
+    const { data } = await supabase
+      .from('settings')
+      .select('value')
+      .eq('key', 'contact_hero_image')
+      .single()
+    if (data?.value) return data.value
+  }
+  return ALPS_IMAGE_FALLBACK
+}
+
 export default async function ContactPage({
   params,
 }: {
   params: Promise<{ locale: string }>
 }) {
   const { locale } = await params
-  const [dict, heroHeightVh] = await Promise.all([
+  const [dict, heroHeightVh, heroImage] = await Promise.all([
     getDictionary(locale as Locale),
     getContactHeroHeight(),
+    getContactHeroImage(),
   ])
 
   return (
@@ -52,7 +66,7 @@ export default async function ContactPage({
       }}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src={ALPS_IMAGE}
+          src={heroImage}
           alt="Schweiziska alper — Sivert Lindblom"
           style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 55%' }}
         />
@@ -65,11 +79,6 @@ export default async function ContactPage({
           <h1 style={{ fontFamily: 'Georgia, serif', fontWeight: 400, fontSize: 'clamp(1.8rem,4vw,3rem)', margin: 0, textShadow: '0 2px 8px rgba(0,0,0,0.45)' }}>
             {dict.contact?.title ?? 'Ta kontakt'}
           </h1>
-          {dict.contact?.intro && (
-            <p style={{ color: 'rgba(255,255,255,0.9)', marginTop: '0.75rem', maxWidth: '55ch', fontSize: 'var(--fs-base)', textShadow: '0 1px 4px rgba(0,0,0,0.4)' }}>
-              {dict.contact.intro}
-            </p>
-          )}
 
           {/* Scroll-down arrow — left-aligned under titles */}
           <div style={{
@@ -92,6 +101,11 @@ export default async function ContactPage({
       <hr className="divider" />
 
       <div className="page-pad" style={{ paddingTop: '3rem', paddingBottom: '5rem' }}>
+        {dict.contact?.intro && (
+          <p style={{ fontSize: 'var(--fs-base)', color: 'var(--color-muted)', maxWidth: '65ch', marginBottom: '3rem', lineHeight: 1.75 }}>
+            {dict.contact.intro}
+          </p>
+        )}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 400px), 1fr))', gap: '4rem', alignItems: 'start' }}>
 
           {/* Contact info */}

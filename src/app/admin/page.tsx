@@ -79,19 +79,19 @@ export default function AdminDashboard() {
 
       {/* ── OVERVIEW TAB ── */}
       {tab === 'overview' && (
-        <div style={{ padding: '3rem', overflowY: 'auto', flex: 1 }}>
+        <div style={{ padding: 'clamp(1.5rem, 3vw, 3rem)', flex: 1 }}>
           <div style={{ marginBottom: '3rem' }}>
             <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-accent)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '0.5rem' }}>
               CMS Admin
             </p>
-            <h1 style={{ fontFamily: 'Georgia, serif', fontWeight: 400, fontSize: 'var(--fs-3xl)' }}>Dashboard</h1>
+            <h1 style={{ fontFamily: 'Georgia, serif', fontWeight: 400, fontSize: 'clamp(var(--fs-xl), 4vw, var(--fs-3xl))' }}>Dashboard</h1>
             <p style={{ color: 'var(--color-muted)', marginTop: '0.5rem' }}>
               Hantera allt innehåll på Sivert Lindbloms webbplats.
             </p>
           </div>
 
           {/* Stats */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '1.5rem', marginBottom: '3rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 180px), 1fr))', gap: '1rem', marginBottom: '3rem' }}>
             {STATS.map((s) => (
               <Link key={s.href} href={s.href} style={{ display: 'block', textDecoration: 'none' }}>
                 <div className="card" style={{ padding: '1.5rem' }}>

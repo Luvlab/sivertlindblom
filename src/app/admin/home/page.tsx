@@ -280,20 +280,57 @@ function UploadZone({ onUploaded }: { onUploaded: (url: string, alt: string) => 
 
 export default function AdminHome() {
   const [slides, setSlides] = useState<Slide[]>([])
+  const [random, setRandom] = useState(true)
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [message, setMessage] = useState<{ type: 'ok' | 'error'; text: string } | null>(null)
   const [newUrl, setNewUrl] = useState('')
   const [newAlt, setNewAlt] = useState('')
 
+  // Preview
+  const [previewing, setPreviewing] = useState(false)
+  const [previewIdx, setPreviewIdx] = useState(0)
+  const [previewOrder, setPreviewOrder] = useState<Slide[]>([])
+  const previewTimer = useRef<ReturnType<typeof setInterval> | null>(null)
+
+  // Drag-and-drop reorder
+  const [draggingIdx, setDraggingIdx] = useState<number | null>(null)
+  const [dragOverIdx, setDragOverIdx] = useState<number | null>(null)
+
+  // Inline URL edit per card
+  const [editingIdx, setEditingIdx] = useState<number | null>(null)
+  const [editingUrl, setEditingUrl] = useState('')
+
   useEffect(() => {
     fetch('/api/admin/home')
       .then(r => r.json())
-      .then((d: { slides: Slide[] } | { error: string }) => {
-        if ('slides' in d) setSlides(d.slides)
+      .then((d: { slides: Slide[]; random?: boolean } | { error: string }) => {
+        if ('slides' in d) {
+          setSlides(d.slides)
+          setRandom(d.random ?? true)
+        }
       })
       .finally(() => setLoading(false))
   }, [])
+
+  // ── Preview logic ──────────────────────────────────────────────────────────
+  function startPreview() {
+    if (slides.length === 0) return
+    const order = random
+      ? [...slides].sort(() => Math.random() - 0.5)
+      : [...slides]
+    setPreviewOrder(order)
+    setPreviewIdx(0)
+    setPreviewing(true)
+  }
+
+  useEffect(() => {
+    if (!previewing || previewOrder.length === 0) return
+    previewTimer.current = setInterval(() => {
+      setPreviewIdx(i => (i + 1) % previewOrder.length)
+    }, 3000)
+    return () => { if (previewTimer.current) clearInterval(previewTimer.current) }
+  }, [previewing, previewOrder])
 
   async function save() {
     setSaving(true)
@@ -302,7 +339,7 @@ export default function AdminHome() {
       const r = await fetch('/api/admin/home', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ slides }),
+        body: JSON.stringify({ slides, random }),
       })
       const d = await r.json() as { ok?: boolean; error?: string }
       if (d.ok) {
@@ -318,6 +355,7 @@ export default function AdminHome() {
   }
 
   function removeSlide(i: number) {
+    if (editingIdx === i) setEditingIdx(null)
     setSlides(prev => prev.filter((_, idx) => idx !== i))
   }
 
@@ -347,37 +385,179 @@ export default function AdminHome() {
     setTimeout(() => setMessage(null), 3000)
   }
 
-  function moveUp(i: number) {
-    if (i === 0) return
-    setSlides(prev => {
-      const arr = [...prev]
-      ;[arr[i - 1], arr[i]] = [arr[i], arr[i - 1]]
-      return arr
-    })
+  // ── Drag handlers ──────────────────────────────────────────────────────────
+  function handleDragStart(idx: number) { setDraggingIdx(idx) }
+  function handleDragOver(e: React.DragEvent, idx: number) {
+    e.preventDefault()
+    e.dataTransfer.dropEffect = 'move'
+    if (idx !== dragOverIdx) setDragOverIdx(idx)
   }
+  function handleDrop(e: React.DragEvent, idx: number) {
+    e.preventDefault()
+    if (draggingIdx === null || draggingIdx === idx) return
+    const next = [...slides]
+    const [removed] = next.splice(draggingIdx, 1)
+    next.splice(idx, 0, removed)
+    setSlides(next)
+    setDraggingIdx(null)
+    setDragOverIdx(null)
+  }
+  function handleDragEnd() { setDraggingIdx(null); setDragOverIdx(null) }
 
-  function moveDown(i: number) {
-    setSlides(prev => {
-      if (i >= prev.length - 1) return prev
-      const arr = [...prev]
-      ;[arr[i], arr[i + 1]] = [arr[i + 1], arr[i]]
-      return arr
-    })
+  // ── Inline URL edit ────────────────────────────────────────────────────────
+  function startEdit(idx: number) { setEditingIdx(idx); setEditingUrl(slides[idx].url) }
+  function commitEdit(idx: number) {
+    const trimmed = editingUrl.trim()
+    if (trimmed) updateSlide(idx, 'url', trimmed)
+    setEditingIdx(null)
   }
+  function cancelEdit() { setEditingIdx(null); setEditingUrl('') }
+
+  // ── Shared overlay button style ────────────────────────────────────────────
+  const overlayBtn = (extra?: React.CSSProperties): React.CSSProperties => ({
+    position: 'absolute',
+    padding: '0.2rem 0.4rem',
+    fontSize: '0.65rem',
+    lineHeight: 1,
+    border: 'none',
+    borderRadius: 2,
+    cursor: 'pointer',
+    backdropFilter: 'blur(4px)',
+    transition: 'opacity 0.12s',
+    ...extra,
+  })
 
   return (
-    <div style={{ padding: '3rem', maxWidth: 960 }}>
-      <div style={{ marginBottom: '2rem' }}>
-        <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-accent)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '0.5rem' }}>
-          Startsida
-        </p>
-        <h1 style={{ fontFamily: 'Georgia, serif', fontWeight: 400, fontSize: 'var(--fs-3xl)', marginBottom: '0.25rem' }}>
-          Hero Slideshow
-        </h1>
-        <p style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-sm)' }}>
-          {loading ? 'Laddar…' : `${slides.length} bilder i slideshow`}
-        </p>
+    <div style={{ padding: 'clamp(1.5rem, 3vw, 3rem)', width: '100%', boxSizing: 'border-box' }}>
+      <div style={{ marginBottom: '2rem', display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem' }}>
+        <div>
+          <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-accent)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '0.5rem' }}>
+            Startsida
+          </p>
+          <h1 style={{ fontFamily: 'Georgia, serif', fontWeight: 400, fontSize: 'clamp(var(--fs-xl), 4vw, var(--fs-3xl))', marginBottom: '0.25rem' }}>
+            Hero Slideshow
+          </h1>
+          <p style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-sm)' }}>
+            {loading ? 'Laddar…' : `${slides.length} bilder i slideshow`}
+          </p>
+        </div>
+
+        {/* Controls: random toggle + preview */}
+        {!loading && (
+          <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center', flexWrap: 'wrap' }}>
+            {/* Random toggle */}
+            <button
+              type="button"
+              onClick={() => setRandom(r => !r)}
+              style={{
+                display: 'flex', alignItems: 'center', gap: '0.5rem',
+                padding: '0.45rem 0.85rem',
+                fontSize: 'var(--fs-xs)',
+                letterSpacing: '0.06em',
+                textTransform: 'uppercase',
+                border: `1px solid ${random ? 'var(--color-accent)' : 'var(--color-border)'}`,
+                background: random ? 'rgba(201,169,76,0.12)' : 'transparent',
+                color: random ? 'var(--color-accent)' : 'var(--color-muted)',
+                cursor: 'pointer',
+                borderRadius: 2,
+                transition: 'all 0.15s',
+              }}
+              title={random ? 'Slumpad ordning — klicka för sekventiell' : 'Sekventiell ordning — klicka för slumpad'}
+            >
+              <span style={{ fontSize: '0.9em' }}>{random ? '⇄' : '→'}</span>
+              {random ? 'Slumpad' : 'I ordning'}
+            </button>
+
+            {/* Preview button */}
+            {slides.length > 0 && (
+              <button
+                type="button"
+                onClick={() => previewing ? setPreviewing(false) : startPreview()}
+                className="btn"
+                style={{ fontSize: 'var(--fs-xs)', padding: '0.45rem 0.85rem' }}
+              >
+                {previewing ? '✕ Stäng förhandsgranskning' : '▶ Förhandsgranska'}
+              </button>
+            )}
+          </div>
+        )}
       </div>
+
+      {/* ── Inline slideshow preview ── */}
+      {previewing && previewOrder.length > 0 && (
+        <div style={{ marginBottom: '2rem', border: '1px solid var(--color-border)', background: '#000', position: 'relative', borderRadius: 2 }}>
+          {/* 16:9 preview */}
+          <div style={{ aspectRatio: '16/9', position: 'relative', overflow: 'hidden' }}>
+            {previewOrder.map((slide, i) => (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                key={i}
+                src={slide.url}
+                alt={slide.alt}
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                  opacity: i === previewIdx ? 1 : 0,
+                  transition: 'opacity 0.8s ease-in-out',
+                  display: 'block',
+                }}
+              />
+            ))}
+            {/* Caption + counter */}
+            <div style={{
+              position: 'absolute', bottom: 0, left: 0, right: 0,
+              padding: '1rem 1.25rem',
+              background: 'linear-gradient(transparent, rgba(0,0,0,0.7))',
+              display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between',
+              zIndex: 2,
+            }}>
+              <span style={{ fontSize: 'var(--fs-xs)', color: 'rgba(255,255,255,0.7)', letterSpacing: '0.08em' }}>
+                {previewOrder[previewIdx]?.alt || '—'}
+              </span>
+              <span style={{ fontSize: 'var(--fs-xs)', color: 'rgba(255,255,255,0.45)', fontFamily: 'Georgia, serif', letterSpacing: '0.05em' }}>
+                {previewIdx + 1} / {previewOrder.length}
+              </span>
+            </div>
+          </div>
+
+          {/* Dot strip + prev/next */}
+          <div style={{ padding: '0.6rem 1rem', background: 'var(--color-bg-surface)', display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
+            <button
+              type="button"
+              onClick={() => setPreviewIdx(i => (i - 1 + previewOrder.length) % previewOrder.length)}
+              style={{ background: 'none', border: '1px solid var(--color-border)', color: 'var(--color-muted)', padding: '0.2rem 0.6rem', cursor: 'pointer', fontSize: 'var(--fs-xs)', flexShrink: 0 }}
+            >←</button>
+            <div style={{ flex: 1, display: 'flex', gap: 4, flexWrap: 'wrap', alignItems: 'center' }}>
+              {previewOrder.map((_, i) => (
+                <button
+                  key={i}
+                  type="button"
+                  onClick={() => setPreviewIdx(i)}
+                  style={{
+                    width: i === previewIdx ? 18 : 6,
+                    height: 6,
+                    borderRadius: 3,
+                    border: 'none',
+                    cursor: 'pointer',
+                    padding: 0,
+                    background: i === previewIdx ? 'var(--color-accent)' : 'var(--color-border)',
+                    transition: 'width 0.2s, background 0.2s',
+                    flexShrink: 0,
+                  }}
+                />
+              ))}
+            </div>
+            <button
+              type="button"
+              onClick={() => setPreviewIdx(i => (i + 1) % previewOrder.length)}
+              style={{ background: 'none', border: '1px solid var(--color-border)', color: 'var(--color-muted)', padding: '0.2rem 0.6rem', cursor: 'pointer', fontSize: 'var(--fs-xs)', flexShrink: 0 }}
+            >→</button>
+          </div>
+        </div>
+      )}
 
       {message && (
         <div style={{
@@ -396,78 +576,158 @@ export default function AdminHome() {
         <p style={{ color: 'var(--color-muted)' }}>Laddar…</p>
       ) : (
         <>
-          {/* ── Current slides ── */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginBottom: '2rem' }}>
-            {slides.map((slide, i) => (
-              <div
-                key={i}
-                style={{
-                  display: 'grid',
-                  gridTemplateColumns: '60px 1fr 1fr auto',
-                  gap: '0.75rem',
-                  alignItems: 'center',
-                  padding: '0.6rem 0.75rem',
-                  background: 'var(--color-bg-surface)',
-                  border: '1px solid var(--color-border)',
-                }}
-              >
-                {/* Thumbnail */}
-                <div style={{ width: 60, height: 40, overflow: 'hidden', background: '#111', flexShrink: 0 }}>
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={slide.url}
-                    alt={slide.alt}
-                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                    onError={e => { (e.currentTarget as HTMLImageElement).style.opacity = '0.2' }}
-                  />
+          {/* ── Current slides grid ── */}
+          {slides.length === 0 ? (
+            <p style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-sm)', padding: '1rem 0', marginBottom: '2rem' }}>
+              Inga bilder i slideshow. Lägg till nedan.
+            </p>
+          ) : (
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))',
+              gap: '0.5rem',
+              marginBottom: '2rem',
+            }}>
+              {slides.map((slide, i) => (
+                <div
+                  key={i}
+                  draggable
+                  onDragStart={() => handleDragStart(i)}
+                  onDragOver={e => handleDragOver(e, i)}
+                  onDrop={e => handleDrop(e, i)}
+                  onDragEnd={handleDragEnd}
+                  style={{
+                    position: 'relative',
+                    border: dragOverIdx === i && draggingIdx !== i
+                      ? '2px solid var(--color-accent)'
+                      : editingIdx === i
+                        ? '2px solid var(--color-accent)'
+                        : '1px solid var(--color-border)',
+                    background: 'var(--color-bg-surface)',
+                    opacity: draggingIdx === i ? 0.35 : 1,
+                    cursor: 'grab',
+                    transition: 'opacity 0.1s, border-color 0.1s',
+                  }}
+                >
+                  {/* Image */}
+                  <div style={{ aspectRatio: '4/3', overflow: 'hidden', background: '#111' }}>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={slide.url}
+                      alt={slide.alt}
+                      loading="lazy"
+                      style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', pointerEvents: 'none' }}
+                      onError={e => { (e.currentTarget as HTMLImageElement).style.opacity = '0.1' }}
+                    />
+                  </div>
+
+                  {/* Number badge — top-left */}
+                  <div style={{ position: 'absolute', top: 4, left: 4, background: 'rgba(0,0,0,0.72)', color: '#fff', fontSize: '0.6rem', padding: '0.1rem 0.38rem', fontFamily: 'Georgia,serif', lineHeight: 1.4, pointerEvents: 'none' }}>
+                    {i + 1}
+                  </div>
+
+                  {/* Remove — top-right */}
+                  <button
+                    type="button"
+                    onClick={() => removeSlide(i)}
+                    style={overlayBtn({ top: 4, right: 4, background: 'rgba(160,30,30,0.82)', color: '#fff' })}
+                    title="Ta bort"
+                  >✕</button>
+
+                  {/* Edit URL — bottom-right (or top-right area when editing) */}
+                  <button
+                    type="button"
+                    onClick={() => editingIdx === i ? cancelEdit() : startEdit(i)}
+                    style={overlayBtn({
+                      bottom: editingIdx === i ? undefined : 4,
+                      top: editingIdx === i ? 4 : undefined,
+                      right: editingIdx === i ? 24 : 4,
+                      background: editingIdx === i ? 'rgba(201,169,76,0.9)' : 'rgba(40,40,40,0.82)',
+                      color: editingIdx === i ? '#0a0a0a' : 'var(--color-muted)',
+                    })}
+                    title={editingIdx === i ? 'Avbryt redigering' : 'Redigera URL'}
+                  >
+                    {editingIdx === i ? '✕' : '✎'}
+                  </button>
+
+                  {/* Alt-text input — always visible below image */}
+                  <div style={{ padding: '0.4rem' }}>
+                    <input
+                      type="text"
+                      value={slide.alt}
+                      onChange={e => updateSlide(i, 'alt', e.target.value)}
+                      placeholder="Alt-text"
+                      style={{
+                        width: '100%',
+                        background: 'var(--color-bg)',
+                        border: '1px solid var(--color-border)',
+                        color: 'var(--color-text)',
+                        fontSize: '0.6rem',
+                        padding: '0.3rem 0.4rem',
+                        outline: 'none',
+                        boxSizing: 'border-box',
+                      }}
+                    />
+                  </div>
+
+                  {/* Inline URL editor — shown when ✎ is active */}
+                  {editingIdx === i && (
+                    <div style={{ padding: '0 0.4rem 0.4rem', borderTop: '1px solid var(--color-border)' }}>
+                      <input
+                        type="url"
+                        value={editingUrl}
+                        onChange={e => setEditingUrl(e.target.value)}
+                        onKeyDown={e => {
+                          if (e.key === 'Enter') { e.preventDefault(); commitEdit(i) }
+                          if (e.key === 'Escape') cancelEdit()
+                        }}
+                        autoFocus
+                        style={{
+                          width: '100%',
+                          background: 'var(--color-bg)',
+                          border: '1px solid var(--color-border)',
+                          color: 'var(--color-text)',
+                          fontSize: '0.6rem',
+                          fontFamily: 'monospace',
+                          padding: '0.3rem 0.4rem',
+                          marginBottom: '0.35rem',
+                          marginTop: '0.4rem',
+                          outline: 'none',
+                          boxSizing: 'border-box',
+                        }}
+                        placeholder="https://…"
+                      />
+                      <div style={{ display: 'flex', gap: '0.25rem' }}>
+                        <button
+                          type="button"
+                          onClick={() => commitEdit(i)}
+                          style={{ flex: 1, padding: '0.25em', fontSize: '0.65rem', background: 'var(--color-accent)', color: '#0a0a0a', border: 'none', cursor: 'pointer', borderRadius: 1 }}
+                        >✓ Spara</button>
+                        <button
+                          type="button"
+                          onClick={cancelEdit}
+                          style={{ flex: 1, padding: '0.25em', fontSize: '0.65rem', background: 'none', color: 'var(--color-muted)', border: '1px solid var(--color-border)', cursor: 'pointer', borderRadius: 1 }}
+                        >Avbryt</button>
+                      </div>
+                    </div>
+                  )}
                 </div>
-
-                <input
-                  type="url"
-                  className="input"
-                  value={slide.url}
-                  onChange={e => updateSlide(i, 'url', e.target.value)}
-                  placeholder="https://…"
-                  style={{ fontSize: 'var(--fs-xs)' }}
-                />
-
-                <input
-                  type="text"
-                  className="input"
-                  value={slide.alt}
-                  onChange={e => updateSlide(i, 'alt', e.target.value)}
-                  placeholder="Alt-text"
-                  style={{ fontSize: 'var(--fs-xs)' }}
-                />
-
-                <div style={{ display: 'flex', gap: '0.3rem', alignItems: 'center' }}>
-                  <button onClick={() => moveUp(i)} disabled={i === 0} className="btn"
-                    style={{ padding: '0.3em 0.5em', fontSize: '0.7rem', opacity: i === 0 ? 0.3 : 1 }} title="Flytta upp">↑</button>
-                  <button onClick={() => moveDown(i)} disabled={i === slides.length - 1} className="btn"
-                    style={{ padding: '0.3em 0.5em', fontSize: '0.7rem', opacity: i === slides.length - 1 ? 0.3 : 1 }} title="Flytta ned">↓</button>
-                  <button onClick={() => removeSlide(i)}
-                    style={{ padding: '0.3em 0.5em', fontSize: '0.7rem', background: 'none', border: '1px solid #a33', color: '#e55', cursor: 'pointer' }}
-                    title="Ta bort">✕</button>
-                </div>
-              </div>
-            ))}
-            {slides.length === 0 && (
-              <p style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-sm)', padding: '1rem 0' }}>
-                Inga bilder i slideshow. Lägg till nedan.
-              </p>
-            )}
-          </div>
+              ))}
+            </div>
+          )}
 
           {/* ── Add section ── */}
           <h2 style={{ fontFamily: 'Georgia, serif', fontWeight: 400, fontSize: 'var(--fs-lg)', marginBottom: '1rem', color: 'var(--color-muted)' }}>
             Lägg till bild
           </h2>
 
-          {/* 1. Media picker */}
-          <MediaPicker onPick={addFromMedia} />
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 380px), 1fr))', gap: '1rem', marginBottom: '2rem' }}>
+            {/* 1. Media picker */}
+            <div><MediaPicker onPick={addFromMedia} /></div>
 
-          {/* 2. Upload */}
-          <UploadZone onUploaded={onUploaded} />
+            {/* 2. Upload */}
+            <div><UploadZone onUploaded={onUploaded} /></div>
+          </div>
 
           {/* 3. URL */}
           <div style={{ border: '1px solid var(--color-border)', background: 'var(--color-bg-surface)', marginBottom: '2rem' }}>

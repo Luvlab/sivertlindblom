@@ -13,23 +13,26 @@ export async function GET() {
   }
 
   const supabase = createAdminClient()
+  let slides: Array<{ url: string; alt: string }> = []
+  let random = true
+
   if (supabase) {
-    const { data, error } = await supabase
+    const { data } = await supabase
       .from('settings')
-      .select('value')
-      .eq('key', 'hero_slides')
-      .single()
-    if (!error && data) {
-      try {
-        const slides = JSON.parse(data.value)
-        return NextResponse.json({ slides })
-      } catch {
-        // fall through to empty
+      .select('key, value')
+      .in('key', ['hero_slides', 'hero_random'])
+
+    for (const row of data ?? []) {
+      if (row.key === 'hero_slides') {
+        try { slides = JSON.parse(row.value) } catch { /* ignore */ }
+      }
+      if (row.key === 'hero_random') {
+        random = row.value !== '0'
       }
     }
   }
 
-  return NextResponse.json({ slides: [] })
+  return NextResponse.json({ slides, random })
 }
 
 export async function PUT(request: Request) {
@@ -38,13 +41,19 @@ export async function PUT(request: Request) {
   }
 
   try {
-    const body = await request.json() as { slides: Array<{ url: string; alt: string }> }
+    const body = await request.json() as {
+      slides: Array<{ url: string; alt: string }>
+      random?: boolean
+    }
 
     const supabase = createAdminClient()
     if (supabase) {
       const { error } = await supabase
         .from('settings')
-        .upsert({ key: 'hero_slides', value: JSON.stringify(body.slides) }, { onConflict: 'key' })
+        .upsert([
+          { key: 'hero_slides', value: JSON.stringify(body.slides) },
+          { key: 'hero_random', value: (body.random ?? true) ? '1' : '0' },
+        ], { onConflict: 'key' })
       if (!error) return NextResponse.json({ ok: true })
       return NextResponse.json({ error: error.message }, { status: 500 })
     }

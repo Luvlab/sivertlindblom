@@ -55,6 +55,13 @@ function WorkCard({
         <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-accent)', fontFamily: 'Georgia, serif', lineHeight: 1 }}>{work.year}</span>
         <div style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-text)', lineHeight: 1.35, marginTop: '0.3rem' }}>{work.title}</div>
         <div style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', marginTop: '0.25rem' }}>{work.location}</div>
+        {work.temporary && (
+          <div style={{ marginTop: '0.5rem' }}>
+            <span style={{ fontSize: '0.65rem', color: 'var(--color-muted)', border: '1px solid var(--color-border)', borderRadius: 1, padding: '0.1rem 0.45rem', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+              Tillfällig
+            </span>
+          </div>
+        )}
       </div>
     </>
   )
@@ -97,135 +104,93 @@ export default async function PublicWorksPage({
     countries: new Set(locations.map((l) => l.country)).size,
   }
 
-  // Offset = fixed header + fixed subnav
-  const topOffset = 'calc(var(--header-h) + var(--subnav-h))'
-  const panelH = 'calc(100vh - var(--header-h) - var(--subnav-h))'
-  const mapH = 'calc(100vh - var(--header-h) - var(--subnav-h) - 7rem)' // minus header text block
-
   return (
-    <>
-      <style>{`
-        .pw-layout {
-          display: grid;
-          grid-template-columns: 420px 1fr;
-          align-items: start;
-          min-height: 100vh;
-        }
-        .pw-sticky {
-          position: sticky;
-          top: ${topOffset};
-          height: ${panelH};
-          display: flex;
-          flex-direction: column;
-          border-right: 1px solid var(--color-border);
-          overflow: hidden;
-        }
-        .pw-list {
-          min-height: 100vh;
-        }
-        @media (max-width: 900px) {
-          .pw-layout { grid-template-columns: 1fr; }
-          .pw-sticky { position: static; height: auto; border-right: none; border-bottom: 1px solid var(--color-border); }
-        }
-      `}</style>
-
-      <div className="pw-layout">
-
-        {/* ── Left: sticky header + map ── */}
-        <div className="pw-sticky">
-
-          {/* Page header */}
-          <div className="page-pad" style={{ paddingTop: '1.5rem', paddingBottom: '1.5rem', borderBottom: '1px solid var(--color-border)', flexShrink: 0 }}>
-            <Link href={`/${locale}/portfolio`} className="back-link" style={{ marginBottom: '0.75rem', display: 'inline-flex' }}>
-              <span className="back-link-arrow">←</span>
-              <span className="back-link-label">{dict.nav?.portfolio ?? 'Portfolio'}</span>
-            </Link>
-            <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.5rem' }}>
-              <h1 style={{ fontFamily: 'Georgia, serif', fontWeight: 400, fontSize: 'clamp(1.4rem,2.5vw,2rem)', margin: 0 }}>
-                {dict.portfolio?.cat_public ?? 'Offentliga arbeten'}
-              </h1>
-              <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', margin: 0 }}>
-                {counts.total} {dict.portfolio?.map_works ?? 'verk'} · {counts.countries} {dict.portfolio?.map_countries ?? 'länder'}
-              </p>
-            </div>
-          </div>
-
-          {/* Map — fills remaining height */}
-          <div style={{ flex: 1, minHeight: 0, overflow: 'hidden' }}>
-            <SculptureMap
-              locations={locations}
-              locale={locale}
-              mapHeight={mapH}
-              compact
-            />
-          </div>
+    <div>
+      {/* ── Page header ── */}
+      <div className="page-pad" style={{ paddingTop: '1.5rem', paddingBottom: '1.5rem', borderBottom: '1px solid var(--color-border)' }}>
+        <Link href={`/${locale}/portfolio`} className="back-link" style={{ marginBottom: '0.75rem', display: 'inline-flex' }}>
+          <span className="back-link-arrow">←</span>
+          <span className="back-link-label">{dict.nav?.portfolio ?? 'Portfolio'}</span>
+        </Link>
+        <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.5rem' }}>
+          <h1 style={{ fontFamily: 'Georgia, serif', fontWeight: 400, fontSize: 'clamp(1.4rem,2.5vw,2rem)', margin: 0 }}>
+            {dict.portfolio?.cat_public ?? 'Offentliga arbeten'}
+          </h1>
+          <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', margin: 0 }}>
+            {counts.total} {dict.portfolio?.map_works ?? 'verk'} · {counts.countries} {dict.portfolio?.map_countries ?? 'länder'}
+          </p>
         </div>
-
-        {/* ── Right: scrollable works list ── */}
-        <div className="pw-list">
-
-          {/* Exteriörer */}
-          <div style={{ borderBottom: '1px solid var(--color-border)' }}>
-            <div className="page-pad" style={{
-              display: 'flex', alignItems: 'baseline', gap: '1.5rem',
-              paddingTop: '2rem', paddingBottom: '1.5rem',
-              borderBottom: '1px solid var(--color-border)',
-            }}>
-              <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-2xl)', fontWeight: 400, margin: 0 }}>
-                {dict.portfolio?.exteriors ?? 'Exteriörer'}
-              </h2>
-              <span style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-sm)' }}>
-                {exteriors.length} {dict.portfolio?.count_works ?? 'verk'}
-              </span>
-            </div>
-            <div className="page-pad" style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
-              paddingTop: '1.5rem',
-              paddingBottom: '1.5rem',
-            }}>
-              {exteriors.map((w, i) => (
-                <WorkCard key={w.slug} work={w} locale={locale} idx={i} />
-              ))}
-            </div>
-          </div>
-
-          {/* Interiörer */}
-          <div style={{ borderBottom: '1px solid var(--color-border)' }}>
-            <div className="page-pad" style={{
-              display: 'flex', alignItems: 'baseline', gap: '1.5rem',
-              paddingTop: '2rem', paddingBottom: '1.5rem',
-              borderBottom: '1px solid var(--color-border)',
-            }}>
-              <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-2xl)', fontWeight: 400, margin: 0 }}>
-                {dict.portfolio?.interiors ?? 'Interiörer'}
-              </h2>
-              <span style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-sm)' }}>
-                {interiors.length} {dict.portfolio?.count_works ?? 'verk'}
-              </span>
-            </div>
-            <div className="page-pad" style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
-              paddingTop: '1.5rem',
-              paddingBottom: '1.5rem',
-            }}>
-              {interiors.map((w, i) => (
-                <WorkCard key={w.slug} work={w} locale={locale} idx={i} />
-              ))}
-            </div>
-          </div>
-
-          {/* Back link */}
-          <div className="page-pad" style={{ paddingTop: '3rem', paddingBottom: '4rem' }}>
-            <Link href={`/${locale}/portfolio`} className="back-link">
-              <span className="back-link-arrow">←</span>
-              <span className="back-link-label">{dict.nav?.portfolio ?? 'Portfolio'}</span>
-            </Link>
-          </div>
-        </div>
-
       </div>
-    </>
+
+      {/* ── Map — full width ── */}
+      <div style={{ borderBottom: '1px solid var(--color-border)' }}>
+        <SculptureMap
+          locations={locations}
+          locale={locale}
+          mapHeight="420px"
+          compact
+        />
+      </div>
+
+      {/* ── Exteriörer ── */}
+      <div style={{ borderBottom: '1px solid var(--color-border)' }}>
+        <div className="page-pad" style={{
+          display: 'flex', alignItems: 'baseline', gap: '1.5rem',
+          paddingTop: '2rem', paddingBottom: '1.5rem',
+          borderBottom: '1px solid var(--color-border)',
+        }}>
+          <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-2xl)', fontWeight: 400, margin: 0 }}>
+            {dict.portfolio?.exteriors ?? 'Exteriörer'}
+          </h2>
+          <span style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-sm)' }}>
+            {exteriors.length} {dict.portfolio?.count_works ?? 'verk'}
+          </span>
+        </div>
+        <div className="page-pad" style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
+          paddingTop: '1.5rem',
+          paddingBottom: '1.5rem',
+        }}>
+          {exteriors.map((w, i) => (
+            <WorkCard key={w.slug} work={w} locale={locale} idx={i} />
+          ))}
+        </div>
+      </div>
+
+      {/* ── Interiörer ── */}
+      <div style={{ borderBottom: '1px solid var(--color-border)' }}>
+        <div className="page-pad" style={{
+          display: 'flex', alignItems: 'baseline', gap: '1.5rem',
+          paddingTop: '2rem', paddingBottom: '1.5rem',
+          borderBottom: '1px solid var(--color-border)',
+        }}>
+          <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-2xl)', fontWeight: 400, margin: 0 }}>
+            {dict.portfolio?.interiors ?? 'Interiörer'}
+          </h2>
+          <span style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-sm)' }}>
+            {interiors.length} {dict.portfolio?.count_works ?? 'verk'}
+          </span>
+        </div>
+        <div className="page-pad" style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
+          paddingTop: '1.5rem',
+          paddingBottom: '1.5rem',
+        }}>
+          {interiors.map((w, i) => (
+            <WorkCard key={w.slug} work={w} locale={locale} idx={i} />
+          ))}
+        </div>
+      </div>
+
+      {/* Back link */}
+      <div className="page-pad" style={{ paddingTop: '3rem', paddingBottom: '4rem' }}>
+        <Link href={`/${locale}/portfolio`} className="back-link">
+          <span className="back-link-arrow">←</span>
+          <span className="back-link-label">{dict.nav?.portfolio ?? 'Portfolio'}</span>
+        </Link>
+      </div>
+    </div>
   )
 }

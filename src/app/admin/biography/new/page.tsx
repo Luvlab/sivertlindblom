@@ -53,9 +53,9 @@ export default function NewBioPage() {
   }
 
   return (
-    <div style={{ padding: '3rem', maxWidth: 700 }}>
+    <div style={{ padding: 'clamp(1rem, 3vw, 3rem)', maxWidth: 700 }}>
       <Link href="/admin/biography" style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>← Biografi</Link>
-      <h1 style={{ fontFamily: 'Georgia, serif', fontWeight: 400, fontSize: 'var(--fs-3xl)', marginTop: '0.75rem', marginBottom: '2rem' }}>Ny biografipost</h1>
+      <h1 style={{ fontFamily: 'Georgia, serif', fontWeight: 400, fontSize: 'clamp(var(--fs-xl), 4vw, var(--fs-3xl))', marginTop: '0.75rem', marginBottom: '2rem' }}>Ny biografipost</h1>
 
       {error && (
         <div style={{ background: '#2a0a0a', border: '1px solid #a33', color: '#f88', padding: '0.75rem 1rem', fontSize: 'var(--fs-sm)', marginBottom: '1.5rem' }}>

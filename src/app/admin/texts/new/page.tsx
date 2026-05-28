@@ -55,10 +55,10 @@ export default function NewTextPage() {
   }
 
   return (
-    <div style={{ padding: '3rem', maxWidth: 800 }}>
+    <div style={{ padding: 'clamp(1rem, 3vw, 3rem)', maxWidth: 800 }}>
       <div style={{ marginBottom: '2rem' }}>
         <Link href="/admin/texts" style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>← Texter</Link>
-        <h1 style={{ fontFamily: 'Georgia, serif', fontWeight: 400, fontSize: 'var(--fs-3xl)', marginTop: '0.75rem' }}>Ny text</h1>
+        <h1 style={{ fontFamily: 'Georgia, serif', fontWeight: 400, fontSize: 'clamp(var(--fs-xl), 4vw, var(--fs-3xl))', marginTop: '0.75rem' }}>Ny text</h1>
       </div>
 
       {error && (
@@ -73,7 +73,7 @@ export default function NewTextPage() {
           <input type="text" required className="input" style={{ width: '100%' }} value={form.title} onChange={f('title')} placeholder="Textens titel" />
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 200px), 1fr))', gap: '1rem' }}>
           <div>
             {lbl('Typ *')}
             <select className="input" style={{ width: '100%' }} value={form.type} onChange={f('type')}>
@@ -92,7 +92,7 @@ export default function NewTextPage() {
           </div>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 200px), 1fr))', gap: '1rem' }}>
           <div>
             {lbl('Författare')}
             <input type="text" className="input" style={{ width: '100%' }} value={form.author} onChange={f('author')} placeholder="Namn Efternamn" />

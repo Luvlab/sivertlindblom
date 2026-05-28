@@ -39,10 +39,10 @@ export default function NewWorkPage() {
   }
 
   return (
-    <div style={{ padding: '3rem', maxWidth: 800 }}>
+    <div style={{ padding: 'clamp(1rem, 3vw, 3rem)', maxWidth: 800 }}>
       <div style={{ marginBottom: '2rem' }}>
         <Link href="/admin/works" style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>← Verk</Link>
-        <h1 style={{ fontFamily: 'Georgia, serif', fontWeight: 400, fontSize: 'var(--fs-3xl)', marginTop: '0.75rem' }}>Nytt verk</h1>
+        <h1 style={{ fontFamily: 'Georgia, serif', fontWeight: 400, fontSize: 'clamp(var(--fs-xl), 4vw, var(--fs-3xl))', marginTop: '0.75rem' }}>Nytt verk</h1>
       </div>
 
       <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>

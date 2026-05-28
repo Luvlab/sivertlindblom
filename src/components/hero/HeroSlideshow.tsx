@@ -57,6 +57,8 @@ const FADE_MS    = 3000  // fade-out duration — matches exhibitions hero
 interface Props {
   children?: React.ReactNode
   slides?: Array<{ url: string; alt: string }>
+  /** When false the slides play in the saved order; default true (shuffle on mount) */
+  random?: boolean
 }
 
 /**
@@ -78,18 +80,18 @@ interface Props {
  *
  * Because BACK is always opacity:1, the background is never exposed.
  */
-export default function HeroSlideshow({ children, slides }: Props) {
-  // Start unshuffled to avoid SSR/client hydration mismatch; shuffle on mount
+export default function HeroSlideshow({ children, slides, random = true }: Props) {
+  // Start unshuffled to avoid SSR/client hydration mismatch; shuffle on mount if random
   const [images, setImages]     = useState<typeof ALL_IMAGES>(slides && slides.length > 0 ? slides : ALL_IMAGES)
   const [frontIdx, setFrontIdx] = useState(0)
   const [backIdx,  setBackIdx]  = useState(1)
   const [fading,   setFading]   = useState(false)
   const [paused,   setPaused]   = useState(false)
 
-  // Client-side shuffle — runs once after hydration to avoid mismatch
+  // Client-side shuffle (or keep order) — runs once after hydration to avoid mismatch
   useEffect(() => {
     const src = slides && slides.length > 0 ? slides : ALL_IMAGES
-    setImages(shuffle(src))
+    setImages(random ? shuffle(src) : [...src])
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 

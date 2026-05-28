@@ -81,7 +81,7 @@ export default function NewExhibitionPage() {
         <input type="text" required className="input" value={form.title} onChange={e => update('title', e.target.value)} placeholder="Utställningens titel" />
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 200px), 1fr))', gap: '1rem' }}>
         <div>
           <FieldLabel>År *</FieldLabel>
           <input type="number" required className="input" value={form.year} onChange={e => update('year', parseInt(e.target.value))} min={1900} max={2100} />

@@ -9,6 +9,7 @@ export interface PublicWork {
   images: Array<{ url: string; alt: string }>
   lat?: number | null
   lng?: number | null
+  temporary?: boolean
 }
 
 export const PUBLIC_WORKS: PublicWork[] = [

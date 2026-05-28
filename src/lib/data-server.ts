@@ -271,6 +271,40 @@ export async function getHeroSlides(): Promise<Array<{ url: string; alt: string 
   return FALLBACK_HERO_SLIDES
 }
 
+/**
+ * Returns both the curated hero slides and the random-order setting.
+ * Falls back to FALLBACK_HERO_SLIDES + random=true when no DB data exists.
+ */
+export async function getHeroConfig(): Promise<{
+  slides: Array<{ url: string; alt: string }>
+  random: boolean
+}> {
+  const supabase = createAdminClient()
+  let slides: Array<{ url: string; alt: string }> = []
+  let random = true
+
+  if (supabase) {
+    const { data } = await supabase
+      .from('settings')
+      .select('key, value')
+      .in('key', ['hero_slides', 'hero_random'])
+
+    for (const row of data ?? []) {
+      if (row.key === 'hero_slides') {
+        try {
+          const parsed = JSON.parse(row.value) as Array<{ url: string; alt: string }>
+          if (Array.isArray(parsed) && parsed.length > 0) slides = parsed
+        } catch { /* ignore */ }
+      }
+      if (row.key === 'hero_random') {
+        random = row.value !== '0'
+      }
+    }
+  }
+
+  return { slides: slides.length > 0 ? slides : FALLBACK_HERO_SLIDES, random }
+}
+
 // ─── All media images (hero slideshow) ──────────────────────────────────────
 // Collects every image from exhibitions + public works so the home hero can
 // cycle through the full media vault in random order.

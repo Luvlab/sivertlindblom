@@ -4,10 +4,13 @@ import { useState, useEffect, useMemo, useCallback } from 'react'
 import type { PublicWork } from '@/lib/public-works'
 import ImageEnhancer from '@/components/admin/ImageEnhancer'
 
+type ImageSource = 'public_work' | 'text' | 'upload'
+
 interface MediaImage {
   url: string
   alt: string
   work: string
+  source: ImageSource
 }
 
 const PAGE_SIZE = 48
@@ -23,6 +26,13 @@ export default function AdminMedia() {
   const [autoplay, setAutoplay] = useState(false)
   const [enhancerUrl, setEnhancerUrl] = useState<string | null>(null)
 
+  // Bulk credit edit
+  const [bulkEdit, setBulkEdit] = useState(false)
+  const [credits, setCredits] = useState<Record<string, string>>({}) // url → alt draft
+  const [creditsDirty, setCreditsDirty] = useState(false)
+  const [creditsSaving, setCreditsSaving] = useState(false)
+  const [creditsSaved, setCreditsSaved] = useState(false)
+
   useEffect(() => {
     async function load() {
       setLoading(true)
@@ -36,7 +46,7 @@ export default function AdminMedia() {
         if (!('error' in worksData)) {
           for (const work of worksData) {
             for (const img of work.images ?? []) {
-              collected.push({ url: img.url, alt: img.alt ?? '', work: work.title })
+              collected.push({ url: img.url, alt: img.alt ?? '', work: work.title, source: 'public_work' })
             }
           }
         }
@@ -48,7 +58,7 @@ export default function AdminMedia() {
           for (const text of textsData) {
             for (const url of text.images ?? []) {
               if (typeof url === 'string' && url) {
-                collected.push({ url, alt: '', work: text.title })
+                collected.push({ url, alt: '', work: text.title, source: 'text' })
               }
             }
           }
@@ -59,11 +69,17 @@ export default function AdminMedia() {
         const uploadsData = await uploadsRes.json() as { files?: Array<{ url: string; alt: string; name: string }> } | { error: string }
         if (!('error' in uploadsData) && uploadsData.files) {
           for (const f of uploadsData.files) {
-            collected.push({ url: f.url, alt: f.alt ?? '', work: 'Uppladdningar' })
+            collected.push({ url: f.url, alt: f.alt ?? '', work: 'Uppladdningar', source: 'upload' })
           }
         }
 
         setImages(collected)
+        // Seed credits map from loaded images
+        const initial: Record<string, string> = {}
+        for (const img of collected) {
+          if (img.source === 'public_work') initial[img.url] = img.alt
+        }
+        setCredits(initial)
       } catch (e) {
         setError(String(e))
       } finally {
@@ -125,15 +141,67 @@ export default function AdminMedia() {
     setView('slideshow')
   }
 
+  // ── Bulk credit save ──
+  async function saveCredits() {
+    setCreditsSaving(true)
+    setCreditsSaved(false)
+    try {
+      // Only update public_work images whose alt has changed
+      const updates = images
+        .filter(img => img.source === 'public_work' && credits[img.url] !== img.alt)
+        .map(img => ({ url: img.url, alt: credits[img.url] ?? '' }))
+
+      if (updates.length === 0) {
+        setCreditsDirty(false)
+        setCreditsSaving(false)
+        return
+      }
+
+      const res = await fetch('/api/admin/media', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ updates }),
+      })
+      if (!res.ok) {
+        const data = await res.json() as { error: string }
+        throw new Error(data.error)
+      }
+      // Reflect saved values in images state
+      setImages(prev => prev.map(img =>
+        img.source === 'public_work' && credits[img.url] !== undefined
+          ? { ...img, alt: credits[img.url] }
+          : img
+      ))
+      setCreditsDirty(false)
+      setCreditsSaved(true)
+      setTimeout(() => setCreditsSaved(false), 3000)
+    } catch (e) {
+      setError(String(e))
+    } finally {
+      setCreditsSaving(false)
+    }
+  }
+
+  function cancelBulkEdit() {
+    // Reset drafts to current saved values
+    const reset: Record<string, string> = {}
+    for (const img of images) {
+      if (img.source === 'public_work') reset[img.url] = img.alt
+    }
+    setCredits(reset)
+    setCreditsDirty(false)
+    setBulkEdit(false)
+  }
+
   const safeSlideIdx = filtered.length > 0 ? Math.min(slideIdx, filtered.length - 1) : 0
   const currentSlide = filtered[safeSlideIdx]
 
   return (
-    <div style={{ padding: '3rem' }}>
+    <div style={{ padding: 'clamp(1rem, 3vw, 3rem)' }}>
       {/* Header */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1.5rem', flexWrap: 'wrap', gap: '1rem' }}>
         <div>
-          <h1 style={{ fontFamily: 'Georgia, serif', fontWeight: 400, fontSize: 'var(--fs-3xl)', marginBottom: '0.25rem' }}>
+          <h1 style={{ fontFamily: 'Georgia, serif', fontWeight: 400, fontSize: 'clamp(var(--fs-xl), 4vw, var(--fs-3xl))', marginBottom: '0.25rem' }}>
             Media
           </h1>
           <p style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-sm)' }}>
@@ -141,21 +209,64 @@ export default function AdminMedia() {
           </p>
         </div>
 
-        {/* View toggle */}
-        {!loading && filtered.length > 0 && (
-          <div style={{ display: 'flex', border: '1px solid var(--color-border)', borderRadius: 1, overflow: 'hidden' }}>
-            {(['grid', 'slideshow'] as const).map(v => (
-              <button key={v} onClick={() => setView(v)} style={{
-                padding: '0.4rem 1rem', fontSize: 'var(--fs-xs)', textTransform: 'uppercase', letterSpacing: '0.08em',
-                background: view === v ? 'var(--color-accent)' : 'transparent',
-                color: view === v ? '#0a0a0a' : 'var(--color-muted)',
-                border: 'none', cursor: 'pointer',
-              }}>
-                {v === 'grid' ? '⊞ Rutnät' : '▶ Bildspel'}
+        <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', flexWrap: 'wrap' }}>
+          {/* Bulk edit credits toggle */}
+          {!loading && (
+            bulkEdit ? (
+              <>
+                <button
+                  className="btn"
+                  onClick={saveCredits}
+                  disabled={creditsSaving || !creditsDirty}
+                  style={{
+                    background: creditsDirty ? 'var(--color-accent)' : 'rgba(180,140,60,0.15)',
+                    color: creditsDirty ? '#0a0a0a' : 'var(--color-accent)',
+                    border: '1px solid var(--color-accent)',
+                    fontSize: 'var(--fs-xs)',
+                    opacity: creditsSaving || !creditsDirty ? 0.6 : 1,
+                  }}
+                >
+                  {creditsSaving ? 'Sparar…' : creditsSaved ? '✓ Sparat' : 'Spara credits'}
+                </button>
+                <button
+                  className="btn"
+                  onClick={cancelBulkEdit}
+                  style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)' }}
+                >
+                  Avbryt
+                </button>
+              </>
+            ) : (
+              <button
+                className="btn"
+                onClick={() => { setBulkEdit(true); setView('grid') }}
+                style={{
+                  fontSize: 'var(--fs-xs)',
+                  border: '1px solid var(--color-border)',
+                  color: 'var(--color-muted)',
+                }}
+              >
+                ✏️ Redigera fotokrediter
               </button>
-            ))}
-          </div>
-        )}
+            )
+          )}
+
+          {/* View toggle — hidden during bulk edit */}
+          {!loading && filtered.length > 0 && !bulkEdit && (
+            <div style={{ display: 'flex', border: '1px solid var(--color-border)', borderRadius: 1, overflow: 'hidden' }}>
+              {(['grid', 'slideshow'] as const).map(v => (
+                <button key={v} onClick={() => setView(v)} style={{
+                  padding: '0.4rem 1rem', fontSize: 'var(--fs-xs)', textTransform: 'uppercase', letterSpacing: '0.08em',
+                  background: view === v ? 'var(--color-accent)' : 'transparent',
+                  color: view === v ? '#0a0a0a' : 'var(--color-muted)',
+                  border: 'none', cursor: 'pointer',
+                }}>
+                  {v === 'grid' ? '⊞ Rutnät' : '▶ Bildspel'}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
 
       {error && (
@@ -169,16 +280,29 @@ export default function AdminMedia() {
         <input
           type="search"
           className="input"
-          placeholder="Sök verk, alt-text…"
+          placeholder="Sök verk, fotokrediter…"
           value={filter}
           onChange={e => handleFilterChange(e.target.value)}
           style={{ maxWidth: 360 }}
         />
       </div>
 
+      {/* Bulk edit banner */}
+      {bulkEdit && !loading && (
+        <div style={{
+          background: 'rgba(180,140,60,0.08)', border: '1px solid rgba(180,140,60,0.3)',
+          padding: '0.75rem 1rem', marginBottom: '1.5rem', fontSize: 'var(--fs-sm)',
+          color: 'var(--color-muted)',
+        }}>
+          <strong style={{ color: 'var(--color-accent)' }}>Redigeringsläge för fotokrediter</strong>
+          {' '}— Klicka i fältet under varje bild och ange fotograf / krediter.
+          Bilder från texter och uppladdningar visas med låst ikon och kan inte redigeras här.
+        </div>
+      )}
+
       {loading ? (
         <p style={{ color: 'var(--color-muted)' }}>Laddar…</p>
-      ) : view === 'slideshow' && filtered.length > 0 ? (
+      ) : view === 'slideshow' && filtered.length > 0 && !bulkEdit ? (
         /* ── SLIDESHOW ── */
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
           {/* Main image */}
@@ -276,17 +400,26 @@ export default function AdminMedia() {
           </div>
         </div>
       ) : (
-        /* ── GRID ── */
+        /* ── GRID (normal + bulk edit) ── */
         <>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: '1rem', marginBottom: '2rem' }}>
             {pageImages.map((img, i) => {
               const globalIdx = (safePage - 1) * PAGE_SIZE + i
+              const editable = bulkEdit && img.source === 'public_work'
+              const locked = bulkEdit && img.source !== 'public_work'
               return (
                 <div
                   key={`${img.url}-${i}`}
-                  style={{ border: '1px solid var(--color-border)', overflow: 'hidden', background: 'var(--color-bg-surface)', cursor: 'pointer', position: 'relative' }}
-                  onClick={() => openSlideshow(globalIdx)}
-                  title="Klicka för bildspel"
+                  style={{
+                    border: `1px solid ${editable ? 'rgba(180,140,60,0.4)' : 'var(--color-border)'}`,
+                    overflow: 'hidden',
+                    background: 'var(--color-bg-surface)',
+                    cursor: bulkEdit ? 'default' : 'pointer',
+                    position: 'relative',
+                    opacity: locked ? 0.55 : 1,
+                  }}
+                  onClick={bulkEdit ? undefined : () => openSlideshow(globalIdx)}
+                  title={bulkEdit ? undefined : 'Klicka för bildspel'}
                 >
                   <div style={{ aspectRatio: '4/3', overflow: 'hidden', background: '#111', position: 'relative' }}>
                     {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -299,27 +432,60 @@ export default function AdminMedia() {
                         (e.currentTarget as HTMLImageElement).style.display = 'none'
                       }}
                     />
-                    {/* Enhance button — stops propagation so it doesn't open slideshow */}
-                    <button
-                      onClick={e => { e.stopPropagation(); setEnhancerUrl(img.url) }}
-                      title="Förbättra med AI"
-                      style={{
-                        position: 'absolute', bottom: 4, right: 4,
-                        background: 'rgba(0,0,0,0.72)', color: 'var(--color-accent)',
-                        border: '1px solid rgba(180,140,60,0.5)', borderRadius: 2,
-                        fontSize: 10, padding: '2px 6px', cursor: 'pointer', lineHeight: 1.4,
-                        opacity: 0.85,
-                      }}
-                    >
-                      ✨
-                    </button>
-                  </div>
-                  <div style={{ padding: '0.5rem 0.6rem' }}>
-                    {img.alt && (
+                    {/* Enhance button — hidden in bulk edit mode */}
+                    {!bulkEdit && (
+                      <button
+                        onClick={e => { e.stopPropagation(); setEnhancerUrl(img.url) }}
+                        title="Förbättra med AI"
+                        style={{
+                          position: 'absolute', bottom: 4, right: 4,
+                          background: 'rgba(0,0,0,0.72)', color: 'var(--color-accent)',
+                          border: '1px solid rgba(180,140,60,0.5)', borderRadius: 2,
+                          fontSize: 10, padding: '2px 6px', cursor: 'pointer', lineHeight: 1.4,
+                          opacity: 0.85,
+                        }}
+                      >
+                        ✨
+                      </button>
+                    )}
+                    {/* Lock badge for non-editable in bulk mode */}
+                    {locked && (
                       <div style={{
-                        fontSize: 'var(--fs-xs)', color: 'var(--color-text)', marginBottom: '0.15rem',
-                        overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
-                      }}>{img.alt}</div>
+                        position: 'absolute', top: 4, right: 4,
+                        background: 'rgba(0,0,0,0.6)', color: 'var(--color-muted)',
+                        fontSize: 10, padding: '2px 5px', lineHeight: 1.4,
+                      }}>🔒</div>
+                    )}
+                  </div>
+
+                  <div style={{ padding: '0.5rem 0.6rem' }}>
+                    {bulkEdit && editable ? (
+                      /* Editable credit field */
+                      <input
+                        type="text"
+                        value={credits[img.url] ?? ''}
+                        placeholder="Fotograf / kredit…"
+                        onClick={e => e.stopPropagation()}
+                        onChange={e => {
+                          const val = e.target.value
+                          setCredits(prev => ({ ...prev, [img.url]: val }))
+                          setCreditsDirty(true)
+                          setCreditsSaved(false)
+                        }}
+                        style={{
+                          width: '100%', boxSizing: 'border-box',
+                          background: 'var(--color-bg)', border: '1px solid rgba(180,140,60,0.4)',
+                          color: 'var(--color-text)', fontSize: 'var(--fs-xs)',
+                          padding: '0.3rem 0.4rem', outline: 'none', marginBottom: '0.15rem',
+                        }}
+                      />
+                    ) : (
+                      img.alt && (
+                        <div style={{
+                          fontSize: 'var(--fs-xs)', color: 'var(--color-text)', marginBottom: '0.15rem',
+                          overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
+                        }}>{img.alt}</div>
+                      )
                     )}
                     <div style={{
                       fontSize: 'var(--fs-xs)', color: 'var(--color-muted)',
@@ -344,8 +510,40 @@ export default function AdminMedia() {
             </div>
           )}
 
+          {/* Floating save bar in bulk edit mode */}
+          {bulkEdit && creditsDirty && (
+            <div style={{
+              position: 'fixed', bottom: '1.5rem', left: '50%', transform: 'translateX(-50%)',
+              background: 'var(--color-bg-surface)', border: '1px solid var(--color-accent)',
+              padding: '0.75rem 1.5rem', display: 'flex', gap: '0.75rem', alignItems: 'center',
+              boxShadow: '0 4px 24px rgba(0,0,0,0.5)', zIndex: 200,
+            }}>
+              <span style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-muted)' }}>
+                Osparade ändringar
+              </span>
+              <button
+                className="btn"
+                onClick={saveCredits}
+                disabled={creditsSaving}
+                style={{
+                  background: 'var(--color-accent)', color: '#0a0a0a',
+                  fontSize: 'var(--fs-xs)', fontWeight: 600,
+                }}
+              >
+                {creditsSaving ? 'Sparar…' : 'Spara alla'}
+              </button>
+              <button
+                className="btn"
+                onClick={cancelBulkEdit}
+                style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)' }}
+              >
+                Avbryt
+              </button>
+            </div>
+          )}
+
           {filtered.length === 0 && (
-            <p style={{ textAlign: 'center', color: 'var(--color-muted)', padding: '3rem' }}>
+            <p style={{ textAlign: 'center', color: 'var(--color-muted)', padding: 'clamp(1rem, 3vw, 3rem)' }}>
               Inga bilder hittades.
             </p>
           )}

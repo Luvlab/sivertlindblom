@@ -8,6 +8,12 @@ const nextConfig: NextConfig = {
         hostname: 'sivertlindblom.se',
         pathname: '/wp-content/uploads/**',
       },
+      // Supabase storage — all buckets under this project
+      {
+        protocol: 'https',
+        hostname: 'ixlvwwllvpweltntbsou.supabase.co',
+        pathname: '/storage/v1/object/public/**',
+      },
     ],
   },
   // Allow external img tags (used in components for old-site images)

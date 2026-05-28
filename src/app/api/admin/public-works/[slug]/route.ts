@@ -25,6 +25,7 @@ function dbToWork(
       .map(img => ({ url: img.url, alt: img.alt ?? '' })),
     lat: (row.lat as number | null) ?? null,
     lng: (row.lng as number | null) ?? null,
+    temporary: (row.temporary as boolean) ?? false,
   }
 }
 
@@ -78,6 +79,7 @@ export async function PUT(
           description_sv: body.body,
           lat: body.lat ?? null,
           lng: body.lng ?? null,
+          temporary: body.temporary ?? false,
           published: true,
         })
         .eq('slug', slug)

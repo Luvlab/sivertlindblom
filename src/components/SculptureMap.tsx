@@ -38,6 +38,8 @@ export default function SculptureMap({ locations, locale, mapHeight = 480, compa
   const mapInstance = useRef<any>(null)
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const clusterRef = useRef<any>(null)
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const circlesRef = useRef<Map<number, any>>(new Map())
   const [leafletReady, setLeafletReady] = useState(false)
   const [selectedType, setSelectedType] = useState<string | null>(null)
   const scriptsLoadedRef = useRef(0)
@@ -104,6 +106,9 @@ export default function SculptureMap({ locations, locale, mapHeight = 480, compa
     mapInstance.current = map
     clusterRef.current = clusterGroup
 
+    // Force Leaflet to recalculate container dimensions (needed inside flex/sticky panels)
+    requestAnimationFrame(() => map.invalidateSize())
+
     // Helper to create a marker
     const addMarker = (loc: SculptureLocation) => {
       const color = TYPE_COLORS[loc.type] ?? '#c9a84c'
@@ -162,6 +167,23 @@ export default function SculptureMap({ locations, locale, mapHeight = 480, compa
 
     clusterGroup.addTo(map)
 
+    // 0.5km radius circles — added directly to map (not clustered)
+    const circMap = new Map<number, any>() // eslint-disable-line @typescript-eslint/no-explicit-any
+    locations.forEach((loc, i) => {
+      const circle = L.circle([loc.lat, loc.lng], {
+        radius: 500,
+        color: TYPE_COLORS[loc.type] ?? '#c9a84c',
+        fillColor: TYPE_COLORS[loc.type] ?? '#c9a84c',
+        fillOpacity: 0.07,
+        weight: 1,
+        opacity: 0.25,
+        interactive: false,
+      })
+      circle.addTo(map)
+      circMap.set(i, circle)
+    })
+    circlesRef.current = circMap
+
     // Fit view to all markers so every project (incl. NY, Tokyo) is visible
     if (locations.length > 0) {
       const bounds = L.latLngBounds(locations.map((l: SculptureLocation) => [l.lat, l.lng]))
@@ -172,6 +194,7 @@ export default function SculptureMap({ locations, locale, mapHeight = 480, compa
       map.remove()
       mapInstance.current = null
       clusterRef.current = null
+      circlesRef.current = new Map()
     }
   }, [leafletReady, locations, locale])
 
@@ -227,12 +250,21 @@ export default function SculptureMap({ locations, locale, mapHeight = 480, compa
       `, { maxWidth: 280, className: 'sculpture-popup' })
       clusterGroup.addLayer(marker)
     })
+
+    // Sync circle visibility with the filter
+    circlesRef.current.forEach((circle, i) => {
+      const loc = locations[i]
+      if (!loc || !mapInstance.current) return
+      const show = !selectedType || loc.type === selectedType
+      if (show && !mapInstance.current.hasLayer(circle)) circle.addTo(mapInstance.current)
+      else if (!show && mapInstance.current.hasLayer(circle)) mapInstance.current.removeLayer(circle)
+    })
   }, [selectedType, locations, locale])
 
   const types = ['exterior', 'interior', 'metro']
 
   return (
-    <div style={{ paddingBottom: '2rem' }}>
+    <div style={compact ? {} : { paddingBottom: '2rem' }}>
       {/* Leaflet CSS + JS via CDN */}
       <link
         rel="stylesheet"

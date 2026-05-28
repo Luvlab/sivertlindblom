@@ -56,10 +56,10 @@ const SECTIONS = [
 
 export default function AdminReferences() {
   return (
-    <div style={{ padding: '3rem', maxWidth: 760 }}>
+    <div style={{ padding: 'clamp(1rem, 3vw, 3rem)', maxWidth: 760 }}>
       <div style={{ marginBottom: '2.5rem' }}>
         <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-accent)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '0.5rem' }}>Admin</p>
-        <h1 style={{ fontFamily: 'Georgia, serif', fontWeight: 400, fontSize: 'var(--fs-3xl)', marginBottom: '0.25rem' }}>Referenser</h1>
+        <h1 style={{ fontFamily: 'Georgia, serif', fontWeight: 400, fontSize: 'clamp(var(--fs-xl), 4vw, var(--fs-3xl))', marginBottom: '0.25rem' }}>Referenser</h1>
         <p style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-sm)' }}>
           Referenssidans 7 sektioner och var innehållet hanteras.
         </p>

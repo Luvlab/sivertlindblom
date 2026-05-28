@@ -80,8 +80,8 @@ export default function EditExhibitionPage({ params }: Props) {
     }
   }
 
-  if (loading) return <div style={{ padding: '3rem', color: 'var(--color-muted)' }}>Laddar...</div>
-  if (!form) return <div style={{ padding: '3rem', color: '#f88' }}>{error || 'Hittades inte'}</div>
+  if (loading) return <div style={{ padding: 'clamp(1rem, 3vw, 3rem)', color: 'var(--color-muted)' }}>Laddar...</div>
+  if (!form) return <div style={{ padding: 'clamp(1rem, 3vw, 3rem)', color: '#f88' }}>{error || 'Hittades inte'}</div>
 
   return (
     <AdminForm
@@ -95,13 +95,14 @@ export default function EditExhibitionPage({ params }: Props) {
       error={error}
       dirty={dirty}
       deleteLabel="Radera utställning"
+      maxWidth="none"
     >
       <div>
         <FieldLabel>Titel *</FieldLabel>
         <input type="text" required className="input" value={form.title} onChange={e => update('title', e.target.value)} />
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 200px), 1fr))', gap: '1rem' }}>
         <div>
           <FieldLabel>År *</FieldLabel>
           <input type="number" required className="input" value={form.year} onChange={e => update('year', parseInt(e.target.value))} min={1900} max={2100} />

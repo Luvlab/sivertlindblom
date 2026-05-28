@@ -35,21 +35,22 @@ export default function AdminForm({
   maxWidth = 800,
 }: AdminFormProps) {
   return (
-    <div style={{ padding: '3rem', maxWidth: maxWidth === 'none' ? undefined : maxWidth }}>
-      {/* Sticky save toolbar */}
-      <div style={{
-        position: 'sticky',
-        top: 0,
-        zIndex: 10,
-        background: '#0a0a0a',
-        borderBottom: '1px solid var(--color-border)',
-        padding: '0.75rem 0',
-        marginBottom: '2rem',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        gap: '1rem',
-      }}>
+    <div style={{ padding: 'clamp(1rem, 3vw, 3rem)', maxWidth: maxWidth === 'none' ? undefined : maxWidth }}>
+      {/* Sticky save toolbar — top offset managed by .admin-form-toolbar CSS class (0 desktop, 3rem mobile) */}
+      <div
+        className="admin-form-toolbar"
+        style={{
+          background: '#0a0a0a',
+          borderBottom: '1px solid var(--color-border)',
+          padding: '0.65rem 0',
+          marginBottom: '2rem',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          flexWrap: 'wrap',
+          gap: '0.5rem',
+        }}
+      >
         <Link
           href={backHref}
           style={{
@@ -80,7 +81,7 @@ export default function AdminForm({
       </div>
 
       <div style={{ marginBottom: '2rem' }}>
-        <h1 style={{ fontFamily: 'Georgia, serif', fontWeight: 400, fontSize: 'var(--fs-3xl)' }}>
+        <h1 style={{ fontFamily: 'Georgia, serif', fontWeight: 400, fontSize: 'clamp(var(--fs-xl), 4vw, var(--fs-3xl))' }}>
           {title}
         </h1>
       </div>

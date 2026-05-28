@@ -79,6 +79,7 @@ export default function AdminPublicWorks() {
       })
       const marker = L.marker([w.lat!, w.lng!], { icon, title: w.title })
       marker.addTo(map)
+      L.circle([w.lat!, w.lng!], { radius: 500, color: '#2bbcd4', fillColor: '#2bbcd4', fillOpacity: 0.07, weight: 1, opacity: 0.2, interactive: false }).addTo(map)
       if (w.slug) {
         marker.on('click', () => router.push(`/admin/public-works/${w.slug}`))
       }
@@ -167,10 +168,10 @@ export default function AdminPublicWorks() {
         .leaflet-tooltip-top:before{border-top-color:#333!important;}
       `}</style>
 
-      <div style={{ padding: '3rem' }}>
+      <div style={{ padding: 'clamp(1rem, 3vw, 3rem)' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '2rem', flexWrap: 'wrap', gap: '1rem' }}>
           <div>
-            <h1 style={{ fontFamily: 'Georgia, serif', fontWeight: 400, fontSize: 'var(--fs-3xl)', marginBottom: '0.25rem' }}>Offentliga arbeten</h1>
+            <h1 style={{ fontFamily: 'Georgia, serif', fontWeight: 400, fontSize: 'clamp(var(--fs-xl), 4vw, var(--fs-3xl))', marginBottom: '0.25rem' }}>Offentliga arbeten</h1>
             <p style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-sm)' }}>
               {works.length} poster · {works.filter(w => w.lat && w.lng).length} med koordinater
             </p>
@@ -183,19 +184,6 @@ export default function AdminPublicWorks() {
             </button>
           </div>
         </div>
-
-        {/* ── Overview map ── */}
-        {!loading && (
-          <div style={{ marginBottom: '2.5rem' }}>
-            <p style={{ fontSize: '0.7rem', color: 'var(--color-muted)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '0.5rem' }}>
-              Karta — klicka på en nål för att redigera
-            </p>
-            <div ref={setMapEl} style={{
-              height: 420, width: '100%', background: '#111',
-              border: '1px solid var(--color-border)', borderRadius: 2, overflow: 'hidden',
-            }} />
-          </div>
-        )}
 
         <div style={{ marginBottom: '2rem' }}>
           <input type="search" className="input" placeholder="Filtrera…" value={filter}
@@ -242,6 +230,20 @@ export default function AdminPublicWorks() {
               </table>
             </section>
           </>
+        )}
+
+        {/* ── Overview map — always last, after all works ── */}
+        {!loading && (
+          <div style={{ marginTop: '3rem' }}>
+            <hr style={{ border: 'none', borderTop: '1px solid var(--color-border)', marginBottom: '2rem' }} />
+            <p style={{ fontSize: '0.7rem', color: 'var(--color-muted)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '0.75rem' }}>
+              Karta — klicka på en nål för att redigera
+            </p>
+            <div ref={setMapEl} style={{
+              height: 420, width: '100%', background: '#111',
+              border: '1px solid var(--color-border)', borderRadius: 2, overflow: 'hidden',
+            }} />
+          </div>
         )}
       </div>
     </>

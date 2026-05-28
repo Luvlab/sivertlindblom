@@ -67,8 +67,8 @@ export default function AdminSettings() {
   )
 
   return (
-    <div style={{ padding: '3rem', maxWidth: 700 }}>
-      <h1 style={{ fontFamily: 'Georgia, serif', fontWeight: 400, fontSize: 'var(--fs-3xl)', marginBottom: '0.5rem' }}>Inställningar</h1>
+    <div style={{ padding: 'clamp(1rem, 3vw, 3rem)', maxWidth: 700 }}>
+      <h1 style={{ fontFamily: 'Georgia, serif', fontWeight: 400, fontSize: 'clamp(var(--fs-xl), 4vw, var(--fs-3xl))', marginBottom: '0.5rem' }}>Inställningar</h1>
       <p style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-sm)', marginBottom: '2.5rem' }}>
         Globala webbplatsinställningar — sparas i <code style={{ fontSize: 'var(--fs-xs)' }}>public/cms-data/settings.json</code>.
       </p>

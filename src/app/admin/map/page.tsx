@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import Script from 'next/script'
 import { useRouter } from 'next/navigation'
+import GeoSearch, { type GeoResult } from '@/components/admin/GeoSearch'
 
 declare global {
   interface Window {
@@ -126,6 +127,35 @@ export default function AdminMap() {
     })
   }, [leafletReady, pins]) // eslint-disable-line react-hooks/exhaustive-deps
 
+  function handleGeoSelect(result: GeoResult) {
+    const { lat, lng } = result
+
+    // Remove existing preview marker
+    if (previewMarkerRef.current && mapInstance.current) {
+      mapInstance.current.removeLayer(previewMarkerRef.current)
+      previewMarkerRef.current = null
+    }
+
+    // Fly map to searched location
+    if (mapInstance.current) {
+      mapInstance.current.flyTo([lat, lng], 13)
+    }
+
+    // Place animated preview marker
+    if (window.L && mapInstance.current) {
+      const L = window.L
+      const icon = L.divIcon({
+        html: `<div style="width:16px;height:16px;background:#2bbcd4;border:2px solid #fff;border-radius:50%;box-shadow:0 0 0 4px rgba(43,188,212,0.4),0 2px 8px rgba(0,0,0,.6);animation:pulse 1s ease-in-out infinite alternate"></div>`,
+        className: '', iconSize: [16, 16], iconAnchor: [8, 8],
+      })
+      const preview = L.marker([lat, lng], { icon, zIndexOffset: 2000 })
+      preview.addTo(mapInstance.current)
+      previewMarkerRef.current = preview
+    }
+
+    setClickHint({ lat: +lat.toFixed(6), lng: +lng.toFixed(6) })
+  }
+
   async function deletePin(id: string, title: string) {
     if (!confirm(`Radera "${title}" från kartan?`)) return
     setDeleting(id)
@@ -153,7 +183,7 @@ export default function AdminMap() {
   }, {})
 
   return (
-    <div style={{ padding: '3rem' }}>
+    <div style={{ padding: 'clamp(1rem, 3vw, 3rem)' }}>
       {/* Leaflet */}
       <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossOrigin="" />
       <Script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossOrigin="" onLoad={() => setLeafletReady(true)} strategy="afterInteractive" />
@@ -171,7 +201,7 @@ export default function AdminMap() {
       {/* Header */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1.5rem', flexWrap: 'wrap', gap: '1rem' }}>
         <div>
-          <h1 style={{ fontFamily: 'Georgia, serif', fontWeight: 400, fontSize: 'var(--fs-3xl)', marginBottom: '0.25rem' }}>Karta — Platser</h1>
+          <h1 style={{ fontFamily: 'Georgia, serif', fontWeight: 400, fontSize: 'clamp(var(--fs-xl), 4vw, var(--fs-3xl))', marginBottom: '0.25rem' }}>Karta — Platser</h1>
           <p style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-sm)' }}>
             {pins.length} kartnålar
             {Object.entries(typeCounts).map(([t, n]) => (
@@ -185,6 +215,14 @@ export default function AdminMap() {
         <Link href="/admin/map/new">
           <button className="btn btn-primary">+ Ny kartnål</button>
         </Link>
+      </div>
+
+      {/* Geo search */}
+      <div style={{ marginBottom: '0.75rem', maxWidth: 420 }}>
+        <GeoSearch
+          onSelect={handleGeoSelect}
+          placeholder="Sök adress för att placera nål…"
+        />
       </div>
 
       {/* Map — always visible */}
@@ -243,7 +281,7 @@ export default function AdminMap() {
           ))}
         </div>
         <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', fontStyle: 'italic' }}>
-          Klicka på kartan för att lägga till en nål · klicka på en nål för att redigera
+          Sök adress · klicka på kartan · klicka på en nål för att redigera
         </span>
       </div>
 

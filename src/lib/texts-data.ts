@@ -1073,6 +1073,77 @@ Konstrevy Nr 2, 1967`,
       'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/03/Sivert-Lindblom-Kofes-3-.jpg',
     ],
   },
+
+  // ── Egna texter — previously unmigrated ─────────────────────────────────
+
+  {
+    slug: 'stenpriset-1985',
+    type: 'own_writing',
+    year: 1985,
+    title: 'Stenpriset till Sivert Lindblom — Sveriges Stenindustriförbund 1985',
+    author: 'Sveriges Stenindustriförbund',
+    publication: 'Sten, nr 2 årgång 47, 1985',
+    lang: 'sv',
+    body: `Här kan du ladda ned Sveriges Stenindustriförbunds motivering för att Sivert Lindblom tilldelas Stenpriset 1985. Dokumentet är ett utdrag ur tidskriften Sten, nr 2, årgång 47.
+
+[Hämta PDF (3,8 MB) →](https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/media/2015/02/Sten-1985opt-.pdf)`,
+    images: [
+      'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/media/2015/02/Sten-omslag-1985-minst.jpg',
+    ],
+  },
+  {
+    slug: 'statens-konstrad-1988',
+    type: 'own_writing',
+    year: 1988,
+    title: 'Statens Konstråd nr 17–18, april 1988',
+    author: 'Sivert Lindblom',
+    publication: 'Statens Konstråd, nr 17–18, april 1988',
+    lang: 'sv',
+    body: `Statens Konstråd firade 50 år hösten 1987 med ett symposium om samarbetet mellan konstnärer och arkitekter. Redaktör Staffan Cullberg presenterade temat i detta specialnummer av Statens Konstråds tidskrift, och arkitekt Carl Norén beskrev hur konstnärer fungerat som "problemlösare och inspiratörer" i hans projekt — däribland samarbetena med Sivert Lindblom vid Pharmacia, Uppsala bibliotek och Blasieholmstorg.`,
+    images: [
+      'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/media/2015/03/Statens-Konst.jpg',
+      'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/media/2015/03/Statens-Konst2.jpg',
+      'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/media/2015/03/Statens-Konst3.jpg',
+      'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/media/2015/03/Statens-Konst4.jpg',
+    ],
+  },
+  {
+    slug: 'meddelande-konst-bostadsomraden-1985',
+    type: 'own_writing',
+    year: 1985,
+    title: 'Meddelande – om konst i bostadsområden, på allmän plats, i offentliga lokaler',
+    author: 'Riksutställningar / Konstnärscentrum',
+    publication: 'Meddelande, Riksutställningar & Konstnärscentrum, 1985',
+    lang: 'sv',
+    body: `Riksutställningar och Konstnärscentrum tog 1985 initiativet att visa hur samarbete mellan arkitektur och estetik kan komma till stånd. En specialutgåva av publikationen Meddelande gavs ut i samband med bostadsutställningen Bo 85 i Upplands Väsby och utställningen Konst är bra!
+
+Konstnärscentrum (KC) har sedan 1969 arbetat med kommuner, landsting, konstföreningar, folkrörelser och företag som köper konst eller behöver konstnärer för att gestalta miljöer.`,
+    images: [
+      'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/media/2015/03/Meddelande-SL-1-1-.jpg',
+      'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/media/2015/03/Meddelande-SL-1-2-.jpg',
+      'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/media/2015/03/Meddelande-SL-2-2-2.jpg',
+      'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/media/2015/03/Meddelande-SL-2-3-.jpg',
+      'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/media/2015/03/Meddelande-SL-3-.jpg',
+    ],
+  },
+  {
+    slug: 'intervju-humanistiska-foreningen-1989',
+    type: 'own_writing',
+    year: 1989,
+    title: 'Intervju för Humanistiska Föreningen, Stockholms Universitet 75 år',
+    author: 'Jan Åman (intervjuare)',
+    publication: 'Humanistiska Föreningens jubileumstidskrift, 1989',
+    lang: 'sv',
+    body: `Till Humanistiska Föreningens jubileumstidskrift gjorde redaktören Jan Åman en intervju med Sivert Lindblom om hans arbete med Stockholms universitets campusområde i Frescati.
+
+Universitetsområdet har vuxit fram under lång tid och de enskilda byggnaderna har formats av funktionella krav och respektive arkitekts intentioner. Den omgivande miljön med de spridda byggnaderna har däremot fått mindre uppmärksamhet och inte gestaltats utifrån en sammanhållande estetisk idé.
+
+Lindblom beskriver hur han skapade en "estetiskt och visuellt markerad linje" från universitetets tunnelbaneentré och ut mot omgivande marker, med vridsna tegeltorn och skulpturer hämtade ur den klassiska mytologin.`,
+    images: [
+      'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/media/2015/03/Sivert-Lindblom-Frescati-1.jpg',
+      'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/media/2015/03/Sivert-Lindblom-Frescati-2.jpg',
+    ],
+  },
 ]
 
 export const TEXTS_DATA: TextItem[] = RAW_TEXTS_DATA.map(item => ({

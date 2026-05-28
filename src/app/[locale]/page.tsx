@@ -4,7 +4,7 @@ import { locales } from '@/i18n/config'
 import type { Locale } from '@/i18n/config'
 import { FALLBACK_SETTINGS } from '@/lib/db'
 import HeroSlideshow from '@/components/hero/HeroSlideshow'
-import { getAllMediaImages } from '@/lib/data-server'
+import { getHeroConfig } from '@/lib/data-server'
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }))
@@ -18,7 +18,7 @@ export default async function HomePage({
   const { locale } = await params
   const dict = await getDictionary(locale as Locale)
   const settings = FALLBACK_SETTINGS
-  const heroSlides = await getAllMediaImages()
+  const { slides: heroSlides, random: heroRandom } = await getHeroConfig()
 
   const sections = [
     {
@@ -55,7 +55,7 @@ export default async function HomePage({
     <>
       {/* HERO — full-viewport slideshow, bleeds behind transparent header */}
       <div style={{ marginTop: 'calc(-1 * var(--header-h))' }}>
-      <HeroSlideshow slides={heroSlides}>
+      <HeroSlideshow slides={heroSlides} random={heroRandom}>
         <div className="hero-content page-pad">
           <p style={{
             fontSize: 'var(--fs-xs)',

@@ -36,10 +36,10 @@ export default function AdminWorks() {
     .filter(w => !cat || w.category === cat)
 
   return (
-    <div style={{ padding: '3rem' }}>
+    <div style={{ padding: 'clamp(1rem, 3vw, 3rem)' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '2rem', flexWrap: 'wrap', gap: '1rem' }}>
         <div>
-          <h1 style={{ fontFamily: 'Georgia, serif', fontWeight: 400, fontSize: 'var(--fs-3xl)', marginBottom: '0.25rem' }}>Verk</h1>
+          <h1 style={{ fontFamily: 'Georgia, serif', fontWeight: 400, fontSize: 'clamp(var(--fs-xl), 4vw, var(--fs-3xl))', marginBottom: '0.25rem' }}>Verk</h1>
           <p style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-sm)' }}>{MOCK_WORKS.length} verk i databasen</p>
         </div>
         <Link href="/admin/works/new">
@@ -112,7 +112,7 @@ export default function AdminWorks() {
       </div>
 
       {filtered.length === 0 && (
-        <div style={{ padding: '3rem', textAlign: 'center', color: 'var(--color-muted)' }}>
+        <div style={{ padding: 'clamp(1rem, 3vw, 3rem)', textAlign: 'center', color: 'var(--color-muted)' }}>
           Inga verk hittades.
         </div>
       )}

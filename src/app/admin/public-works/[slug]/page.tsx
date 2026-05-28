@@ -33,6 +33,8 @@ export default function EditPublicWorkPage({ params }: Props) {
   const mapInstance = useRef<any>(null)
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const markerRef = useRef<any>(null)
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const circleRef = useRef<any>(null)
 
   // Poll for Leaflet (cached script case)
   useEffect(() => {
@@ -79,9 +81,13 @@ export default function EditPublicWorkPage({ params }: Props) {
       const marker = L.marker([form.lat!, form.lng!], { icon, draggable: true, zIndexOffset: 1000 })
       marker.addTo(map)
       markerRef.current = marker
+      const activeCircle = L.circle([form.lat!, form.lng!], { radius: 500, color: '#2bbcd4', fillColor: '#2bbcd4', fillOpacity: 0.1, weight: 1.5, opacity: 0.35, interactive: false })
+      activeCircle.addTo(map)
+      circleRef.current = activeCircle
       marker.on('dragend', () => {
         const { lat, lng } = marker.getLatLng()
         setForm(prev => prev ? { ...prev, lat: +lat.toFixed(6), lng: +lng.toFixed(6) } : prev)
+        circleRef.current?.setLatLng([+lat.toFixed(6), +lng.toFixed(6)])
         setDirty(true)
       })
     }
@@ -93,6 +99,7 @@ export default function EditPublicWorkPage({ params }: Props) {
       const L = window.L
       if (markerRef.current) {
         markerRef.current.setLatLng([lat, lng])
+        circleRef.current?.setLatLng([+lat.toFixed(6), +lng.toFixed(6)])
       } else {
         const icon = L.divIcon({
           html: `<div style="width:16px;height:16px;background:#2bbcd4;border:2px solid #fff;border-radius:50%;cursor:grab;box-shadow:0 0 0 3px rgba(43,188,212,.4),0 2px 8px rgba(0,0,0,.6)"></div>`,
@@ -104,8 +111,14 @@ export default function EditPublicWorkPage({ params }: Props) {
         marker.on('dragend', () => {
           const { lat: la, lng: ln } = marker.getLatLng()
           setForm(prev => prev ? { ...prev, lat: +la.toFixed(6), lng: +ln.toFixed(6) } : prev)
+          circleRef.current?.setLatLng([+la.toFixed(6), +ln.toFixed(6)])
           setDirty(true)
         })
+        if (!circleRef.current) {
+          const c = L.circle([lat, lng], { radius: 500, color: '#2bbcd4', fillColor: '#2bbcd4', fillOpacity: 0.1, weight: 1.5, opacity: 0.35, interactive: false })
+          c.addTo(map)
+          circleRef.current = c
+        }
       }
       setForm(prev => prev ? { ...prev, lat: +lat.toFixed(6), lng: +lng.toFixed(6) } : prev)
       setDirty(true)
@@ -115,6 +128,7 @@ export default function EditPublicWorkPage({ params }: Props) {
       map.remove()
       mapInstance.current = null
       markerRef.current = null
+      circleRef.current = null
     }
   }, [leafletReady, mapEl, form !== null]) // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -124,6 +138,7 @@ export default function EditPublicWorkPage({ params }: Props) {
     const { lat: mLat, lng: mLng } = markerRef.current.getLatLng()
     if (Math.abs(mLat - form.lat) > 0.0001 || Math.abs(mLng - form.lng) > 0.0001) {
       markerRef.current.setLatLng([form.lat, form.lng])
+      circleRef.current?.setLatLng([form.lat, form.lng])
       mapInstance.current?.panTo([form.lat, form.lng])
     }
   }, [form?.lat, form?.lng])
@@ -160,8 +175,8 @@ export default function EditPublicWorkPage({ params }: Props) {
     } catch (err) { setError(String(err)) }
   }
 
-  if (loading) return <div style={{ padding: '3rem', color: 'var(--color-muted)' }}>Laddar...</div>
-  if (!form) return <div style={{ padding: '3rem', color: '#f88' }}>{error || 'Hittades inte'}</div>
+  if (loading) return <div style={{ padding: 'clamp(1rem, 3vw, 3rem)', color: 'var(--color-muted)' }}>Laddar...</div>
+  if (!form) return <div style={{ padding: 'clamp(1rem, 3vw, 3rem)', color: '#f88' }}>{error || 'Hittades inte'}</div>
 
   return (
     <>
@@ -199,6 +214,22 @@ export default function EditPublicWorkPage({ params }: Props) {
               <input type="text" required className="input" style={{ width: '100%' }}
                 value={form.title} onChange={e => update('title', e.target.value)} />
             </div>
+
+            {/* Tillfällig placering */}
+            <label style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', cursor: 'pointer', userSelect: 'none' }}>
+              <input
+                type="checkbox"
+                checked={form.temporary ?? false}
+                onChange={e => update('temporary', e.target.checked)}
+                style={{ width: 16, height: 16, accentColor: 'var(--color-accent)', cursor: 'pointer' }}
+              />
+              <span style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-text)' }}>
+                Tillfällig placering
+              </span>
+              <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)' }}>
+                — verket var inte permanent
+              </span>
+            </label>
 
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '1rem' }}>
               <div>
@@ -266,7 +297,7 @@ export default function EditPublicWorkPage({ params }: Props) {
             </div>
 
             {/* Manual coord inputs */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 200px), 1fr))', gap: '0.75rem' }}>
               <div>
                 <label style={{ display: 'block', fontSize: '0.7rem', color: 'var(--color-muted)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '0.35rem' }}>Latitud</label>
                 <input className="input" type="number" step="0.000001" style={{ width: '100%', fontFamily: 'monospace' }}

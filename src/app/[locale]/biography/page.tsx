@@ -11,22 +11,57 @@ import { FALLBACK_SETTINGS } from '@/lib/db'
 
 const DEFAULT_PORTRAIT = 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Portratt-SivertMattias.jpg'
 
-async function getBiographySettings(): Promise<{ intro: string; portrait: string }> {
+const DEFAULT_PHOTOS: Array<{ url: string; caption: string }> = [
+  { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2012/12/Sivert-skulptor.jpg',        caption: 'Sivert Lindblom, skulptör' },
+  { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Portratt-SivertMattias.jpg', caption: 'Porträtt. Foto: Mathias Johansson' },
+  { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/20121028_135427.jpg',         caption: 'Konstakademien 2012. Foto: Jan Öqvist' },
+  { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Sivert-sten-kopia.jpg',       caption: 'Sivert med sten. Foto: Jan Öqvist' },
+  { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/20130308_101452.jpg',         caption: 'Bergmans Konstgjuteri, Enskede 2013. Foto: Jan Öqvist' },
+  { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Sivert571-kopia.jpg',         caption: 'Sivert vid Kejsar Konstantins hand, Capitolium museet, Rom' },
+  { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2012/12/Sivert-skulpterar-1.jpg',     caption: 'Sivert skulpterar' },
+  { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/20121101_151438.jpg',         caption: 'Ateljén. Foto: Jan Öqvist' },
+  { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/fotokarta-1963.jpg',          caption: 'Fotokort, 1963' },
+  { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Eskilstuna-91.jpg',           caption: 'Eskilstuna. Foto: Lasse Larsson' },
+  { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Eskilstuna-arb-161.jpg',      caption: 'I arbete, Eskilstuna. Foto: Lasse Larsson' },
+  { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/DSC01888-kopia.jpg',          caption: 'Sivert Lindblom' },
+  { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/20120614_173855-kopia.jpg',   caption: 'Foto: Jan Öqvist' },
+  { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/SAM_7961.jpg',                caption: 'Foto: Jan Öqvist' },
+  { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Siverts-exit.jpg',            caption: 'Siverts exit' },
+  { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/20130308_103958.jpg',         caption: 'Gjuteriet 2013. Foto: Jan Öqvist' },
+]
+
+async function getBiographySettings(): Promise<{
+  intro: string
+  portrait: string
+  photos: Array<{ url: string; caption: string }>
+}> {
   try {
     const supabase = createAdminClient()
     if (supabase) {
-      const { data } = await supabase.from('settings').select('key, value').in('key', ['biography_intro', 'biography_portrait'])
+      const { data } = await supabase
+        .from('settings')
+        .select('key, value')
+        .in('key', ['biography_intro', 'biography_portrait', 'biography_photos'])
       if (data?.length) {
         const map: Record<string, string> = {}
         data.forEach(({ key, value }: { key: string; value: string }) => { map[key] = value })
+        let photos = DEFAULT_PHOTOS
+        if (map.biography_photos) {
+          try { photos = JSON.parse(map.biography_photos) } catch { /* ignore */ }
+        }
         return {
           intro: map.biography_intro ?? FALLBACK_SETTINGS.biography_intro ?? '',
           portrait: map.biography_portrait ?? DEFAULT_PORTRAIT,
+          photos,
         }
       }
     }
   } catch { /* ignore */ }
-  return { intro: FALLBACK_SETTINGS.biography_intro ?? '', portrait: FALLBACK_SETTINGS.biography_portrait ?? DEFAULT_PORTRAIT }
+  return {
+    intro: FALLBACK_SETTINGS.biography_intro ?? '',
+    portrait: FALLBACK_SETTINGS.biography_portrait ?? DEFAULT_PORTRAIT,
+    photos: DEFAULT_PHOTOS,
+  }
 }
 
 export const metadata: Metadata = { title: 'Biography' }
@@ -171,7 +206,7 @@ export default async function BiographyPage({
     getDictionary(locale as Locale),
     getBiographySettings(),
   ])
-  const { intro: bioIntro, portrait: PORTRAIT_URL } = bioSettings
+  const { intro: bioIntro, portrait: PORTRAIT_URL, photos: bioPhotos } = bioSettings
 
   return (
     <div style={{ paddingBottom: '5rem', marginTop: 'calc(-1 * var(--header-h))' }}>
@@ -180,10 +215,33 @@ export default async function BiographyPage({
 
         {/* ── Tab 1: Biografi ── */}
         <section className="page-pad" style={{ paddingTop: '2.5rem', paddingBottom: '3rem' }}>
+          <style>{`
+            .bio-hero {
+              display: grid;
+              grid-template-columns: 1fr 1fr;
+              gap: clamp(1.5rem, 3vw, 3rem);
+              margin-bottom: 2.5rem;
+              align-items: start;
+            }
+            .bio-portrait {
+              position: relative;
+              aspect-ratio: 3/4;
+              border-radius: 2px;
+              overflow: hidden;
+              background: var(--color-bg-surface);
+            }
+            @media (max-width: 700px) {
+              .bio-hero { grid-template-columns: 1fr; }
+              .bio-portrait {
+                aspect-ratio: 4/3;
+                order: -1;
+              }
+            }
+          `}</style>
 
-          {/* Intro header with portrait */}
-          <div style={{ display: 'flex', alignItems: 'stretch', gap: '2.5rem', marginBottom: '2.5rem' }}>
-            <div style={{ flex: 1 }}>
+          {/* Intro header with portrait — 50/50 desktop, stacked mobile */}
+          <div className="bio-hero">
+            <div>
               <p style={{ fontSize: 'var(--fs-xs)', letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--color-accent)', marginBottom: '0.75rem' }}>
                 {dict.nav?.biography ?? 'Biografi'}
               </p>
@@ -196,13 +254,14 @@ export default async function BiographyPage({
                 </p>
               )}
             </div>
-            <div style={{ flexShrink: 0, width: 'clamp(120px, 16vw, 220px)', position: 'relative', borderRadius: '2px', overflow: 'hidden' }}>
+            <div className="bio-portrait">
               <Image
                 src={PORTRAIT_URL}
                 alt="Sivert Lindblom. Foto: Mathias Johansson"
                 fill
-                sizes="(max-width: 640px) 120px, 220px"
+                sizes="(max-width: 700px) 100vw, 50vw"
                 style={{ objectFit: 'cover', objectPosition: 'top center' }}
+                priority
               />
             </div>
           </div>
@@ -276,27 +335,7 @@ export default async function BiographyPage({
           <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-2xl)', marginBottom: '2rem' }}>
             {dict.biography?.photographs ?? 'Fotografier'}
           </h2>
-          <MasonryGallery
-            columns="4"
-            images={[
-              { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2012/12/Sivert-skulptor.jpg',        caption: 'Sivert Lindblom, skulptör' },
-              { url: PORTRAIT_URL,                                                                                                        caption: 'Porträtt. Foto: Mathias Johansson' },
-              { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/20121028_135427.jpg',         caption: 'Konstakademien 2012. Foto: Jan Öqvist' },
-              { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Sivert-sten-kopia.jpg',       caption: 'Sivert med sten. Foto: Jan Öqvist' },
-              { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/20130308_101452.jpg',         caption: 'Bergmans Konstgjuteri, Enskede 2013. Foto: Jan Öqvist' },
-              { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Sivert571-kopia.jpg',         caption: 'Sivert vid Kejsar Konstantins hand, Capitolium museet, Rom' },
-              { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2012/12/Sivert-skulpterar-1.jpg',     caption: 'Sivert skulpterar' },
-              { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/20121101_151438.jpg',         caption: 'Ateljén. Foto: Jan Öqvist' },
-              { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/fotokarta-1963.jpg',          caption: 'Fotokort, 1963' },
-              { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Eskilstuna-91.jpg',           caption: 'Eskilstuna. Foto: Lasse Larsson' },
-              { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Eskilstuna-arb-161.jpg',      caption: 'I arbete, Eskilstuna. Foto: Lasse Larsson' },
-              { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/DSC01888-kopia.jpg',          caption: 'Sivert Lindblom' },
-              { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/20120614_173855-kopia.jpg',   caption: 'Foto: Jan Öqvist' },
-              { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/SAM_7961.jpg',                caption: 'Foto: Jan Öqvist' },
-              { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Siverts-exit.jpg',            caption: 'Siverts exit' },
-              { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/20130308_103958.jpg',         caption: 'Gjuteriet 2013. Foto: Jan Öqvist' },
-            ]}
-          />
+          <MasonryGallery columns="4" images={bioPhotos} />
         </section>
 
       </TabsLayout>

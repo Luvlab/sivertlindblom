@@ -95,6 +95,7 @@ export interface SiteSettings {
   about_short: string
   biography_intro?: string
   biography_portrait?: string
+  contact_hero_image?: string
   contact_intro?: string
   // SEO / Social sharing
   og_title?: string

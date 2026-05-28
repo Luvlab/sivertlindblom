@@ -70,7 +70,7 @@ export default async function MapPage({ params }: Props) {
       <SculptureMap locations={locations} locale={locale} />
 
       {/* Location list */}
-      <div className="page-pad" style={{ paddingTop: '3rem', paddingBottom: '3rem', maxWidth: 1200 }}>
+      <div className="page-pad" style={{ paddingTop: '3rem', paddingBottom: '3rem' }}>
         <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-xl)', marginBottom: '1.5rem', fontWeight: 400 }}>
           {locale === 'sv' ? 'Alla platser' : locale === 'th' ? 'สถานที่ทั้งหมด' : 'All locations'}
         </h2>
