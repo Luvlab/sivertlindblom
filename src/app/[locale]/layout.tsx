@@ -5,10 +5,13 @@ import { locales, defaultLocale, rtlLocales } from '@/i18n/config'
 import type { Locale } from '@/i18n/config'
 import Header from '@/components/nav/Header'
 import SubNav from '@/components/nav/SubNav'
+import BackgroundPrefetch from '@/components/BackgroundPrefetch'
 import { getDictionary } from '@/i18n/getDictionary'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { FALLBACK_SETTINGS } from '@/lib/db'
 import type { SiteSettings } from '@/types'
+import { getExhibitionSlugs, getPublicWorkSlugs, getTextSlugs } from '@/lib/data-server'
+import { SCULPTURE_PROJECTS } from '@/lib/sculpture-projects'
 import '../globals.css'
 
 const inter = Inter({
@@ -110,6 +113,39 @@ export default async function LocaleLayout({
   const dict = await getDictionary(validLocale)
   const isRtl = rtlLocales.includes(validLocale)
 
+  // Build prefetch URL list in page / content order.
+  // Slug fetchers are cached (see data-server.ts) so this is essentially free.
+  const [exhibitionSlugs, publicWorkSlugs, textSlugs] = await Promise.all([
+    getExhibitionSlugs(),
+    getPublicWorkSlugs(),
+    getTextSlugs(),
+  ])
+  const l = validLocale
+  const prefetchUrls = [
+    // ── Main sections (nav order) ────────────────────────────
+    `/${l}/portfolio`,
+    `/${l}/texts`,
+    `/${l}/biography`,
+    `/${l}/references`,
+    `/${l}/contact`,
+    // ── Portfolio sub-sections ───────────────────────────────
+    `/${l}/portfolio/exhibitions`,
+    `/${l}/portfolio/public-works`,
+    `/${l}/portfolio/watercolors`,
+    `/${l}/portfolio/scenography`,
+    `/${l}/portfolio/map`,
+    // ── Exhibition detail pages (DB sort order = display order) ──
+    ...exhibitionSlugs.map((s) => `/${l}/portfolio/exhibitions/${s}`),
+    // ── Public-work detail pages ─────────────────────────────
+    ...publicWorkSlugs.map((s) => `/${l}/portfolio/public-works/${s}`),
+    // ── Text detail pages (newest first) ─────────────────────
+    ...textSlugs.map((s) => `/${l}/texts/${s}`),
+    // ── References sub-pages ─────────────────────────────────
+    `/${l}/references/publicerat`,
+    `/${l}/references/fotografier`,
+    ...SCULPTURE_PROJECTS.map((p) => `/${l}/references/${p.slug}`),
+  ]
+
   return (
     <html
       lang={validLocale}
@@ -120,6 +156,7 @@ export default async function LocaleLayout({
         <Header locale={validLocale} dict={dict} />
         <SubNav locale={validLocale} dict={dict} />
         <main className="main-content">{children}</main>
+        <BackgroundPrefetch urls={prefetchUrls} />
         <footer
           style={{
             borderTop: '1px solid var(--color-border)',
