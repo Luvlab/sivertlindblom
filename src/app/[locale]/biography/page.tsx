@@ -225,7 +225,7 @@ export default async function BiographyPage({
             }
             .bio-portrait {
               position: relative;
-              aspect-ratio: 3/4;
+              height: calc(100dvh - var(--header-h) - var(--subnav-h));
               border-radius: 2px;
               overflow: hidden;
               background: var(--color-bg-surface);
@@ -233,6 +233,7 @@ export default async function BiographyPage({
             @media (max-width: 700px) {
               .bio-hero { grid-template-columns: 1fr; }
               .bio-portrait {
+                height: auto;
                 aspect-ratio: 4/3;
                 order: -1;
               }
