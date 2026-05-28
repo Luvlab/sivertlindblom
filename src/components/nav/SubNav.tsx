@@ -71,11 +71,10 @@ export default function SubNav({ locale, dict }: Props) {
             fontSize: 'var(--fs-sm)',
             letterSpacing: '0.08em',
             textTransform: 'uppercase',
-            color: 'rgba(255,255,255,0.92)',
+            color: 'var(--color-accent)',
             whiteSpace: 'nowrap',
             paddingRight: '1rem',
             flexShrink: 0,
-            opacity: 0.62,
           }}>
             {section.label}
           </span>
