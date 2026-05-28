@@ -6,7 +6,7 @@ import type { TextItem } from '@/lib/texts-data'
 
 const TYPE_LABELS: Record<string, string> = {
   essay: 'Essay', preface: 'Förord', review: 'Recension',
-  interview: 'Intervju', own_writing: 'Egen text', translated: 'Översatt',
+  interview: 'Intervju', own_writing: 'Egen text', translated: 'Översatt', film: 'Film & TV',
 }
 
 const LANG_LABELS: Record<string, string> = { sv: 'SV', en: 'EN', de: 'DE', fr: 'FR', it: 'IT' }

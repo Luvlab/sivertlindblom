@@ -2,7 +2,7 @@ import { TEXT_TRANSLATIONS } from './text-translations'
 
 export interface TextItem {
   slug: string
-  type: 'essay' | 'preface' | 'review' | 'interview' | 'own_writing' | 'translated'
+  type: 'essay' | 'preface' | 'review' | 'interview' | 'own_writing' | 'translated' | 'film'
   year: number
   title: string
   author: string
@@ -12,6 +12,7 @@ export interface TextItem {
   body: string                              // original-language body (always present)
   bodies?: Partial<Record<string, string>>  // locale → translated body
   images?: string[]                         // scanned article image URLs (reviews)
+  videoUrl?: string                         // YouTube embed URL (https://www.youtube.com/embed/ID) or external video link
 }
 
 const RAW_TEXTS_DATA: Omit<TextItem, 'bodies'>[] = [
@@ -1143,6 +1144,80 @@ Lindblom beskriver hur han skapade en "estetiskt och visuellt markerad linje" fr
       'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/media/2015/03/Sivert-Lindblom-Frescati-1.jpg',
       'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/media/2015/03/Sivert-Lindblom-Frescati-2.jpg',
     ],
+  },
+
+  // ── Film och TV ─────────────────────────────────────────────────────────
+
+  {
+    slug: 'multikonst-svt-1967',
+    type: 'film',
+    year: 1967,
+    title: 'Vad var Multikonst? — ett program från SVT och Öppet arkiv',
+    author: 'SVT',
+    publication: 'SVT 1 Dokumentär, 1967 / SVT Öppet arkiv',
+    lang: 'sv',
+    body: `När multikonstprojektet skulle torgföras gjorde Sveriges Television ett reportage om tankarna bakom "Multikonst". Lördagen den 11 februari 1967 öppnade utställningen Multikonst på Nationalmuseum.
+
+Se SVT:s program med intervjuer med konstkritiker och konstnärer på SVT Öppet arkiv: multikonst-hela-sverige-gar-pa-utstallning`,
+    videoUrl: 'https://www.oppetarkiv.se/video/10872733/multikonst-hela-sverige-gar-pa-utstallning',
+  },
+
+  {
+    slug: 'lasse-forsberg-1967',
+    type: 'film',
+    year: 1967,
+    title: 'Beskrivning av en tankes rörelse — en film om Sivert Lindblom av Lasse Forsberg',
+    author: 'Lasse Forsberg',
+    publication: 'Lasse Forsberg film, 1967',
+    lang: 'sv',
+    body: `Lasse Forsbergs kortfilm från 1967 följer Sivert Lindblom och låter konstnären tala om sitt arbete och sin konstsyn.
+
+"Målet är inte att ge en illusion av rörelse utan målet är att ge en beskrivning av en tankes rörelse."
+
+Lindblom beskriver hur han arbetar utifrån ett ingenjörsperspektiv — han använder arbetsorder och industriella processer för att förmedla form, på samma sätt som arkitekter och ingenjörer förmedlar sina idéer utan att ta i materialet med händerna.
+
+Filmen är för närvarande inte tillgänglig digitalt.`,
+  },
+
+  {
+    slug: 'tv4-uppland-1998',
+    type: 'film',
+    year: 1998,
+    title: 'TV4-Uppland intervjuar Sivert Lindblom',
+    author: 'TV4-Uppland',
+    publication: 'TV4-Uppland, 23 februari 1998',
+    lang: 'sv',
+    body: `I en kortintervju med skulptör Sivert Lindblom kommenterar han vad som är den skulptur han är mest nöjd med.
+
+Intervjun sändes i TV4-Uppland den 23 februari 1998. Den digitala versionen av klippet är för närvarande inte tillgänglig online.`,
+  },
+
+  {
+    slug: 'ted-gardestad-helena-1972',
+    type: 'film',
+    year: 1972,
+    title: "Ted Gärdestad sjunger 'Helena' — med Sivert Lindbloms skulpturer",
+    author: 'Ted Gärdestad',
+    publication: 'TV2, 1972',
+    lang: 'sv',
+    body: `Sången "Helena" finns på Ted Gärdestads debutalbum Undringar (1972). Texten skrevs när Gärdestad var 16 år, tillägnad tennisspelaren Helena Anliot.
+
+Musikvideon spelades in i TV2:s förbindelsekorridorer mellan filmstudios, och innehåller flera av Sivert Lindbloms skulpturer. Den kvinna som porträtteras som "Helena" i videon var också anställd på TV2.`,
+    videoUrl: 'https://www.youtube.com/embed/TapuXHkrEQs',
+  },
+
+  {
+    slug: 'torg-i-tiden-malmo-2002',
+    type: 'film',
+    year: 2002,
+    title: "'Torg i Tiden' — Sivert Lindbloms fontäner på Gustav Adolfs torg, Malmö",
+    author: 'Malmö Stads Gatukontor / Vision Recording TV AB',
+    publication: 'Torg i Tiden, 2002',
+    lang: 'sv',
+    body: `Dokumentärfilmen "Torg i Tiden" täcker torgets historia och renoveringen av Gustav Adolfs torg i Malmö. Sivert Lindbloms fem bronsfonttäner, som invigdes den 12 juni 1999, visas från ca 13:30 in i filmen.
+
+Fontänerna är Lindbloms sista etapp av torgets omgestaltning. Projektgruppen bakom dem bestod av Malmö Stad med stadsarkitekten Sven-Ingvar Andersson som konstnärlig rådgivare.`,
+    videoUrl: 'https://www.youtube.com/embed/-ba2Oq65qe4',
   },
 ]
 

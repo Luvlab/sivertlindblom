@@ -125,8 +125,32 @@ export default async function ExhibitionDetailPage({
         {/* Links */}
         {ex.links && ex.links.length > 0 && (
           <div style={{ marginBottom: '3.5rem', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-            {ex.links.map((link, i) => (
-              link.url === '#' ? (
+            {ex.links.map((link, i) => {
+              // Extract YouTube video ID and render as embedded iframe
+              const ytMatch = link.url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([A-Za-z0-9_-]{11})/)
+              if (ytMatch) {
+                const videoId = ytMatch[1]
+                return (
+                  <div key={i} style={{ marginTop: '0.5rem', marginBottom: '0.5rem' }}>
+                    {link.prefix && (
+                      <p style={{ fontSize: 'var(--fs-xs)', letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--color-accent)', marginBottom: '0.6rem' }}>
+                        {link.prefix}
+                      </p>
+                    )}
+                    <p style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-muted)', marginBottom: '0.75rem' }}>{link.label}</p>
+                    <div style={{ position: 'relative', paddingBottom: '56.25%', height: 0, overflow: 'hidden', borderRadius: 4, background: 'var(--color-bg-surface)', maxWidth: '720px' }}>
+                      <iframe
+                        src={`https://www.youtube.com/embed/${videoId}?rel=0`}
+                        title={link.label}
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                        style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', border: 0 }}
+                      />
+                    </div>
+                  </div>
+                )
+              }
+              return link.url === '#' ? (
                 <span key={i} style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-muted)' }}>
                   {link.prefix && <strong style={{ color: 'var(--color-accent)', marginRight: '0.4rem', letterSpacing: '0.06em', fontSize: 'var(--fs-xs)', textTransform: 'uppercase' }}>{link.prefix}</strong>}
                   {link.label}
@@ -142,7 +166,7 @@ export default async function ExhibitionDetailPage({
                   {link.label} →
                 </Link>
               )
-            ))}
+            })}
           </div>
         )}
 

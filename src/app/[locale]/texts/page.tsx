@@ -46,7 +46,7 @@ const LANG_LABELS: Record<string, string> = {
 }
 
 // "andras_texter" is a virtual group that combines essay + preface (texts by others about Sivert)
-const TYPE_ORDER = ['andras_texter', 'own_writing', 'interview', 'review', 'translated'] as const
+const TYPE_ORDER = ['andras_texter', 'own_writing', 'interview', 'review', 'translated', 'film'] as const
 type GroupType = typeof TYPE_ORDER[number]
 
 export default async function TextsPage({
@@ -66,6 +66,7 @@ export default async function TextsPage({
     interview:     dict.texts?.interview    ?? 'Intervjuer',
     review:        dict.texts?.review       ?? 'Recensioner',
     translated:    dict.texts?.translated   ?? 'Översatt text',
+    film:          (dict.texts as Record<string,string> | undefined)?.film ?? 'Film & TV',
   }
 
   // getTexts() already returns newest-first (year DESC from Supabase)

@@ -7,7 +7,7 @@ import LinkTextarea from '@/components/admin/LinkTextarea'
 
 interface TextItem {
   slug: string
-  type: 'essay' | 'preface' | 'review' | 'interview' | 'own_writing' | 'translated'
+  type: 'essay' | 'preface' | 'review' | 'interview' | 'own_writing' | 'translated' | 'film'
   year: number
   title: string
   author: string
@@ -19,7 +19,7 @@ interface TextItem {
 
 const TYPE_LABELS = {
   essay: 'Essay', preface: 'Förord', review: 'Recension',
-  interview: 'Intervju', own_writing: 'Egen text', translated: 'Översatt',
+  interview: 'Intervju', own_writing: 'Egen text', translated: 'Översatt', film: 'Film & TV',
 }
 
 const inp: React.CSSProperties = { width: '100%' }

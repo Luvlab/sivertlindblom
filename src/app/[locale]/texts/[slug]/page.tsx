@@ -120,6 +120,45 @@ export default async function TextDetailPage({
           </p>
         )}
 
+        {/* Video embed — YouTube iframe or external link */}
+        {text.videoUrl && (() => {
+          const isYouTubeEmbed = text.videoUrl!.includes('youtube.com/embed/')
+          return (
+            <div style={{ marginBottom: '2.5rem' }}>
+              {isYouTubeEmbed ? (
+                <div style={{ position: 'relative', paddingBottom: '56.25%', height: 0, overflow: 'hidden', borderRadius: 4, background: 'var(--color-bg-surface)' }}>
+                  <iframe
+                    src={`${text.videoUrl}?rel=0`}
+                    title={text.title}
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                    style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', border: 0 }}
+                  />
+                </div>
+              ) : (
+                <a
+                  href={text.videoUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.5rem',
+                    fontSize: 'var(--fs-sm)',
+                    color: 'var(--color-accent)',
+                    textDecoration: 'none',
+                    borderBottom: '1px solid var(--color-accent-dim)',
+                    paddingBottom: '0.1em',
+                  }}
+                >
+                  <span style={{ fontSize: '1.1em' }}>▶</span>
+                  SE FILMEN →
+                </a>
+              )}
+            </div>
+          )
+        })()}
+
         {/* Article images + OCR text — side-by-side on desktop, stacked on mobile */}
         {text.images && text.images.length > 0 ? (
           <div className="article-scan-layout">
