@@ -31,11 +31,13 @@ export default function AdminDashboard() {
 
   // Live counts
   const [counts, setCounts] = useState<Record<string, string>>({
-    watercolors: '…',
-    publicWorks: '…',
-    scenography: '…',
-    uploads: '…',
+    watercolors: '…', publicWorks: '…', scenography: '…',
+    uploads: '…', exhibitions: '…', texts: '…', biography: '…',
   })
+
+  interface DeployCommit { hash: string; date: string; message: string }
+  const [deploys, setDeploys] = useState<DeployCommit[]>([])
+  const [vercelEnv, setVercelEnv] = useState('')
 
   useEffect(() => {
     const set = (key: string, n: number) => setCounts(c => ({ ...c, [key]: String(n) }))
@@ -43,17 +45,24 @@ export default function AdminDashboard() {
     fetch('/api/admin/public-works').then(r => r.json()).then(d => { if (Array.isArray(d)) set('publicWorks', d.length) }).catch(() => {})
     fetch('/api/admin/scenography').then(r => r.json()).then(d => { if (Array.isArray(d)) set('scenography', d.length) }).catch(() => {})
     fetch('/api/admin/upload').then(r => r.json()).then(d => { if (d?.files) set('uploads', d.files.length) }).catch(() => {})
+    fetch('/api/admin/exhibitions').then(r => r.json()).then(d => { if (Array.isArray(d)) set('exhibitions', d.length) }).catch(() => {})
+    fetch('/api/admin/texts').then(r => r.json()).then(d => { if (Array.isArray(d)) set('texts', d.length) }).catch(() => {})
+    fetch('/api/admin/biography').then(r => r.json()).then(d => { if (Array.isArray(d)) set('biography', d.length) }).catch(() => {})
+    fetch('/api/admin/deploy-info').then(r => r.json()).then(d => {
+      if (d?.commits) setDeploys(d.commits)
+      if (d?.vercelEnv) setVercelEnv(d.vercelEnv)
+    }).catch(() => {})
   }, [])
 
   const STATS = [
     { label: 'Startsida',           value: '—',                    href: '/admin/home',         desc: 'Hero slideshow och startsidans innehåll' },
     { label: 'Akvareller',          value: counts.watercolors,     href: '/admin/watercolors',  desc: 'Akvareller 1975–2012' },
-    { label: 'Utställningar',       value: '45',                   href: '/admin/exhibitions',  desc: 'Solo- och grupputställningar 1961–2016' },
+    { label: 'Utställningar',       value: counts.exhibitions,     href: '/admin/exhibitions',  desc: 'Solo- och grupputställningar 1961–2016' },
     { label: 'Offentliga arbeten',  value: counts.publicWorks,     href: '/admin/public-works', desc: 'Exteriörer och interiörer' },
     { label: 'Scenografi',          value: counts.scenography,     href: '/admin/scenography',  desc: 'Scenografi och koreografi' },
     { label: 'Mediavalv',           value: counts.uploads,         href: '/admin/watercolors',  desc: 'Uppladdade bilder i Supabase' },
-    { label: 'Texter',              value: '32',                   href: '/admin/texts',        desc: 'Essays, recensioner, intervjuer, egna texter' },
-    { label: 'Biografi',            value: '10+',                  href: '/admin/biography',    desc: 'Kronologiposter och offentliga uppdrag' },
+    { label: 'Texter',              value: counts.texts,           href: '/admin/texts',        desc: 'Essays, recensioner, intervjuer, egna texter' },
+    { label: 'Biografi',            value: counts.biography,       href: '/admin/biography',    desc: 'Kronologiposter och offentliga uppdrag' },
   ]
 
   const tabStyle = (t: Tab): React.CSSProperties => ({
@@ -136,31 +145,69 @@ export default function AdminDashboard() {
             </div>
           </div>
 
-          {/* Status */}
-          <div style={{
-            background: 'var(--color-bg-surface)',
-            border: '1px solid var(--color-border)',
-            padding: '1.5rem',
-            borderRadius: 2,
-          }}>
-            <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-lg)', marginBottom: '1rem' }}>Databas & Deploy</h2>
-            <div style={{ display: 'grid', gap: '0.75rem', fontSize: 'var(--fs-sm)' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0.5rem 0', borderBottom: '1px solid var(--color-border)' }}>
-                <span style={{ color: 'var(--color-muted)' }}>Supabase</span>
-                <span style={{ color: 'var(--color-accent)' }}>● Ansluten</span>
+          {/* Status + Deploy log */}
+          <div style={{ display: 'grid', gap: '1rem', gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 360px), 1fr))' }}>
+            <div style={{
+              background: 'var(--color-bg-surface)',
+              border: '1px solid var(--color-border)',
+              padding: '1.5rem',
+              borderRadius: 2,
+            }}>
+              <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-lg)', marginBottom: '1rem' }}>Databas & Deploy</h2>
+              <div style={{ display: 'grid', gap: '0.75rem', fontSize: 'var(--fs-sm)' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0.5rem 0', borderBottom: '1px solid var(--color-border)' }}>
+                  <span style={{ color: 'var(--color-muted)' }}>Supabase</span>
+                  <span style={{ color: 'var(--color-accent)' }}>● Ansluten</span>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0.5rem 0', borderBottom: '1px solid var(--color-border)' }}>
+                  <span style={{ color: 'var(--color-muted)' }}>Bildlagring</span>
+                  <span style={{ color: 'var(--color-accent)' }}>● {counts.uploads !== '…' ? `${counts.uploads} bilder` : '…'}</span>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0.5rem 0', borderBottom: '1px solid var(--color-border)' }}>
+                  <span style={{ color: 'var(--color-muted)' }}>Miljö</span>
+                  <span style={{ color: 'var(--color-accent)' }}>{vercelEnv || 'development'}</span>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0.5rem 0' }}>
+                  <span style={{ color: 'var(--color-muted)' }}>Platform</span>
+                  <span>Vercel + Next.js</span>
+                </div>
               </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0.5rem 0', borderBottom: '1px solid var(--color-border)' }}>
-                <span style={{ color: 'var(--color-muted)' }}>Bildlagring</span>
-                <span style={{ color: 'var(--color-accent)' }}>● 630 bilder på Supabase</span>
-              </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0.5rem 0', borderBottom: '1px solid var(--color-border)' }}>
-                <span style={{ color: 'var(--color-muted)' }}>Deploy</span>
-                <span>Vercel</span>
-              </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0.5rem 0' }}>
-                <span style={{ color: 'var(--color-muted)' }}>Gamla servern</span>
-                <span style={{ color: 'var(--color-muted)' }}>Inga beroenden kvar</span>
-              </div>
+            </div>
+
+            <div style={{
+              background: 'var(--color-bg-surface)',
+              border: '1px solid var(--color-border)',
+              padding: '1.5rem',
+              borderRadius: 2,
+            }}>
+              <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-lg)', marginBottom: '1rem' }}>Senaste commits</h2>
+              {deploys.length === 0 ? (
+                <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)' }}>Laddar…</p>
+              ) : (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.1rem' }}>
+                  {deploys.map((d, i) => (
+                    <div key={d.hash} style={{
+                      display: 'grid',
+                      gridTemplateColumns: '4rem 7rem 1fr',
+                      gap: '0.5rem',
+                      padding: '0.4rem 0',
+                      borderBottom: i < deploys.length - 1 ? '1px solid var(--color-border)' : 'none',
+                      alignItems: 'start',
+                    }}>
+                      <span style={{ fontFamily: 'monospace', fontSize: '0.7rem', color: i === 0 ? 'var(--color-accent)' : 'var(--color-muted)', letterSpacing: '0.04em' }}>
+                        {d.hash}
+                      </span>
+                      <span style={{ fontSize: '0.68rem', color: 'var(--color-muted)', whiteSpace: 'nowrap' }}>
+                        {new Date(d.date).toLocaleDateString('sv-SE', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
+                      </span>
+                      <span style={{ fontSize: 'var(--fs-xs)', lineHeight: 1.4, wordBreak: 'break-word' }}>
+                        {i === 0 && <span style={{ color: 'var(--color-accent)', marginRight: '0.3rem', fontSize: '0.65rem', textTransform: 'uppercase', letterSpacing: '0.08em' }}>live</span>}
+                        {d.message}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         </div>

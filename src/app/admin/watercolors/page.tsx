@@ -32,9 +32,15 @@ export default function AdminWatercolors() {
   // Section title / description / hero
   const [sectionTitle, setSectionTitle] = useState('')
   const [sectionDesc, setSectionDesc] = useState('')
-  const [heroImagesJson, setHeroImagesJson] = useState('')
+  const [heroUrls, setHeroUrls] = useState<string[]>([])
+  const [heroImagesJson, setHeroImagesJson] = useState('') // kept in sync with heroUrls
   const [savingMeta, setSavingMeta] = useState(false)
   const [savedMeta, setSavedMeta] = useState(false)
+
+  // Hero vault picker
+  const [heroVaultOpen, setHeroVaultOpen] = useState(false)
+  const heroFileRef = useRef<HTMLInputElement>(null)
+  const [heroUploading, setHeroUploading] = useState(false)
 
   // Drag reorder
   const [draggingIdx, setDraggingIdx] = useState<number | null>(null)
@@ -60,7 +66,11 @@ export default function AdminWatercolors() {
         setSectionTitle(s.watercolors_title ?? '')
         setSectionDesc(s.watercolors_description ?? '')
         if (s.watercolors_hero_images) {
-          try { setHeroImagesJson(JSON.stringify(JSON.parse(s.watercolors_hero_images), null, 2)) } catch { setHeroImagesJson(s.watercolors_hero_images) }
+          try {
+            const parsed = JSON.parse(s.watercolors_hero_images) as string[]
+            setHeroUrls(parsed)
+            setHeroImagesJson(JSON.stringify(parsed, null, 2))
+          } catch { /* ignore */ }
         }
       }
     }).finally(() => setLoading(false))
@@ -84,11 +94,7 @@ export default function AdminWatercolors() {
   async function handleSaveMeta() {
     setSavingMeta(true)
     try {
-      let heroImagesValue = heroImagesJson.trim()
-      // Validate JSON array if non-empty
-      if (heroImagesValue) {
-        try { JSON.parse(heroImagesValue) } catch { setError('Hero-bilder: ogiltig JSON'); setSavingMeta(false); return }
-      }
+        const heroImagesValue = heroUrls.length > 0 ? JSON.stringify(heroUrls) : ''
       const res = await fetch('/api/admin/settings', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
@@ -223,13 +229,40 @@ export default function AdminWatercolors() {
     setDirty(true)
   }
 
+  // Hero vault helpers
+  function toggleHeroUrl(url: string) {
+    setHeroUrls(prev => prev.includes(url) ? prev.filter(u => u !== url) : [...prev, url])
+  }
+
+  async function handleHeroUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const files = Array.from(e.target.files ?? [])
+    if (!files.length) return
+    setHeroUploading(true)
+    for (const file of files) {
+      try {
+        const fd = new FormData()
+        fd.append('file', file)
+        fd.append('alt', 'hero-' + file.name.replace(/\.[^.]+$/, ''))
+        const res = await fetch('/api/admin/upload', { method: 'POST', body: fd })
+        const data = await res.json() as { url?: string; error?: string }
+        if (data.url) {
+          setHeroUrls(prev => [...prev, data.url!])
+          // Also add to vault images so it shows immediately
+          setVaultImages(prev => [{ url: data.url!, work: 'Uppladdningar', alt: file.name }, ...prev])
+        } else if (data.error) { setError(data.error) }
+      } catch (err) { setError(String(err)) }
+    }
+    setHeroUploading(false)
+    if (heroFileRef.current) heroFileRef.current.value = ''
+  }
+
   // Close vault on Escape
   useEffect(() => {
-    if (!vaultOpen) return
-    function onKey(e: KeyboardEvent) { if (e.key === 'Escape') setVaultOpen(false) }
+    if (!vaultOpen && !heroVaultOpen) return
+    function onKey(e: KeyboardEvent) { if (e.key === 'Escape') { setVaultOpen(false); setHeroVaultOpen(false) } }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [vaultOpen])
+  }, [vaultOpen, heroVaultOpen])
 
   const filtered = items.filter(it =>
     !filter || it.alt.toLowerCase().includes(filter.toLowerCase()) || it.url.toLowerCase().includes(filter.toLowerCase())
@@ -285,13 +318,52 @@ export default function AdminWatercolors() {
               value={sectionDesc} onChange={e => setSectionDesc(e.target.value)}
               placeholder="En serie axonometriska arkitektoniska visioner…" />
           </div>
+          {/* Hero slideshow picker */}
           <div>
-            <label style={{ display: 'block', fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', marginBottom: '0.25rem' }}>
-              Hero-bilder (JSON-array med URL:er) — visas som helsidesslideshow överst på sidan
+            <label style={{ display: 'block', fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+              Hero-slideshow — visas som helbild överst på akvarellersidan
             </label>
-            <textarea className="input" rows={5} style={{ width: '100%', resize: 'vertical', fontFamily: 'monospace', fontSize: '0.75rem' }}
-              value={heroImagesJson} onChange={e => setHeroImagesJson(e.target.value)}
-              placeholder={'[\n  "https://…/bild1.jpg",\n  "https://…/bild2.jpg"\n]'} />
+
+            {/* Thumbnails of selected hero images */}
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '0.75rem' }}>
+              {heroUrls.length === 0 && (
+                <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', fontStyle: 'italic' }}>
+                  Inga hero-bilder valda — slideshow döljs
+                </p>
+              )}
+              {heroUrls.map((url, i) => (
+                <div key={url} style={{ position: 'relative', width: 90, height: 60, flexShrink: 0 }}>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={url} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', borderRadius: 2, border: '1px solid var(--color-border)' }} />
+                  <div style={{ position: 'absolute', top: 2, left: 4, fontSize: '0.6rem', color: '#fff', textShadow: '0 1px 2px rgba(0,0,0,0.8)', fontFamily: 'monospace' }}>
+                    {i + 1}
+                  </div>
+                  <button
+                    onClick={() => setHeroUrls(prev => prev.filter(u => u !== url))}
+                    style={{ position: 'absolute', top: 2, right: 2, width: 16, height: 16, borderRadius: '50%', background: 'rgba(0,0,0,0.6)', border: 'none', color: '#fff', fontSize: '0.6rem', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', lineHeight: 1 }}
+                    title="Ta bort"
+                  >×</button>
+                </div>
+              ))}
+            </div>
+
+            {/* Picker buttons */}
+            <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+              <button className="btn" onClick={async () => { setHeroVaultOpen(true); await openVault() }}
+                style={{ fontSize: 'var(--fs-xs)', padding: '0.35rem 0.75rem' }}>
+                ⊞ Välj från mediavalv
+              </button>
+              <label className="btn" style={{ fontSize: 'var(--fs-xs)', padding: '0.35rem 0.75rem', cursor: 'pointer' }}>
+                {heroUploading ? 'Laddar upp…' : '↑ Ladda upp hero-bild'}
+                <input ref={heroFileRef} type="file" accept="image/*" multiple onChange={handleHeroUpload} style={{ display: 'none' }} />
+              </label>
+              {heroUrls.length > 0 && (
+                <button className="btn" onClick={() => setHeroUrls([])}
+                  style={{ fontSize: 'var(--fs-xs)', padding: '0.35rem 0.75rem', color: '#f88', borderColor: '#f88' }}>
+                  Rensa alla
+                </button>
+              )}
+            </div>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
             <button
@@ -436,13 +508,20 @@ export default function AdminWatercolors() {
         </>
       )}
 
-      {/* ── Media vault modal ── */}
+      {/* ── Media vault modal (works for both image list and hero picker) ── */}
       {vaultOpen && (
-        <div onClick={() => setVaultOpen(false)} style={{ position: 'fixed', inset: 0, zIndex: 3000, background: 'rgba(0,0,0,0.92)', display: 'flex', alignItems: 'stretch' }}>
+        <div onClick={() => { setVaultOpen(false); setHeroVaultOpen(false) }} style={{ position: 'fixed', inset: 0, zIndex: 3000, background: 'rgba(0,0,0,0.92)', display: 'flex', alignItems: 'stretch' }}>
           <div onClick={e => e.stopPropagation()} style={{ background: 'var(--color-bg)', border: '1px solid var(--color-border)', display: 'flex', flexDirection: 'column', width: '100%', overflow: 'hidden' }}>
             {/* Header */}
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.75rem 1rem', borderBottom: '1px solid var(--color-border)', flexShrink: 0, flexWrap: 'wrap' }}>
-              <span style={{ fontFamily: 'Georgia,serif', fontSize: 'var(--fs-base)' }}>Mediavalv</span>
+              <span style={{ fontFamily: 'Georgia,serif', fontSize: 'var(--fs-base)' }}>
+                {heroVaultOpen ? 'Välj hero-bilder' : 'Mediavalv'}
+              </span>
+              {heroVaultOpen && (
+                <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-accent)', border: '1px solid var(--color-accent)', padding: '0.1rem 0.5rem', borderRadius: 2 }}>
+                  Hero-läge — {heroUrls.length} valda
+                </span>
+              )}
               {vaultLoaded && (
                 <span style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-xs)' }}>
                   {vaultFiltered.length}{vaultFilter ? ` av ${vaultImages.length}` : ''} bilder
@@ -456,8 +535,8 @@ export default function AdminWatercolors() {
                 placeholder="Sök bilder…"
                 style={{ background: 'var(--color-bg-surface)', border: '1px solid var(--color-border)', color: 'var(--color-text)', padding: '0.35rem 0.6rem', fontSize: 'var(--fs-sm)', width: 240, outline: 'none', marginLeft: 'auto' }}
               />
-              <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', whiteSpace: 'nowrap' }}>{items.length} valda</span>
-              <button type="button" onClick={() => setVaultOpen(false)} style={{ background: 'none', border: 'none', color: 'var(--color-muted)', fontSize: '1.2rem', cursor: 'pointer', lineHeight: 1, padding: '0.2rem 0.4rem' }} title="Stäng (Esc)">✕</button>
+              {!heroVaultOpen && <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', whiteSpace: 'nowrap' }}>{items.length} valda</span>}
+              <button type="button" onClick={() => { setVaultOpen(false); setHeroVaultOpen(false) }} style={{ background: 'none', border: 'none', color: 'var(--color-muted)', fontSize: '1.2rem', cursor: 'pointer', lineHeight: 1, padding: '0.2rem 0.4rem' }} title="Stäng (Esc)">✕</button>
             </div>
             {/* Body */}
             <div style={{ flex: 1, overflowY: 'auto', padding: '1rem' }}>
@@ -468,9 +547,15 @@ export default function AdminWatercolors() {
               ) : (
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(130px, 1fr))', gap: '0.5rem' }}>
                   {vaultFiltered.map((img, i) => {
-                    const added = itemUrlSet.has(img.url)
+                    const inHero = heroUrls.includes(img.url)
+                    const added = heroVaultOpen ? inHero : itemUrlSet.has(img.url)
                     return (
-                      <div key={i} onClick={() => toggleVaultItem(img.url)} title={img.alt || img.work} style={{ position: 'relative', cursor: 'pointer', border: added ? '2px solid var(--color-accent)' : '1px solid var(--color-border)', background: 'var(--color-bg-surface)', transition: 'border-color 0.1s' }}>
+                      <div
+                        key={i}
+                        onClick={() => heroVaultOpen ? toggleHeroUrl(img.url) : toggleVaultItem(img.url)}
+                        title={img.alt || img.work}
+                        style={{ position: 'relative', cursor: 'pointer', border: added ? '2px solid var(--color-accent)' : '1px solid var(--color-border)', background: 'var(--color-bg-surface)', transition: 'border-color 0.1s' }}
+                      >
                         <div style={{ aspectRatio: '1/1', overflow: 'hidden', background: '#f0ede8' }}>
                           {/* eslint-disable-next-line @next/next/no-img-element */}
                           <img src={img.url} alt={img.alt} loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block', pointerEvents: 'none' }} onError={e => { (e.target as HTMLImageElement).style.opacity = '0.1' }} />
@@ -479,7 +564,9 @@ export default function AdminWatercolors() {
                           {img.alt || img.work}
                         </div>
                         {added && (
-                          <div style={{ position: 'absolute', top: 5, right: 5, background: '#00e676', color: '#fff', borderRadius: '50%', width: 22, height: 22, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.8rem', fontWeight: 900 }}>✓</div>
+                          <div style={{ position: 'absolute', top: 5, right: 5, background: heroVaultOpen ? 'var(--color-accent)' : '#00e676', color: '#fff', borderRadius: '50%', width: 22, height: 22, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.8rem', fontWeight: 900 }}>
+                            {heroVaultOpen ? (heroUrls.indexOf(img.url) + 1) : '✓'}
+                          </div>
                         )}
                       </div>
                     )
@@ -489,9 +576,11 @@ export default function AdminWatercolors() {
             </div>
             {/* Footer */}
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.75rem 1rem', borderTop: '1px solid var(--color-border)', flexShrink: 0 }}>
-              <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)' }}>Klicka på en bild för att lägga till / ta bort • Esc stänger</span>
-              <button type="button" className="btn btn-primary" onClick={() => setVaultOpen(false)} style={{ fontSize: 'var(--fs-sm)' }}>
-                Klar ({items.length} bilder)
+              <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)' }}>
+                {heroVaultOpen ? 'Klicka för att markera/avmarkera · siffra visar ordning · Esc stänger' : 'Klicka på en bild för att lägga till / ta bort · Esc stänger'}
+              </span>
+              <button type="button" className="btn btn-primary" onClick={() => { setVaultOpen(false); setHeroVaultOpen(false) }} style={{ fontSize: 'var(--fs-sm)' }}>
+                {heroVaultOpen ? `Klar — ${heroUrls.length} hero-bilder` : `Klar (${items.length} bilder)`}
               </button>
             </div>
           </div>
