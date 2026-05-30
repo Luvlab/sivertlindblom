@@ -34,6 +34,7 @@ export default function ImageListEditor({ images, onChange, label = 'Bilder' }: 
   const [vaultLoading, setVaultLoading] = useState(false)
   const [vaultFilter, setVaultFilter] = useState('')
   const [vaultLoaded, setVaultLoaded] = useState(false)
+  const [vaultSort, setVaultSort] = useState<'selected' | 'az' | 'za' | 'date'>('selected')
 
   // ── Reorder ────────────────────────────────────────────
   function handleDragStart(idx: number) { setDraggingIdx(idx) }
@@ -158,17 +159,31 @@ export default function ImageListEditor({ images, onChange, label = 'Bilder' }: 
     return () => window.removeEventListener('keydown', onKey)
   }, [vaultOpen])
 
-  const vaultFiltered = useMemo(() => {
-    if (!vaultFilter.trim()) return vaultImages
-    const q = vaultFilter.toLowerCase()
-    return vaultImages.filter(img =>
-      img.work.toLowerCase().includes(q) ||
-      img.alt.toLowerCase().includes(q) ||
-      img.url.toLowerCase().includes(q)
-    )
-  }, [vaultImages, vaultFilter])
-
   const imageSet = useMemo(() => new Set(images), [images])
+
+  const vaultFiltered = useMemo(() => {
+    // 1. Search filter
+    let result = vaultImages
+    if (vaultFilter.trim()) {
+      const q = vaultFilter.toLowerCase()
+      result = result.filter(img =>
+        img.work.toLowerCase().includes(q) ||
+        img.alt.toLowerCase().includes(q) ||
+        img.url.toLowerCase().includes(q)
+      )
+    }
+    // 2. Sort
+    result = [...result]
+    if (vaultSort === 'selected') {
+      result.sort((a, b) => (imageSet.has(a.url) ? 0 : 1) - (imageSet.has(b.url) ? 0 : 1))
+    } else if (vaultSort === 'az') {
+      result.sort((a, b) => (a.work + (a.alt || '')).localeCompare(b.work + (b.alt || ''), 'sv'))
+    } else if (vaultSort === 'za') {
+      result.sort((a, b) => (b.work + (b.alt || '')).localeCompare(a.work + (a.alt || ''), 'sv'))
+    }
+    // 'date' → keep insertion order (API returns in DB sort_order / upload order)
+    return result
+  }, [vaultImages, vaultFilter, vaultSort, imageSet])
 
   function toggleVaultImage(url: string) {
     if (imageSet.has(url)) {
@@ -402,9 +417,8 @@ export default function ImageListEditor({ images, onChange, label = 'Bilder' }: 
           onClick={() => setVaultOpen(false)}
           style={{
             position: 'fixed', inset: 0, zIndex: 3000,
-            background: 'rgba(0,0,0,0.88)',
+            background: 'rgba(0,0,0,0.92)',
             display: 'flex', alignItems: 'stretch',
-            padding: '1.5rem',
           }}
         >
           <div
@@ -413,23 +427,53 @@ export default function ImageListEditor({ images, onChange, label = 'Bilder' }: 
               background: 'var(--color-bg)',
               border: '1px solid var(--color-border)',
               display: 'flex', flexDirection: 'column',
-              width: '100%', maxWidth: 1100, margin: '0 auto',
-              maxHeight: '100%', overflow: 'hidden',
+              width: '100%',
+              overflow: 'hidden',
             }}
           >
             {/* Modal header */}
             <div style={{
-              display: 'flex', alignItems: 'center', gap: '1rem',
+              display: 'flex', alignItems: 'center', gap: '0.75rem',
               padding: '0.75rem 1rem',
               borderBottom: '1px solid var(--color-border)',
               flexShrink: 0,
+              flexWrap: 'wrap',
             }}>
-              <span style={{ fontFamily: 'Georgia,serif', fontSize: 'var(--fs-base)', flex: 1 }}>
+              <span style={{ fontFamily: 'Georgia,serif', fontSize: 'var(--fs-base)' }}>
                 Mediavalv
-                {vaultLoaded && <span style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-xs)', marginLeft: '0.5rem' }}>
-                  {vaultFiltered.length} bilder{vaultFilter ? ' (filtrerade)' : ` av ${vaultImages.length}`}
-                </span>}
               </span>
+              {vaultLoaded && (
+                <span style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-xs)' }}>
+                  {vaultFiltered.length}{vaultFilter ? ` av ${vaultImages.length}` : ''} bilder
+                </span>
+              )}
+
+              {/* Sort buttons */}
+              <div style={{ display: 'flex', gap: '0.2rem', marginLeft: '0.25rem' }}>
+                {(['selected', 'az', 'za', 'date'] as const).map(s => (
+                  <button
+                    key={s}
+                    type="button"
+                    onClick={() => setVaultSort(s)}
+                    style={{
+                      background: vaultSort === s ? 'var(--color-accent)' : 'var(--color-bg-surface)',
+                      color: vaultSort === s ? '#0a0a0a' : 'var(--color-muted)',
+                      border: '1px solid var(--color-border)',
+                      padding: '0.2em 0.55em',
+                      fontSize: 'var(--fs-xs)',
+                      cursor: 'pointer',
+                      letterSpacing: '0.05em',
+                      textTransform: 'uppercase',
+                      lineHeight: 1.4,
+                      fontWeight: vaultSort === s ? 700 : 400,
+                    }}
+                  >
+                    {s === 'selected' ? 'Valda' : s === 'az' ? 'A–Z' : s === 'za' ? 'Z–A' : 'Datum'}
+                  </button>
+                ))}
+              </div>
+
+              {/* Search — pushes to right */}
               <input
                 type="search"
                 autoFocus
@@ -442,11 +486,12 @@ export default function ImageListEditor({ images, onChange, label = 'Bilder' }: 
                   color: 'var(--color-text)',
                   padding: '0.35rem 0.6rem',
                   fontSize: 'var(--fs-sm)',
-                  width: 260,
+                  width: 240,
                   outline: 'none',
+                  marginLeft: 'auto',
                 }}
               />
-              <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)' }}>
+              <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', whiteSpace: 'nowrap' }}>
                 {images.length} valda
               </span>
               <button
@@ -510,17 +555,17 @@ export default function ImageListEditor({ images, onChange, label = 'Bilder' }: 
                           {img.alt || img.work}
                         </div>
 
-                        {/* "Added" checkmark overlay */}
+                        {/* "Added" checkmark overlay — neon green */}
                         {added && (
                           <div style={{
-                            position: 'absolute', top: 4, right: 4,
-                            background: 'var(--color-accent)',
-                            color: '#0a0a0a',
+                            position: 'absolute', top: 5, right: 5,
+                            background: '#00e676',
+                            color: '#ffffff',
                             borderRadius: '50%',
-                            width: 18, height: 18,
+                            width: 22, height: 22,
                             display: 'flex', alignItems: 'center', justifyContent: 'center',
-                            fontSize: '0.65rem', fontWeight: 700,
-                            boxShadow: '0 1px 4px rgba(0,0,0,0.5)',
+                            fontSize: '0.8rem', fontWeight: 900,
+                            boxShadow: '0 0 0 2px rgba(0,230,118,0.35), 0 2px 6px rgba(0,0,0,0.6)',
                           }}>✓</div>
                         )}
 

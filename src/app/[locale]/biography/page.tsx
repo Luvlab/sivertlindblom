@@ -295,6 +295,7 @@ export default async function BiographyPage({
             .bio-portrait {
               position: relative;
               height: calc(100dvh - var(--header-h) - var(--subnav-h));
+              max-height: 90vh;
               border-radius: 2px;
               overflow: hidden;
               background: var(--color-bg-surface);
