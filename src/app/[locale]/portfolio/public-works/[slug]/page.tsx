@@ -183,6 +183,36 @@ export default async function PublicWorkDetailPage({
           </section>
         )}
 
+        {/* Videos / film links */}
+        {work.videos && work.videos.length > 0 && (
+          <section style={{ marginBottom: '3rem' }}>
+            <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '0.75rem' }}>
+              {locale === 'sv' ? 'Film' : 'Film'}
+            </p>
+            <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+              {work.videos.map((v, i) => (
+                <li key={i}>
+                  <a
+                    href={v.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      fontSize: 'var(--fs-sm)',
+                      color: 'var(--color-accent)',
+                      textDecoration: 'none',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '0.4rem',
+                    }}
+                  >
+                    ▶ {v.title}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+
         {/* Embedded map — shown below images when lat/lng is available */}
         {mapPin && (
           <section style={{ marginBottom: '4rem' }}>

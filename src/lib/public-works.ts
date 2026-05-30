@@ -7,6 +7,7 @@ export interface PublicWork {
   description: string
   body: string
   images: Array<{ url: string; alt: string }>
+  videos?: Array<{ url: string; title: string }>
   lat?: number | null
   lng?: number | null
   temporary?: boolean
@@ -270,6 +271,9 @@ export const PUBLIC_WORKS: PublicWork[] = [
       { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2019/04/Monument23.jpg', alt: '' },
       { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2019/04/Monument22.jpg', alt: '' },
       { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2019/04/Monument0.jpg', alt: '' },
+      { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/uploads/1780172882690-nobel-monument-1.webp', alt: '' },
+      { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/uploads/1780172921659-nobel-monument-2.webp', alt: '' },
+      { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/uploads/1780172410042-nobel-monument-framtid.jpg', alt: '' },
     ],
   },
   {
@@ -340,6 +344,10 @@ export const PUBLIC_WORKS: PublicWork[] = [
       { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/03/Sivert-Lindblom-Gripenprogram-2-.jpg', alt: '' },
       { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/03/Sivert-Lindblom-Gripen-2-.jpg', alt: '' },
       { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/03/Sivert-Lindblom-Gripen-1-.jpg', alt: '' },
+    ],
+    videos: [
+      { url: 'https://sivertlindblom.se/biografi/torg-i-tiden-gustav-adolfs-torg-malmo-en-film-om-torgets-historia-av-malmo-stads-gatukontor/', title: 'Torg i tiden – Gustav Adolfs torg, Malmö' },
+      { url: 'https://sivertlindblom.se/biografi/sivert-lindbloms-fontaner-pa-gustav-adolfs-torg-malmo-1999-2002/', title: 'Sivert Lindbloms fontäner på Gustav Adolfs torg Malmö 1999–2002' },
     ],
   },
   {
@@ -579,6 +587,9 @@ export const PUBLIC_WORKS: PublicWork[] = [
       { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/20150127_150338.jpg', alt: '' },
       { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/20150127_150242.jpg', alt: '' },
       { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/03/20180316_172048_001.jpg', alt: '' },
+      { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/uploads/1780172302964-sergelmonumentet-20250427-172901.jpg', alt: '' },
+      { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/uploads/1780172304252-sergelmonumentet-20250427-173046.jpg', alt: '' },
+      { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/uploads/1780172305621-sergelmonumentet-20250427-172841.jpg', alt: '' },
     ],
   },
   {
@@ -945,6 +956,7 @@ export const PUBLIC_WORKS: PublicWork[] = [
       { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/04/SAS-4.jpg', alt: '' },
       { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Sivert188-kopia.jpg', alt: '' },
       { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/img048.jpg', alt: '' },
+      { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/uploads/1780172406408-sas-huset-strategisk-arkitektur.jpg', alt: '' },
     ],
   },
   {
@@ -1259,18 +1271,11 @@ export const PUBLIC_WORKS: PublicWork[] = [
     description: 'Trappa med skulpturer vid Vällingby kyrka, ritad av Peter Celsing. Ett av Sivert Lindbloms tidiga offentliga uppdrag.',
     body: 'En av Sivert Lindbloms tidigaste offentliga konstnärliga uppdrag. Trappan med skulpturer är belägen intill Vällingby kyrka, ritad av Peter Celsing. Lindblom samarbetade med Celsings arkitektkontor som praktikant från 1957 och bidrog till kyrkotornets skulpturala gestaltning. Samarbetet fortsatte till Celsings död 1974. Filmaren Lasse Forsberg dokumenterade Lindbloms arbete under denna period.',
     images: [
-      { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/03/Sivert-Lindblom-Vallingby-backe-3.jpg', alt: '' },
-      { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/03/Sivert-Lindblom-Vallingby-backe-2.jpg', alt: '' },
-      { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/03/Sivert-Lindblom-Vallingby-backe-1.jpg', alt: '' },
-      { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/03/Sivert-Lindblom-Vallingby-backe-4.jpg', alt: '' },
-      { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/03/Sivert-Lindblom-Vallingby-backe-5.jpg', alt: '' },
-      { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Sivert-Lindblom-Vallingby-409.jpg', alt: '' },
-      { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Sivert-Lindblom-Vallingby-407.jpg', alt: '' },
-      { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Sivert-Lindblom-Vallingby-405.jpg', alt: '' },
-      { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Sivert-Lindblom-Vallingby-400.jpg', alt: '' },
-      { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Sivert-Lindblom-Vallingby-408.jpg', alt: '' },
-      { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Sivert-Lindblom-Vallingby-402.jpg', alt: '' },
-      { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Sivert-Lindblom-Vallingby-406.jpg', alt: '' },
+      { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/uploads/1780172191946-vallingby-backe-1.jpg', alt: '' },
+      { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/uploads/1780172193164-vallingby-backe-2.jpg', alt: '' },
+      { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/uploads/1780172194144-vallingby-backe-3.jpg', alt: '' },
+      { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/uploads/1780172195740-vallingby-backe-4.jpg', alt: '' },
+      { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/uploads/1780172196598-vallingby-backe-5.jpg', alt: '' },
     ],
   },
   {
@@ -1882,7 +1887,12 @@ export const PUBLIC_WORKS: PublicWork[] = [
     category: 'exterior',
     description: 'Två skulpturer placerade på innergården till Grev Magnigatan 10 på Östermalm, Stockholm.',
     body: 'Två skulpturer placerade på innergården till Grev Magnigatan 10 på Östermalm i Stockholm.',
-    images: [],
+    images: [
+      { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/uploads/1780172951288-grev-magnigatan-1.webp', alt: '' },
+      { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/uploads/1780172974743-grev-magnigatan-2.webp', alt: '' },
+      { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/uploads/1780172999085-grev-magnigatan-3.webp', alt: '' },
+      { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/uploads/1780173015285-grev-magnigatan-4.webp', alt: '' },
+    ],
   },
   {
     slug: 'norra-begravningsplatsen-solna',
@@ -1964,6 +1974,22 @@ export const PUBLIC_WORKS: PublicWork[] = [
       { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/02/20180203_160623_001.jpg', alt: '' },
       { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/02/Lykta-Konstakademin.jpg', alt: '' },
       { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/02/img296.jpg', alt: '' },
+    ],
+  },
+  {
+    slug: 'life-boat-1997',
+    title: 'Life Boat 1997',
+    year: '1997',
+    location: 'Scenografi',
+    category: 'scenography',
+    description: 'Scenografi för föreställningen Life Boat 1997.',
+    body: 'Scenografi för föreställningen Life Boat 1997.',
+    images: [
+      { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/uploads/1780172071902-lifeboat-1.jpg', alt: '' },
+      { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/uploads/1780172072646-lifeboat-2.jpg', alt: '' },
+      { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/uploads/1780172073209-lifeboat-3.jpg', alt: '' },
+      { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/uploads/1780172073721-lifeboat-4.jpg', alt: '' },
+      { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/uploads/1780172074196-lifeboat-5.jpg', alt: '' },
     ],
   },
 ]
