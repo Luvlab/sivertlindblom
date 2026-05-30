@@ -54,7 +54,7 @@ async function getWatercolors(): Promise<LightboxImage[]> {
   }
 }
 
-async function getWatercolorsMeta(): Promise<{ title?: string; description?: string }> {
+async function getWatercolorsMeta(): Promise<{ title?: string; description?: string; heroImages?: string[] }> {
   'use cache'
   cacheTag('watercolors')
   cacheLife('hours')
@@ -64,13 +64,18 @@ async function getWatercolorsMeta(): Promise<{ title?: string; description?: str
     const { data, error } = await supabase
       .from('settings')
       .select('key, value')
-      .in('key', ['watercolors_title', 'watercolors_description'])
+      .in('key', ['watercolors_title', 'watercolors_description', 'watercolors_hero_images'])
     if (error || !data?.length) return {}
     const map: Record<string, string> = {}
     data.forEach(({ key, value }: { key: string; value: string }) => { map[key] = value })
+    let heroImages: string[] | undefined
+    if (map.watercolors_hero_images) {
+      try { heroImages = JSON.parse(map.watercolors_hero_images) } catch { /* ignore */ }
+    }
     return {
       title: map.watercolors_title || undefined,
       description: map.watercolors_description || undefined,
+      heroImages,
     }
   } catch {
     return {}
@@ -88,5 +93,5 @@ export default async function WatercolorsPage({
     getWatercolors(),
     getWatercolorsMeta(),
   ])
-  return <WatercolorsGallery locale={locale} dict={dict} images={images} title={meta.title} description={meta.description} />
+  return <WatercolorsGallery locale={locale} dict={dict} images={images} title={meta.title} description={meta.description} heroImages={meta.heroImages} />
 }

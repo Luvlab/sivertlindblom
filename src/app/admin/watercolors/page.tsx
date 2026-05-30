@@ -29,9 +29,10 @@ export default function AdminWatercolors() {
   const [uploadError, setUploadError] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
-  // Section title / description
+  // Section title / description / hero
   const [sectionTitle, setSectionTitle] = useState('')
   const [sectionDesc, setSectionDesc] = useState('')
+  const [heroImagesJson, setHeroImagesJson] = useState('')
   const [savingMeta, setSavingMeta] = useState(false)
   const [savedMeta, setSavedMeta] = useState(false)
 
@@ -55,8 +56,12 @@ export default function AdminWatercolors() {
       if (!('error' in d)) setItems(d)
       else setError(String((d as { error: string }).error))
       if (settings && typeof settings === 'object') {
-        setSectionTitle((settings as Record<string, string>).watercolors_title ?? '')
-        setSectionDesc((settings as Record<string, string>).watercolors_description ?? '')
+        const s = settings as Record<string, string>
+        setSectionTitle(s.watercolors_title ?? '')
+        setSectionDesc(s.watercolors_description ?? '')
+        if (s.watercolors_hero_images) {
+          try { setHeroImagesJson(JSON.stringify(JSON.parse(s.watercolors_hero_images), null, 2)) } catch { setHeroImagesJson(s.watercolors_hero_images) }
+        }
       }
     }).finally(() => setLoading(false))
   }, [])
@@ -79,10 +84,15 @@ export default function AdminWatercolors() {
   async function handleSaveMeta() {
     setSavingMeta(true)
     try {
+      let heroImagesValue = heroImagesJson.trim()
+      // Validate JSON array if non-empty
+      if (heroImagesValue) {
+        try { JSON.parse(heroImagesValue) } catch { setError('Hero-bilder: ogiltig JSON'); setSavingMeta(false); return }
+      }
       const res = await fetch('/api/admin/settings', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ watercolors_title: sectionTitle, watercolors_description: sectionDesc }),
+        body: JSON.stringify({ watercolors_title: sectionTitle, watercolors_description: sectionDesc, watercolors_hero_images: heroImagesValue }),
       })
       const data = await res.json() as { ok?: boolean; error?: string }
       if (!res.ok || data.error) {
@@ -270,6 +280,14 @@ export default function AdminWatercolors() {
             <textarea className="input" rows={3} style={{ width: '100%', resize: 'vertical' }}
               value={sectionDesc} onChange={e => setSectionDesc(e.target.value)}
               placeholder="En serie axonometriska arkitektoniska visioner…" />
+          </div>
+          <div>
+            <label style={{ display: 'block', fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', marginBottom: '0.25rem' }}>
+              Hero-bilder (JSON-array med URL:er) — visas som helsidesslideshow överst på sidan
+            </label>
+            <textarea className="input" rows={5} style={{ width: '100%', resize: 'vertical', fontFamily: 'monospace', fontSize: '0.75rem' }}
+              value={heroImagesJson} onChange={e => setHeroImagesJson(e.target.value)}
+              placeholder={'[\n  "https://…/bild1.jpg",\n  "https://…/bild2.jpg"\n]'} />
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
             <button className="btn" onClick={handleSaveMeta} disabled={savingMeta} style={{ fontSize: 'var(--fs-sm)', border: '1.5px solid var(--color-accent)', color: 'var(--color-accent)', background: 'transparent' }}>
