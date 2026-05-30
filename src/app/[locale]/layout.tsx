@@ -14,6 +14,7 @@ import type { SiteSettings } from '@/types'
 import { getExhibitionSlugs, getPublicWorkSlugs, getTextSlugs } from '@/lib/data-server'
 import { SCULPTURE_PROJECTS } from '@/lib/sculpture-projects'
 import CopyrightYear from '@/components/CopyrightYear'
+import PwaProvider from '@/components/PwaProvider'
 import '../globals.css'
 
 const inter = Inter({
@@ -90,6 +91,15 @@ export async function generateMetadata(): Promise<Metadata> {
       follow: true,
       googleBot: { index: true, follow: true },
     },
+    manifest: '/manifest.webmanifest',
+    appleWebApp: {
+      capable: true,
+      statusBarStyle: 'black-translucent',
+      title: 'Sivert Lindblom',
+    },
+    icons: {
+      apple: '/icons/apple-touch-icon.png',
+    },
   }
 }
 
@@ -159,6 +169,7 @@ export default async function LocaleLayout({
         <SubNav locale={validLocale} dict={dict} />
         <main className="main-content">{children}</main>
         <BackgroundPrefetch urls={prefetchUrls} />
+        <PwaProvider />
         <footer
           style={{
             borderTop: '1px solid var(--color-border)',
