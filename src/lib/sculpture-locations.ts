@@ -160,14 +160,15 @@ export const SCULPTURE_LOCATIONS: SculptureLocation[] = [
   },
   {
     id: 'konstakademien-fredsgatan-12',
-    title: 'Konstakademiens trappa, Fredsgatan 12',
+    title: 'Ljushållare Konstakademien, Fredsgatan 12',
     year: 1975,
     city: 'Stockholm',
     country: 'Sweden',
     lat: 59.3318,
     lng: 18.0620,
     type: 'exterior',
-    description: 'Skulptur vid trappan till Kungl. Akademien för de fria konsterna, Fredsgatan 12, Stockholm.',
+    slug: 'ljushallare-konstakademien-stockholm',
+    description: 'Två bronsljushållare vid ingångstrappan till Kungl. Akademien för de fria konsterna, Fredsgatan 12, Stockholm.',
   },
   {
     id: 'grev-magnigatan-10',

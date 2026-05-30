@@ -1,6 +1,12 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useMemo } from 'react'
+
+interface VaultImage {
+  url: string
+  work: string
+  alt: string
+}
 
 interface WatercolorItem {
   id?: string
@@ -32,6 +38,13 @@ export default function AdminWatercolors() {
   // Drag reorder
   const [draggingIdx, setDraggingIdx] = useState<number | null>(null)
   const [dragOverIdx, setDragOverIdx] = useState<number | null>(null)
+
+  // Media vault
+  const [vaultOpen, setVaultOpen] = useState(false)
+  const [vaultImages, setVaultImages] = useState<VaultImage[]>([])
+  const [vaultLoading, setVaultLoading] = useState(false)
+  const [vaultLoaded, setVaultLoaded] = useState(false)
+  const [vaultFilter, setVaultFilter] = useState('')
 
   useEffect(() => {
     Promise.all([
@@ -142,6 +155,66 @@ export default function AdminWatercolors() {
     setUploading(false)
     if (fileInputRef.current) fileInputRef.current.value = ''
   }
+
+  // Media vault helpers
+  async function openVault() {
+    setVaultOpen(true)
+    if (vaultLoaded) return
+    setVaultLoading(true)
+    try {
+      const [worksRes, uploadsRes] = await Promise.all([
+        fetch('/api/admin/public-works'),
+        fetch('/api/admin/upload'),
+      ])
+      const worksData = await worksRes.json() as Array<{ title: string; images?: Array<{ url: string; alt?: string | null }> }>
+      const uploadsData = await uploadsRes.json() as { files?: Array<{ url: string; name: string; alt?: string }> }
+      const all: VaultImage[] = []
+      if (Array.isArray(worksData)) {
+        for (const w of worksData) {
+          for (const img of w.images ?? []) {
+            if (img.url) all.push({ url: img.url, work: w.title, alt: img.alt ?? '' })
+          }
+        }
+      }
+      if (uploadsData.files) {
+        for (const f of uploadsData.files) {
+          if (f.url) all.push({ url: f.url, work: 'Uppladdningar', alt: f.alt ?? f.name })
+        }
+      }
+      setVaultImages(all)
+      setVaultLoaded(true)
+    } catch { /* ignore — user sees empty grid */ }
+    finally { setVaultLoading(false) }
+  }
+
+  const itemUrlSet = useMemo(() => new Set(items.map(it => it.url)), [items])
+
+  const vaultFiltered = useMemo(() => {
+    if (!vaultFilter.trim()) return vaultImages
+    const q = vaultFilter.toLowerCase()
+    return vaultImages.filter(img =>
+      img.work.toLowerCase().includes(q) ||
+      img.alt.toLowerCase().includes(q) ||
+      img.url.toLowerCase().includes(q)
+    )
+  }, [vaultImages, vaultFilter])
+
+  function toggleVaultItem(url: string) {
+    if (itemUrlSet.has(url)) {
+      setItems(prev => prev.filter(it => it.url !== url))
+    } else {
+      setItems(prev => [...prev, { url, alt: '', sort_order: prev.length }])
+    }
+    setDirty(true)
+  }
+
+  // Close vault on Escape
+  useEffect(() => {
+    if (!vaultOpen) return
+    function onKey(e: KeyboardEvent) { if (e.key === 'Escape') setVaultOpen(false) }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [vaultOpen])
 
   const filtered = items.filter(it =>
     !filter || it.alt.toLowerCase().includes(filter.toLowerCase()) || it.url.toLowerCase().includes(filter.toLowerCase())
@@ -321,9 +394,74 @@ export default function AdminWatercolors() {
               <button className="btn" onClick={() => fileInputRef.current?.click()} disabled={uploading} style={{ fontSize: 'var(--fs-sm)' }}>
                 {uploading ? 'Laddar upp…' : '↑ Ladda upp bilder'}
               </button>
+              <button className="btn" onClick={openVault} style={{ fontSize: 'var(--fs-sm)', whiteSpace: 'nowrap', background: 'rgba(180,140,60,0.12)', color: 'var(--color-accent)', border: '1px solid rgba(180,140,60,0.35)' }}>
+                ⊞ Mediavalv
+              </button>
             </div>
           </div>
         </>
+      )}
+
+      {/* ── Media vault modal ── */}
+      {vaultOpen && (
+        <div onClick={() => setVaultOpen(false)} style={{ position: 'fixed', inset: 0, zIndex: 3000, background: 'rgba(0,0,0,0.92)', display: 'flex', alignItems: 'stretch' }}>
+          <div onClick={e => e.stopPropagation()} style={{ background: 'var(--color-bg)', border: '1px solid var(--color-border)', display: 'flex', flexDirection: 'column', width: '100%', overflow: 'hidden' }}>
+            {/* Header */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.75rem 1rem', borderBottom: '1px solid var(--color-border)', flexShrink: 0, flexWrap: 'wrap' }}>
+              <span style={{ fontFamily: 'Georgia,serif', fontSize: 'var(--fs-base)' }}>Mediavalv</span>
+              {vaultLoaded && (
+                <span style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-xs)' }}>
+                  {vaultFiltered.length}{vaultFilter ? ` av ${vaultImages.length}` : ''} bilder
+                </span>
+              )}
+              <input
+                type="search"
+                autoFocus
+                value={vaultFilter}
+                onChange={e => setVaultFilter(e.target.value)}
+                placeholder="Sök bilder…"
+                style={{ background: 'var(--color-bg-surface)', border: '1px solid var(--color-border)', color: 'var(--color-text)', padding: '0.35rem 0.6rem', fontSize: 'var(--fs-sm)', width: 240, outline: 'none', marginLeft: 'auto' }}
+              />
+              <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', whiteSpace: 'nowrap' }}>{items.length} valda</span>
+              <button type="button" onClick={() => setVaultOpen(false)} style={{ background: 'none', border: 'none', color: 'var(--color-muted)', fontSize: '1.2rem', cursor: 'pointer', lineHeight: 1, padding: '0.2rem 0.4rem' }} title="Stäng (Esc)">✕</button>
+            </div>
+            {/* Body */}
+            <div style={{ flex: 1, overflowY: 'auto', padding: '1rem' }}>
+              {vaultLoading ? (
+                <p style={{ color: 'var(--color-muted)', textAlign: 'center', padding: '3rem' }}>Laddar…</p>
+              ) : vaultFiltered.length === 0 ? (
+                <p style={{ color: 'var(--color-muted)', textAlign: 'center', padding: '3rem' }}>Inga bilder hittades</p>
+              ) : (
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(130px, 1fr))', gap: '0.5rem' }}>
+                  {vaultFiltered.map((img, i) => {
+                    const added = itemUrlSet.has(img.url)
+                    return (
+                      <div key={i} onClick={() => toggleVaultItem(img.url)} title={img.alt || img.work} style={{ position: 'relative', cursor: 'pointer', border: added ? '2px solid var(--color-accent)' : '1px solid var(--color-border)', background: 'var(--color-bg-surface)', transition: 'border-color 0.1s' }}>
+                        <div style={{ aspectRatio: '1/1', overflow: 'hidden', background: '#f0ede8' }}>
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img src={img.url} alt={img.alt} loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block', pointerEvents: 'none' }} onError={e => { (e.target as HTMLImageElement).style.opacity = '0.1' }} />
+                        </div>
+                        <div style={{ padding: '0.3rem 0.4rem', fontSize: '0.6rem', color: 'var(--color-muted)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                          {img.alt || img.work}
+                        </div>
+                        {added && (
+                          <div style={{ position: 'absolute', top: 5, right: 5, background: '#00e676', color: '#fff', borderRadius: '50%', width: 22, height: 22, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.8rem', fontWeight: 900 }}>✓</div>
+                        )}
+                      </div>
+                    )
+                  })}
+                </div>
+              )}
+            </div>
+            {/* Footer */}
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.75rem 1rem', borderTop: '1px solid var(--color-border)', flexShrink: 0 }}>
+              <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)' }}>Klicka på en bild för att lägga till / ta bort • Esc stänger</span>
+              <button type="button" className="btn btn-primary" onClick={() => setVaultOpen(false)} style={{ fontSize: 'var(--fs-sm)' }}>
+                Klar ({items.length} bilder)
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   )
