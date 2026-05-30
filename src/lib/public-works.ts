@@ -1807,7 +1807,7 @@ export const PUBLIC_WORKS: PublicWork[] = [
     location: 'Haninge',
     category: 'interior',
     description: 'Två blänkande rostfria stålskulpturer ursprungligen för Västerhaninge bibliotek 1970, nu vid Haninge kulturhus övre entré sedan 2002.',
-    body: 'Två blänkande skulpturer i rostfritt stål ursprungligen beställda för Västerhaninge bibliotek 1970, nu placerade vid Haninge kulturhus övre entré sedan 2002. Konstnären beskriver skapandet av \'aktiv tomhet – utrymmen som väntar på människor.\' Skulpturerna fungerar som en portal eller vaktposter. Varje skulptur har omvända prismaformer som speglar rörelse och ljusskiftningar. Verken visades först vid Ars Baltica-utställningen i Visby 1970.',
+    body: 'Två blänkande skulpturer i rostfritt stål ursprungligen beställda för Västerhaninge bibliotek 1970, nu placerade vid Haninge kulturhus övre entré sedan 2002. Konstnären beskriver skapandet av \'aktiv tomhet – utrymmen som väntar på människor.\' Skulpturerna fungerar som en portal eller vaktposter. Varje skulptur har omvända prismaformer som speglar rörelse och ljusskiftningar. Verken visades först vid Ars Baltica-utställningen i Visby 1970.\n\n[I stålverkstaden](/references/i-stalverkstaden) — dokumentation från tillverkning och precisionsvetsning av de två stoderna.\n\n[Haninge konst 2002](/references/haninge-konst-2002) — kommunal konstinventering där skulpturgruppen lyfts fram.',
     images: [
       { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/02/SAM_5122.jpg', alt: '' },
       { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/02/SAM_5162.jpg', alt: '' },

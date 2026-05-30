@@ -367,4 +367,49 @@ Sockel eller Socculus betyder liten sko på latin.`,
       { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/05/Sivert-12x4-liggande-A4.jpg', alt: '12×4 komposition' },
     ],
   },
+  // ── Västerhaninge / Haninge kulturhus — sub-pages ───────────────────────
+  {
+    slug: 'i-stalverkstaden',
+    title: 'I stålverkstaden',
+    description: 'Precisionsvetsning av de två rostfria stålstoderna för Västerhaninge bibliotek — dokumentation från verkstaden.',
+    body: `Med hög precision svetsades dessa två stålstoder i N.N. verkstad.
+
+De rostfria stålskulpturerna som beställdes för Västerhaninge bibliotek 1970 tillverkades i en specialiserad stålverkstad. Bilderna dokumenterar den minutiösa tillverkningsprocessen — svetsning, polering och montering av de två blänkande stoderna som nu står vid Haninge kulturhus övre entré.
+
+Se även: [Västerhaninge bibliotek — Haninge kulturhus 1970](/portfolio/public-works/vasterhaninge-bibliotek-haninge-kulturhus-1970) · [Haninge konst 2002](/references/haninge-konst-2002)`,
+    images: [
+      { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2017/08/imgSV397.jpg', alt: 'I stålverkstaden' },
+      { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2017/08/imgSV396.jpg', alt: 'I stålverkstaden' },
+      { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2017/08/imgSV395.jpg', alt: 'I stålverkstaden' },
+      { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2017/08/imgSV428.jpg', alt: 'Svetsning av stålstod' },
+      { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2017/08/imgSV435.jpg', alt: 'Svetsning av stålstod' },
+      { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2017/08/imgSV429.jpg', alt: 'Svetsning av stålstod' },
+      { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2017/08/imgSV427.jpg', alt: 'Svetsning av stålstod' },
+      { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2017/08/imgSV438.jpg', alt: 'Svetsning av stålstod' },
+      { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2017/08/imgSV434.jpg', alt: 'Svetsning av stålstod' },
+      { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2017/08/imgSV431.jpg', alt: 'Svetsning av stålstod' },
+      { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2017/08/imgSV433.jpg', alt: 'Svetsning av stålstod' },
+      { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2017/08/imgSV437.jpg', alt: 'Svetsning av stålstod' },
+      { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2017/08/imgSV430.jpg', alt: 'Svetsning av stålstod' },
+      { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2017/08/imgSV398.jpg', alt: 'I stålverkstaden' },
+    ],
+  },
+  {
+    slug: 'haninge-konst-2002',
+    title: 'Haninge konst 2002',
+    description: 'Haninges kommunala konstinventering 2002 — Siverts skulpturala byggnad vid Haninge kulturhus övre entré.',
+    body: `Haninge kommun genomförde en inventering av konsten i Haninge. I inventeringen lyfts Siverts skulpturala grupp — benämnd "skulptural byggnad" — fram: två stöd i rostfritt stål placerade vid Haninge kulturhus övre entré sedan 2002.
+
+Skulpturerna tillverkades ursprungligen för Västerhaninge bibliotek 1970. På bilderna syns även de två kunniga svetsarna/smederna som monterade skulpturerna.
+
+Se även: [Västerhaninge bibliotek — Haninge kulturhus 1970](/portfolio/public-works/vasterhaninge-bibliotek-haninge-kulturhus-1970) · [I stålverkstaden](/references/i-stalverkstaden)`,
+    images: [
+      { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/06/Anebysmeder.jpg', alt: 'Smederna som monterade skulpturerna. Foto: Jan Öqvist' },
+      { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2017/08/imgSV428.jpg', alt: 'Stålstod under tillverkning' },
+      { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2017/08/imgSV434.jpg', alt: 'Stålstod under tillverkning' },
+      { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/03/Haninge-konst.jpg', alt: 'Haninge konst 2002 — inventering' },
+      { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/03/Haninge-konst-1.jpg', alt: 'Haninge konst 2002 — inventering' },
+      { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/03/Haninge-konst-2.jpg', alt: 'Haninge konst 2002 — inventering' },
+    ],
+  },
 ]

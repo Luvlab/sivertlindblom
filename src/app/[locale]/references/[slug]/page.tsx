@@ -7,6 +7,7 @@ import { getDictionary } from '@/i18n/getDictionary'
 import { SCULPTURE_PROJECTS } from '@/lib/sculpture-projects'
 import GalleryGrid from '@/components/gallery/GalleryGrid'
 import type { LightboxImage } from '@/components/gallery/Lightbox'
+import { renderInlineLinks } from '@/lib/render-text'
 
 export function generateStaticParams() {
   return locales.flatMap((locale) =>
@@ -72,7 +73,9 @@ export default async function SculptureSeriesPage({
         <div style={{ maxWidth: '72ch' }}>
           {project.body.split('\n\n').filter(Boolean).map((para, i) => (
             <p key={i} style={{ fontSize: 'var(--fs-base)', lineHeight: 1.75, marginBottom: '1.25em', color: 'var(--color-text)' }}>
-              {para}
+              {para.split('\n').map((line, j) => (
+                <span key={j}>{j > 0 && <br />}{renderInlineLinks(line)}</span>
+              ))}
             </p>
           ))}
           {project.links && project.links.length > 0 && (
