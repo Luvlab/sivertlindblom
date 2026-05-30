@@ -1,7 +1,7 @@
 'use client'
 
-import { useState, useEffect, useRef, use } from 'react'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useState, useEffect, useRef, Suspense } from 'react'
+import { useRouter, useSearchParams, useParams } from 'next/navigation'
 import Link from 'next/link'
 import Script from 'next/script'
 import GeoSearch, { type GeoResult } from '@/components/admin/GeoSearch'
@@ -33,8 +33,16 @@ const lbl = (text: string) => (
   <label style={{ display: 'block', fontSize: '0.7rem', color: 'var(--color-muted)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '0.35rem' }}>{text}</label>
 )
 
-export default function EditMapPinPage({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = use(params)
+export default function EditMapPinPage() {
+  return (
+    <Suspense fallback={<div style={{ padding: 'clamp(1rem, 3vw, 3rem)', color: 'var(--color-muted)' }}>Laddar…</div>}>
+      <EditMapPinPageInner />
+    </Suspense>
+  )
+}
+
+function EditMapPinPageInner() {
+  const { id } = useParams<{ id: string }>()
   const router = useRouter()
   const searchParams = useSearchParams()
 

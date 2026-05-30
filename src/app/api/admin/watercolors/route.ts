@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { cookies } from 'next/headers'
+import { revalidateTag } from 'next/cache'
 import { createAdminClient } from '@/lib/supabase/admin'
 
 async function checkAuth(): Promise<boolean> {
@@ -56,6 +57,7 @@ export async function PUT(request: Request) {
       if (error) return NextResponse.json({ error: error.message }, { status: 500 })
     }
 
+    revalidateTag('watercolors', 'max')
     return NextResponse.json({ ok: true })
   } catch (e) {
     return NextResponse.json({ error: String(e) }, { status: 500 })

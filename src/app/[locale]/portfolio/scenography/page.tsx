@@ -6,8 +6,7 @@ import type { Locale } from '@/i18n/config'
 import TextImageSlideshow from '@/components/TextImageSlideshow'
 import ExhibitionsHeroSlideshow from '@/components/gallery/ExhibitionsHeroSlideshow'
 import { createAdminClient } from '@/lib/supabase/admin'
-
-export const dynamic = 'force-dynamic'
+import { cacheTag, cacheLife } from 'next/cache'
 
 export const metadata: Metadata = { title: 'Scenography' }
 
@@ -70,6 +69,9 @@ const FALLBACK_WORKS: Work[] = [
 ]
 
 async function getWorks(): Promise<Work[]> {
+  'use cache'
+  cacheTag('scenography')
+  cacheLife('hours')
   try {
     const supabase = createAdminClient()
     if (!supabase) return FALLBACK_WORKS

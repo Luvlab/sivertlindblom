@@ -3,10 +3,9 @@ import { locales } from '@/i18n/config'
 import type { Locale } from '@/i18n/config'
 import { getDictionary } from '@/i18n/getDictionary'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { cacheTag, cacheLife } from 'next/cache'
 import WatercolorsGallery from './WatercolorsGallery'
 import type { LightboxImage } from '@/components/gallery/Lightbox'
-
-export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
   title: 'Akvareller 1975–2012',
@@ -38,6 +37,9 @@ const FALLBACK_IMAGES: LightboxImage[] = [
 ]
 
 async function getWatercolors(): Promise<LightboxImage[]> {
+  'use cache'
+  cacheTag('watercolors')
+  cacheLife('hours')
   try {
     const supabase = createAdminClient()
     if (!supabase) return FALLBACK_IMAGES

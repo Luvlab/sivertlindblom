@@ -1,3 +1,4 @@
+import { Suspense } from 'react'
 import type { Metadata } from 'next'
 import AdminSidebar from '@/components/admin/AdminSidebar'
 import AdminMain from '@/components/admin/AdminMain'
@@ -18,8 +19,12 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       </head>
       <body>
         <div style={{ display: 'flex', minHeight: '100dvh', background: '#0a0a0a', color: 'var(--color-text)' }}>
-          <AdminSidebar />
-          <AdminMain>{children}</AdminMain>
+          <Suspense fallback={null}>
+            <AdminSidebar />
+          </Suspense>
+          <Suspense fallback={<main className="admin-main">{children}</main>}>
+            <AdminMain>{children}</AdminMain>
+          </Suspense>
         </div>
       </body>
     </html>

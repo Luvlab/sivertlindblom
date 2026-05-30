@@ -7,6 +7,7 @@ import type { Locale } from '@/i18n/config'
 import MasonryGallery from '@/components/gallery/MasonryGallery'
 import TabsLayout from '@/components/TabsLayout'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { cacheTag, cacheLife } from 'next/cache'
 import { FALLBACK_SETTINGS } from '@/lib/db'
 
 const DEFAULT_PORTRAIT = 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Portratt-SivertMattias.jpg'
@@ -35,6 +36,9 @@ async function getBiographySettings(): Promise<{
   portrait: string
   photos: Array<{ url: string; caption: string }>
 }> {
+  'use cache'
+  cacheTag('biography')
+  cacheLife('hours')
   try {
     const supabase = createAdminClient()
     if (supabase) {

@@ -1,3 +1,4 @@
+import { Suspense } from 'react'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import { redirect } from 'next/navigation'
@@ -12,6 +13,7 @@ import { FALLBACK_SETTINGS } from '@/lib/db'
 import type { SiteSettings } from '@/types'
 import { getExhibitionSlugs, getPublicWorkSlugs, getTextSlugs } from '@/lib/data-server'
 import { SCULPTURE_PROJECTS } from '@/lib/sculpture-projects'
+import CopyrightYear from '@/components/CopyrightYear'
 import '../globals.css'
 
 const inter = Inter({
@@ -172,7 +174,7 @@ export default async function LocaleLayout({
           }}
         >
           <span>
-            © {new Date().getFullYear()} Sivert Lindblom. {dict.footer?.rights}
+            © <Suspense fallback="2026"><CopyrightYear /></Suspense> Sivert Lindblom. {dict.footer?.rights}
           </span>
           <span style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', flexWrap: 'wrap', justifyContent: 'flex-end' }}>
             <span>{dict.footer?.editor}: Jan Öqvist</span>

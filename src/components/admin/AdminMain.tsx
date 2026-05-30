@@ -1,7 +1,7 @@
 'use client'
 
 import { usePathname } from 'next/navigation'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, Suspense } from 'react'
 
 /**
  * Replaces <main> in the admin layout.
@@ -20,7 +20,7 @@ export default function AdminMain({ children }: { children: React.ReactNode }) {
 
   return (
     <main ref={ref} className="admin-main">
-      {children}
+      <Suspense fallback={null}>{children}</Suspense>
     </main>
   )
 }

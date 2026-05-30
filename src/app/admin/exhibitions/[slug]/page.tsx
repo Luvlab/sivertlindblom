@@ -1,7 +1,7 @@
 'use client'
 
-import { useState, useEffect, use } from 'react'
-import { useRouter } from 'next/navigation'
+import { useState, useEffect, Suspense } from 'react'
+import { useRouter, useParams } from 'next/navigation'
 import type { Exhibition } from '@/lib/exhibitions-data'
 import AdminForm, { FieldLabel } from '@/components/admin/AdminForm'
 import ImageListEditor from '@/components/admin/ImageListEditor'
@@ -10,8 +10,16 @@ interface Props {
   params: Promise<{ slug: string }>
 }
 
-export default function EditExhibitionPage({ params }: Props) {
-  const { slug } = use(params)
+export default function EditExhibitionPage() {
+  return (
+    <Suspense fallback={<div style={{ padding: 'clamp(1rem, 3vw, 3rem)', color: 'var(--color-muted)' }}>Laddar…</div>}>
+      <EditExhibitionPageInner />
+    </Suspense>
+  )
+}
+
+function EditExhibitionPageInner() {
+  const { slug } = useParams<{ slug: string }>()
   const router = useRouter()
   const [form, setForm] = useState<Exhibition | null>(null)
   const [loading, setLoading] = useState(true)

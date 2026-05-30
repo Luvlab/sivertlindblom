@@ -1,7 +1,7 @@
 'use client'
 
-import { useState, useEffect, use } from 'react'
-import { useRouter } from 'next/navigation'
+import { useState, useEffect, Suspense } from 'react'
+import { useRouter, useParams } from 'next/navigation'
 import type { ScenographyWork } from '@/app/api/admin/scenography/route'
 import AdminForm, { FieldLabel } from '@/components/admin/AdminForm'
 import ImageListEditor from '@/components/admin/ImageListEditor'
@@ -10,8 +10,16 @@ interface Props {
   params: Promise<{ slug: string }>
 }
 
-export default function EditScenographyPage({ params }: Props) {
-  const { slug } = use(params)
+export default function EditScenographyPage() {
+  return (
+    <Suspense fallback={<div style={{ padding: 'clamp(1rem, 3vw, 3rem)', color: 'var(--color-muted)' }}>Laddar…</div>}>
+      <EditScenographyPageInner />
+    </Suspense>
+  )
+}
+
+function EditScenographyPageInner() {
+  const { slug } = useParams<{ slug: string }>()
   const router = useRouter()
   const [form, setForm] = useState<ScenographyWork | null>(null)
   const [loading, setLoading] = useState(true)

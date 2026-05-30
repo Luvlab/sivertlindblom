@@ -1,7 +1,7 @@
 'use client'
 
-import { useState, useEffect, use } from 'react'
-import { useRouter } from 'next/navigation'
+import { useState, useEffect, Suspense } from 'react'
+import { useRouter, useParams } from 'next/navigation'
 import Link from 'next/link'
 import LinkTextarea from '@/components/admin/LinkTextarea'
 
@@ -27,8 +27,16 @@ const label = (text: string) => (
   <label style={{ display: 'block', fontSize: '0.7rem', color: 'var(--color-muted)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '0.35rem' }}>{text}</label>
 )
 
-export default function EditTextPage({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = use(params)
+export default function EditTextPage() {
+  return (
+    <Suspense fallback={<div style={{ padding: 'clamp(1rem, 3vw, 3rem)', color: 'var(--color-muted)' }}>Laddar…</div>}>
+      <EditTextPageInner />
+    </Suspense>
+  )
+}
+
+function EditTextPageInner() {
+  const { id } = useParams<{ id: string }>()
   const router = useRouter()
   const [form, setForm] = useState<TextItem | null>(null)
   const [loading, setLoading] = useState(true)

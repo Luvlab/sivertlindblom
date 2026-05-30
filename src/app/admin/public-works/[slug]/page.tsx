@@ -1,7 +1,7 @@
 'use client'
 
-import { useState, useEffect, useRef, use } from 'react'
-import { useRouter } from 'next/navigation'
+import { useState, useEffect, useRef, Suspense } from 'react'
+import { useRouter, useParams } from 'next/navigation'
 import Script from 'next/script'
 import type { PublicWork } from '@/lib/public-works'
 import AdminForm, { FieldLabel } from '@/components/admin/AdminForm'
@@ -16,8 +16,16 @@ interface Props {
   params: Promise<{ slug: string }>
 }
 
-export default function EditPublicWorkPage({ params }: Props) {
-  const { slug } = use(params)
+export default function EditPublicWorkPage() {
+  return (
+    <Suspense fallback={<div style={{ padding: 'clamp(1rem, 3vw, 3rem)', color: 'var(--color-muted)' }}>Laddar…</div>}>
+      <EditPublicWorkPageInner />
+    </Suspense>
+  )
+}
+
+function EditPublicWorkPageInner() {
+  const { slug } = useParams<{ slug: string }>()
   const router = useRouter()
   const [form, setForm] = useState<PublicWork | null>(null)
   const [loading, setLoading] = useState(true)

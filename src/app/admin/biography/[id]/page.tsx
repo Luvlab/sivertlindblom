@@ -1,7 +1,7 @@
 'use client'
 
-import { useState, useEffect, use } from 'react'
-import { useRouter } from 'next/navigation'
+import { useState, useEffect, Suspense } from 'react'
+import { useRouter, useParams } from 'next/navigation'
 import Link from 'next/link'
 import LinkTextarea from '@/components/admin/LinkTextarea'
 
@@ -27,8 +27,16 @@ const lbl = (text: string) => (
   <label style={{ display: 'block', fontSize: '0.7rem', color: 'var(--color-muted)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '0.35rem' }}>{text}</label>
 )
 
-export default function EditBioPage({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = use(params)
+export default function EditBioPage() {
+  return (
+    <Suspense fallback={<div style={{ padding: 'clamp(1rem, 3vw, 3rem)', color: 'var(--color-muted)' }}>Laddar…</div>}>
+      <EditBioPageInner />
+    </Suspense>
+  )
+}
+
+function EditBioPageInner() {
+  const { id } = useParams<{ id: string }>()
   const router = useRouter()
   const [form, setForm] = useState<BioEntry | null>(null)
   const [loading, setLoading] = useState(true)

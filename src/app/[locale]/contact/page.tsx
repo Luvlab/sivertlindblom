@@ -4,6 +4,7 @@ import { locales } from '@/i18n/config'
 import type { Locale } from '@/i18n/config'
 import ContactForm from './ContactForm'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { cacheTag, cacheLife } from 'next/cache'
 
 export const metadata: Metadata = { title: 'Contact' }
 
@@ -14,6 +15,9 @@ export function generateStaticParams() {
 const ALPS_IMAGE_FALLBACK = 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/contact/siverts-alper.jpg'
 
 async function getContactHeroHeight(): Promise<number> {
+  'use cache'
+  cacheTag('settings')
+  cacheLife('hours')
   const supabase = createAdminClient()
   if (supabase) {
     const { data } = await supabase
@@ -30,6 +34,9 @@ async function getContactHeroHeight(): Promise<number> {
 }
 
 async function getContactHeroImage(): Promise<string> {
+  'use cache'
+  cacheTag('settings')
+  cacheLife('hours')
   const supabase = createAdminClient()
   if (supabase) {
     const { data } = await supabase
@@ -59,7 +66,7 @@ export default async function ContactPage({
       {/* Hero — Alps background, extends behind fixed header */}
       <div style={{
         position: 'relative',
-        height: `calc(${heroHeightVh}dvh + var(--header-h))`,
+        height: `${heroHeightVh}dvh`,
         overflow: 'hidden',
         marginBottom: '4rem',
         marginTop: 'calc(-1 * var(--header-h))',

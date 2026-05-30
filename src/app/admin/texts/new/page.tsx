@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, Suspense } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 
@@ -18,6 +18,14 @@ const lbl = (text: string) => (
 )
 
 export default function NewTextPage() {
+  return (
+    <Suspense fallback={<div style={{ padding: 'clamp(1rem, 3vw, 3rem)', color: 'var(--color-muted)' }}>Laddar…</div>}>
+      <NewTextPageInner />
+    </Suspense>
+  )
+}
+
+function NewTextPageInner() {
   const router = useRouter()
   const [form, setForm] = useState({
     title: '', author: '', authorBio: '', type: 'essay', publication: '',

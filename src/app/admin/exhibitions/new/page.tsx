@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, Suspense } from 'react'
 import { useRouter } from 'next/navigation'
 import type { Exhibition } from '@/lib/exhibitions-data'
 import AdminForm, { FieldLabel } from '@/components/admin/AdminForm'
@@ -16,6 +16,14 @@ function slugify(str: string): string {
 }
 
 export default function NewExhibitionPage() {
+  return (
+    <Suspense fallback={<div style={{ padding: 'clamp(1rem, 3vw, 3rem)', color: 'var(--color-muted)' }}>Laddar…</div>}>
+      <NewExhibitionPageInner />
+    </Suspense>
+  )
+}
+
+function NewExhibitionPageInner() {
   const router = useRouter()
   const currentYear = new Date().getFullYear()
   const [form, setForm] = useState<Exhibition>({
