@@ -15,6 +15,18 @@ export interface SculptureLocation {
 export const SCULPTURE_LOCATIONS: SculptureLocation[] = [
   // ── Stockholm exteriors ─────────────────────────────────────
   {
+    id: 'arsenalgatan-belysning',
+    title: 'Arsenalgatans belysning',
+    year: 1992,
+    city: 'Stockholm',
+    country: 'Sweden',
+    lat: 59.3307,
+    lng: 18.0728,
+    type: 'exterior',
+    slug: 'arsenalgatan-belysning-stockholm',
+    description: 'Gatubelysningsarmaturer — "ljusbärare längs paradgatan" — längs fasaderna på Arsenalgatan.',
+  },
+  {
     id: 'blasieholmstorg-1989',
     title: 'Blasieholmstorg — Hästar i brons',
     year: 1989,
