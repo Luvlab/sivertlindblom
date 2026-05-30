@@ -195,8 +195,6 @@ function EditPublicWorkPageInner() {
         .leaflet-control-attribution{background:rgba(10,10,10,.8)!important;color:#666!important;font-size:10px!important;}
         .leaflet-control-zoom a{background:#1a1a1a!important;color:#e8e8e4!important;border-color:#333!important;}
         .leaflet-control-zoom a:hover{background:#2a2a2a!important;}
-        .pw-editor-grid { display:grid; grid-template-columns:1fr 1fr; gap:2rem; align-items:start; }
-        @media(max-width:800px){ .pw-editor-grid { grid-template-columns:1fr; } }
       `}</style>
 
       <AdminForm
@@ -212,82 +210,77 @@ function EditPublicWorkPageInner() {
         deleteLabel="Radera verk"
         maxWidth="none"
       >
-        <div className="pw-editor-grid">
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
 
-          {/* ── Left: text fields ── */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-
-            <div>
-              <FieldLabel>Titel *</FieldLabel>
-              <input type="text" required className="input" style={{ width: '100%' }}
-                value={form.title} onChange={e => update('title', e.target.value)} />
-            </div>
-
-            {/* Tillfällig placering */}
-            <label style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', cursor: 'pointer', userSelect: 'none' }}>
-              <input
-                type="checkbox"
-                checked={form.temporary ?? false}
-                onChange={e => update('temporary', e.target.checked)}
-                style={{ width: 16, height: 16, accentColor: 'var(--color-accent)', cursor: 'pointer' }}
-              />
-              <span style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-text)' }}>
-                Tillfällig placering
-              </span>
-              <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)' }}>
-                — verket var inte permanent
-              </span>
-            </label>
-
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '1rem' }}>
-              <div>
-                <FieldLabel>År</FieldLabel>
-                <input type="text" className="input" style={{ width: '100%' }}
-                  value={form.year} onChange={e => update('year', e.target.value)}
-                  placeholder="1989 eller 1987–91" />
-              </div>
-              <div>
-                <FieldLabel>Plats</FieldLabel>
-                <input type="text" className="input" style={{ width: '100%' }}
-                  value={form.location} onChange={e => update('location', e.target.value)} />
-              </div>
-              <div>
-                <FieldLabel>Kategori</FieldLabel>
-                <select className="input" style={{ width: '100%' }}
-                  value={form.category} onChange={e => update('category', e.target.value as 'exterior' | 'interior')}>
-                  <option value="exterior">Exteriör</option>
-                  <option value="interior">Interiör</option>
-                </select>
-              </div>
-            </div>
-
-            <div>
-              <FieldLabel>Slug (URL)</FieldLabel>
-              <input type="text" className="input" style={{ width: '100%' }}
-                value={form.slug} onChange={e => update('slug', e.target.value)} />
-            </div>
-
-            <div>
-              <FieldLabel>Kort beskrivning</FieldLabel>
-              <textarea className="input" rows={3} style={{ width: '100%', resize: 'vertical' }}
-                value={form.description} onChange={e => update('description', e.target.value)}
-                placeholder="Visas i meta och eventuellt i listvy" />
-            </div>
-
-            <div>
-              <FieldLabel>Brödtext (svenska)</FieldLabel>
-              <LinkTextarea
-                value={form.body ?? ''}
-                onChange={v => update('body', v)}
-                rows={6}
-                placeholder="Längre beskrivning — visas på detaljsidan"
-                hint="Markera text + 🔗 Länk för att infoga hyperlänk."
-              />
-            </div>
-
+          <div>
+            <FieldLabel>Titel *</FieldLabel>
+            <input type="text" required className="input" style={{ width: '100%' }}
+              value={form.title} onChange={e => update('title', e.target.value)} />
           </div>
 
-          {/* ── Right: map + coordinates ── */}
+          {/* Tillfällig placering */}
+          <label style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', cursor: 'pointer', userSelect: 'none' }}>
+            <input
+              type="checkbox"
+              checked={form.temporary ?? false}
+              onChange={e => update('temporary', e.target.checked)}
+              style={{ width: 16, height: 16, accentColor: 'var(--color-accent)', cursor: 'pointer' }}
+            />
+            <span style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-text)' }}>
+              Tillfällig placering
+            </span>
+            <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)' }}>
+              — verket var inte permanent
+            </span>
+          </label>
+
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '1rem' }}>
+            <div>
+              <FieldLabel>År</FieldLabel>
+              <input type="text" className="input" style={{ width: '100%' }}
+                value={form.year} onChange={e => update('year', e.target.value)}
+                placeholder="1989 eller 1987–91" />
+            </div>
+            <div>
+              <FieldLabel>Plats</FieldLabel>
+              <input type="text" className="input" style={{ width: '100%' }}
+                value={form.location} onChange={e => update('location', e.target.value)} />
+            </div>
+            <div>
+              <FieldLabel>Kategori</FieldLabel>
+              <select className="input" style={{ width: '100%' }}
+                value={form.category} onChange={e => update('category', e.target.value as 'exterior' | 'interior')}>
+                <option value="exterior">Exteriör</option>
+                <option value="interior">Interiör</option>
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <FieldLabel>Slug (URL)</FieldLabel>
+            <input type="text" className="input" style={{ width: '100%' }}
+              value={form.slug} onChange={e => update('slug', e.target.value)} />
+          </div>
+
+          <div>
+            <FieldLabel>Kort beskrivning</FieldLabel>
+            <textarea className="input" rows={3} style={{ width: '100%', resize: 'vertical' }}
+              value={form.description} onChange={e => update('description', e.target.value)}
+              placeholder="Visas i meta och eventuellt i listvy" />
+          </div>
+
+          <div>
+            <FieldLabel>Brödtext (svenska)</FieldLabel>
+            <LinkTextarea
+              value={form.body ?? ''}
+              onChange={v => update('body', v)}
+              rows={6}
+              placeholder="Längre beskrivning — visas på detaljsidan"
+              hint="Markera text + 🔗 Länk för att infoga hyperlänk."
+            />
+          </div>
+
+          {/* Map — full width */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
             <div>
               <label style={{ display: 'block', fontSize: '0.7rem', color: 'var(--color-muted)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '0.35rem' }}>
@@ -319,9 +312,9 @@ function EditPublicWorkPageInner() {
             </div>
           </div>
 
-        </div>{/* /pw-editor-grid */}
+        </div>
 
-        {/* Images — full width below the two columns */}
+        {/* Images — full width below */}
         <ImageListEditor
           images={form.images.map(img => (typeof img === 'string' ? img : img.url))}
           onChange={urls => update('images', urls.map(url => ({ url, alt: '' })))}

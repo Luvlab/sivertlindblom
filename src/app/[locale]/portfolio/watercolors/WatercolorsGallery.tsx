@@ -6,9 +6,9 @@ import Lightbox from '@/components/gallery/Lightbox'
 import type { LightboxImage } from '@/components/gallery/Lightbox'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-interface Props { locale: string; dict: any; images: LightboxImage[] }
+interface Props { locale: string; dict: any; images: LightboxImage[]; title?: string; description?: string }
 
-export default function WatercolorsGallery({ locale, dict, images }: Props) {
+export default function WatercolorsGallery({ locale, dict, images, title, description }: Props) {
   const [lightboxIdx, setLightboxIdx] = useState<number | null>(null)
 
   const wc = dict?.watercolors ?? {}
@@ -23,10 +23,10 @@ export default function WatercolorsGallery({ locale, dict, images }: Props) {
           <span className="back-link-label">{nav.portfolio ?? 'Portfolio'}</span>
         </Link>
         <h1 style={{ fontFamily: 'Georgia, serif', fontWeight: 400, fontSize: 'clamp(1.8rem,4vw,3rem)', marginTop: '1rem', marginBottom: '1rem' }}>
-          {wc.title ?? 'Akvareller 1975–2012'}
+          {title ?? wc.title ?? 'Akvareller 1975–2012'}
         </h1>
         <p style={{ color: 'var(--color-muted)', maxWidth: '60ch', fontSize: 'var(--fs-base)', lineHeight: 1.8, marginBottom: '1rem' }}>
-          {wc.short_description ?? 'En serie axonometriska arkitektoniska visioner.'}
+          {description ?? wc.short_description ?? 'En serie axonometriska arkitektoniska visioner.'}
         </p>
         <p style={{ color: 'var(--color-muted)', maxWidth: '60ch', fontSize: 'var(--fs-sm)', lineHeight: 1.7 }}>
           {wc.context_1 ?? ''} {wc.context_2 ?? ''}

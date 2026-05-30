@@ -23,18 +23,29 @@ export default function AdminWatercolors() {
   const [uploadError, setUploadError] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
+  // Section title / description
+  const [sectionTitle, setSectionTitle] = useState('')
+  const [sectionDesc, setSectionDesc] = useState('')
+  const [savingMeta, setSavingMeta] = useState(false)
+  const [savedMeta, setSavedMeta] = useState(false)
+
   // Drag reorder
   const [draggingIdx, setDraggingIdx] = useState<number | null>(null)
   const [dragOverIdx, setDragOverIdx] = useState<number | null>(null)
 
   useEffect(() => {
-    fetch('/api/admin/watercolors')
-      .then(r => r.json())
-      .then((d: WatercolorItem[] | { error: string }) => {
-        if (!('error' in d)) setItems(d)
-        else setError(String((d as { error: string }).error))
-      })
-      .finally(() => setLoading(false))
+    Promise.all([
+      fetch('/api/admin/watercolors').then(r => r.json()),
+      fetch('/api/admin/settings').then(r => r.json()),
+    ]).then(([wc, settings]) => {
+      const d = wc as WatercolorItem[] | { error: string }
+      if (!('error' in d)) setItems(d)
+      else setError(String((d as { error: string }).error))
+      if (settings && typeof settings === 'object') {
+        setSectionTitle((settings as Record<string, string>).watercolors_title ?? '')
+        setSectionDesc((settings as Record<string, string>).watercolors_description ?? '')
+      }
+    }).finally(() => setLoading(false))
   }, [])
 
   async function handleSave() {
@@ -50,6 +61,32 @@ export default function AdminWatercolors() {
       else setError(data.error ?? 'Fel')
     } catch (e) { setError(String(e)) }
     finally { setSaving(false) }
+  }
+
+  async function handleSaveMeta() {
+    setSavingMeta(true)
+    try {
+      await fetch('/api/admin/settings', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ watercolors_title: sectionTitle, watercolors_description: sectionDesc }),
+      })
+      setSavedMeta(true)
+      setTimeout(() => setSavedMeta(false), 3000)
+    } catch (e) { setError(String(e)) }
+    finally { setSavingMeta(false) }
+  }
+
+  function shuffleItems() {
+    setItems(prev => {
+      const copy = [...prev]
+      for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1))
+        ;[copy[i], copy[j]] = [copy[j], copy[i]]
+      }
+      return copy
+    })
+    setDirty(true)
   }
 
   function addUrl() {
@@ -138,6 +175,33 @@ export default function AdminWatercolors() {
         </div>
       </div>
 
+      {/* Section title & description */}
+      <div style={{ borderBottom: '1px solid var(--color-border)', paddingBottom: '1.5rem', marginBottom: '1.5rem' }}>
+        <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.75rem' }}>
+          Sektionsrubrik
+        </p>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', maxWidth: 600 }}>
+          <div>
+            <label style={{ display: 'block', fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', marginBottom: '0.25rem' }}>Titel</label>
+            <input type="text" className="input" style={{ width: '100%' }}
+              value={sectionTitle} onChange={e => setSectionTitle(e.target.value)}
+              placeholder="Akvareller 1975–2012" />
+          </div>
+          <div>
+            <label style={{ display: 'block', fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', marginBottom: '0.25rem' }}>Ingress</label>
+            <textarea className="input" rows={3} style={{ width: '100%', resize: 'vertical' }}
+              value={sectionDesc} onChange={e => setSectionDesc(e.target.value)}
+              placeholder="En serie axonometriska arkitektoniska visioner…" />
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+            <button className="btn" onClick={handleSaveMeta} disabled={savingMeta} style={{ fontSize: 'var(--fs-sm)' }}>
+              {savingMeta ? 'Sparar…' : 'Spara rubrik & ingress'}
+            </button>
+            {savedMeta && <span style={{ color: 'var(--color-accent)', fontSize: 'var(--fs-sm)' }}>✓ Sparad</span>}
+          </div>
+        </div>
+      </div>
+
       {/* Filter */}
       <div style={{ marginBottom: '1.5rem' }}>
         <input type="search" className="input" placeholder="Filtrera…" value={filter}
@@ -150,9 +214,14 @@ export default function AdminWatercolors() {
         <>
           {/* Thumbnail table — drag to reorder */}
           <div style={{ marginBottom: '2rem' }}>
-            <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', marginBottom: '0.5rem' }}>
-              Dra för att ändra ordning · klicka på bildtext för att redigera
-            </p>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '0.5rem', flexWrap: 'wrap' }}>
+              <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', margin: 0 }}>
+                Dra för att ändra ordning · klicka på bildtext för att redigera
+              </p>
+              <button className="btn" onClick={shuffleItems} style={{ fontSize: 'var(--fs-xs)', padding: '0.25rem 0.6rem', whiteSpace: 'nowrap' }}>
+                Slumpa ordning
+              </button>
+            </div>
             <div style={{
               display: 'grid',
               gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))',

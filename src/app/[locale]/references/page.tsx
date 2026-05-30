@@ -11,16 +11,13 @@ import TabsLayout from '@/components/TabsLayout'
 import { SCULPTURE_PROJECTS } from '@/lib/sculpture-projects'
 import { FOTOGRAFIER_IMAGES } from '@/lib/fotografier-data'
 import { PUBLICATIONS } from '@/lib/publications-data'
+import { FILMS } from '@/lib/films-data'
+import FilmGrid from '@/components/references/FilmGrid'
 
 export const metadata: Metadata = { title: 'Sculpture & Graphics' }
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }))
-}
-
-function getYouTubeId(url: string): string | null {
-  const m = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([A-Za-z0-9_-]{11})/)
-  return m ? m[1] : null
 }
 
 // Build slug → image URL[] lookup from sculpture-projects data
@@ -41,81 +38,6 @@ const SCULPTURE_SERIES = [
   { key: 'tornmodeller',    label: 'Tornmodeller',                 desc: 'Modeller och förslag för torn.' },
   { key: 'arbetsmodeller',  label: 'Arbetsmodeller & Förslag',    desc: 'Arbetsmodeller i gips, lera och trä samt tävlingsförslag.' },
 ] as const
-
-const FILMS: Array<{ year: number; title: string; director?: string; venue?: string; desc?: string; videoUrl?: string; extraVideos?: string[] }> = [
-  {
-    year: 1967,
-    title: 'Beskrivning av en tankes rörelse',
-    director: 'Lasse Forsberg',
-    desc: 'En film om Sivert Lindblom av Lasse Forsberg, 1967. Sivert berättar om sin metod: hur profilen av hans eget ansikte blev utgångspunkten för ett formspråk förmedlat via exakta arbetsorder — på samma sätt som en arkitekt förmedlar form utan att delta i det praktiska arbetet. »Målet är inte att ge en illusion av rörelse utan målet är att ge en beskrivning av en tankes rörelse.«',
-  },
-  {
-    year: 1972,
-    title: 'Ted Gärdestad sjunger "Helena"',
-    venue: 'med Sivert Lindbloms skulpturer',
-    desc: 'Musikvideo till Ted Gärdestads "Helena" inspelad i miljö med Sivert Lindbloms skulpturer.',
-    videoUrl: 'https://www.youtube.com/watch?v=yXAKq0KDpYk',
-  },
-  {
-    year: 1974,
-    title: 'Vad var Multikonst?',
-    venue: 'SVT Play',
-    desc: 'Program från SVT om Multikonst-projektet 1967 — en vandringsutställning i samarbete med Moderna Museet och Riksutställningar. Finns att se hos SVT Play (extern länk, kan inte bäddas in).',
-    videoUrl: 'https://www.svtplay.se/video/eEgzYWK/multikonst-hela-sverige-gar-pa-utstallning',
-  },
-  {
-    year: 1993,
-    title: 'Sivert Lindblom visar modeller på Skissernas museum, Lund',
-    venue: 'Skissernas Museum, Lund',
-    desc: 'Tre filmer från utställningen Skulptur Arkitektur på Skissernas museum i Lund 1993, där Sivert Lindblom presenterar modeller och offentliga verk.',
-    videoUrl: 'https://youtu.be/5GvdoEYox-k',
-    extraVideos: [
-      'https://www.youtube.com/embed/bF_AHab50Xc',
-      'https://www.youtube.com/embed/HCEZ9_anTmo',
-    ],
-  },
-  {
-    year: 1996,
-    title: 'TV-intervju med Sivert Lindblom',
-    venue: 'TV Eskilstuna / Minnenas Television',
-    desc: 'Intervju med Sivert Lindblom för TV Eskilstuna 1996 — Minnenas Television.',
-    videoUrl: 'https://www.youtube.com/embed/xhMABJ90HBE',
-  },
-  {
-    year: 1996,
-    title: 'Poetic Cinema — Landscape After Verlaine',
-    venue: 'Carl Henrik Svenstedt',
-    desc: 'Filmverk av Carl Henrik Svenstedt, 1996.',
-  },
-  {
-    year: 1998,
-    title: 'TV4-Uppland: kortintervju om skulptur',
-    venue: 'TV4 Uppland',
-    desc: 'I en 1-minuters intervju den 23 februari 1998 kommenterar Sivert Lindblom vilken skulptur han är mest nöjd med.',
-    videoUrl: 'https://www.youtube.com/embed/bhWP7NP89YM',
-  },
-  {
-    year: 1999,
-    title: 'Torg i tiden — Gustav Adolfs torg, Malmö',
-    venue: 'Malmö Stads Gatukontor',
-    desc: 'En 23 minuter lång dokumentärfilm om Gustav Adolfs torgs historia i Malmö, producerad av Malmö Stads Gatukontor. Byggherre: Malmö kommun. Invigdes 12 juni 1999.',
-    videoUrl: 'https://www.youtube.com/watch?v=-ba2Oq65qe4',
-  },
-  {
-    year: 2001,
-    title: 'Resningen av Profilen, Potatisåkern',
-    venue: 'Malmö',
-    desc: 'Film över resningen och installationen av Sivert Lindbloms skulptur "Profilen" på Potatisåkern bostadsområde i Malmö, 2001.',
-    videoUrl: 'https://www.youtube.com/embed/hfwecUKJCJo',
-  },
-  {
-    year: 1973,
-    title: 'Skandinaviska Bankens Palats — Gustav Adolfs Torg',
-    venue: 'Sveriges Riksbank',
-    desc: 'Dokumentation av utsmyckningen av Riksbankens fasad vid Gustav Adolfs torg, Stockholm, 1973.',
-    videoUrl: 'https://www.riksbank.se/sv/om-riksbanken/riksbankens-hus/',
-  },
-]
 
 // Ögonblick — candid / behind-the-scenes photos (scraped from sivertlindblom.se)
 const OGONBLICK_IMAGES = [
@@ -242,50 +164,13 @@ export default async function ReferencesPage({
         </section>
 
         {/* ── 3. Film & TV ──────────────────────────────────── */}
-        <section className="page-pad" style={{ paddingTop: '3rem', paddingBottom: '3rem' }}>
-          <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-2xl)', marginBottom: '2rem' }}>
-            {dict.references?.film_tv ?? 'Film & TV'}
-          </h2>
-          {FILMS.map((f) => {
-            const ytId = f.videoUrl ? getYouTubeId(f.videoUrl) : null
-            return (
-              <div key={f.title} style={{ padding: '1.5rem 0', borderBottom: '1px solid var(--color-border)' }}>
-                <div style={{ display: 'grid', gridTemplateColumns: '4rem 1fr', gap: '1.5rem' }}>
-                  <span style={{ color: 'var(--color-accent)', fontFamily: 'Georgia, serif', fontSize: 'var(--fs-sm)' }}>{f.year}</span>
-                  <div>
-                    <div style={{ fontSize: 'var(--fs-base)', marginBottom: '0.2rem', fontWeight: 500 }}>{f.title}</div>
-                    {f.director && <div style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', marginBottom: '0.15rem' }}>{dict.references?.director ?? 'Regi'}: {f.director}</div>}
-                    {f.venue && <div style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', marginBottom: '0.15rem' }}>{f.venue}</div>}
-                    {f.desc && (
-                      <p style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-muted)', lineHeight: 1.7, margin: '0.5rem 0 0', maxWidth: '65ch' }}>
-                        {f.desc}
-                      </p>
-                    )}
-                    {f.videoUrl && !ytId && (
-                      <a href={f.videoUrl} target="_blank" rel="noopener noreferrer"
-                        style={{ display: 'inline-block', marginTop: '0.75rem', fontSize: 'var(--fs-xs)', color: 'var(--color-accent)', letterSpacing: '0.06em', textTransform: 'uppercase', textDecoration: 'none', borderBottom: '1px solid var(--color-accent-dim)' }}>
-                        ▶ {dict.references?.watch ?? 'Se filmen'} →
-                      </a>
-                    )}
-                  </div>
-                </div>
-                {ytId && (
-                  <div style={{ marginTop: '1rem', marginLeft: '5.5rem', aspectRatio: '16/9', maxWidth: '640px', background: '#000', overflow: 'hidden' }}>
-                    <iframe src={`https://www.youtube.com/embed/${ytId}`} title={f.title} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen style={{ width: '100%', height: '100%', border: 'none', display: 'block' }} />
-                  </div>
-                )}
-                {f.extraVideos && f.extraVideos.map((ev, ei) => {
-                  const evId = getYouTubeId(ev)
-                  if (!evId) return null
-                  return (
-                    <div key={ei} style={{ marginTop: '0.75rem', marginLeft: '5.5rem', aspectRatio: '16/9', maxWidth: '640px', background: '#000', overflow: 'hidden' }}>
-                      <iframe src={`https://www.youtube.com/embed/${evId}`} title={`${f.title} (del ${ei + 2})`} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen style={{ width: '100%', height: '100%', border: 'none', display: 'block' }} />
-                    </div>
-                  )
-                })}
-              </div>
-            )
-          })}
+        <section style={{ paddingTop: '3rem', paddingBottom: '3rem' }}>
+          <div className="page-pad" style={{ marginBottom: '2rem' }}>
+            <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-2xl)', fontWeight: 400, margin: 0 }}>
+              {dict.references?.film_tv ?? 'Film & TV'}
+            </h2>
+          </div>
+          <FilmGrid locale={locale} />
         </section>
 
         {/* ── 4. Publicerat ─────────────────────────────────── */}

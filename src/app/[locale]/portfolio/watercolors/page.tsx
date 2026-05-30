@@ -54,15 +54,39 @@ async function getWatercolors(): Promise<LightboxImage[]> {
   }
 }
 
+async function getWatercolorsMeta(): Promise<{ title?: string; description?: string }> {
+  'use cache'
+  cacheTag('watercolors')
+  cacheLife('hours')
+  try {
+    const supabase = createAdminClient()
+    if (!supabase) return {}
+    const { data, error } = await supabase
+      .from('settings')
+      .select('key, value')
+      .in('key', ['watercolors_title', 'watercolors_description'])
+    if (error || !data?.length) return {}
+    const map: Record<string, string> = {}
+    data.forEach(({ key, value }: { key: string; value: string }) => { map[key] = value })
+    return {
+      title: map.watercolors_title || undefined,
+      description: map.watercolors_description || undefined,
+    }
+  } catch {
+    return {}
+  }
+}
+
 export default async function WatercolorsPage({
   params,
 }: {
   params: Promise<{ locale: string }>
 }) {
   const { locale } = await params
-  const [dict, images] = await Promise.all([
+  const [dict, images, meta] = await Promise.all([
     getDictionary(locale as Locale),
     getWatercolors(),
+    getWatercolorsMeta(),
   ])
-  return <WatercolorsGallery locale={locale} dict={dict} images={images} />
+  return <WatercolorsGallery locale={locale} dict={dict} images={images} title={meta.title} description={meta.description} />
 }
