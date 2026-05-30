@@ -174,11 +174,33 @@ export default async function PublicWorkDetailPage({
 
         {/* Gallery */}
         {galleryImages.length > 0 && (
-          <section style={{ marginBottom: '4rem' }}>
+          <section style={{ marginBottom: '3rem' }}>
             <GalleryGrid
               images={galleryImages}
               aspectRatio="4/3"
               columns="sm"
+            />
+          </section>
+        )}
+
+        {/* Embedded map — shown below images when lat/lng is available */}
+        {mapPin && (
+          <section style={{ marginBottom: '4rem' }}>
+            <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '0.75rem' }}>
+              ⊙ {work.location}
+            </p>
+            <iframe
+              src={`https://www.openstreetmap.org/export/embed.html?bbox=${mapPin.lng - 0.008},${mapPin.lat - 0.005},${mapPin.lng + 0.008},${mapPin.lat + 0.005}&layer=mapnik&marker=${mapPin.lat},${mapPin.lng}`}
+              style={{
+                width: '100%',
+                maxWidth: '720px',
+                height: '320px',
+                border: '1px solid var(--color-border)',
+                borderRadius: 2,
+                display: 'block',
+              }}
+              loading="lazy"
+              title={`Karta — ${work.title}`}
             />
           </section>
         )}

@@ -1209,16 +1209,30 @@ Musikvideon spelades in i TV2:s förbindelsekorridorer mellan filmstudios, och i
   },
 
   {
-    slug: 'torg-i-tiden-malmo-2002',
+    slug: 'torg-i-tiden-gustav-adolfs-torg-malmo-en-film-om-torgets-historia-av-malmo-stads-gatukontor',
     type: 'film',
     year: 2002,
-    title: "'Torg i Tiden' — Sivert Lindbloms fontäner på Gustav Adolfs torg, Malmö",
+    title: "Torg i Tiden — Gustav Adolfs torg, Malmö. En film om torgets historia av Malmö Stads Gatukontor",
     author: 'Malmö Stads Gatukontor / Vision Recording TV AB',
     publication: 'Torg i Tiden, 2002',
     lang: 'sv',
-    body: `Dokumentärfilmen "Torg i Tiden" täcker torgets historia och renoveringen av Gustav Adolfs torg i Malmö. Sivert Lindbloms fem bronsfonttäner, som invigdes den 12 juni 1999, visas från ca 13:30 in i filmen.
+    body: `Dokumentärfilmen "Torg i Tiden" täcker torgets historia och renoveringen av Gustav Adolfs torg i Malmö. Sivert Lindbloms fem bronsfontäner, som invigdes den 12 juni 1999, visas från ca 13:30 in i filmen.
 
 Fontänerna är Lindbloms sista etapp av torgets omgestaltning. Projektgruppen bakom dem bestod av Malmö Stad med stadsarkitekten Sven-Ingvar Andersson som konstnärlig rådgivare.`,
+    videoUrl: 'https://www.youtube.com/embed/-ba2Oq65qe4',
+  },
+
+  {
+    slug: 'sivert-lindbloms-fontaner-pa-gustav-adolfs-torg-malmo-1999-2002',
+    type: 'film',
+    year: 2002,
+    title: "Sivert Lindbloms fontäner på Gustav Adolfs torg, Malmö 1999–2002",
+    author: 'Malmö Stads Gatukontor / Vision Recording TV AB',
+    publication: 'Torg i Tiden, 2002',
+    lang: 'sv',
+    body: `Dokumentärfilm om Sivert Lindbloms fem bronsfontäner på Gustav Adolfs torg i Malmö. Fontänerna invigdes den 12 juni 1999 och utgör den sista etappen av torgets skulpturala omgestaltning 1999–2002.
+
+Producerad av Malmö Stads Gatukontor. Byggherre: Malmö Stad. Konstnärlig rådgivare: stadsarkitekten Sven-Ingvar Andersson.`,
     videoUrl: 'https://www.youtube.com/embed/-ba2Oq65qe4',
   },
 

@@ -91,6 +91,7 @@ const AWARDS: Array<{
   year: string
   title: string
   description?: string
+  images?: string[]
   links?: Array<{ prefix: string; label: string; url: string }>
 }> = [
   {
@@ -109,6 +110,9 @@ const AWARDS: Array<{
   {
     year: '2002',
     title: 'S:t Eriksmedaljen',
+    images: [
+      'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/biography/priser/st-eriksmedaljen.jpg',
+    ],
     links: [
       { prefix: 'LÄS MER', label: 'Om S:t Eriksmedaljen 2002', url: 'https://sivertlindblom.se/st-eriksmedaljen-2002/' },
     ],
@@ -124,8 +128,26 @@ const AWARDS: Array<{
     year: '',
     title: 'Prins Eugen-medaljen',
     description: 'Prins Eugen-medaljen instiftades av Konung Gustaf V i samband med Prins Eugens 80-årsdag år 1945. Medaljen tilldelas för framstående konstnärlig verksamhet. Medaljförläningen sker på Eugendagen den 5 november och själva utdelningen en kort tid därefter. Medaljen utdelas i guld (förgyllt silver) av 8:e storleken och bärs på bröstet i vitt-gult-vitt band med blå kantränder. Medaljmottagarens namn och årtal präglas på medaljens nedre rand.',
+    images: [
+      'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/biography/priser/prins-eugen-medaljen.jpg',
+    ],
     links: [
       { prefix: 'LÄS MER', label: 'Om medaljen och målarprinsen — Kungl. Maj:ts Orden', url: 'https://kungligmajestatsorden.se/medaljer/prins-eugen-medaljen' },
+    ],
+  },
+  {
+    year: '',
+    title: 'Eskilstuna Kuriren Kulturpris',
+    images: [
+      'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/biography/priser/eskilstuna-kulturpris-1.jpg',
+      'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/biography/priser/eskilstuna-kulturpris-2.jpg',
+      'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/biography/priser/eskilstuna-kulturpris-3.jpg',
+      'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/biography/priser/eskilstuna-kulturpris-4.jpg',
+      'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/biography/priser/eskilstuna-kulturpris-5.jpg',
+      'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/biography/priser/eskilstuna-kulturpris-6.jpg',
+      'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/biography/priser/eskilstuna-kulturpris-7.jpg',
+      'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/biography/priser/eskilstuna-kulturpris-8.jpg',
+      'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/biography/priser/eskilstuna-kulturpris-9.jpg',
     ],
   },
 ]
@@ -331,6 +353,15 @@ export default async function BiographyPage({
                 <span style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-text)', display: 'block' }}>{a.title}</span>
                 {a.description && (
                   <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', lineHeight: 1.7, marginTop: '0.5rem', marginBottom: '0.25rem' }}>{a.description}</p>
+                )}
+                {a.images && a.images.length > 0 && (
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginTop: '0.75rem', marginBottom: '0.25rem' }}>
+                    {a.images.map((src, k) => (
+                      <div key={k} style={{ position: 'relative', width: '9rem', height: '6.5rem', borderRadius: 2, overflow: 'hidden', background: 'var(--color-bg-surface)', flexShrink: 0 }}>
+                        <Image src={src} alt={a.title} fill sizes="9rem" style={{ objectFit: 'cover' }} />
+                      </div>
+                    ))}
+                  </div>
                 )}
                 {a.links && a.links.length > 0 && (
                   <div style={{ marginTop: '0.5rem', display: 'flex', flexWrap: 'wrap', gap: '0.5rem 1.5rem' }}>

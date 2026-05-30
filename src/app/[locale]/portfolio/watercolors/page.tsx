@@ -2,7 +2,11 @@ import type { Metadata } from 'next'
 import { locales } from '@/i18n/config'
 import type { Locale } from '@/i18n/config'
 import { getDictionary } from '@/i18n/getDictionary'
+import { createAdminClient } from '@/lib/supabase/admin'
 import WatercolorsGallery from './WatercolorsGallery'
+import type { LightboxImage } from '@/components/gallery/Lightbox'
+
+export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
   title: 'Akvareller 1975–2012',
@@ -27,12 +31,36 @@ export function generateStaticParams() {
   return locales.map((locale) => ({ locale }))
 }
 
+// Fallback static images if DB is unavailable
+const FALLBACK_IMAGES: LightboxImage[] = [
+  { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Sivert-Lindblom-akvarell-01-1507-2.jpg', alt: 'Akvarell nr 01, 1507' },
+  { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Sivert-Lindblom-akvarell-02-1506-2.jpg', alt: 'Akvarell nr 02, 1506' },
+]
+
+async function getWatercolors(): Promise<LightboxImage[]> {
+  try {
+    const supabase = createAdminClient()
+    if (!supabase) return FALLBACK_IMAGES
+    const { data, error } = await supabase
+      .from('watercolors')
+      .select('url, alt')
+      .order('sort_order', { ascending: true })
+    if (error || !data?.length) return FALLBACK_IMAGES
+    return data.map(r => ({ url: r.url, alt: r.alt ?? '' }))
+  } catch {
+    return FALLBACK_IMAGES
+  }
+}
+
 export default async function WatercolorsPage({
   params,
 }: {
   params: Promise<{ locale: string }>
 }) {
   const { locale } = await params
-  const dict = await getDictionary(locale as Locale)
-  return <WatercolorsGallery locale={locale} dict={dict} />
+  const [dict, images] = await Promise.all([
+    getDictionary(locale as Locale),
+    getWatercolors(),
+  ])
+  return <WatercolorsGallery locale={locale} dict={dict} images={images} />
 }
