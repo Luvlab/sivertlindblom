@@ -1,11 +1,17 @@
 'use client'
 
-import { useRef, useState } from 'react'
+import { useRef, useState, useEffect, useMemo } from 'react'
 
 interface ImageListEditorProps {
   images: string[]
   onChange: (images: string[]) => void
   label?: string
+}
+
+interface VaultImage {
+  url: string
+  work: string
+  alt: string
 }
 
 export default function ImageListEditor({ images, onChange, label = 'Bilder' }: ImageListEditorProps) {
@@ -21,6 +27,13 @@ export default function ImageListEditor({ images, onChange, label = 'Bilder' }: 
   // Inline URL edit per card
   const [editingIdx, setEditingIdx] = useState<number | null>(null)
   const [editingUrl, setEditingUrl] = useState('')
+
+  // Media vault browser
+  const [vaultOpen, setVaultOpen] = useState(false)
+  const [vaultImages, setVaultImages] = useState<VaultImage[]>([])
+  const [vaultLoading, setVaultLoading] = useState(false)
+  const [vaultFilter, setVaultFilter] = useState('')
+  const [vaultLoaded, setVaultLoaded] = useState(false)
 
   // ── Reorder ────────────────────────────────────────────
   function handleDragStart(idx: number) { setDraggingIdx(idx) }
@@ -98,6 +111,71 @@ export default function ImageListEditor({ images, onChange, label = 'Bilder' }: 
     if (newUrls.length) onChange([...images, ...newUrls])
     setUploading(false)
     if (fileInputRef.current) fileInputRef.current.value = ''
+  }
+
+  // ── Media vault ────────────────────────────────────────
+  async function openVault() {
+    setVaultOpen(true)
+    if (vaultLoaded) return
+    setVaultLoading(true)
+    try {
+      const [worksRes, uploadsRes] = await Promise.all([
+        fetch('/api/admin/public-works'),
+        fetch('/api/admin/upload'),
+      ])
+      const worksData = await worksRes.json() as Array<{ title: string; images?: Array<{ url: string; alt?: string | null }> }>
+      const uploadsData = await uploadsRes.json() as { files?: Array<{ url: string; name: string; alt?: string }> }
+
+      const all: VaultImage[] = []
+      if (Array.isArray(worksData)) {
+        for (const w of worksData) {
+          for (const img of w.images ?? []) {
+            if (img.url) all.push({ url: img.url, work: w.title, alt: img.alt ?? '' })
+          }
+        }
+      }
+      if (uploadsData.files) {
+        for (const f of uploadsData.files) {
+          if (f.url) all.push({ url: f.url, work: 'Uppladdningar', alt: f.alt ?? f.name })
+        }
+      }
+      setVaultImages(all)
+      setVaultLoaded(true)
+    } catch {
+      // ignore — user sees empty grid
+    } finally {
+      setVaultLoading(false)
+    }
+  }
+
+  // Close vault on Escape
+  useEffect(() => {
+    if (!vaultOpen) return
+    function onKey(e: KeyboardEvent) {
+      if (e.key === 'Escape') setVaultOpen(false)
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [vaultOpen])
+
+  const vaultFiltered = useMemo(() => {
+    if (!vaultFilter.trim()) return vaultImages
+    const q = vaultFilter.toLowerCase()
+    return vaultImages.filter(img =>
+      img.work.toLowerCase().includes(q) ||
+      img.alt.toLowerCase().includes(q) ||
+      img.url.toLowerCase().includes(q)
+    )
+  }, [vaultImages, vaultFilter])
+
+  const imageSet = useMemo(() => new Set(images), [images])
+
+  function toggleVaultImage(url: string) {
+    if (imageSet.has(url)) {
+      onChange(images.filter(u => u !== url))
+    } else {
+      onChange([...images, url])
+    }
   }
 
   // ── Shared button styles ───────────────────────────────
@@ -300,7 +378,193 @@ export default function ImageListEditor({ images, onChange, label = 'Bilder' }: 
         >
           {uploading ? 'Laddar upp…' : '↑ Ladda upp'}
         </button>
+
+        {/* Media vault */}
+        <button
+          type="button"
+          className="btn"
+          onClick={openVault}
+          style={{
+            fontSize: 'var(--fs-sm)',
+            whiteSpace: 'nowrap',
+            background: 'rgba(180,140,60,0.12)',
+            color: 'var(--color-accent)',
+            border: '1px solid rgba(180,140,60,0.35)',
+          }}
+        >
+          ⊞ Mediavalv
+        </button>
       </div>
+
+      {/* ── Media vault modal ── */}
+      {vaultOpen && (
+        <div
+          onClick={() => setVaultOpen(false)}
+          style={{
+            position: 'fixed', inset: 0, zIndex: 3000,
+            background: 'rgba(0,0,0,0.88)',
+            display: 'flex', alignItems: 'stretch',
+            padding: '1.5rem',
+          }}
+        >
+          <div
+            onClick={e => e.stopPropagation()}
+            style={{
+              background: 'var(--color-bg)',
+              border: '1px solid var(--color-border)',
+              display: 'flex', flexDirection: 'column',
+              width: '100%', maxWidth: 1100, margin: '0 auto',
+              maxHeight: '100%', overflow: 'hidden',
+            }}
+          >
+            {/* Modal header */}
+            <div style={{
+              display: 'flex', alignItems: 'center', gap: '1rem',
+              padding: '0.75rem 1rem',
+              borderBottom: '1px solid var(--color-border)',
+              flexShrink: 0,
+            }}>
+              <span style={{ fontFamily: 'Georgia,serif', fontSize: 'var(--fs-base)', flex: 1 }}>
+                Mediavalv
+                {vaultLoaded && <span style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-xs)', marginLeft: '0.5rem' }}>
+                  {vaultFiltered.length} bilder{vaultFilter ? ' (filtrerade)' : ` av ${vaultImages.length}`}
+                </span>}
+              </span>
+              <input
+                type="search"
+                autoFocus
+                value={vaultFilter}
+                onChange={e => setVaultFilter(e.target.value)}
+                placeholder="Sök verk, fotokrediter…"
+                style={{
+                  background: 'var(--color-bg-surface)',
+                  border: '1px solid var(--color-border)',
+                  color: 'var(--color-text)',
+                  padding: '0.35rem 0.6rem',
+                  fontSize: 'var(--fs-sm)',
+                  width: 260,
+                  outline: 'none',
+                }}
+              />
+              <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)' }}>
+                {images.length} valda
+              </span>
+              <button
+                type="button"
+                onClick={() => setVaultOpen(false)}
+                style={{
+                  background: 'none', border: 'none', color: 'var(--color-muted)',
+                  fontSize: '1.2rem', cursor: 'pointer', lineHeight: 1, padding: '0.2rem 0.4rem',
+                }}
+                title="Stäng (Esc)"
+              >✕</button>
+            </div>
+
+            {/* Modal body */}
+            <div style={{ flex: 1, overflowY: 'auto', padding: '1rem' }}>
+              {vaultLoading ? (
+                <p style={{ color: 'var(--color-muted)', textAlign: 'center', padding: '3rem' }}>Laddar…</p>
+              ) : vaultFiltered.length === 0 ? (
+                <p style={{ color: 'var(--color-muted)', textAlign: 'center', padding: '3rem' }}>Inga bilder hittades</p>
+              ) : (
+                <div style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(auto-fill, minmax(130px, 1fr))',
+                  gap: '0.5rem',
+                }}>
+                  {vaultFiltered.map((img, i) => {
+                    const added = imageSet.has(img.url)
+                    return (
+                      <div
+                        key={i}
+                        onClick={() => toggleVaultImage(img.url)}
+                        title={img.alt || img.work}
+                        style={{
+                          position: 'relative',
+                          cursor: 'pointer',
+                          border: added
+                            ? '2px solid var(--color-accent)'
+                            : '1px solid var(--color-border)',
+                          background: 'var(--color-bg-surface)',
+                          transition: 'border-color 0.1s, opacity 0.1s',
+                        }}
+                      >
+                        <div style={{ aspectRatio: '4/3', overflow: 'hidden', background: '#111' }}>
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img
+                            src={img.url}
+                            alt={img.alt}
+                            loading="lazy"
+                            style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', pointerEvents: 'none' }}
+                            onError={e => { (e.target as HTMLImageElement).style.opacity = '0.1' }}
+                          />
+                        </div>
+
+                        {/* Work label */}
+                        <div style={{
+                          padding: '0.3rem 0.4rem',
+                          fontSize: '0.6rem',
+                          color: 'var(--color-muted)',
+                          overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
+                        }}>
+                          {img.alt || img.work}
+                        </div>
+
+                        {/* "Added" checkmark overlay */}
+                        {added && (
+                          <div style={{
+                            position: 'absolute', top: 4, right: 4,
+                            background: 'var(--color-accent)',
+                            color: '#0a0a0a',
+                            borderRadius: '50%',
+                            width: 18, height: 18,
+                            display: 'flex', alignItems: 'center', justifyContent: 'center',
+                            fontSize: '0.65rem', fontWeight: 700,
+                            boxShadow: '0 1px 4px rgba(0,0,0,0.5)',
+                          }}>✓</div>
+                        )}
+
+                        {/* Work name badge bottom-left */}
+                        <div style={{
+                          position: 'absolute', bottom: 24, left: 0, right: 0,
+                          padding: '0.15rem 0.3rem',
+                          background: 'rgba(0,0,0,0.65)',
+                          fontSize: '0.55rem',
+                          color: 'rgba(255,255,255,0.65)',
+                          overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
+                          pointerEvents: 'none',
+                        }}>
+                          {img.work}
+                        </div>
+                      </div>
+                    )
+                  })}
+                </div>
+              )}
+            </div>
+
+            {/* Modal footer */}
+            <div style={{
+              display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+              padding: '0.75rem 1rem',
+              borderTop: '1px solid var(--color-border)',
+              flexShrink: 0,
+            }}>
+              <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)' }}>
+                Klicka på en bild för att lägga till / ta bort • Esc stänger
+              </span>
+              <button
+                type="button"
+                className="btn btn-primary"
+                onClick={() => setVaultOpen(false)}
+                style={{ fontSize: 'var(--fs-sm)' }}
+              >
+                Klar ({images.length} bilder)
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
