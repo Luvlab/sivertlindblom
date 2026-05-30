@@ -318,51 +318,115 @@ export default function AdminWatercolors() {
               value={sectionDesc} onChange={e => setSectionDesc(e.target.value)}
               placeholder="En serie axonometriska arkitektoniska visioner…" />
           </div>
-          {/* Hero slideshow picker */}
-          <div>
-            <label style={{ display: 'block', fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
-              Hero-slideshow — visas som helbild överst på akvarellersidan
-            </label>
-
-            {/* Thumbnails of selected hero images */}
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '0.75rem' }}>
-              {heroUrls.length === 0 && (
-                <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', fontStyle: 'italic' }}>
-                  Inga hero-bilder valda — slideshow döljs
-                </p>
-              )}
-              {heroUrls.map((url, i) => (
-                <div key={url} style={{ position: 'relative', width: 90, height: 60, flexShrink: 0 }}>
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={url} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', borderRadius: 2, border: '1px solid var(--color-border)' }} />
-                  <div style={{ position: 'absolute', top: 2, left: 4, fontSize: '0.6rem', color: '#fff', textShadow: '0 1px 2px rgba(0,0,0,0.8)', fontFamily: 'monospace' }}>
-                    {i + 1}
-                  </div>
-                  <button
-                    onClick={() => setHeroUrls(prev => prev.filter(u => u !== url))}
-                    style={{ position: 'absolute', top: 2, right: 2, width: 16, height: 16, borderRadius: '50%', background: 'rgba(0,0,0,0.6)', border: 'none', color: '#fff', fontSize: '0.6rem', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', lineHeight: 1 }}
-                    title="Ta bort"
-                  >×</button>
-                </div>
-              ))}
-            </div>
-
-            {/* Picker buttons */}
-            <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-              <button className="btn" onClick={async () => { setHeroVaultOpen(true); await openVault() }}
-                style={{ fontSize: 'var(--fs-xs)', padding: '0.35rem 0.75rem' }}>
-                ⊞ Välj från mediavalv
-              </button>
-              <label className="btn" style={{ fontSize: 'var(--fs-xs)', padding: '0.35rem 0.75rem', cursor: 'pointer' }}>
-                {heroUploading ? 'Laddar upp…' : '↑ Ladda upp hero-bild'}
-                <input ref={heroFileRef} type="file" accept="image/*" multiple onChange={handleHeroUpload} style={{ display: 'none' }} />
+          {/* ── Hero slideshow picker ── */}
+          <div style={{ borderTop: '1px solid var(--color-border)', paddingTop: '1rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '0.75rem', flexWrap: 'wrap' }}>
+              <label style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', textTransform: 'uppercase', letterSpacing: '0.06em', margin: 0 }}>
+                Hero-slideshow
               </label>
+              <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)' }}>
+                {heroUrls.length === 0 ? 'Ingen — slideshow döljs' : `${heroUrls.length} bild${heroUrls.length !== 1 ? 'er' : ''} · dra för att ändra ordning`}
+              </span>
               {heroUrls.length > 0 && (
-                <button className="btn" onClick={() => setHeroUrls([])}
-                  style={{ fontSize: 'var(--fs-xs)', padding: '0.35rem 0.75rem', color: '#f88', borderColor: '#f88' }}>
+                <button onClick={() => setHeroUrls([])}
+                  style={{ marginLeft: 'auto', fontSize: '0.65rem', color: '#f88', border: '1px solid #f88', background: 'transparent', padding: '0.15rem 0.5rem', cursor: 'pointer', borderRadius: 2 }}>
                   Rensa alla
                 </button>
               )}
+            </div>
+
+            {/* Cards row */}
+            <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', alignItems: 'flex-start' }}>
+
+              {/* Existing hero image cards */}
+              {heroUrls.map((url, i) => (
+                <div
+                  key={url}
+                  draggable
+                  onDragStart={e => { e.dataTransfer.setData('hero-idx', String(i)); e.dataTransfer.effectAllowed = 'move' }}
+                  onDragOver={e => { e.preventDefault(); e.dataTransfer.dropEffect = 'move' }}
+                  onDrop={e => {
+                    e.preventDefault()
+                    const from = parseInt(e.dataTransfer.getData('hero-idx'))
+                    if (from === i || isNaN(from)) return
+                    setHeroUrls(prev => {
+                      const next = [...prev]
+                      const [item] = next.splice(from, 1)
+                      next.splice(i, 0, item)
+                      return next
+                    })
+                  }}
+                  style={{ position: 'relative', width: 200, flexShrink: 0, cursor: 'grab', userSelect: 'none' }}
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={url}
+                    alt={`Hero ${i + 1}`}
+                    style={{
+                      width: '100%',
+                      height: 130,
+                      objectFit: 'cover',
+                      display: 'block',
+                      borderRadius: 3,
+                      border: '1px solid var(--color-border)',
+                      background: '#111',
+                    }}
+                  />
+                  {/* Sequence badge */}
+                  <div style={{
+                    position: 'absolute', top: 6, left: 6,
+                    background: 'rgba(0,0,0,0.72)', color: '#fff',
+                    fontSize: '0.65rem', fontFamily: 'monospace',
+                    padding: '1px 6px', borderRadius: 2, lineHeight: 1.6,
+                    pointerEvents: 'none',
+                  }}>
+                    {i + 1}
+                  </div>
+                  {/* Remove button */}
+                  <button
+                    onClick={() => setHeroUrls(prev => prev.filter(u => u !== url))}
+                    style={{
+                      position: 'absolute', top: 5, right: 5,
+                      width: 20, height: 20, borderRadius: '50%',
+                      background: 'rgba(0,0,0,0.65)', border: 'none',
+                      color: '#fff', fontSize: '0.75rem', cursor: 'pointer',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center', lineHeight: 1,
+                    }}
+                    title="Ta bort"
+                  >×</button>
+                  {/* URL hint */}
+                  <div style={{ fontSize: '0.6rem', color: 'var(--color-muted)', marginTop: 4, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', width: 200 }}>
+                    {url.split('/').pop()}
+                  </div>
+                </div>
+              ))}
+
+              {/* ── Add card ── */}
+              <div style={{
+                width: 200, height: 130, flexShrink: 0,
+                border: '2px dashed var(--color-border)',
+                borderRadius: 3,
+                display: 'flex', flexDirection: 'column',
+                alignItems: 'center', justifyContent: 'center',
+                gap: '0.5rem',
+                background: 'var(--color-bg-surface)',
+              }}>
+                <span style={{ fontSize: '1.4rem', color: 'var(--color-muted)', lineHeight: 1 }}>+</span>
+                <button
+                  className="btn"
+                  onClick={async () => { setHeroVaultOpen(true); await openVault() }}
+                  style={{ fontSize: '0.65rem', padding: '0.25rem 0.6rem', whiteSpace: 'nowrap' }}
+                >
+                  ⊞ Mediavalv
+                </button>
+                <label
+                  className="btn"
+                  style={{ fontSize: '0.65rem', padding: '0.25rem 0.6rem', whiteSpace: 'nowrap', cursor: 'pointer' }}
+                >
+                  {heroUploading ? 'Laddar…' : '↑ Ladda upp'}
+                  <input ref={heroFileRef} type="file" accept="image/*" multiple onChange={handleHeroUpload} style={{ display: 'none' }} />
+                </label>
+              </div>
             </div>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
