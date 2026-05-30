@@ -1,15 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { useState, useRef } from 'react'
-
-const STATS = [
-  { label: 'Startsida',           value: '—',   href: '/admin/home',         desc: 'Hero slideshow och startsidans innehåll' },
-  { label: 'Utställningar',       value: '45',  href: '/admin/exhibitions',  desc: 'Solo- och grupputställningar 1961–2016' },
-  { label: 'Offentliga arbeten',  value: '7',   href: '/admin/public-works', desc: 'Exteriörer och interiörer' },
-  { label: 'Texter',              value: '32',  href: '/admin/texts',        desc: 'Essays, recensioner, intervjuer, egna texter' },
-  { label: 'Biografi',            value: '10+', href: '/admin/biography',    desc: 'Kronologiposter och offentliga uppdrag' },
-]
+import { useState, useRef, useEffect } from 'react'
 
 const QUICK_ACTIONS = [
   { href: '/admin/home',            label: 'Redigera startsida',    icon: '⌂' },
@@ -36,6 +28,33 @@ export default function AdminDashboard() {
   const [iframeUrl, setIframeUrl] = useState('https://sivertlindblom.se')
   const [inputUrl, setInputUrl] = useState('https://sivertlindblom.se')
   const iframeRef = useRef<HTMLIFrameElement>(null)
+
+  // Live counts
+  const [counts, setCounts] = useState<Record<string, string>>({
+    watercolors: '…',
+    publicWorks: '…',
+    scenography: '…',
+    uploads: '…',
+  })
+
+  useEffect(() => {
+    const set = (key: string, n: number) => setCounts(c => ({ ...c, [key]: String(n) }))
+    fetch('/api/admin/watercolors').then(r => r.json()).then(d => { if (Array.isArray(d)) set('watercolors', d.length) }).catch(() => {})
+    fetch('/api/admin/public-works').then(r => r.json()).then(d => { if (Array.isArray(d)) set('publicWorks', d.length) }).catch(() => {})
+    fetch('/api/admin/scenography').then(r => r.json()).then(d => { if (Array.isArray(d)) set('scenography', d.length) }).catch(() => {})
+    fetch('/api/admin/upload').then(r => r.json()).then(d => { if (d?.files) set('uploads', d.files.length) }).catch(() => {})
+  }, [])
+
+  const STATS = [
+    { label: 'Startsida',           value: '—',                    href: '/admin/home',         desc: 'Hero slideshow och startsidans innehåll' },
+    { label: 'Akvareller',          value: counts.watercolors,     href: '/admin/watercolors',  desc: 'Akvareller 1975–2012' },
+    { label: 'Utställningar',       value: '45',                   href: '/admin/exhibitions',  desc: 'Solo- och grupputställningar 1961–2016' },
+    { label: 'Offentliga arbeten',  value: counts.publicWorks,     href: '/admin/public-works', desc: 'Exteriörer och interiörer' },
+    { label: 'Scenografi',          value: counts.scenography,     href: '/admin/scenography',  desc: 'Scenografi och koreografi' },
+    { label: 'Mediavalv',           value: counts.uploads,         href: '/admin/watercolors',  desc: 'Uppladdade bilder i Supabase' },
+    { label: 'Texter',              value: '32',                   href: '/admin/texts',        desc: 'Essays, recensioner, intervjuer, egna texter' },
+    { label: 'Biografi',            value: '10+',                  href: '/admin/biography',    desc: 'Kronologiposter och offentliga uppdrag' },
+  ]
 
   const tabStyle = (t: Tab): React.CSSProperties => ({
     padding: '0.65rem 1.25rem',

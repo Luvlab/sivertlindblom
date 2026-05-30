@@ -75,7 +75,7 @@ export default function AdminWatercolors() {
         body: JSON.stringify(items),
       })
       const data = await res.json() as { ok?: boolean; error?: string }
-      if (res.ok && !data.error) { setSaved(true); setDirty(false); setTimeout(() => setSaved(false), 3000) }
+      if (res.ok && !data.error) { setSaved(true); setDirty(false); setTimeout(() => setSaved(false), 5000) }
       else setError(data.error ?? 'Fel')
     } catch (e) { setError(String(e)) }
     finally { setSaving(false) }
@@ -99,7 +99,7 @@ export default function AdminWatercolors() {
         setError(data.error ?? `HTTP ${res.status}`)
       } else {
         setSavedMeta(true)
-        setTimeout(() => setSavedMeta(false), 3000)
+        setTimeout(() => setSavedMeta(false), 5000)
       }
     } catch (e) { setError(String(e)) }
     finally { setSavingMeta(false) }
@@ -255,10 +255,14 @@ export default function AdminWatercolors() {
           </p>
         </div>
         <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
-          {saved && <span style={{ color: 'var(--color-accent)', fontSize: 'var(--fs-sm)' }}>✓ Sparad</span>}
           {error && <span style={{ color: '#f88', fontSize: 'var(--fs-sm)', maxWidth: 260 }}>{error}</span>}
-          <button className="btn btn-primary" onClick={handleSave} disabled={saving || !dirty}>
-            {saving ? 'Sparar…' : 'Spara ändringar'}
+          <button
+            className="btn btn-primary"
+            onClick={handleSave}
+            disabled={saving || (!dirty && !saved)}
+            style={saved ? { background: '#2c6e2c', borderColor: '#2c6e2c', opacity: 1, cursor: 'default' } : {}}
+          >
+            {saving ? 'Sparar…' : saved ? '✓ Sparad!' : 'Spara ändringar'}
           </button>
         </div>
       </div>
@@ -290,10 +294,17 @@ export default function AdminWatercolors() {
               placeholder={'[\n  "https://…/bild1.jpg",\n  "https://…/bild2.jpg"\n]'} />
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-            <button className="btn" onClick={handleSaveMeta} disabled={savingMeta} style={{ fontSize: 'var(--fs-sm)', border: '1.5px solid var(--color-accent)', color: 'var(--color-accent)', background: 'transparent' }}>
-              {savingMeta ? 'Sparar…' : 'Spara rubrik & ingress'}
+            <button
+              className="btn"
+              onClick={handleSaveMeta}
+              disabled={savingMeta}
+              style={savedMeta
+                ? { fontSize: 'var(--fs-sm)', border: '1.5px solid #2c6e2c', color: '#fff', background: '#2c6e2c', cursor: 'default' }
+                : { fontSize: 'var(--fs-sm)', border: '1.5px solid var(--color-accent)', color: 'var(--color-accent)', background: 'transparent' }
+              }
+            >
+              {savingMeta ? 'Sparar…' : savedMeta ? '✓ Sparad!' : 'Spara rubrik & ingress'}
             </button>
-            {savedMeta && <span style={{ color: 'var(--color-accent)', fontSize: 'var(--fs-sm)' }}>✓ Sparad</span>}
           </div>
         </div>
       </div>
