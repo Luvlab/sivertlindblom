@@ -336,11 +336,24 @@ export const exhibitions: Exhibition[] = [
   },
   {
     slug: "korsbarsgarden-gotland-2010",
-    title: "Körsbärsgården, Sundre Gotland 2010",
-    year: 2010,
+    title: "Körsbärsgården, Sundre Gotland 2007 & 2010",
+    year: 2007,
     location: "Gotland",
     url: "",
     images: [
+      // 2007
+      "https://sivertlindblom.se/wp-content/uploads/2018/07/K%C3%B6rsb.DSC_4986-1-390x390.jpg",
+      "https://sivertlindblom.se/wp-content/uploads/2018/07/K%C3%B6rsb.DSC_4976-390x390.jpg",
+      "https://sivertlindblom.se/wp-content/uploads/2018/07/K%C3%B6rsb.DSC_4972-390x390.jpg",
+      "https://sivertlindblom.se/wp-content/uploads/2018/07/K%C3%B6rsb.DSC_4974-390x390.jpg",
+      "https://sivertlindblom.se/wp-content/uploads/2018/07/K%C3%B6rsb.DSC_4973-390x390.jpg",
+      "https://sivertlindblom.se/wp-content/uploads/2018/07/K%C3%B6rsb.DSC_4967-390x390.jpg",
+      "https://sivertlindblom.se/wp-content/uploads/2018/07/K%C3%B6rsb.DSC_4968-390x390.jpg",
+      "https://sivertlindblom.se/wp-content/uploads/2018/07/K%C3%B6rsb.DSC_4969-390x390.jpg",
+      "https://sivertlindblom.se/wp-content/uploads/2018/07/K%C3%B6rsb.DSC_4970-390x390.jpg",
+      "https://sivertlindblom.se/wp-content/uploads/2018/07/K%C3%B6rsb.DSC_4971-390x390.jpg",
+      "https://sivertlindblom.se/wp-content/uploads/2018/07/K%C3%B6rsb.DSC_4966-390x390.jpg",
+      // 2010
       "https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/02/SNC00849.jpg",
       "https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/02/SNC00848-390x390.jpg",
       "https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/02/SNC008581-390x390.jpg",
@@ -351,7 +364,9 @@ export const exhibitions: Exhibition[] = [
       "https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/02/SNC00845-390x390.jpg",
     ],
     description:
-      "Till Körsbärsgården på Gotland brukar Sivert Lindblom återkomma. Det är alltid värt ett besök när man ändå har vägarna genom Sudret och kanske på väg till den kända rauken Hoburgsgubben nästan längst ned på ön.",
+      "I Sundre nere på Sudret, i södra delen av Gotland, finns Körsbärsgården med sitt trevliga café och konsthall — ett populärt utflyktsmål. Till Körsbärsgården brukar Sivert Lindblom återkomma med utställningar då och då. Som sommargotlänning med en av sina ateljéer på ön är det både ett praktiskt nöje och en ära att få ställa ut där och att finnas med i den permanenta skulpturparken.",
+    body:
+      "I Sundre nere på Sudret, i södra delen av Gotland, finns Körsbärsgården med sitt trevliga café och konsthall — ett populärt utflyktsmål. Till Körsbärsgården brukar Sivert Lindblom återkomma med utställningar då och då. Som sommargotlänning med en av sina ateljéer på ön är det både ett praktiskt nöje och en ära att få ställa ut där och att finnas med i den permanenta skulpturparken.\n\nDet är alltid värt ett besök när man ändå har vägarna genom Sudret och kanske är på väg till den kända rauken Hoburgsgubben nästan längst ned på ön. Galleri och skulpturpark håller öppet somrarna. Sivert ställde ut här sommaren 2007 och återkom 2010.",
     audioUrl: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/media/2015/03/Arvo-P%C3%A4rt-Miserere-02-Festina-Lente.mp3',
     audioCaption: 'Arvo Pärt, Miserere — "Festina Lente", The Hilliard Ensemble (1991)',
     links: [

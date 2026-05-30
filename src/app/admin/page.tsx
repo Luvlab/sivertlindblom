@@ -32,7 +32,7 @@ export default function AdminDashboard() {
   // Live counts
   const [counts, setCounts] = useState<Record<string, string>>({
     watercolors: '…', publicWorks: '…', scenography: '…',
-    uploads: '…', exhibitions: '…', texts: '…', biography: '…',
+    uploads: '…', exhibitions: '…', texts: '…', biography: '…', home: '…',
   })
 
   interface DeployCommit { hash: string; date: string; message: string }
@@ -48,6 +48,7 @@ export default function AdminDashboard() {
     fetch('/api/admin/exhibitions').then(r => r.json()).then(d => { if (Array.isArray(d)) set('exhibitions', d.length) }).catch(() => {})
     fetch('/api/admin/texts').then(r => r.json()).then(d => { if (Array.isArray(d)) set('texts', d.length) }).catch(() => {})
     fetch('/api/admin/biography').then(r => r.json()).then(d => { if (Array.isArray(d)) set('biography', d.length) }).catch(() => {})
+    fetch('/api/admin/home').then(r => r.json()).then(d => { if (d?.slides) set('home', d.slides.length) }).catch(() => {})
     fetch('/api/admin/deploy-info').then(r => r.json()).then(d => {
       if (d?.commits) setDeploys(d.commits)
       if (d?.vercelEnv) setVercelEnv(d.vercelEnv)
@@ -55,7 +56,7 @@ export default function AdminDashboard() {
   }, [])
 
   const STATS = [
-    { label: 'Startsida',           value: '—',                    href: '/admin/home',         desc: 'Hero slideshow och startsidans innehåll' },
+    { label: 'Startsida',           value: counts.home,            href: '/admin/home',         desc: 'Hero slideshow bilder' },
     { label: 'Akvareller',          value: counts.watercolors,     href: '/admin/watercolors',  desc: 'Akvareller 1975–2012' },
     { label: 'Utställningar',       value: counts.exhibitions,     href: '/admin/exhibitions',  desc: 'Solo- och grupputställningar 1961–2016' },
     { label: 'Offentliga arbeten',  value: counts.publicWorks,     href: '/admin/public-works', desc: 'Exteriörer och interiörer' },

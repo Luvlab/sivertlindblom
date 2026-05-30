@@ -1,6 +1,8 @@
 'use client'
 
 import { useState, useEffect, useRef, useMemo } from 'react'
+import Lightbox from '@/components/gallery/Lightbox'
+import type { LightboxImage } from '@/components/gallery/Lightbox'
 
 interface VaultImage {
   url: string
@@ -41,6 +43,12 @@ export default function AdminWatercolors() {
   const [heroVaultOpen, setHeroVaultOpen] = useState(false)
   const heroFileRef = useRef<HTMLInputElement>(null)
   const [heroUploading, setHeroUploading] = useState(false)
+
+  // Lightbox (shared for both hero and main grid)
+  const [lbImages, setLbImages] = useState<LightboxImage[]>([])
+  const [lbIdx, setLbIdx] = useState<number | null>(null)
+
+  function openLb(imgs: LightboxImage[], idx: number) { setLbImages(imgs); setLbIdx(idx) }
 
   // Drag reorder
   const [draggingIdx, setDraggingIdx] = useState<number | null>(null)
@@ -362,6 +370,7 @@ export default function AdminWatercolors() {
                   <img
                     src={url}
                     alt={`Hero ${i + 1}`}
+                    onClick={e => { e.stopPropagation(); openLb(heroUrls.map((u, j) => ({ url: u, alt: `Hero ${j + 1}` })), i) }}
                     style={{
                       width: '100%',
                       height: 130,
@@ -370,6 +379,7 @@ export default function AdminWatercolors() {
                       borderRadius: 3,
                       border: '1px solid var(--color-border)',
                       background: '#111',
+                      cursor: 'zoom-in',
                     }}
                   />
                   {/* Sequence badge */}
@@ -491,8 +501,11 @@ export default function AdminWatercolors() {
                       transition: 'opacity 0.1s',
                     }}
                   >
-                    {/* Thumbnail */}
-                    <div style={{ aspectRatio: '1/1', overflow: 'hidden', background: '#f0ede8', padding: '4px' }}>
+                    {/* Thumbnail — click opens fullscreen lightbox */}
+                    <div
+                      style={{ aspectRatio: '1/1', overflow: 'hidden', background: '#f0ede8', padding: '4px', cursor: 'zoom-in' }}
+                      onClick={e => { e.stopPropagation(); openLb(items.map(it => ({ url: it.url, alt: it.alt || '' })), realIdx) }}
+                    >
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
                         src={item.url}
@@ -570,6 +583,11 @@ export default function AdminWatercolors() {
             </div>
           </div>
         </>
+      )}
+
+      {/* Fullscreen lightbox */}
+      {lbIdx !== null && (
+        <Lightbox images={lbImages} startIndex={lbIdx} onClose={() => setLbIdx(null)} />
       )}
 
       {/* ── Media vault modal (works for both image list and hero picker) ── */}
