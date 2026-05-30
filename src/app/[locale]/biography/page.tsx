@@ -87,6 +87,49 @@ const TIMELINE = [
   { year: '1995',      label: 'Sergelpriset, Stockholm' },
 ]
 
+const AWARDS: Array<{
+  year: string
+  title: string
+  description?: string
+  links?: Array<{ prefix: string; label: string; url: string }>
+}> = [
+  {
+    year: '1985',
+    title: 'Stenpriset — Sveriges Stenindustriförbund',
+    links: [
+      { prefix: 'LÄS OM', label: 'Om Stenpriset till Sivert Lindblom — Sveriges Stenindustriförbund 1985', url: 'https://sivertlindblom.se/biografi/egna-texter/pdf-fil-att-skriva-ut-om-stenpriset-till-sivert-lindblom-av-sveriges-stenindustriforbund-1985/' },
+      { prefix: 'HÄMTA', label: 'Sten 1985 — artikel (PDF)', url: 'https://media.sivertlindblom.se/2015/02/Sten-1985opt-.pdf' },
+      { prefix: 'LÄS MER', label: 'sten.se/stenpriset', url: 'https://www.sten.se/stenpriset/' },
+    ],
+  },
+  {
+    year: '1995',
+    title: 'Sergelpriset, Stockholm',
+  },
+  {
+    year: '2002',
+    title: 'S:t Eriksmedaljen',
+    links: [
+      { prefix: 'LÄS MER', label: 'Om S:t Eriksmedaljen 2002', url: 'https://sivertlindblom.se/st-eriksmedaljen-2002/' },
+    ],
+  },
+  {
+    year: '',
+    title: 'K A Linds Hederspris — Moderna Museets vänners kulturpris',
+    links: [
+      { prefix: 'LÄS MER', label: 'Moderna museets vänners skulpturpris — Wikipedia', url: 'https://sv.wikipedia.org/wiki/Moderna_museets_v%C3%A4nners_skulpturpris' },
+    ],
+  },
+  {
+    year: '',
+    title: 'Prins Eugen-medaljen',
+    description: 'Prins Eugen-medaljen instiftades av Konung Gustaf V i samband med Prins Eugens 80-årsdag år 1945. Medaljen tilldelas för framstående konstnärlig verksamhet. Medaljförläningen sker på Eugendagen den 5 november och själva utdelningen en kort tid därefter. Medaljen utdelas i guld (förgyllt silver) av 8:e storleken och bärs på bröstet i vitt-gult-vitt band med blå kantränder. Medaljmottagarens namn och årtal präglas på medaljens nedre rand.',
+    links: [
+      { prefix: 'LÄS MER', label: 'Om medaljen och målarprinsen — Kungl. Maj:ts Orden', url: 'https://kungligmajestatsorden.se/medaljer/prins-eugen-medaljen' },
+    ],
+  },
+]
+
 const PUBLIC_COMMISSIONS: Array<{ year: string; title: string; location: string; slug?: string }> = [
   { year: '2013', title: 'Bältesspännarparken', location: 'Göteborg',  slug: 'baltesspannarparken-goteborg-2013' },
   { year: '2004', title: 'Roslagens Sparbank', location: 'Norrtälje' },
@@ -274,6 +317,38 @@ export default async function BiographyPage({
               <span style={{ color: 'var(--color-accent)', fontFamily: 'Georgia, serif', fontSize: 'var(--fs-sm)', flexShrink: 0 }}>{t.year}</span>
               {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
               <span style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-text)' }}>{(dict.biography as any)?.[`timeline_${i}`] ?? t.label}</span>
+            </div>
+          ))}
+
+          {/* ── Priser & utmärkelser ── */}
+          <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-2xl)', marginTop: '3rem', marginBottom: '2rem' }}>
+            Priser &amp; utmärkelser
+          </h2>
+          {AWARDS.map((a, i) => (
+            <div key={i} style={{ display: 'grid', gridTemplateColumns: '7rem 1fr', gap: '1rem', padding: '0.9rem 0', borderBottom: '1px solid var(--color-border)', alignItems: 'start' }}>
+              <span style={{ color: 'var(--color-accent)', fontFamily: 'Georgia, serif', fontSize: 'var(--fs-sm)', flexShrink: 0, paddingTop: '0.1rem' }}>{a.year}</span>
+              <div>
+                <span style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-text)', display: 'block' }}>{a.title}</span>
+                {a.description && (
+                  <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', lineHeight: 1.7, marginTop: '0.5rem', marginBottom: '0.25rem' }}>{a.description}</p>
+                )}
+                {a.links && a.links.length > 0 && (
+                  <div style={{ marginTop: '0.5rem', display: 'flex', flexWrap: 'wrap', gap: '0.5rem 1.5rem' }}>
+                    {a.links.map((lnk, j) => (
+                      <a
+                        key={j}
+                        href={lnk.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-accent)', textDecoration: 'none', letterSpacing: '0.06em' }}
+                      >
+                        <span style={{ opacity: 0.6, marginRight: '0.35em' }}>{lnk.prefix}</span>
+                        {lnk.label} →
+                      </a>
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
           ))}
         </section>

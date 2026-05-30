@@ -1090,6 +1090,8 @@ Konstrevy Nr 2, 1967`,
 [Hämta PDF (3,8 MB) →](https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/media/2015/02/Sten-1985opt-.pdf)`,
     images: [
       'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/media/2015/02/Sten-omslag-1985-minst.jpg',
+      'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/biography/priser/stenpriset-1.jpg',
+      'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/biography/priser/stenpriset-2.jpg',
     ],
   },
   {
@@ -1218,6 +1220,23 @@ Musikvideon spelades in i TV2:s förbindelsekorridorer mellan filmstudios, och i
 
 Fontänerna är Lindbloms sista etapp av torgets omgestaltning. Projektgruppen bakom dem bestod av Malmö Stad med stadsarkitekten Sven-Ingvar Andersson som konstnärlig rådgivare.`,
     videoUrl: 'https://www.youtube.com/embed/-ba2Oq65qe4',
+  },
+
+  {
+    slug: 'poetic-cinema-svenstedt',
+    type: 'film',
+    year: 1976,
+    title: 'Poetic Cinema — Carl Henrik Svenstedt',
+    author: 'Carl Henrik Svenstedt',
+    publication: 'Carl Henrik Svenstedt, 1976',
+    lang: 'sv',
+    body: `"Poetic Cinema" är ett filmverk av den svenske konstkritikern och filmaren Carl Henrik Svenstedt, med Sivert Lindbloms skulpturer som centralt motiv. Bilderna dokumenterar Lindbloms skulpturala landskap i en filmisk komposition.
+
+Verket är ett exempel på den konstnärliga dialog som Lindblom förde med sin samtid — skulpturen som källa för ett poetiskt bildspråk i filmmediet.`,
+    images: [
+      'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/texts/film/poetic-cinema-1.jpg',
+      'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/texts/film/poetic-cinema-2.jpg',
+    ],
   },
 ]
 

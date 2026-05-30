@@ -83,6 +83,18 @@ export default function WatercolorsGallery({ locale, dict }: Props) {
         <p style={{ color: 'var(--color-muted)', maxWidth: '60ch', fontSize: 'var(--fs-sm)', lineHeight: 1.7 }}>
           {wc.context_1 ?? ''} {wc.context_2 ?? ''}
         </p>
+        {/* Catalogue text links */}
+        <div style={{ marginTop: '1rem', display: 'flex', flexWrap: 'wrap', gap: '0.5rem 1.5rem', fontSize: 'var(--fs-xs)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+          <Link href={`/${locale}/texts/jan-oqvist-2012`} style={{ color: 'var(--color-accent)', textDecoration: 'none' }}>
+            LÄS MER — Jan Öqvist
+          </Link>
+          <Link href={`/${locale}/texts/peter-cornell-2012`} style={{ color: 'var(--color-accent)', textDecoration: 'none' }}>
+            LÄS MER — Peter Cornell
+          </Link>
+          <Link href={`/${locale}/texts/catharina-gabrielsson-2012`} style={{ color: 'var(--color-accent)', textDecoration: 'none' }}>
+            LÄS MER — Catharina Gabrielsson
+          </Link>
+        </div>
         <div style={{ marginTop: '1rem', fontSize: 'var(--fs-xs)', color: 'var(--color-accent)', letterSpacing: '0.08em' }}>
           {WATERCOLOR_IMAGES.length} {wc.gallery_count ?? 'verk'} — {wc.click_hint ?? 'klicka för bildspel'}
         </div>

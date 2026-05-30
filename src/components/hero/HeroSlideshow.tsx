@@ -51,7 +51,7 @@ function shuffle<T>(arr: T[]): T[] {
   return a
 }
 
-const DISPLAY_MS = 6000  // hold time per slide
+const DISPLAY_MS = 12000 // hold time per slide
 const FADE_MS    = 3000  // fade-out duration — matches exhibitions hero
 
 interface Props {

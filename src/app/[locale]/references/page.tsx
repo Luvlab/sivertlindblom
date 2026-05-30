@@ -294,7 +294,7 @@ export default async function ReferencesPage({
             {dict.references?.publicerat ?? 'Publicerat'}
           </h2>
           <p style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-sm)', marginBottom: '2rem', maxWidth: '60ch' }}>
-            {dict.references?.publicerat_desc ?? 'Kataloger, tidskriftsartiklar och böcker med texter om Sivert Lindbloms konstnärskap.'}
+            {dict.references?.publicerat_intro ?? 'Ett urval av kataloger, tidskriftsartiklar och böcker med och om Sivert Lindbloms konstnärsskap.'}
           </p>
           <GalleryGrid images={pubLightboxImages} aspectRatio="2/3" columns="sm" />
         </section>
