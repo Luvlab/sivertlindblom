@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react'
 import Link from 'next/link'
+import LinkTextarea from '@/components/admin/LinkTextarea'
 
 const DEFAULT_PORTRAIT = 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Portratt-SivertMattias.jpg'
 
@@ -221,13 +222,12 @@ export default function AdminBiography() {
           </div>
         </div>
         <div style={{ display: 'flex', gap: '1.5rem', padding: '1.25rem', alignItems: 'flex-start' }}>
-          <textarea
-            className="input"
-            rows={5}
+          <LinkTextarea
             value={intro}
-            onChange={e => setIntro(e.target.value)}
+            onChange={setIntro}
+            rows={5}
             placeholder="Skriv en kort presentation av Sivert Lindblom som visas längst upp på biografisidan…"
-            style={{ flex: 1, resize: 'vertical', fontSize: 'var(--fs-sm)', lineHeight: 1.7 }}
+            style={{ flex: 1 }}
           />
           {/* Portrait preview + upload */}
           <div style={{ flexShrink: 0, width: 160, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.75rem' }}>

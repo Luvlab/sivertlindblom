@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import LinkTextarea from '@/components/admin/LinkTextarea'
 
 const lbl = (text: string) => (
   <label style={{ display: 'block', fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '0.4rem' }}>{text}</label>
@@ -111,12 +112,10 @@ export default function NewBioPage() {
 
         <div>
           {lbl('Utökad beskrivning')}
-          <textarea
-            className="input"
-            rows={4}
-            style={{ width: '100%', resize: 'vertical' }}
+          <LinkTextarea
             value={form.description}
-            onChange={f('description')}
+            onChange={v => setForm(p => ({ ...p, description: v }))}
+            rows={4}
             placeholder="Valfri utökad text..."
           />
         </div>

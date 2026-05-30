@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import type { ScenographyWork } from '@/app/api/admin/scenography/route'
 import AdminForm, { FieldLabel } from '@/components/admin/AdminForm'
 import ImageListEditor from '@/components/admin/ImageListEditor'
+import LinkTextarea from '@/components/admin/LinkTextarea'
 import { Suspense } from 'react'
 
 function NewScenographyForm() {
@@ -113,9 +114,12 @@ function NewScenographyForm() {
 
             <div>
               <FieldLabel>Beskrivning</FieldLabel>
-              <textarea className="input" rows={8} style={{ width: '100%', resize: 'vertical' }}
-                value={form.description} onChange={e => update('description', e.target.value)}
-                placeholder="Längre beskrivning av verket…" />
+              <LinkTextarea
+                value={form.description}
+                onChange={v => update('description', v)}
+                rows={8}
+                placeholder="Längre beskrivning av verket…"
+              />
             </div>
 
           </div>

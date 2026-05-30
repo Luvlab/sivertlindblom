@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import type { Exhibition } from '@/lib/exhibitions-data'
 import AdminForm, { FieldLabel } from '@/components/admin/AdminForm'
 import ImageListEditor from '@/components/admin/ImageListEditor'
+import LinkTextarea from '@/components/admin/LinkTextarea'
 
 function slugify(str: string): string {
   return str
@@ -112,12 +113,10 @@ function NewExhibitionPageInner() {
 
       <div>
         <FieldLabel>Beskrivning</FieldLabel>
-        <textarea
-          className="input"
-          rows={5}
+        <LinkTextarea
           value={form.description}
-          onChange={e => update('description', e.target.value)}
-          style={{ resize: 'vertical' }}
+          onChange={v => update('description', v)}
+          rows={5}
           placeholder="Kort beskrivning av utställningen..."
         />
       </div>

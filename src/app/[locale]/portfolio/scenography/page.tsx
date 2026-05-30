@@ -6,6 +6,7 @@ import type { Locale } from '@/i18n/config'
 import TextImageSlideshow from '@/components/TextImageSlideshow'
 import ExhibitionsHeroSlideshow from '@/components/gallery/ExhibitionsHeroSlideshow'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { renderParagraphs } from '@/lib/render-text'
 import { cacheTag, cacheLife } from 'next/cache'
 
 export const metadata: Metadata = { title: 'Scenography' }
@@ -226,10 +227,8 @@ export default async function ScenographyPage({
 
               {/* Description */}
               {w.description && (
-                <div style={{ paddingLeft: 'calc(5rem + 1.5rem)', marginBottom: '1.75rem' }}>
-                  <p style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-base)', lineHeight: 1.7, maxWidth: '70ch', margin: 0 }}>
-                    {w.description}
-                  </p>
+                <div style={{ paddingLeft: 'calc(5rem + 1.5rem)', marginBottom: '1.75rem', color: 'var(--color-muted)', fontSize: 'var(--fs-base)', lineHeight: 1.7, maxWidth: '70ch' }}>
+                  {renderParagraphs(w.description, { margin: 0, lineHeight: 1.7 })}
                 </div>
               )}
 

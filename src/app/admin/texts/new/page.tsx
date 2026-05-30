@@ -3,6 +3,7 @@
 import { useState, Suspense } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import LinkTextarea from '@/components/admin/LinkTextarea'
 
 function slugify(str: string) {
   return str
@@ -124,12 +125,10 @@ function NewTextPageInner() {
 
         <div>
           {lbl('Textinnehåll (brödtext)')}
-          <textarea
-            className="input"
-            rows={10}
-            style={{ width: '100%', resize: 'vertical' }}
+          <LinkTextarea
             value={form.body}
-            onChange={f('body')}
+            onChange={v => setForm(p => ({ ...p, body: v }))}
+            rows={10}
             placeholder="Skriv eller klistra in textens innehåll här…"
           />
         </div>

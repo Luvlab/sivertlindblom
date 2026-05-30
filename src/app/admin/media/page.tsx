@@ -32,6 +32,8 @@ export default function AdminMedia() {
   const [creditsDirty, setCreditsDirty] = useState(false)
   const [creditsSaving, setCreditsSaving] = useState(false)
   const [creditsSaved, setCreditsSaved] = useState(false)
+  const [singleEditUrl, setSingleEditUrl] = useState<string | null>(null)
+  const [singleEditSaving, setSingleEditSaving] = useState(false)
 
   useEffect(() => {
     async function load() {
@@ -174,7 +176,10 @@ export default function AdminMedia() {
       ))
       setCreditsDirty(false)
       setCreditsSaved(true)
-      setTimeout(() => setCreditsSaved(false), 3000)
+      setTimeout(() => {
+        setCreditsSaved(false)
+        setBulkEdit(false)
+      }, 1500)
     } catch (e) {
       setError(String(e))
     } finally {
@@ -191,6 +196,28 @@ export default function AdminMedia() {
     setCredits(reset)
     setCreditsDirty(false)
     setBulkEdit(false)
+  }
+
+  async function saveSingleCredit(url: string) {
+    const alt = credits[url] ?? ''
+    setSingleEditSaving(true)
+    try {
+      const res = await fetch('/api/admin/media', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ updates: [{ url, alt }] }),
+      })
+      if (!res.ok) {
+        const data = await res.json() as { error: string }
+        throw new Error(data.error)
+      }
+      setImages(prev => prev.map(img => img.url === url ? { ...img, alt } : img))
+      setSingleEditUrl(null)
+    } catch (e) {
+      setError(String(e))
+    } finally {
+      setSingleEditSaving(false)
+    }
   }
 
   const safeSlideIdx = filtered.length > 0 ? Math.min(slideIdx, filtered.length - 1) : 0
@@ -418,7 +445,7 @@ export default function AdminMedia() {
                     position: 'relative',
                     opacity: locked ? 0.55 : 1,
                   }}
-                  onClick={bulkEdit ? undefined : () => openSlideshow(globalIdx)}
+                  onClick={bulkEdit || singleEditUrl === img.url ? undefined : () => openSlideshow(globalIdx)}
                   title={bulkEdit ? undefined : 'Klicka för bildspel'}
                 >
                   <div style={{ aspectRatio: '4/3', overflow: 'hidden', background: '#111', position: 'relative' }}>
@@ -460,7 +487,7 @@ export default function AdminMedia() {
 
                   <div style={{ padding: '0.5rem 0.6rem' }}>
                     {bulkEdit && editable ? (
-                      /* Editable credit field */
+                      /* Editable credit field — bulk mode */
                       <input
                         type="text"
                         value={credits[img.url] ?? ''}
@@ -479,6 +506,51 @@ export default function AdminMedia() {
                           padding: '0.3rem 0.4rem', outline: 'none', marginBottom: '0.15rem',
                         }}
                       />
+                    ) : singleEditUrl === img.url ? (
+                      /* Single-image inline edit */
+                      <div onClick={e => e.stopPropagation()}>
+                        <input
+                          type="text"
+                          autoFocus
+                          value={credits[img.url] ?? ''}
+                          placeholder="Fotograf / kredit…"
+                          onChange={e => setCredits(prev => ({ ...prev, [img.url]: e.target.value }))}
+                          style={{
+                            width: '100%', boxSizing: 'border-box',
+                            background: 'var(--color-bg)', border: '1px solid rgba(180,140,60,0.6)',
+                            color: 'var(--color-text)', fontSize: 'var(--fs-xs)',
+                            padding: '0.3rem 0.4rem', outline: 'none', marginBottom: '0.3rem',
+                          }}
+                        />
+                        <div style={{ display: 'flex', gap: '0.3rem' }}>
+                          <button
+                            onClick={e => { e.stopPropagation(); void saveSingleCredit(img.url) }}
+                            disabled={singleEditSaving}
+                            style={{
+                              flex: 1, padding: '0.2rem 0.4rem', fontSize: 10,
+                              background: 'var(--color-accent)', color: '#0a0a0a',
+                              border: 'none', cursor: 'pointer', fontWeight: 600,
+                              opacity: singleEditSaving ? 0.6 : 1,
+                            }}
+                          >
+                            {singleEditSaving ? '…' : 'Spara'}
+                          </button>
+                          <button
+                            onClick={e => {
+                              e.stopPropagation()
+                              setSingleEditUrl(null)
+                              setCredits(prev => ({ ...prev, [img.url]: img.alt }))
+                            }}
+                            style={{
+                              padding: '0.2rem 0.5rem', fontSize: 10,
+                              background: 'transparent', color: 'var(--color-muted)',
+                              border: '1px solid var(--color-border)', cursor: 'pointer',
+                            }}
+                          >
+                            ✕
+                          </button>
+                        </div>
+                      </div>
                     ) : (
                       img.alt && (
                         <div style={{
@@ -487,10 +559,27 @@ export default function AdminMedia() {
                         }}>{img.alt}</div>
                       )
                     )}
-                    <div style={{
-                      fontSize: 'var(--fs-xs)', color: 'var(--color-muted)',
-                      overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
-                    }}>{img.work}</div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <div style={{
+                        fontSize: 'var(--fs-xs)', color: 'var(--color-muted)',
+                        overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
+                        flex: 1,
+                      }}>{img.work}</div>
+                      {!bulkEdit && img.source === 'public_work' && singleEditUrl !== img.url && (
+                        <button
+                          onClick={e => { e.stopPropagation(); setSingleEditUrl(img.url) }}
+                          title="Redigera fotokrediter"
+                          style={{
+                            padding: '0.15rem 0.35rem', fontSize: 10,
+                            background: 'transparent', color: 'var(--color-muted)',
+                            border: 'none', cursor: 'pointer', flexShrink: 0,
+                            opacity: 0.65,
+                          }}
+                        >
+                          ✏️
+                        </button>
+                      )}
+                    </div>
                   </div>
                 </div>
               )

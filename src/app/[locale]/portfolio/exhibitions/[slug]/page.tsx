@@ -7,6 +7,7 @@ import type { Locale } from '@/i18n/config'
 import GalleryGrid from '@/components/gallery/GalleryGrid'
 import type { LightboxImage } from '@/components/gallery/Lightbox'
 import { getExhibition, getExhibitions, getExhibitionSlugs } from '@/lib/data-server'
+import { renderParagraphs } from '@/lib/render-text'
 
 export async function generateStaticParams() {
   const slugs = await getExhibitionSlugs()
@@ -98,28 +99,28 @@ export default async function ExhibitionDetailPage({
       <div className="page-pad">
         {/* Description */}
         {ex.description && ex.description !== 'TEXT kommer' && (
-          <p style={{
+          <div style={{
             color: 'var(--color-muted)',
             fontSize: 'var(--fs-base)',
             lineHeight: 1.85,
             maxWidth: '68ch',
             marginBottom: ex.body || (ex.links && ex.links.length > 0) ? '1.5rem' : '3.5rem',
           }}>
-            {ex.description}
-          </p>
+            {renderParagraphs(ex.description, { margin: 0, lineHeight: 1.85 })}
+          </div>
         )}
 
         {/* Body text */}
         {ex.body && (
-          <p style={{
+          <div style={{
             color: 'var(--color-muted)',
             fontSize: 'var(--fs-base)',
             lineHeight: 1.85,
             maxWidth: '68ch',
             marginBottom: (ex.links && ex.links.length > 0) ? '1.5rem' : '3.5rem',
           }}>
-            {ex.body}
-          </p>
+            {renderParagraphs(ex.body, { margin: 0, lineHeight: 1.85 })}
+          </div>
         )}
 
         {/* Links */}
