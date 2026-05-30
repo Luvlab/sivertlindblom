@@ -1,6 +1,8 @@
 'use client'
 
 import { useRef, useState, useEffect, useMemo } from 'react'
+import Lightbox from '@/components/gallery/Lightbox'
+import type { LightboxImage } from '@/components/gallery/Lightbox'
 
 interface ImageListEditorProps {
   images: string[]
@@ -27,6 +29,9 @@ export default function ImageListEditor({ images, onChange, label = 'Bilder' }: 
   // Inline URL edit per card
   const [editingIdx, setEditingIdx] = useState<number | null>(null)
   const [editingUrl, setEditingUrl] = useState('')
+
+  // Lightbox preview
+  const [lbIdx, setLbIdx] = useState<number | null>(null)
 
   // Media vault browser
   const [vaultOpen, setVaultOpen] = useState(false)
@@ -254,8 +259,11 @@ export default function ImageListEditor({ images, onChange, label = 'Bilder' }: 
               transition: 'opacity 0.1s, border-color 0.1s',
             }}
           >
-            {/* Image */}
-            <div style={{ aspectRatio: '4/3', overflow: 'hidden', background: '#111' }}>
+            {/* Image — click opens fullscreen lightbox */}
+            <div
+              onClick={() => url ? setLbIdx(idx) : undefined}
+              style={{ aspectRatio: '4/3', overflow: 'hidden', background: '#111', cursor: url ? 'zoom-in' : 'default' }}
+            >
               {url ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
@@ -410,6 +418,15 @@ export default function ImageListEditor({ images, onChange, label = 'Bilder' }: 
           ⊞ Mediavalv
         </button>
       </div>
+
+      {/* ── Fullscreen lightbox ── */}
+      {lbIdx !== null && (
+        <Lightbox
+          images={images.map((url, i): LightboxImage => ({ url, alt: `Bild ${i + 1}` }))}
+          startIndex={lbIdx}
+          onClose={() => setLbIdx(null)}
+        />
+      )}
 
       {/* ── Media vault modal ── */}
       {vaultOpen && (

@@ -49,6 +49,7 @@ export async function PUT(request: Request) {
       const { error } = await supabase.from('settings').upsert(upserts, { onConflict: 'key' })
       if (!error) {
         revalidateTag('hero', 'max')
+        revalidateTag('watercolors', 'max')
         return NextResponse.json({ ok: true })
       }
     }

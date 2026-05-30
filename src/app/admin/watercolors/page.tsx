@@ -79,13 +79,18 @@ export default function AdminWatercolors() {
   async function handleSaveMeta() {
     setSavingMeta(true)
     try {
-      await fetch('/api/admin/settings', {
+      const res = await fetch('/api/admin/settings', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ watercolors_title: sectionTitle, watercolors_description: sectionDesc }),
       })
-      setSavedMeta(true)
-      setTimeout(() => setSavedMeta(false), 3000)
+      const data = await res.json() as { ok?: boolean; error?: string }
+      if (!res.ok || data.error) {
+        setError(data.error ?? `HTTP ${res.status}`)
+      } else {
+        setSavedMeta(true)
+        setTimeout(() => setSavedMeta(false), 3000)
+      }
     } catch (e) { setError(String(e)) }
     finally { setSavingMeta(false) }
   }
@@ -267,7 +272,7 @@ export default function AdminWatercolors() {
               placeholder="En serie axonometriska arkitektoniska visioner…" />
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-            <button className="btn" onClick={handleSaveMeta} disabled={savingMeta} style={{ fontSize: 'var(--fs-sm)' }}>
+            <button className="btn" onClick={handleSaveMeta} disabled={savingMeta} style={{ fontSize: 'var(--fs-sm)', border: '1.5px solid var(--color-accent)', color: 'var(--color-accent)', background: 'transparent' }}>
               {savingMeta ? 'Sparar…' : 'Spara rubrik & ingress'}
             </button>
             {savedMeta && <span style={{ color: 'var(--color-accent)', fontSize: 'var(--fs-sm)' }}>✓ Sparad</span>}
