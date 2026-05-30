@@ -6,6 +6,8 @@ import type { ScenographyWork } from '@/app/api/admin/scenography/route'
 import AdminForm, { FieldLabel } from '@/components/admin/AdminForm'
 import ImageListEditor from '@/components/admin/ImageListEditor'
 import LinkTextarea from '@/components/admin/LinkTextarea'
+import Lightbox from '@/components/gallery/Lightbox'
+import type { LightboxImage } from '@/components/gallery/Lightbox'
 
 interface Props {
   params: Promise<{ slug: string }>
@@ -28,6 +30,7 @@ function EditScenographyPageInner() {
   const [saved, setSaved] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [dirty, setDirty] = useState(false)
+  const [lbIdx, setLbIdx] = useState<number | null>(null)
 
   useEffect(() => {
     fetch(`/api/admin/scenography/${slug}`)
@@ -192,12 +195,32 @@ function EditScenographyPageInner() {
 
         {/* Images — full width below columns */}
         <div style={{ borderTop: '1px solid var(--color-border)', paddingTop: '1.5rem', marginTop: '0.5rem' }}>
+          {form.images.length > 0 && (
+            <button
+              type="button"
+              className="btn"
+              style={{ marginBottom: '1rem', display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}
+              onClick={() => setLbIdx(0)}
+            >
+              <span style={{ fontSize: '1.1em', lineHeight: 1 }}>⛶</span>
+              Bildspel
+            </button>
+          )}
           <ImageListEditor
             images={form.images.map(img => img.url)}
             onChange={urls => update('images', urls.map(url => ({ url, alt: '' })))}
             label="Bilder till verket"
           />
         </div>
+
+        {/* Lightbox preview */}
+        {lbIdx !== null && (
+          <Lightbox
+            images={form.images.map((img, i): LightboxImage => ({ url: img.url, alt: img.alt || `Bild ${i + 1}` }))}
+            startIndex={lbIdx}
+            onClose={() => setLbIdx(null)}
+          />
+        )}
 
       </AdminForm>
     </>

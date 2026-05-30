@@ -3,105 +3,13 @@ import type { Metadata } from 'next'
 import { getDictionary } from '@/i18n/getDictionary'
 import { locales } from '@/i18n/config'
 import type { Locale } from '@/i18n/config'
-import TextImageSlideshow from '@/components/TextImageSlideshow'
 import ExhibitionsHeroSlideshow from '@/components/gallery/ExhibitionsHeroSlideshow'
-import { createAdminClient } from '@/lib/supabase/admin'
-import { renderParagraphs } from '@/lib/render-text'
-import { cacheTag, cacheLife } from 'next/cache'
+import { getWorks } from '@/lib/scenography-data'
 
 export const metadata: Metadata = { title: 'Scenography' }
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }))
-}
-
-interface Work {
-  slug: string
-  year: number | null
-  title: string
-  venue: string
-  type: 'Teaterscenografi' | 'Koreografi'
-  description: string
-  images: string[]
-  video_url: string
-  sort_order: number
-  published: boolean
-}
-
-// Static fallback (same data as before) in case DB is unavailable
-const WP = 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp'
-
-const FALLBACK_WORKS: Work[] = [
-  {
-    slug: 'coriolanus',
-    year: 1970,
-    title: 'Coriolanus',
-    venue: 'Dramaten, Stockholm. Regi: Alf Sjöberg',
-    type: 'Teaterscenografi',
-    description: 'Till Alf Sjöbergs uppsättning av William Shakespeares Coriolanus gjorde Sivert scenografin. Coriolanus är en tragedi som tros ha skrivits mellan 1605 och 1608 och bygger på livet för den legendariske romerske härskaren Caius Marcius Coriolanus. Föreställningen hade premiär den 25 april 1970 på Dramaten, Stockholm.',
-    images: [
-      `${WP}/2015/06/Coriolanus547.jpg`, `${WP}/2015/06/Coriolanus550.jpg`,
-      `${WP}/2015/06/Coriolanus551.jpg`, `${WP}/2015/06/Coriolanus552.jpg`,
-      `${WP}/2015/06/Coriolanus553.jpg`, `${WP}/2015/06/imgSV423.jpg`,
-      `${WP}/2015/06/imgSV424.jpg`, `${WP}/2015/06/Coriolanus2556.jpg`,
-      `${WP}/2015/06/Coriolanus2559.jpg`,
-      `${WP}/2015/01/Sivert-Lindblom-Stadsteatern-Stockholm-1.jpg`,
-      `${WP}/2015/01/Sivert-Lindblom-Stadsteatern-Stockholm-3.jpg`,
-    ],
-    video_url: '',
-    sort_order: 0,
-    published: true,
-  },
-  {
-    slug: 'sand-10-rorelsedikter',
-    year: 1974,
-    title: 'Sand — 10 rörelsedikter',
-    venue: 'Koreografi: Margaretha Åsberg',
-    type: 'Koreografi',
-    description: 'Tillsammans med Margaretha Åsbergs första egna koreografiska produktion, efter det att hon slutat på Kungl. Operan, gjorde Sivert scenografi till "Sand – 10 rörelsedikter" 1974. Denna produktion räknas som den första "Performance-föreställningen" inom den moderna dansteatern i Sverige.',
-    images: [
-      `${WP}/2018/07/10-rorelsedikter-x-4.jpg`, `${WP}/2018/06/Margareta-2-Lutfi-Ozkok.jpg`,
-      `${WP}/2018/06/Margareta-8-Lutfi-Ozkok.jpg`, `${WP}/2018/06/Margareta-14-Andre-Lafolie.jpg`,
-    ],
-    video_url: '',
-    sort_order: 1,
-    published: true,
-  },
-]
-
-async function getWorks(): Promise<Work[]> {
-  'use cache'
-  cacheTag('scenography')
-  cacheLife('hours')
-  try {
-    const supabase = createAdminClient()
-    if (!supabase) return FALLBACK_WORKS
-
-    const { data, error } = await supabase
-      .from('scenography_works')
-      .select(`*, scenography_images(url, alt, sort_order)`)
-      .eq('published', true)
-      .order('sort_order', { ascending: true })
-
-    if (error || !data?.length) return FALLBACK_WORKS
-
-    return data.map(w => ({
-      slug: w.slug,
-      year: w.year,
-      title: w.title,
-      venue: w.venue ?? '',
-      type: (w.type as 'Teaterscenografi' | 'Koreografi') ?? 'Teaterscenografi',
-      description: w.description ?? '',
-      video_url: w.video_url ?? '',
-      sort_order: w.sort_order ?? 0,
-      published: w.published ?? true,
-      images: ((w.scenography_images ?? []) as { url: string; alt: string | null; sort_order: number }[])
-        .sort((a, b) => a.sort_order - b.sort_order)
-        .map(img => img.url),
-    }))
-  } catch {
-    return FALLBACK_WORKS
-  }
 }
 
 const FILTERS = [
@@ -195,65 +103,53 @@ export default async function ScenographyPage({
 
         <hr className="divider" />
 
-        {/* Works list */}
-        <div id="works" className="page-pad" style={{ paddingTop: '3rem', paddingBottom: '4rem' }}>
-          {WORKS.map((w, idx) => (
-            <article
+        {/* Works grid — full bleed, no page-pad */}
+        <div
+          id="works"
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
+            gap: '3px',
+          }}
+        >
+          {WORKS.map((w) => (
+            <Link
               key={w.slug}
+              href={`/${locale}/portfolio/scenography/${w.slug}`}
+              className="card card-hover"
               id={`type-${w.type}`}
-              style={{
-                paddingBottom: idx < WORKS.length - 1 ? '4rem' : 0,
-                marginBottom: idx < WORKS.length - 1 ? '4rem' : 0,
-                borderBottom: idx < WORKS.length - 1 ? '1px solid var(--color-border)' : 'none',
-              }}
+              style={{ textDecoration: 'none', display: 'block' }}
             >
-              {/* Header row */}
-              <div style={{ display: 'grid', gridTemplateColumns: '5rem 1fr auto', gap: '1.5rem', alignItems: 'start', marginBottom: '1.5rem' }}>
-                <span style={{ color: 'var(--color-accent)', fontFamily: 'Georgia, serif', fontSize: 'var(--fs-sm)', paddingTop: '0.15rem' }}>
-                  {w.year ?? ''}
-                </span>
-                <div>
-                  <h2 style={{ fontFamily: 'Georgia, serif', fontWeight: 400, fontSize: 'var(--fs-xl)', margin: '0 0 0.35rem' }}>
-                    {w.title}
-                  </h2>
-                  <div style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)' }}>{w.venue}</div>
-                </div>
-                <span className="badge">
-                  {w.type === 'Teaterscenografi'
-                    ? (dict.portfolio?.type_theater ?? w.type)
-                    : (dict.portfolio?.type_choreography ?? w.type)}
-                </span>
+              {/* Image area — 4/3 aspect ratio */}
+              <div style={{ position: 'relative', aspectRatio: '4/3', overflow: 'hidden', background: 'var(--color-bg-surface, #111)' }}>
+                {w.images[0] ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={w.images[0]}
+                    alt={w.title}
+                    style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                  />
+                ) : (
+                  <div style={{ width: '100%', height: '100%', background: '#1a1a1a' }} />
+                )}
               </div>
 
-              {/* Description */}
-              {w.description && (
-                <div style={{ paddingLeft: 'calc(5rem + 1.5rem)', marginBottom: '1.75rem', color: 'var(--color-muted)', fontSize: 'var(--fs-base)', lineHeight: 1.7, maxWidth: '70ch' }}>
-                  {renderParagraphs(w.description, { margin: 0, lineHeight: 1.7 })}
-                </div>
-              )}
-
-              {/* Image slideshow */}
-              {w.images.length > 0 && (
-                <div style={{ paddingLeft: 'calc(5rem + 1.5rem)', maxWidth: '720px' }}>
-                  <TextImageSlideshow images={w.images} title={w.title} thumbnailAspect="4/3" />
-                </div>
-              )}
-
-              {/* YouTube embed */}
-              {w.video_url && (
-                <div style={{ paddingLeft: 'calc(5rem + 1.5rem)', marginTop: '1.5rem' }}>
-                  <div style={{ position: 'relative', paddingBottom: '56.25%', height: 0, overflow: 'hidden', maxWidth: '640px' }}>
-                    <iframe
-                      src={`https://www.youtube.com/embed/${w.video_url}`}
-                      title={w.title}
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      allowFullScreen
-                      style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', border: 0 }}
-                    />
-                  </div>
-                </div>
-              )}
-            </article>
+              {/* Text area */}
+              <div style={{ padding: '1.25rem 1.5rem 1.5rem' }}>
+                <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-accent)', letterSpacing: '0.1em', textTransform: 'uppercase', margin: '0 0 0.35rem' }}>
+                  {w.year ?? ''}
+                </p>
+                <h2 style={{ fontFamily: 'Georgia, serif', fontWeight: 400, fontSize: 'var(--fs-lg, 1.15rem)', margin: '0 0 0.3rem', lineHeight: 1.3 }}>
+                  {w.title}
+                </h2>
+                <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', margin: '0 0 0.6rem' }}>
+                  {w.venue}
+                </p>
+                <span className="badge">
+                  {w.type}
+                </span>
+              </div>
+            </Link>
           ))}
         </div>
       </div>
