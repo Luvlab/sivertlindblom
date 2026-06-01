@@ -11,6 +11,8 @@ export interface PublicWork {
   lat?: number | null
   lng?: number | null
   temporary?: boolean
+  /** Optional photographer credit shown below the gallery, e.g. "Jan Öqvist". */
+  photographerCredit?: string
 }
 
 export const PUBLIC_WORKS: PublicWork[] = [

@@ -34,7 +34,7 @@ export default function WatercolorsPage() {
           Akvareller 1975–2012
         </h1>
         <p style={{ color: 'var(--color-muted)', maxWidth: '60ch', fontSize: 'var(--fs-base)', lineHeight: 1.8, marginBottom: '2rem' }}>
-          Ca 200 akvarellerade skissartade bilder skapade som ett slags "mental konstruktivism", som visar ett hermetiskt arkitektoniskt landskap. Bilderna formas med en strängt styrd grafisk teknik som resulterar i en fritt tillämpad axonometri.
+          Akvarellerade, skissartade bilder skapade som ett slags "mental konstruktivism", som visar ett hermetiskt arkitektoniskt landskap. Bilderna formas med en strängt styrd grafisk teknik som resulterar i en fritt tillämpad axonometri.
         </p>
         <p style={{ color: 'var(--color-muted)', maxWidth: '60ch', fontSize: 'var(--fs-sm)' }}>
           Femtio verk visades på Konstakademien i Stockholm, 6 oktober – 4 november 2012. Boken <em>Sivert Lindblom Akvareller m.m.</em> (Bullfinch Publishing, 2012) dokumenterar samlingen.

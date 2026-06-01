@@ -174,13 +174,27 @@ export default async function PublicWorkDetailPage({
 
         {/* Gallery */}
         {galleryImages.length > 0 && (
-          <section style={{ marginBottom: '3rem' }}>
+          <section style={{ marginBottom: work.photographerCredit ? '0.75rem' : '3rem' }}>
             <GalleryGrid
               images={galleryImages}
               aspectRatio="4/3"
               columns="sm"
             />
           </section>
+        )}
+
+        {/* Photographer credit — bottom-right of gallery */}
+        {work.photographerCredit && (
+          <p style={{
+            fontSize: 'var(--fs-xs)',
+            color: 'var(--color-muted)',
+            textAlign: 'right',
+            letterSpacing: '0.06em',
+            marginBottom: '3rem',
+            fontStyle: 'italic',
+          }}>
+            {locale === 'sv' ? 'Fotograf' : 'Photographer'}: {work.photographerCredit}
+          </p>
         )}
 
         {/* Videos / film links */}

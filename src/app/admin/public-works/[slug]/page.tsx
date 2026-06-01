@@ -280,6 +280,14 @@ function EditPublicWorkPageInner() {
             />
           </div>
 
+          <div>
+            <FieldLabel>Fotograf (visas under galleriet)</FieldLabel>
+            <input type="text" className="input" style={{ width: '100%' }}
+              value={form.photographerCredit ?? ''}
+              onChange={e => update('photographerCredit', e.target.value)}
+              placeholder="t.ex. Jan Öqvist" />
+          </div>
+
           {/* Map — full width */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
             <div>

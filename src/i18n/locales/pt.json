@@ -68,7 +68,7 @@
     "sub_scenography": "Teatro e coreografia",
     "desc_exhibitions": "Exposições individuais e coletivas na Suécia e internacionalmente, da Galerie Buren em 1963 ao Vandalorum em 2016.",
     "desc_public": "Esculturas e instalações em praças, estações de metro, embaixadas e bibliotecas na Suécia e em todo o mundo.",
-    "desc_watercolors": "Aprox. 200 aguarelas — um projeto de 'construtivismo mental' com geometria arquitectónica hermética.",
+    "desc_watercolors": "Aguarelas — um projeto de 'construtivismo mental' com geometria arquitectónica hermética.",
     "desc_scenography": "Cenografias para o Teatro Municipal de Estocolmo e coreografias com Margareta Åsberg e outros.",
     "count_works": "obras",
     "exteriors": "Exteriores",
@@ -86,7 +86,7 @@
   },
   "watercolors": {
     "title": "Aguarelas 1975–2012",
-    "description": "Aproximadamente 200 aguarelas de carácter esquemático criadas como uma forma de 'construtivismo mental', representando uma paisagem arquitectónica hermética. As obras são moldadas por uma técnica gráfica rigorosamente controlada que resulta numa axonometria livremente aplicada.",
+    "description": "Aguarelas de carácter esquemático criadas como uma forma de 'construtivismo mental', representando uma paisagem arquitectónica hermética. As obras são moldadas por uma técnica gráfica rigorosamente controlada que resulta numa axonometria livremente aplicada.",
     "book_note": "Cinquenta obras foram expostas na Academia Real de Belas Artes de Estocolmo, de 6 de outubro a 4 de novembro de 2012. O livro Sivert Lindblom Aguarelas etc. (Bullfinch Publishing, 2012) documenta a coleção.",
     "gallery_count": "obras",
     "click_hint": "clicar para apresentação",

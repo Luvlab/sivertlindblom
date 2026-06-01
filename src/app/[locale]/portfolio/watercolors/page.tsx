@@ -14,7 +14,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Akvareller 1975–2012 — Sivert Lindblom',
     description:
-      'Över 200 akvareller 1975–2012. Axonometriska perspektiv — "hermetiskt arkitektoniskt landskap" (Peter Cornell).',
+      'Akvareller 1975–2012. Axonometriska perspektiv — "hermetiskt arkitektoniskt landskap" (Peter Cornell).',
     images: [{
       url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Sivert-Lindblom-akvarell-01-1507-2.jpg',
       width: 1200, height: 800, alt: 'Sivert Lindblom, Akvarell nr 01',

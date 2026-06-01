@@ -21,6 +21,7 @@ function dbToWork(
     category: ((row.subcategory as string) === 'interior' ? 'interior' : 'exterior') as PublicWork['category'],
     description: (row.description as string) ?? '',
     body: (row.description_sv as string) ?? '',
+    photographerCredit: (row.photographer_credit as string) || undefined,
     images: images
       .sort((a, b) => a.sort_order - b.sort_order)
       .map(img => ({ url: img.url, alt: img.alt ?? '' })),
@@ -78,6 +79,7 @@ export async function PUT(
           subcategory: body.category === 'interior' ? 'interior' : 'exterior',
           description: body.description,
           description_sv: body.body,
+          photographer_credit: body.photographerCredit || null,
           lat: body.lat ?? null,
           lng: body.lng ?? null,
           temporary: body.temporary ?? false,

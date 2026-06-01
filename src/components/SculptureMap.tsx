@@ -21,8 +21,8 @@ interface Props {
 }
 
 const TYPE_COLORS: Record<string, string> = {
-  exterior: '#0952f7',
-  interior: '#ffd00d',
+  exterior: '#0952f7', // blue
+  interior: '#1f9d55', // green
   metro: '#a084c9',
 }
 

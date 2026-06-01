@@ -79,7 +79,7 @@ export default async function ContactPage({
         />
 
         {/* Title block */}
-        <div className="page-pad" style={{ position: 'absolute', bottom: '3rem', left: 0, right: 0 }}>
+        <div className="page-pad" style={{ position: 'absolute', bottom: '33%', left: 0, right: 0 }}>
           <p style={{ fontSize: 'var(--fs-xs)', letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--color-accent)', marginBottom: '0.75rem', textShadow: '0 1px 4px rgba(0,0,0,0.5)' }}>
             {dict.nav?.contact ?? 'Kontakt'}
           </p>

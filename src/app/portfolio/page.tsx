@@ -24,7 +24,7 @@ const CATEGORIES = [
     key: 'watercolors',
     label: 'Akvareller',
     sub: '1975 – 2012',
-    desc: 'Ca 200 akvarellerade bilder — ett "mentalt konstruktivism"-projekt med hermetisk arkitektonisk geometri.',
+    desc: 'Akvarellerade bilder — ett "mentalt konstruktivism"-projekt med hermetisk arkitektonisk geometri.',
     image: null,
     count: 50,
   },

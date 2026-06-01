@@ -94,6 +94,7 @@ function dbRowToPublicWork(
     category: ((row.subcategory as string) === 'interior' ? 'interior' : 'exterior') as PublicWork['category'],
     description: (row.description as string) ?? '',
     body: (row.description_sv as string) ?? '',
+    photographerCredit: (row.photographer_credit as string) || undefined,
     images: images
       .sort((a, b) => a.sort_order - b.sort_order)
       .map((img) => ({ url: img.url, alt: img.alt ?? '' })),
@@ -169,6 +170,10 @@ export async function getPublicWorkSlugs(): Promise<string[]> {
 // ─── Map Pins ────────────────────────────────────────────────────────────────
 
 function dbRowToLocation(row: Record<string, unknown>): SculptureLocation {
+  // `subcategory` is enriched from the matching public_works row (map_pins itself
+  // has no category column). interior → interior, everything else → exterior.
+  const subcategory = (row.subcategory as string) ?? null
+  const type: SculptureLocation['type'] = subcategory === 'interior' ? 'interior' : 'exterior'
   return {
     id: row.slug as string,
     title: row.title as string,
@@ -177,7 +182,7 @@ function dbRowToLocation(row: Record<string, unknown>): SculptureLocation {
     country: (row.country as string) ?? 'Sweden',
     lat: row.lat as number,
     lng: row.lng as number,
-    type: 'exterior',
+    type,
     slug: row.slug as string,
     description: (row.description as string) ?? undefined,
   }
@@ -193,7 +198,18 @@ export async function getMapPins(): Promise<SculptureLocation[]> {
       .from('map_pins')
       .select('*')
       .order('year', { ascending: true })
-    if (!error && data) return data.map((r) => dbRowToLocation(r as Record<string, unknown>))
+    if (!error && data) {
+      // Enrich each pin with the real category from public_works (joined by slug)
+      // so the map can colour interior vs exterior pins correctly.
+      const { data: works } = await supabase.from('public_works').select('slug, subcategory')
+      const subBySlug = new Map<string, string>(
+        (works ?? []).map((w) => [w.slug as string, w.subcategory as string]),
+      )
+      return data.map((r) => {
+        const row = r as Record<string, unknown>
+        return dbRowToLocation({ ...row, subcategory: subBySlug.get(row.slug as string) })
+      })
+    }
   }
   return STATIC_LOCATIONS
 }
@@ -254,7 +270,17 @@ export async function getMapPinForWork(slug: string): Promise<SculptureLocation 
   const supabase = createAdminClient()
   if (supabase) {
     const { data, error } = await supabase.from('map_pins').select('*').eq('slug', slug).single()
-    if (!error && data) return dbRowToLocation(data as Record<string, unknown>)
+    if (!error && data) {
+      const { data: work } = await supabase
+        .from('public_works')
+        .select('subcategory')
+        .eq('slug', slug)
+        .maybeSingle()
+      return dbRowToLocation({
+        ...(data as Record<string, unknown>),
+        subcategory: work?.subcategory,
+      })
+    }
   }
   return STATIC_LOCATIONS.find((l) => l.slug === slug) ?? null
 }

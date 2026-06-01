@@ -68,7 +68,7 @@
     "sub_scenography": "Teatro e coreografia",
     "desc_exhibitions": "Mostre personali e collettive in Svezia e a livello internazionale, dalla Galerie Buren nel 1963 a Vandalorum nel 2016.",
     "desc_public": "Sculture e installazioni in piazze, stazioni della metropolitana, ambasciate e biblioteche in Svezia e nel mondo.",
-    "desc_watercolors": "Circa 200 acquerelli — un progetto di 'costruttivismo mentale' con geometria architettonica ermetica.",
+    "desc_watercolors": "Acquerelli — un progetto di 'costruttivismo mentale' con geometria architettonica ermetica.",
     "desc_scenography": "Scenografie per il Teatro Comunale di Stoccolma e coreografie con Margareta Åsberg e altri.",
     "count_works": "opere",
     "exteriors": "Esterni",
@@ -86,7 +86,7 @@
   },
   "watercolors": {
     "title": "Acquerelli 1975–2012",
-    "description": "Circa 200 acquerelli dall'aspetto schizzato creati come una forma di 'costruttivismo mentale', che rappresentano un paesaggio architettonico ermetico. Le opere sono modellate da una tecnica grafica rigorosamente controllata che si traduce in un'assonometria applicata liberamente.",
+    "description": "Acquerelli dall'aspetto schizzato creati come una forma di 'costruttivismo mentale', che rappresentano un paesaggio architettonico ermetico. Le opere sono modellate da una tecnica grafica rigorosamente controllata che si traduce in un'assonometria applicata liberamente.",
     "book_note": "Cinquanta opere sono state esposte presso la Reale Accademia di Belle Arti di Stoccolma, dal 6 ottobre al 4 novembre 2012. Il libro Sivert Lindblom Acquerelli ecc. (Bullfinch Publishing, 2012) documenta la collezione.",
     "gallery_count": "opere",
     "click_hint": "clicca per la presentazione",
