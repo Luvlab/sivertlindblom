@@ -8,7 +8,7 @@
  */
 import { cacheTag, cacheLife } from 'next/cache'
 import { createAdminClient } from '@/lib/supabase/admin'
-import type { Exhibition, ExhibitionLink } from '@/lib/exhibitions-data'
+import type { Exhibition, ExhibitionLink, ExhibitionSubpage } from '@/lib/exhibitions-data'
 import { exhibitions as STATIC_EXHIBITIONS } from '@/lib/exhibitions-data'
 import type { PublicWork } from '@/lib/public-works'
 import { PUBLIC_WORKS as STATIC_PUBLIC_WORKS } from '@/lib/public-works'
@@ -52,6 +52,19 @@ export async function getExhibitions(): Promise<Exhibition[]> {
   return [...STATIC_EXHIBITIONS].sort((a, b) => b.year - a.year)
 }
 
+function dbRowToSubpage(row: Record<string, unknown>): ExhibitionSubpage {
+  const imgs = (row.images as string[] | null) ?? []
+  return {
+    slug: row.slug as string,
+    title: (row.title as string) ?? '',
+    body: (row.body as string) ?? '',
+    images: Array.isArray(imgs) ? imgs : [],
+    videoUrl: (row.video_url as string) || undefined,
+    sortOrder: (row.sort_order as number) ?? 0,
+    published: (row.published as boolean) ?? true,
+  }
+}
+
 export async function getExhibition(slug: string): Promise<Exhibition | null> {
   'use cache'
   cacheTag('exhibitions', `exhibition-${slug}`)
@@ -63,9 +76,56 @@ export async function getExhibition(slug: string): Promise<Exhibition | null> {
       .select('*, images(url, alt, sort_order)')
       .eq('slug', slug)
       .single()
-    if (!error && data) return dbRowToExhibition(data as Record<string, unknown>)
+    if (!error && data) {
+      const exhibition = dbRowToExhibition(data as Record<string, unknown>)
+      const { data: subs } = await supabase
+        .from('work_subpages')
+        .select('*')
+        .eq('work_id', (data as Record<string, unknown>).id as string)
+        .order('sort_order', { ascending: true })
+      if (subs && subs.length) {
+        exhibition.subpages = subs.map((r) => dbRowToSubpage(r as Record<string, unknown>))
+      }
+      return exhibition
+    }
   }
   return STATIC_EXHIBITIONS.find((e) => e.slug === slug) ?? null
+}
+
+/** Fetch a single editable sub-page nested under an exhibition. */
+export async function getExhibitionSubpage(
+  exhibitionSlug: string,
+  subpageSlug: string
+): Promise<{ exhibition: Exhibition; subpage: ExhibitionSubpage } | null> {
+  'use cache'
+  cacheTag('exhibitions', `exhibition-${exhibitionSlug}`, `subpage-${exhibitionSlug}-${subpageSlug}`)
+  cacheLife('days')
+  const exhibition = await getExhibition(exhibitionSlug)
+  if (!exhibition) return null
+  const subpage = exhibition.subpages?.find((s) => s.slug === subpageSlug && s.published !== false)
+  if (!subpage) return null
+  return { exhibition, subpage }
+}
+
+/** All { exhibitionSlug, subpageSlug } pairs — for generateStaticParams. */
+export async function getAllSubpageParams(): Promise<{ slug: string; subpage: string }[]> {
+  'use cache'
+  cacheTag('exhibitions')
+  cacheLife('days')
+  const supabase = createAdminClient()
+  if (!supabase) return []
+  const { data, error } = await supabase
+    .from('work_subpages')
+    .select('slug, published, works!inner(slug)')
+    .eq('published', true)
+  if (error || !data) return []
+  return data
+    .map((r) => {
+      const works = (r as Record<string, unknown>).works as { slug: string } | { slug: string }[] | null
+      const parentSlug = Array.isArray(works) ? works[0]?.slug : works?.slug
+      return parentSlug ? { slug: parentSlug, subpage: (r as Record<string, unknown>).slug as string } : null
+    })
+    .filter((x): x is { slug: string; subpage: string } => x !== null)
 }
 
 export async function getExhibitionSlugs(): Promise<string[]> {

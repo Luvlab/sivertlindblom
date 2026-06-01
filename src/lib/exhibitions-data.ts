@@ -8,6 +8,22 @@ export interface ExhibitionLink {
   external?: boolean;
 }
 
+/**
+ * An internal "extra page" nested under an exhibition. Used to re-host content
+ * that previously lived on the old WordPress site, so that no link on the new
+ * site ever points back to sivertlindblom.se. Editable in the admin.
+ */
+export interface ExhibitionSubpage {
+  slug: string;
+  title: string;
+  body: string;
+  images: string[];
+  /** Optional YouTube/Vimeo URL — rendered as an embed above the gallery. */
+  videoUrl?: string;
+  sortOrder?: number;
+  published?: boolean;
+}
+
 export interface Exhibition {
   slug: string;
   title: string;
@@ -18,6 +34,7 @@ export interface Exhibition {
   description: string;
   body?: string;
   links?: ExhibitionLink[];
+  subpages?: ExhibitionSubpage[];
   audioUrl?: string;
   audioCaption?: string;
   photographerCredit?: string;

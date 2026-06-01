@@ -5,6 +5,7 @@ import { exhibitions } from '@/lib/exhibitions-data'
 import type { Exhibition } from '@/lib/exhibitions-data'
 import { loadCmsData, saveCmsData } from '@/lib/cms-data'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { sanitizeLinks, sanitizeSourceUrl } from '@/lib/old-site-guard'
 
 async function checkAuth(): Promise<boolean> {
   const store = await cookies()
@@ -57,6 +58,15 @@ export async function POST(request: Request) {
   try {
     const body = await request.json() as Exhibition
 
+    // ── Old-site guard: block + strip any link back to sivertlindblom.se ──
+    const warnings: string[] = []
+    const src = sanitizeSourceUrl(body.url)
+    if (src.warning) warnings.push(src.warning)
+    const linkResult = sanitizeLinks(body.links)
+    warnings.push(...linkResult.warnings)
+    body.url = src.url
+    body.links = linkResult.links
+
     // Try Supabase first
     const supabase = createAdminClient()
     if (supabase) {
@@ -79,6 +89,9 @@ export async function POST(request: Request) {
           location: body.location,
           source_url: body.url,
           description: body.description,
+          body: body.body ?? null,
+          links: body.links ?? [],
+          photographer_credit: body.photographerCredit ?? null,
           sort_order: nextSortOrder,
         })
         .select()
@@ -96,7 +109,7 @@ export async function POST(request: Request) {
           )
         }
         revalidateTag('exhibitions', 'max')
-        return NextResponse.json(body, { status: 201 })
+        return NextResponse.json({ ...body, warnings }, { status: 201 })
       }
     }
 
@@ -106,7 +119,7 @@ export async function POST(request: Request) {
     const result = saveCmsData('exhibitions', updated)
     if (!result.ok) return NextResponse.json({ error: result.message }, { status: 500 })
     revalidateTag('exhibitions', 'max')
-    return NextResponse.json(body, { status: 201 })
+    return NextResponse.json({ ...body, warnings }, { status: 201 })
   } catch (e) {
     return NextResponse.json({ error: String(e) }, { status: 500 })
   }

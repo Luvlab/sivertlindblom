@@ -2,10 +2,12 @@
 
 import { useState, useEffect, Suspense } from 'react'
 import { useRouter, useParams } from 'next/navigation'
-import type { Exhibition } from '@/lib/exhibitions-data'
+import type { Exhibition, ExhibitionLink, ExhibitionSubpage } from '@/lib/exhibitions-data'
 import AdminForm, { FieldLabel } from '@/components/admin/AdminForm'
 import ImageListEditor from '@/components/admin/ImageListEditor'
 import LinkTextarea from '@/components/admin/LinkTextarea'
+import ExhibitionLinksEditor from '@/components/admin/ExhibitionLinksEditor'
+import SubpageManager from '@/components/admin/SubpageManager'
 
 interface Props {
   params: Promise<{ slug: string }>
@@ -27,6 +29,7 @@ function EditExhibitionPageInner() {
   const [saving, setSaving] = useState(false)
   const [saved, setSaved] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [warnings, setWarnings] = useState<string[]>([])
   const [dirty, setDirty] = useState(false)
 
   useEffect(() => {
@@ -53,16 +56,22 @@ function EditExhibitionPageInner() {
     if (!form) return
     setSaving(true)
     setError(null)
+    setWarnings([])
     try {
       const res = await fetch(`/api/admin/exhibitions/${slug}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),
       })
-      const data = await res.json() as Exhibition | { error: string }
+      const data = await res.json() as (Exhibition & { warnings?: string[] }) | { error: string }
       if ('error' in data) {
         setError(String(data.error))
       } else {
+        if (data.warnings?.length) {
+          setWarnings(data.warnings)
+          // Reflect the stripped links back into the form
+          setForm(prev => prev ? { ...prev, url: data.url, links: data.links } : prev)
+        }
         setSaved(true)
         setDirty(false)
         setTimeout(() => setSaved(false), 3000)
@@ -127,10 +136,14 @@ function EditExhibitionPageInner() {
         <input type="text" className="input" value={form.slug} onChange={e => update('slug', e.target.value)} />
       </div>
 
-      <div>
-        <FieldLabel>Extern URL</FieldLabel>
-        <input type="url" className="input" value={form.url} onChange={e => update('url', e.target.value)} placeholder="https://..." />
-      </div>
+      {warnings.length > 0 && (
+        <div style={{ background: '#2a0008', border: '1px solid #c00', padding: '0.85rem 1rem', borderRadius: 2 }}>
+          <p style={{ fontSize: 'var(--fs-sm)', color: '#f88', margin: '0 0 0.5rem', fontWeight: 600 }}>⚠ Länkar till gamla sajten togs bort vid sparning:</p>
+          <ul style={{ margin: 0, paddingLeft: '1.2rem', fontSize: 'var(--fs-xs)', color: '#f88' }}>
+            {warnings.map((w, i) => <li key={i} style={{ marginBottom: '0.25rem' }}>{w}</li>)}
+          </ul>
+        </div>
+      )}
 
       <div>
         <FieldLabel>Beskrivning</FieldLabel>
@@ -141,10 +154,48 @@ function EditExhibitionPageInner() {
         />
       </div>
 
+      <div>
+        <FieldLabel>Brödtext (valfri, visas efter beskrivningen)</FieldLabel>
+        <LinkTextarea
+          value={form.body ?? ''}
+          onChange={v => update('body', v)}
+          rows={8}
+          hint="Dubbelt radbrytning = nytt stycke. Markera text + 🔗 för intern/extern länk."
+        />
+      </div>
+
+      <div>
+        <FieldLabel>Länkar (texter, recensioner, kataloger, video…)</FieldLabel>
+        <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', margin: '0 0 0.6rem' }}>
+          Flera länkar tillåtna. Interna sidor börjar med <code>/</code> (t.ex. <code>/texts/…</code>). Inga länkar får gå till gamla sajten (sivertlindblom.se) — importera innehållet som undersida i stället.
+        </p>
+        <ExhibitionLinksEditor
+          links={form.links ?? []}
+          onChange={links => update('links', links as ExhibitionLink[])}
+        />
+      </div>
+
+      <div>
+        <FieldLabel>Fotograf (visas under galleriet)</FieldLabel>
+        <input type="text" className="input" value={form.photographerCredit ?? ''} onChange={e => update('photographerCredit', e.target.value)} />
+      </div>
+
       <ImageListEditor
         images={form.images}
         onChange={imgs => update('images', imgs)}
       />
+
+      <div>
+        <FieldLabel>Undersidor (interna extrasidor)</FieldLabel>
+        <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', margin: '0 0 0.6rem' }}>
+          Skapa, redigera och spara extrasidor som hör till projektet. Länka till dem från Länkar ovan med sökvägen <code>/portfolio/exhibitions/{form.slug}/&lt;slug&gt;</code>.
+        </p>
+        <SubpageManager
+          subpages={form.subpages ?? []}
+          exhibitionSlug={form.slug}
+          onChange={subpages => update('subpages', subpages as ExhibitionSubpage[])}
+        />
+      </div>
     </AdminForm>
   )
 }
