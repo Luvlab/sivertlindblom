@@ -45,6 +45,24 @@ export default function AdminScenography() {
   function renderRows(list: ScenographyWork[]) {
     return list.map(w => (
       <tr key={w.slug} style={{ borderBottom: '1px solid var(--color-border)' }}>
+        <td style={{ padding: '0.5rem 0.75rem 0.5rem 0', width: 56 }}>
+          {w.images[0]?.url ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={w.images[0].url}
+              alt=""
+              width={48}
+              height={48}
+              loading="lazy"
+              style={{ display: 'block', width: 48, height: 48, objectFit: 'cover', borderRadius: 2, background: 'var(--color-bg-card)' }}
+              onError={ev => { (ev.target as HTMLImageElement).style.visibility = 'hidden' }}
+            />
+          ) : (
+            <div style={{ width: 48, height: 48, borderRadius: 2, background: 'var(--color-bg-card)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <span style={{ fontSize: 18, opacity: 0.2 }}>□</span>
+            </div>
+          )}
+        </td>
         <td style={{ padding: '0.75rem 0.75rem 0.75rem 0', fontSize: 'var(--fs-sm)' }}>
           {w.title}
           {!w.published && (
@@ -123,6 +141,7 @@ export default function AdminScenography() {
             <table style={{ width: '100%', borderCollapse: 'collapse' }}>
               <thead>
                 <tr style={{ borderBottom: '1px solid var(--color-border)' }}>
+                  <th style={{ ...thStyle, width: 56 }}></th>
                   <th style={thStyle}>Titel</th>
                   <th style={{ ...thStyle, width: 60 }}>År</th>
                   <th style={thStyle}>Scen / Koreograf</th>
@@ -132,7 +151,7 @@ export default function AdminScenography() {
               </thead>
               <tbody>
                 {theater.length === 0
-                  ? <tr><td colSpan={5} style={{ padding: '1rem 0', color: 'var(--color-muted)', fontSize: 'var(--fs-sm)' }}>Inga verk</td></tr>
+                  ? <tr><td colSpan={6} style={{ padding: '1rem 0', color: 'var(--color-muted)', fontSize: 'var(--fs-sm)' }}>Inga verk</td></tr>
                   : renderRows(theater)
                 }
               </tbody>
@@ -150,6 +169,7 @@ export default function AdminScenography() {
             <table style={{ width: '100%', borderCollapse: 'collapse' }}>
               <thead>
                 <tr style={{ borderBottom: '1px solid var(--color-border)' }}>
+                  <th style={{ ...thStyle, width: 56 }}></th>
                   <th style={thStyle}>Titel</th>
                   <th style={{ ...thStyle, width: 60 }}>År</th>
                   <th style={thStyle}>Scen / Koreograf</th>
@@ -159,7 +179,7 @@ export default function AdminScenography() {
               </thead>
               <tbody>
                 {choreo.length === 0
-                  ? <tr><td colSpan={5} style={{ padding: '1rem 0', color: 'var(--color-muted)', fontSize: 'var(--fs-sm)' }}>Inga verk</td></tr>
+                  ? <tr><td colSpan={6} style={{ padding: '1rem 0', color: 'var(--color-muted)', fontSize: 'var(--fs-sm)' }}>Inga verk</td></tr>
                   : renderRows(choreo)
                 }
               </tbody>

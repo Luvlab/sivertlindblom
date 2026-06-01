@@ -17,6 +17,29 @@ interface WorkEntry {
   category: 'exterior' | 'interior' | 'scenography'
   lat?: number | null
   lng?: number | null
+  images?: { url: string; alt: string }[]
+}
+
+function Thumb({ src }: { src?: string }) {
+  if (!src) {
+    return (
+      <div style={{ width: 48, height: 48, borderRadius: 2, background: 'var(--color-bg-card)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <span style={{ fontSize: 18, opacity: 0.2 }}>□</span>
+      </div>
+    )
+  }
+  return (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      src={src}
+      alt=""
+      width={48}
+      height={48}
+      loading="lazy"
+      style={{ display: 'block', width: 48, height: 48, objectFit: 'cover', borderRadius: 2, background: 'var(--color-bg-card)' }}
+      onError={ev => { (ev.target as HTMLImageElement).style.visibility = 'hidden' }}
+    />
+  )
 }
 
 export default function AdminPublicWorks() {
@@ -129,6 +152,9 @@ export default function AdminPublicWorks() {
   function renderRows(list: (WorkEntry & { _idx: number })[]) {
     return list.map(w => (
       <tr key={w._idx} style={{ borderBottom: '1px solid var(--color-border)' }}>
+        <td style={{ padding: '0.5rem 0.75rem 0.5rem 0', width: 56 }}>
+          <Thumb src={w.images?.[0]?.url} />
+        </td>
         <td style={{ padding: '0.75rem 0.75rem 0.75rem 0', fontSize: 'var(--fs-sm)' }}>
           {w.title}
           {w.lat && w.lng && (
@@ -201,6 +227,7 @@ export default function AdminPublicWorks() {
               <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                 <thead>
                   <tr style={{ borderBottom: '1px solid var(--color-border)' }}>
+                    <th style={{ ...thStyle, width: 56 }}></th>
                     <th style={thStyle}>Titel</th>
                     <th style={{ ...thStyle, width: 80 }}>År</th>
                     <th style={thStyle}>Plats</th>
@@ -220,6 +247,7 @@ export default function AdminPublicWorks() {
               <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                 <thead>
                   <tr style={{ borderBottom: '1px solid var(--color-border)' }}>
+                    <th style={{ ...thStyle, width: 56 }}></th>
                     <th style={thStyle}>Titel</th>
                     <th style={{ ...thStyle, width: 80 }}>År</th>
                     <th style={thStyle}>Plats</th>

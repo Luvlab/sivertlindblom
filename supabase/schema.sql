@@ -48,6 +48,7 @@ CREATE TABLE IF NOT EXISTS texts (
   slug        TEXT UNIQUE NOT NULL,
   title       TEXT NOT NULL,
   author      TEXT,
+  author_bio  TEXT,
   text_type   TEXT NOT NULL CHECK (text_type IN (
                 'essay','review','interview','own_writing','translated','preface'
               )),

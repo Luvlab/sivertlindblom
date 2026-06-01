@@ -98,8 +98,8 @@ export default function AdminTexts() {
           <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 'var(--fs-sm)' }}>
             <thead>
               <tr style={{ borderBottom: '1px solid var(--color-border)' }}>
-                {['Titel', 'Författare', 'Typ', 'År', 'Språk', ''].map(h => (
-                  <th key={h} style={{ padding: '0.75rem 1rem 0.75rem 0', color: 'var(--color-muted)', fontWeight: 400, textTransform: 'uppercase', letterSpacing: '0.08em', fontSize: 'var(--fs-xs)', textAlign: 'left' }}>{h}</th>
+                {['', 'Titel', 'Författare', 'Typ', 'År', 'Språk', ''].map((h, i) => (
+                  <th key={i} style={{ padding: '0.75rem 1rem 0.75rem 0', width: i === 0 ? 56 : undefined, color: 'var(--color-muted)', fontWeight: 400, textTransform: 'uppercase', letterSpacing: '0.08em', fontSize: 'var(--fs-xs)', textAlign: 'left' }}>{h}</th>
                 ))}
               </tr>
             </thead>
@@ -111,6 +111,24 @@ export default function AdminTexts() {
                   onMouseEnter={e => (e.currentTarget.style.background = 'var(--color-bg-card)')}
                   onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
                 >
+                  <td style={{ padding: '0.5rem 0.75rem 0.5rem 0', width: 56 }}>
+                    {t.images?.[0] ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={t.images[0]}
+                        alt=""
+                        width={48}
+                        height={48}
+                        loading="lazy"
+                        style={{ display: 'block', width: 48, height: 48, objectFit: 'cover', borderRadius: 2, background: 'var(--color-bg-card)' }}
+                        onError={ev => { (ev.target as HTMLImageElement).style.visibility = 'hidden' }}
+                      />
+                    ) : (
+                      <div style={{ width: 48, height: 48, borderRadius: 2, background: 'var(--color-bg-card)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <span style={{ fontSize: 18, opacity: 0.2 }}>□</span>
+                      </div>
+                    )}
+                  </td>
                   <td style={{ padding: '0.85rem 1rem 0.85rem 0', maxWidth: 320 }}>{t.title}</td>
                   <td style={{ padding: '0.85rem 1rem', color: 'var(--color-muted)' }}>{t.author}</td>
                   <td style={{ padding: '0.85rem 1rem' }}>

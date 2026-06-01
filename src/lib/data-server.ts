@@ -223,6 +223,7 @@ function dbRowToText(row: Record<string, unknown>): TextItem {
     year: (row.year as number) ?? 0,
     title: row.title as string,
     author: (row.author as string) ?? '',
+    authorBio: (row.author_bio as string) ?? '',
     publication: (row.publication as string) ?? '',
     lang: ((row.language as string) ?? 'sv') as TextItem['lang'],
     body: (row.content as string) ?? '',

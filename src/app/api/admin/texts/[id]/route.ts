@@ -18,6 +18,7 @@ function dbToTextItem(row: Record<string, unknown>): TextItem {
     year: (row.year as number) ?? 0,
     title: row.title as string,
     author: (row.author as string) ?? '',
+    authorBio: (row.author_bio as string) ?? '',
     publication: (row.publication as string) ?? '',
     lang: (row.language as TextItem['lang']) ?? 'sv',
     body: (row.content as string) ?? '',
@@ -57,6 +58,7 @@ export async function PUT(
       const { error } = await supabase.from('texts').update({
         title: body.title,
         author: body.author,
+        author_bio: body.authorBio ?? null,
         text_type: body.type,
         publication: body.publication,
         year: body.year,
