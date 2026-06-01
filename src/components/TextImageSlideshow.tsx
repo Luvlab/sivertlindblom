@@ -22,6 +22,11 @@ export default function TextImageSlideshow({ images, title, thumbnailAspect = '3
   useEffect(() => {
     if (lbOpen) return
     function onKey(e: KeyboardEvent) {
+      // Don't hijack arrow keys while the user is typing in a form field
+      // (the slideshow is also embedded in the admin editor).
+      const el = e.target as HTMLElement | null
+      const tag = el?.tagName
+      if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || el?.isContentEditable) return
       if (e.key === 'ArrowLeft') prev()
       if (e.key === 'ArrowRight') next()
     }
@@ -51,7 +56,7 @@ export default function TextImageSlideshow({ images, title, thumbnailAspect = '3
             key={current}
             src={current}
             alt={`${title} — sida ${idx + 1}`}
-            style={{ width: '100%', display: 'block', pointerEvents: 'none' }}
+            style={{ width: '100%', maxHeight: '90vh', objectFit: 'contain', display: 'block', margin: '0 auto', pointerEvents: 'none' }}
           />
 
           {/* Zoom hint */}

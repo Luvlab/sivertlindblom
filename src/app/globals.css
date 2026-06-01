@@ -627,6 +627,41 @@ a:hover { opacity: 0.7; }
   }
 }
 
+/* OCR toggled off — scan images shown full width, no transcription column */
+.article-scan-images-full {
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* ── Admin: edit-text two-column layout (fields left, images right) ─────── */
+.admin-text-edit-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+.admin-text-edit-main {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  min-width: 0;
+}
+.admin-text-edit-side {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  min-width: 0;
+}
+@media (min-width: 980px) {
+  .admin-text-edit-grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 440px);
+    align-items: start;
+  }
+  .admin-text-edit-side {
+    position: sticky;
+    top: 1.5rem;
+  }
+}
+
 
 /* ── Sub-navigation bar (fixed below main header) ──────────────────────────── */
 .sub-nav {

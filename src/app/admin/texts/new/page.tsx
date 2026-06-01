@@ -4,6 +4,7 @@ import { useState, Suspense } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import LinkTextarea from '@/components/admin/LinkTextarea'
+import ImageListEditor from '@/components/admin/ImageListEditor'
 
 function slugify(str: string) {
   return str
@@ -31,6 +32,7 @@ function NewTextPageInner() {
   const [form, setForm] = useState({
     title: '', author: '', authorBio: '', type: 'essay', publication: '',
     year: new Date().getFullYear(), lang: 'sv', body: '',
+    images: [] as string[], showOcr: false,
   })
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -124,7 +126,35 @@ function NewTextPageInner() {
         </div>
 
         <div>
-          {lbl('Textinnehåll (brödtext)')}
+          {lbl('Artikelbilder (skanningar)')}
+          <ImageListEditor
+            images={form.images}
+            onChange={imgs => setForm(p => ({ ...p, images: imgs }))}
+            label="Artikelbilder"
+          />
+          <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', marginTop: '0.4rem' }}>
+            Inskannade sidor av artikeln. Visas som bildspel på textsidan.
+          </p>
+        </div>
+
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', border: '1px solid var(--color-border)', padding: '0.85rem 1rem', borderRadius: 2 }}>
+          <input
+            id="showOcr"
+            type="checkbox"
+            checked={form.showOcr}
+            onChange={e => setForm(p => ({ ...p, showOcr: e.target.checked }))}
+            style={{ width: 18, height: 18, accentColor: 'var(--color-accent)', cursor: 'pointer' }}
+          />
+          <label htmlFor="showOcr" style={{ cursor: 'pointer', fontSize: 'var(--fs-sm)' }}>
+            Visa OCR-text bredvid bilderna
+            <span style={{ display: 'block', fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', marginTop: '0.15rem' }}>
+              Av = endast bilderna visas (i full bredd). På = brödtexten visas som transkription bredvid skanningarna.
+            </span>
+          </label>
+        </div>
+
+        <div>
+          {lbl('Textinnehåll (brödtext / OCR)')}
           <LinkTextarea
             value={form.body}
             onChange={v => setForm(p => ({ ...p, body: v }))}

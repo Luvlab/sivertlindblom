@@ -13,6 +13,7 @@ export interface TextItem {
   bodies?: Partial<Record<string, string>>  // locale → translated body
   images?: string[]                         // scanned article image URLs (reviews)
   videoUrl?: string                         // YouTube embed URL (https://www.youtube.com/embed/ID) or external video link
+  showOcr?: boolean                         // show the transcribed OCR/body text column beside scan images (default false — OCR hidden until reviewed)
 }
 
 const RAW_TEXTS_DATA: Omit<TextItem, 'bodies'>[] = [

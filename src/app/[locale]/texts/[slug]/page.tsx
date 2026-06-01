@@ -61,6 +61,7 @@ export default async function TextDetailPage({
 
   const typeLabel = (dict.texts as Record<string, string> | undefined)?.[text.type] ?? text.type
   const langLabel = LANG_LABELS[text.lang] || text.lang.toUpperCase()
+  const showOcr = text.showOcr === true
 
   return (
     <div className="section-gap">
@@ -159,45 +160,53 @@ export default async function TextDetailPage({
           )
         })()}
 
-        {/* Article images + OCR text — side-by-side on desktop, stacked on mobile */}
+        {/* Article images + OCR text — side-by-side on desktop, stacked on mobile.
+            When OCR is toggled off, the scan images are shown full-width with no text column. */}
         {text.images && text.images.length > 0 ? (
-          <div className="article-scan-layout">
-            {/* Images column — slideshow when multiple images */}
-            <div className="article-scan-images">
+          showOcr ? (
+            <div className="article-scan-layout">
+              {/* Images column — slideshow when multiple images */}
+              <div className="article-scan-images">
+                <TextImageSlideshow images={text.images} title={text.title} />
+              </div>
+
+              {/* OCR / body text column */}
+              {body ? (
+                <div className="article-scan-text">
+                  <p style={{
+                    fontSize: 'var(--fs-xs)',
+                    letterSpacing: '0.1em',
+                    textTransform: 'uppercase',
+                    color: 'var(--color-accent)',
+                    marginBottom: '1rem',
+                  }}>
+                    OCR
+                  </p>
+                  {body.split('\n\n').map((para, i) => {
+                    const lines = para.split('\n')
+                    return (
+                      <p key={i} style={{ fontSize: 'var(--fs-sm)', lineHeight: 1.75, marginBottom: '1.2em', color: 'var(--color-muted)' }}>
+                        {lines.map((line, j) => (
+                          <span key={j}>{j > 0 && <br />}{renderInlineLinks(line)}</span>
+                        ))}
+                      </p>
+                    )
+                  })}
+                </div>
+              ) : (
+                <div className="article-scan-text" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <p style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-sm)', fontStyle: 'italic' }}>
+                    OCR-text saknas ännu
+                  </p>
+                </div>
+              )}
+            </div>
+          ) : (
+            /* OCR off — scan images only, full width */
+            <div className="article-scan-images-full">
               <TextImageSlideshow images={text.images} title={text.title} />
             </div>
-
-            {/* OCR / body text column */}
-            {body ? (
-              <div className="article-scan-text">
-                <p style={{
-                  fontSize: 'var(--fs-xs)',
-                  letterSpacing: '0.1em',
-                  textTransform: 'uppercase',
-                  color: 'var(--color-accent)',
-                  marginBottom: '1rem',
-                }}>
-                  OCR
-                </p>
-                {body.split('\n\n').map((para, i) => {
-                  const lines = para.split('\n')
-                  return (
-                    <p key={i} style={{ fontSize: 'var(--fs-sm)', lineHeight: 1.75, marginBottom: '1.2em', color: 'var(--color-muted)' }}>
-                      {lines.map((line, j) => (
-                        <span key={j}>{j > 0 && <br />}{renderInlineLinks(line)}</span>
-                      ))}
-                    </p>
-                  )
-                })}
-              </div>
-            ) : (
-              <div className="article-scan-text" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <p style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-sm)', fontStyle: 'italic' }}>
-                  OCR-text saknas ännu
-                </p>
-              </div>
-            )}
-          </div>
+          )
         ) : (
           /* Plain text body for essays/prefaces/etc. */
           <div>

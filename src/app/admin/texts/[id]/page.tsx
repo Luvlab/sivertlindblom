@@ -4,6 +4,8 @@ import { useState, useEffect, Suspense } from 'react'
 import { useRouter, useParams } from 'next/navigation'
 import Link from 'next/link'
 import LinkTextarea from '@/components/admin/LinkTextarea'
+import ImageListEditor from '@/components/admin/ImageListEditor'
+import TextImageSlideshow from '@/components/TextImageSlideshow'
 
 interface TextItem {
   slug: string
@@ -15,6 +17,8 @@ interface TextItem {
   publication: string
   lang: string
   body: string
+  images?: string[]
+  showOcr?: boolean
 }
 
 const TYPE_LABELS = {
@@ -88,7 +92,7 @@ function EditTextPageInner() {
   if (!form) return <div style={{ padding: 'clamp(1rem, 3vw, 3rem)', color: 'var(--color-muted)' }}>{error ?? 'Hittades inte'}</div>
 
   return (
-    <div style={{ padding: 'clamp(1rem, 3vw, 3rem)', maxWidth: 900 }}>
+    <div style={{ padding: 'clamp(1rem, 3vw, 3rem)', maxWidth: 1200 }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '2rem' }}>
         <Link href="/admin/texts" style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', textDecoration: 'none' }}>← Texter</Link>
         {dirty && <span style={{ fontSize: 'var(--fs-xs)', color: '#f0a' }}>● Osparade ändringar</span>}
@@ -100,61 +104,104 @@ function EditTextPageInner() {
       {error && <div style={{ background: '#3a0010', border: '1px solid #c00', padding: '1rem', marginBottom: '1.5rem', fontSize: 'var(--fs-sm)', color: '#f88' }}>{error}</div>}
 
       <form onSubmit={handleSave} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 200px), 1fr))', gap: '1.5rem' }}>
-          <div>
-            {label('Titel')}
-            <input className="input" style={inp} value={form.title} onChange={e => set('title', e.target.value)} required />
-          </div>
-          <div>
-            {label('Slug')}
-            <input className="input" style={inp} value={form.slug} onChange={e => set('slug', e.target.value)} />
-          </div>
-        </div>
+        <div className="admin-text-edit-grid">
+          {/* ── Left column: text fields ── */}
+          <div className="admin-text-edit-main">
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 200px), 1fr))', gap: '1.5rem' }}>
+              <div>
+                {label('Titel')}
+                <input className="input" style={inp} value={form.title} onChange={e => set('title', e.target.value)} required />
+              </div>
+              <div>
+                {label('Slug')}
+                <input className="input" style={inp} value={form.slug} onChange={e => set('slug', e.target.value)} />
+              </div>
+            </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '1.5rem' }}>
-          <div>
-            {label('Författare')}
-            <input className="input" style={inp} value={form.author} onChange={e => set('author', e.target.value)} />
-          </div>
-          <div>
-            {label('Typ')}
-            <select className="input" style={inp} value={form.type} onChange={e => set('type', e.target.value as TextItem['type'])}>
-              {Object.entries(TYPE_LABELS).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
-            </select>
-          </div>
-          <div>
-            {label('År')}
-            <input className="input" type="number" style={inp} value={form.year} onChange={e => set('year', Number(e.target.value))} />
-          </div>
-        </div>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '1.5rem' }}>
+              <div>
+                {label('Författare')}
+                <input className="input" style={inp} value={form.author} onChange={e => set('author', e.target.value)} />
+              </div>
+              <div>
+                {label('Typ')}
+                <select className="input" style={inp} value={form.type} onChange={e => set('type', e.target.value as TextItem['type'])}>
+                  {Object.entries(TYPE_LABELS).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
+                </select>
+              </div>
+              <div>
+                {label('År')}
+                <input className="input" type="number" style={inp} value={form.year} onChange={e => set('year', Number(e.target.value))} />
+              </div>
+            </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '1.5rem' }}>
-          <div>
-            {label('Publikation')}
-            <input className="input" style={inp} value={form.publication} onChange={e => set('publication', e.target.value)} />
-          </div>
-          <div>
-            {label('Språk')}
-            <select className="input" style={inp} value={form.lang} onChange={e => set('lang', e.target.value)}>
-              {['sv','en','de','fr','it','nl','es','pl','pt','ru','ja','ko','zh','ar','th'].map(l => <option key={l} value={l}>{l.toUpperCase()}</option>)}
-            </select>
-          </div>
-        </div>
+            <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '1.5rem' }}>
+              <div>
+                {label('Publikation')}
+                <input className="input" style={inp} value={form.publication} onChange={e => set('publication', e.target.value)} />
+              </div>
+              <div>
+                {label('Språk')}
+                <select className="input" style={inp} value={form.lang} onChange={e => set('lang', e.target.value)}>
+                  {['sv','en','de','fr','it','nl','es','pl','pt','ru','ja','ko','zh','ar','th'].map(l => <option key={l} value={l}>{l.toUpperCase()}</option>)}
+                </select>
+              </div>
+            </div>
 
-        <div>
-          {label('Kort bio om författaren')}
-          <input className="input" style={inp} value={form.authorBio ?? ''} onChange={e => set('authorBio', e.target.value)} />
-        </div>
+            <div>
+              {label('Kort bio om författaren')}
+              <input className="input" style={inp} value={form.authorBio ?? ''} onChange={e => set('authorBio', e.target.value)} />
+            </div>
 
-        <div>
-          {label('Brödtext')}
-          <LinkTextarea
-            value={form.body}
-            onChange={v => set('body', v)}
-            rows={18}
-            style={{ fontFamily: 'Georgia, serif', fontSize: '0.9rem', lineHeight: 1.7, minHeight: 400 }}
-            hint="Dubbelt radbrytning = nytt stycke. Enkelt radbrytning = ny rad. Markera text + 🔗 Länk för att infoga hyperlänk."
-          />
+            <div>
+              {label('Brödtext')}
+              <LinkTextarea
+                value={form.body}
+                onChange={v => set('body', v)}
+                rows={18}
+                style={{ fontFamily: 'Georgia, serif', fontSize: '0.9rem', lineHeight: 1.7, minHeight: 400 }}
+                hint="Dubbelt radbrytning = nytt stycke. Enkelt radbrytning = ny rad. Markera text + 🔗 Länk för att infoga hyperlänk."
+              />
+            </div>
+          </div>
+
+          {/* ── Right column: article images ── */}
+          <aside className="admin-text-edit-side">
+            {(form.images?.length ?? 0) > 0 && (
+              <div>
+                {label('Förhandsvisning (som på sidan)')}
+                <TextImageSlideshow images={form.images ?? []} title={form.title} />
+              </div>
+            )}
+
+            <div>
+              {label('Artikelbilder (skanningar)')}
+              <ImageListEditor
+                images={form.images ?? []}
+                onChange={imgs => set('images', imgs)}
+                label="Artikelbilder"
+              />
+              <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', marginTop: '0.4rem' }}>
+                Inskannade sidor av artikeln. Visas som bildspel på textsidan.
+              </p>
+            </div>
+
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', border: '1px solid var(--color-border)', padding: '0.85rem 1rem', borderRadius: 2 }}>
+              <input
+                id="showOcr"
+                type="checkbox"
+                checked={form.showOcr === true}
+                onChange={e => set('showOcr', e.target.checked)}
+                style={{ width: 18, height: 18, accentColor: 'var(--color-accent)', cursor: 'pointer' }}
+              />
+              <label htmlFor="showOcr" style={{ cursor: 'pointer', fontSize: 'var(--fs-sm)' }}>
+                Visa OCR-text bredvid bilderna
+                <span style={{ display: 'block', fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', marginTop: '0.15rem' }}>
+                  Av = endast bilderna visas (i full bredd). På = brödtexten visas som transkription bredvid skanningarna.
+                </span>
+              </label>
+            </div>
+          </aside>
         </div>
 
         <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', paddingTop: '1rem', borderTop: '1px solid var(--color-border)' }}>

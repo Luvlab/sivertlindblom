@@ -22,6 +22,8 @@ function dbToTextItem(row: Record<string, unknown>): TextItem {
     publication: (row.publication as string) ?? '',
     lang: (row.language as TextItem['lang']) ?? 'sv',
     body: (row.content as string) ?? '',
+    images: (row.images as string[] | null) ?? [],
+    showOcr: (row.show_ocr as boolean | null) ?? false,
   }
 }
 
@@ -64,6 +66,8 @@ export async function PUT(
         year: body.year,
         language: body.lang,
         content: body.body,
+        images: body.images ?? [],
+        show_ocr: body.showOcr ?? false,
       }).eq('slug', id)
       if (!error) {
         revalidateTag('texts', 'max')

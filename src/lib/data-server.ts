@@ -228,6 +228,7 @@ function dbRowToText(row: Record<string, unknown>): TextItem {
     lang: ((row.language as string) ?? 'sv') as TextItem['lang'],
     body: (row.content as string) ?? '',
     images: (row.images as string[] | null) ?? [],
+    showOcr: (row.show_ocr as boolean | null) ?? false,
   }
 }
 

@@ -23,6 +23,7 @@ function dbToTextItem(row: Record<string, unknown>): TextItem {
     lang: (row.language as TextItem['lang']) ?? 'sv',
     body: (row.content as string) ?? '',
     images: (row.images as string[] | null) ?? [],
+    showOcr: (row.show_ocr as boolean | null) ?? false,
   }
 }
 
@@ -66,6 +67,8 @@ export async function POST(request: Request) {
         year: body.year,
         language: body.lang,
         content: body.body,
+        images: body.images ?? [],
+        show_ocr: body.showOcr ?? false,
         published: true,
       }, { onConflict: 'slug' })
       if (!error) {
