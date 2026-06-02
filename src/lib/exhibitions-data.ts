@@ -20,6 +20,8 @@ export interface ExhibitionSubpage {
   images: string[];
   /** Optional YouTube/Vimeo URL — rendered as an embed above the gallery. */
   videoUrl?: string;
+  /** Additional films rendered as embeds, each with an optional caption. */
+  videos?: Array<{ url: string; title?: string }>;
   sortOrder?: number;
   published?: boolean;
 }

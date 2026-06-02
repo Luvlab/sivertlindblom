@@ -4,11 +4,13 @@ import type { Metadata } from 'next'
 import { locales } from '@/i18n/config'
 import GalleryGrid from '@/components/gallery/GalleryGrid'
 import type { LightboxImage } from '@/components/gallery/Lightbox'
-import { getExhibitionSubpage, getAllSubpageParams } from '@/lib/data-server'
+import { getPublicWorkSubpage, getAllPublicWorkSubpageParams } from '@/lib/data-server'
 import { renderParagraphs } from '@/lib/render-text'
 
+const YT_RE = /(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([A-Za-z0-9_-]{11})/
+
 export async function generateStaticParams() {
-  const pairs = await getAllSubpageParams()
+  const pairs = await getAllPublicWorkSubpageParams()
   return locales.flatMap((locale) =>
     pairs.map(({ slug, subpage }) => ({ locale, slug, subpage }))
   )
@@ -20,21 +22,21 @@ export async function generateMetadata({
   params: Promise<{ locale: string; slug: string; subpage: string }>
 }): Promise<Metadata> {
   const { slug, subpage } = await params
-  const data = await getExhibitionSubpage(slug, subpage)
+  const data = await getPublicWorkSubpage(slug, subpage)
   if (!data) return { title: 'Sida' }
-  return { title: `${data.subpage.title} — ${data.exhibition.title}` }
+  return { title: `${data.subpage.title} — ${data.work.title}` }
 }
 
-export default async function ExhibitionSubpage({
+export default async function PublicWorkSubpage({
   params,
 }: {
   params: Promise<{ locale: string; slug: string; subpage: string }>
 }) {
   const { locale, slug, subpage } = await params
 
-  const data = await getExhibitionSubpage(slug, subpage)
+  const data = await getPublicWorkSubpage(slug, subpage)
   if (!data) notFound()
-  const { exhibition: ex, subpage: page } = data
+  const { work, subpage: page } = data
 
   const heroImage = page.images[0]
   const galleryImages: LightboxImage[] = page.images.map((url, i) => ({
@@ -42,12 +44,12 @@ export default async function ExhibitionSubpage({
     alt: `${page.title} — bild ${i + 1}`,
   }))
 
-  const backToExhibition = `/${locale}/portfolio/exhibitions/${ex.slug}`
+  const backToWork = `/${locale}/portfolio/public-works/${work.slug}`
 
-  const YT_RE = /(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([A-Za-z0-9_-]{11})/
+  // Collect all films: primary videoUrl first, then the videos[] array.
   const films: Array<{ id: string; title?: string }> = []
-  const primaryId = page.videoUrl?.match(YT_RE)?.[1]
-  if (primaryId) films.push({ id: primaryId })
+  const primary = page.videoUrl?.match(YT_RE)?.[1]
+  if (primary) films.push({ id: primary })
   for (const v of page.videos ?? []) {
     const id = v.url.match(YT_RE)?.[1]
     if (id && !films.some((f) => f.id === id)) films.push({ id, title: v.title })
@@ -66,9 +68,9 @@ export default async function ExhibitionSubpage({
           />
           <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, transparent 25%, rgba(10,10,10,0.92) 100%)' }} />
           <div className="page-pad" style={{ position: 'absolute', bottom: '2.5rem', left: 0, right: 0 }}>
-            <Link href={backToExhibition} className="back-link" style={{ color: 'rgba(255,255,255,0.8)' }}>
+            <Link href={backToWork} className="back-link" style={{ color: 'rgba(255,255,255,0.8)' }}>
               <span className="back-link-arrow">←</span>
-              <span className="back-link-label">{ex.title}</span>
+              <span className="back-link-label">{work.title}</span>
             </Link>
             <h1 style={{ fontFamily: 'Georgia, serif', fontWeight: 400, fontSize: 'clamp(1.6rem,3.5vw,2.8rem)', margin: '0.75rem 0 0', maxWidth: '26ch' }}>
               {page.title}
@@ -80,9 +82,9 @@ export default async function ExhibitionSubpage({
       {/* No-hero fallback */}
       {!heroImage && (
         <div className="page-pad" style={{ paddingTop: '2rem', marginBottom: '3rem' }}>
-          <Link href={backToExhibition} className="back-link">
+          <Link href={backToWork} className="back-link">
             <span className="back-link-arrow">←</span>
-            <span className="back-link-label">{ex.title}</span>
+            <span className="back-link-label">{work.title}</span>
           </Link>
           <h1 style={{ fontFamily: 'Georgia, serif', fontWeight: 400, fontSize: 'clamp(1.6rem,3.5vw,2.8rem)', margin: '0.75rem 0 0' }}>
             {page.title}
@@ -136,9 +138,9 @@ export default async function ExhibitionSubpage({
         )}
 
         {/* Back link at bottom */}
-        <Link href={backToExhibition} className="back-link">
+        <Link href={backToWork} className="back-link">
           <span className="back-link-arrow">←</span>
-          <span className="back-link-label">{ex.title}</span>
+          <span className="back-link-label">{work.title}</span>
         </Link>
       </div>
     </div>

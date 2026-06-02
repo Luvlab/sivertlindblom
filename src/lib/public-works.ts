@@ -15,6 +15,24 @@ export interface PublicWork {
   photographerCredit?: string
 }
 
+/**
+ * An internal "extra page" nested under a public work. Mirrors ExhibitionSubpage.
+ * Used to re-host content that previously lived on the old WordPress site so that
+ * no link on the new site ever points back to sivertlindblom.se. Editable in admin.
+ */
+export interface PublicWorkSubpage {
+  slug: string
+  title: string
+  body: string
+  images: string[]
+  /** Primary YouTube/Vimeo URL — rendered as an embed above the gallery. */
+  videoUrl?: string
+  /** Additional films rendered as embeds, each with an optional caption. */
+  videos?: Array<{ url: string; title?: string }>
+  sortOrder?: number
+  published?: boolean
+}
+
 export const PUBLIC_WORKS: PublicWork[] = [
   {
     slug: 'aterinvigning-av-ulriksdalsbron',

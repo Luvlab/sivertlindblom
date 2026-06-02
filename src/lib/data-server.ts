@@ -10,7 +10,7 @@ import { cacheTag, cacheLife } from 'next/cache'
 import { createAdminClient } from '@/lib/supabase/admin'
 import type { Exhibition, ExhibitionLink, ExhibitionSubpage } from '@/lib/exhibitions-data'
 import { exhibitions as STATIC_EXHIBITIONS } from '@/lib/exhibitions-data'
-import type { PublicWork } from '@/lib/public-works'
+import type { PublicWork, PublicWorkSubpage } from '@/lib/public-works'
 import { PUBLIC_WORKS as STATIC_PUBLIC_WORKS } from '@/lib/public-works'
 import type { SculptureLocation } from '@/lib/sculpture-locations'
 import { SCULPTURE_LOCATIONS as STATIC_LOCATIONS } from '@/lib/sculpture-locations'
@@ -60,9 +60,26 @@ function dbRowToSubpage(row: Record<string, unknown>): ExhibitionSubpage {
     body: (row.body as string) ?? '',
     images: Array.isArray(imgs) ? imgs : [],
     videoUrl: (row.video_url as string) || undefined,
+    videos: normalizeVideos(row.videos),
     sortOrder: (row.sort_order as number) ?? 0,
     published: (row.published as boolean) ?? true,
   }
+}
+
+/** Coerce a jsonb `videos` column into a clean Array<{url,title?}>. */
+function normalizeVideos(raw: unknown): Array<{ url: string; title?: string }> | undefined {
+  if (!Array.isArray(raw)) return undefined
+  const out = raw
+    .map((v) => {
+      if (typeof v === 'string') return { url: v }
+      if (v && typeof v === 'object' && typeof (v as { url?: unknown }).url === 'string') {
+        const o = v as { url: string; title?: unknown }
+        return { url: o.url, title: typeof o.title === 'string' ? o.title : undefined }
+      }
+      return null
+    })
+    .filter((v): v is { url: string; title?: string } => v !== null && v.url.length > 0)
+  return out.length ? out : undefined
 }
 
 export async function getExhibition(slug: string): Promise<Exhibition | null> {
@@ -225,6 +242,68 @@ export async function getPublicWorkSlugs(): Promise<string[]> {
     if (!error && data) return data.map((r) => r.slug as string)
   }
   return STATIC_PUBLIC_WORKS.map((w) => w.slug)
+}
+
+// ─── Public-work sub-pages ───────────────────────────────────────────────────
+
+function dbRowToPublicWorkSubpage(row: Record<string, unknown>): PublicWorkSubpage {
+  const imgs = (row.images as string[] | null) ?? []
+  return {
+    slug: row.slug as string,
+    title: (row.title as string) ?? '',
+    body: (row.body as string) ?? '',
+    images: Array.isArray(imgs) ? imgs : [],
+    videoUrl: (row.video_url as string) || undefined,
+    videos: normalizeVideos(row.videos),
+    sortOrder: (row.sort_order as number) ?? 0,
+    published: (row.published as boolean) ?? true,
+  }
+}
+
+/** Fetch a single editable sub-page nested under a public work. */
+export async function getPublicWorkSubpage(
+  workSlug: string,
+  subpageSlug: string,
+): Promise<{ work: PublicWork; subpage: PublicWorkSubpage } | null> {
+  'use cache'
+  cacheTag('public-works', `public-work-${workSlug}`, `pw-subpage-${workSlug}-${subpageSlug}`)
+  cacheLife('days')
+  const supabase = createAdminClient()
+  if (!supabase) return null
+  const work = await getPublicWork(workSlug)
+  if (!work) return null
+  const { data: pw } = await supabase.from('public_works').select('id').eq('slug', workSlug).single()
+  if (!pw) return null
+  const { data: sub } = await supabase
+    .from('public_work_subpages')
+    .select('*')
+    .eq('work_id', (pw as Record<string, unknown>).id as string)
+    .eq('slug', subpageSlug)
+    .eq('published', true)
+    .single()
+  if (!sub) return null
+  return { work, subpage: dbRowToPublicWorkSubpage(sub as Record<string, unknown>) }
+}
+
+/** All { slug, subpage } pairs for public-work sub-pages — for generateStaticParams. */
+export async function getAllPublicWorkSubpageParams(): Promise<{ slug: string; subpage: string }[]> {
+  'use cache'
+  cacheTag('public-works')
+  cacheLife('days')
+  const supabase = createAdminClient()
+  if (!supabase) return []
+  const { data, error } = await supabase
+    .from('public_work_subpages')
+    .select('slug, published, public_works!inner(slug)')
+    .eq('published', true)
+  if (error || !data) return []
+  return data
+    .map((r) => {
+      const pw = (r as Record<string, unknown>).public_works as { slug: string } | { slug: string }[] | null
+      const parentSlug = Array.isArray(pw) ? pw[0]?.slug : pw?.slug
+      return parentSlug ? { slug: parentSlug, subpage: (r as Record<string, unknown>).slug as string } : null
+    })
+    .filter((x): x is { slug: string; subpage: string } => x !== null)
 }
 
 // ─── Map Pins ────────────────────────────────────────────────────────────────
