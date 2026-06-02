@@ -71,8 +71,8 @@ function WorkCard({
       display: 'block',
       overflow: 'hidden',
       textDecoration: 'none',
-      borderRight: '1px solid var(--color-border)',
-      borderBottom: '1px solid var(--color-border)',
+      border: '1px solid var(--color-border)',
+      borderRadius: 2,
     }}>
       {inner}
     </Link>
@@ -122,16 +122,6 @@ export default async function PublicWorksPage({
         </div>
       </div>
 
-      {/* ── Map — full width ── */}
-      <div style={{ borderBottom: '1px solid var(--color-border)' }}>
-        <SculptureMap
-          locations={locations}
-          locale={locale}
-          mapHeight="420px"
-          compact
-        />
-      </div>
-
       {/* ── Exteriörer ── */}
       <div style={{ borderBottom: '1px solid var(--color-border)' }}>
         <div className="page-pad" style={{
@@ -149,6 +139,7 @@ export default async function PublicWorksPage({
         <div className="page-pad" style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
+          gap: '1.5rem',
           paddingTop: '1.5rem',
           paddingBottom: '1.5rem',
         }}>
@@ -175,6 +166,7 @@ export default async function PublicWorksPage({
         <div className="page-pad" style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
+          gap: '1.5rem',
           paddingTop: '1.5rem',
           paddingBottom: '1.5rem',
         }}>
@@ -182,6 +174,16 @@ export default async function PublicWorksPage({
             <WorkCard key={w.slug} work={w} locale={locale} idx={i} />
           ))}
         </div>
+      </div>
+
+      {/* ── Map — full width, at the bottom ── */}
+      <div style={{ borderBottom: '1px solid var(--color-border)' }}>
+        <SculptureMap
+          locations={locations}
+          locale={locale}
+          mapHeight="420px"
+          compact
+        />
       </div>
 
       {/* Back link */}

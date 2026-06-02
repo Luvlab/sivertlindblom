@@ -150,28 +150,6 @@ export default async function PublicWorkDetailPage({
           </div>
         )}
 
-        {/* Location button */}
-        <a
-          href={googleMapsUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '0.5rem',
-            fontSize: 'var(--fs-xs)',
-            letterSpacing: '0.1em',
-            textTransform: 'uppercase',
-            color: 'var(--color-accent)',
-            border: '1px solid var(--color-accent-dim)',
-            padding: '0.4em 0.9em',
-            textDecoration: 'none',
-            marginBottom: '3.5rem',
-          }}
-        >
-          ⊙ {dict.portfolio?.view_location ?? 'Visa platsen'}
-        </a>
-
         {/* Gallery */}
         {galleryImages.length > 0 && (
           <section style={{ marginBottom: work.photographerCredit ? '0.75rem' : '3rem' }}>
@@ -226,6 +204,28 @@ export default async function PublicWorkDetailPage({
             </ul>
           </section>
         )}
+
+        {/* Location button — below the gallery, with the map */}
+        <a
+          href={googleMapsUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '0.5rem',
+            fontSize: 'var(--fs-xs)',
+            letterSpacing: '0.1em',
+            textTransform: 'uppercase',
+            color: 'var(--color-accent)',
+            border: '1px solid var(--color-accent-dim)',
+            padding: '0.4em 0.9em',
+            textDecoration: 'none',
+            marginBottom: mapPin ? '1.5rem' : '3.5rem',
+          }}
+        >
+          ⊙ {dict.portfolio?.view_location ?? 'Visa platsen'}
+        </a>
 
         {/* Embedded map — shown below images when lat/lng is available */}
         {mapPin && (
