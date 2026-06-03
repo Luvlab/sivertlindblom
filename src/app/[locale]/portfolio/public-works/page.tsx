@@ -139,7 +139,7 @@ export default async function PublicWorksPage({
         <div className="page-pad" style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
-          gap: '1.5rem',
+          gap: '1rem',
           paddingTop: '1.5rem',
           paddingBottom: '1.5rem',
         }}>
@@ -166,7 +166,7 @@ export default async function PublicWorksPage({
         <div className="page-pad" style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
-          gap: '1.5rem',
+          gap: '1rem',
           paddingTop: '1.5rem',
           paddingBottom: '1.5rem',
         }}>

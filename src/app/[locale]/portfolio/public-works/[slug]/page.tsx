@@ -7,6 +7,7 @@ import { getDictionary } from '@/i18n/getDictionary'
 import { getPublicWork, getPublicWorkSlugs, getPublicWorks, getMapPinForWork } from '@/lib/data-server'
 import GalleryGrid from '@/components/gallery/GalleryGrid'
 import type { LightboxImage } from '@/components/gallery/Lightbox'
+import SculptureMap from '@/components/SculptureMap'
 import { renderInlineLinks } from '@/lib/render-text'
 
 export async function generateStaticParams() {
@@ -169,9 +170,10 @@ export default async function PublicWorkDetailPage({
             textAlign: 'right',
             letterSpacing: '0.06em',
             marginBottom: '3rem',
-            fontStyle: 'italic',
           }}>
-            {locale === 'sv' ? 'Fotograf' : 'Photographer'}: {work.photographerCredit}
+            {/^\s*(fotograf|foto)\b/i.test(work.photographerCredit)
+              ? work.photographerCredit
+              : `${locale === 'sv' ? 'Fotograf' : 'Photographer'}: ${work.photographerCredit}`}
           </p>
         )}
 
@@ -227,25 +229,22 @@ export default async function PublicWorkDetailPage({
           ⊙ {dict.portfolio?.view_location ?? 'Visa platsen'}
         </a>
 
-        {/* Embedded map — shown below images when lat/lng is available */}
+        {/* Embedded map — same Leaflet map + marker style as the overview map */}
         {mapPin && (
-          <section style={{ marginBottom: '4rem' }}>
+          <section style={{ marginBottom: '4rem', maxWidth: '720px' }}>
             <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '0.75rem' }}>
               ⊙ {work.location}
             </p>
-            <iframe
-              src={`https://www.openstreetmap.org/export/embed.html?bbox=${mapPin.lng - 0.008},${mapPin.lat - 0.005},${mapPin.lng + 0.008},${mapPin.lat + 0.005}&layer=mapnik&marker=${mapPin.lat},${mapPin.lng}`}
-              style={{
-                width: '100%',
-                maxWidth: '720px',
-                height: '320px',
-                border: '1px solid var(--color-border)',
-                borderRadius: 2,
-                display: 'block',
-              }}
-              loading="lazy"
-              title={`Karta — ${work.title}`}
-            />
+            <div style={{ border: '1px solid var(--color-border)', borderRadius: 2, overflow: 'hidden' }}>
+              <SculptureMap
+                locations={[mapPin]}
+                locale={locale}
+                mapHeight={320}
+                compact
+                showFilter={false}
+                singleZoom={15}
+              />
+            </div>
           </section>
         )}
 

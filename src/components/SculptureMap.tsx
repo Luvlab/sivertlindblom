@@ -18,6 +18,10 @@ interface Props {
   mapHeight?: number | string
   /** Remove outer horizontal margins (for use inside a panel). */
   compact?: boolean
+  /** Show the exterior/interior/metro filter buttons. Default true. */
+  showFilter?: boolean
+  /** Zoom level used when there is exactly one location (single-pin detail map). Default 14. */
+  singleZoom?: number
 }
 
 const TYPE_COLORS: Record<string, string> = {
@@ -32,7 +36,7 @@ const TYPE_LABELS: Record<string, Record<string, string>> = {
   metro: { sv: 'Tunnelbana', en: 'Metro', de: 'U-Bahn', fr: 'Métro', es: 'Metro', it: 'Metro', zh: '地铁', ja: '地下鉄', ar: 'مترو', pt: 'Metro', ru: 'Метро', nl: 'Metro', pl: 'Metro', ko: '지하철', th: 'รถไฟใต้ดิน' },
 }
 
-export default function SculptureMap({ locations, locale, mapHeight = 480, compact = false }: Props) {
+export default function SculptureMap({ locations, locale, mapHeight = 480, compact = false, showFilter = true, singleZoom = 14 }: Props) {
   const mapRef = useRef<HTMLDivElement>(null)
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const mapInstance = useRef<any>(null)
@@ -184,8 +188,11 @@ export default function SculptureMap({ locations, locale, mapHeight = 480, compa
     })
     circlesRef.current = circMap
 
-    // Fit view to all markers so every project (incl. NY, Tokyo) is visible
-    if (locations.length > 0) {
+    // Fit view to all markers so every project (incl. NY, Tokyo) is visible.
+    // For a single location, centre on it at a closer zoom (place-level detail map).
+    if (locations.length === 1) {
+      map.setView([locations[0].lat, locations[0].lng], singleZoom)
+    } else if (locations.length > 0) {
       const bounds = L.latLngBounds(locations.map((l: SculptureLocation) => [l.lat, l.lng]))
       map.fitBounds(bounds, { padding: [40, 40], maxZoom: 6 })
     }
@@ -196,7 +203,7 @@ export default function SculptureMap({ locations, locale, mapHeight = 480, compa
       clusterRef.current = null
       circlesRef.current = new Map()
     }
-  }, [leafletReady, locations, locale])
+  }, [leafletReady, locations, locale, singleZoom])
 
   // Re-filter markers when selectedType changes
   useEffect(() => {
@@ -295,6 +302,7 @@ export default function SculptureMap({ locations, locale, mapHeight = 480, compa
       />
 
       {/* Type filter */}
+      {showFilter && (
       <div style={{ padding: compact ? '0.75rem 1rem' : '0 3rem 1rem', display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
         <button
           onClick={() => setSelectedType(null)}
@@ -338,6 +346,7 @@ export default function SculptureMap({ locations, locale, mapHeight = 480, compa
           </button>
         ))}
       </div>
+      )}
 
       {/* Map container */}
       <div
