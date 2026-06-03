@@ -3,6 +3,7 @@
 import { useState, useEffect, useMemo, useRef } from 'react'
 import Link from 'next/link'
 import type { PublicWork } from '@/lib/public-works'
+import { uploadImageFile } from '@/lib/upload-image'
 
 interface ContactSettings {
   contact_email: string
@@ -182,11 +183,7 @@ function UploadZone({ onUploaded }: { onUploaded: (url: string, alt: string) => 
     setUploading(true)
     setUploadErr(null)
     try {
-      const fd = new FormData()
-      fd.append('file', file)
-      fd.append('alt', uploadAlt)
-      const r = await fetch('/api/admin/upload', { method: 'POST', body: fd })
-      const d = await r.json() as { url?: string; alt?: string; error?: string }
+      const d = await uploadImageFile(file, uploadAlt)
       if (d.url) {
         onUploaded(d.url, uploadAlt)
         setUploadAlt('')

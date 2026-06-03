@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import Link from 'next/link'
 import LinkTextarea from '@/components/admin/LinkTextarea'
+import { uploadImageFile } from '@/lib/upload-image'
 
 const DEFAULT_PORTRAIT = 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Portratt-SivertMattias.jpg'
 
@@ -128,11 +129,7 @@ export default function AdminBiography() {
     if (!file) return
     setPhotoUploading(true)
     try {
-      const fd = new FormData()
-      fd.append('file', file)
-      fd.append('alt', newPhotoCaption || file.name)
-      const res = await fetch('/api/admin/upload', { method: 'POST', body: fd })
-      const data = await res.json() as { url?: string; error?: string }
+      const data = await uploadImageFile(file, newPhotoCaption || file.name)
       if (data.url) {
         const updated = [...photos, { url: data.url, caption: newPhotoCaption }]
         setPhotos(updated)
@@ -162,11 +159,7 @@ export default function AdminBiography() {
     if (!file) return
     setPortraitUploading(true)
     try {
-      const fd = new FormData()
-      fd.append('file', file)
-      fd.append('alt', 'Sivert Lindblom portrait')
-      const res = await fetch('/api/admin/upload', { method: 'POST', body: fd })
-      const data = await res.json() as { url?: string; error?: string }
+      const data = await uploadImageFile(file, 'Sivert Lindblom portrait')
       if (data.url) {
         setPortrait(data.url)
         // Auto-save immediately

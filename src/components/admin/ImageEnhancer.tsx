@@ -226,7 +226,10 @@ export default function ImageEnhancer({ imageUrl, onClose, onSaved }: Props) {
       form.append('file', blob, name)
 
       const res  = await fetch('/api/admin/upload', { method: 'POST', body: form })
-      const data = await res.json() as { url?: string; error?: string }
+      const ct   = res.headers.get('content-type') ?? ''
+      const data = ct.includes('application/json')
+        ? await res.json() as { url?: string; error?: string }
+        : { error: res.status === 413 ? 'Bilden är för stor för att sparas.' : `Sparandet misslyckades (HTTP ${res.status}).` }
       if (data.error) throw new Error(data.error)
 
       setSavedUrl(data.url ?? '')

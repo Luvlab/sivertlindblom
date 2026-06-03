@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef, useMemo } from 'react'
 import Lightbox from '@/components/gallery/Lightbox'
 import type { LightboxImage } from '@/components/gallery/Lightbox'
+import { uploadImageFile } from '@/lib/upload-image'
 
 interface VaultImage {
   url: string
@@ -171,11 +172,7 @@ export default function AdminWatercolors() {
     const newItems: WatercolorItem[] = []
     for (const file of files) {
       try {
-        const fd = new FormData()
-        fd.append('file', file)
-        fd.append('alt', file.name.replace(/\.[^.]+$/, ''))
-        const res = await fetch('/api/admin/upload', { method: 'POST', body: fd })
-        const data = await res.json() as { url?: string; error?: string }
+        const data = await uploadImageFile(file, file.name.replace(/\.[^.]+$/, ''))
         if (data.error) { setUploadError(`${file.name}: ${data.error}`); break }
         if (data.url) newItems.push({ url: data.url, alt: file.name.replace(/\.[^.]+$/, ''), sort_order: 0 })
       } catch (err) { setUploadError(String(err)); break }
@@ -248,11 +245,7 @@ export default function AdminWatercolors() {
     setHeroUploading(true)
     for (const file of files) {
       try {
-        const fd = new FormData()
-        fd.append('file', file)
-        fd.append('alt', 'hero-' + file.name.replace(/\.[^.]+$/, ''))
-        const res = await fetch('/api/admin/upload', { method: 'POST', body: fd })
-        const data = await res.json() as { url?: string; error?: string }
+        const data = await uploadImageFile(file, 'hero-' + file.name.replace(/\.[^.]+$/, ''))
         if (data.url) {
           setHeroUrls(prev => [...prev, data.url!])
           // Also add to vault images so it shows immediately

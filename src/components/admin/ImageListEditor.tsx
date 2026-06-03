@@ -3,6 +3,7 @@
 import { useRef, useState, useEffect, useMemo } from 'react'
 import Lightbox from '@/components/gallery/Lightbox'
 import type { LightboxImage } from '@/components/gallery/Lightbox'
+import { uploadImageFile } from '@/lib/upload-image'
 
 interface ImageListEditorProps {
   images: string[]
@@ -105,14 +106,10 @@ export default function ImageListEditor({ images, onChange, label = 'Bilder' }: 
     const newUrls: string[] = []
     for (const file of files) {
       try {
-        const fd = new FormData()
-        fd.append('file', file)
-        fd.append('alt', file.name)
-        const res = await fetch('/api/admin/upload', { method: 'POST', body: fd })
-        const data = await res.json() as { url?: string; error?: string }
+        const data = await uploadImageFile(file)
         if (data.error) { setUploadError(`${file.name}: ${data.error}`); break }
         if (data.url) newUrls.push(data.url)
-      } catch (err) { setUploadError(String(err)); break }
+      } catch (err) { setUploadError(`${file.name}: ${String(err)}`); break }
     }
     if (newUrls.length) onChange([...images, ...newUrls])
     setUploading(false)
