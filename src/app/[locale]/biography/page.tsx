@@ -102,8 +102,8 @@ const AWARDS: Array<{
     year: '1985',
     title: 'Stenpriset — Sveriges Stenindustriförbund',
     links: [
-      { prefix: 'LÄS OM', label: 'Om Stenpriset till Sivert Lindblom — Sveriges Stenindustriförbund 1985', url: 'https://sivertlindblom.se/biografi/egna-texter/pdf-fil-att-skriva-ut-om-stenpriset-till-sivert-lindblom-av-sveriges-stenindustriforbund-1985/' },
-      { prefix: 'HÄMTA', label: 'Sten 1985 — artikel (PDF)', url: 'https://media.sivertlindblom.se/2015/02/Sten-1985opt-.pdf' },
+      { prefix: 'LÄS OM', label: 'Om Stenpriset till Sivert Lindblom — Sveriges Stenindustriförbund 1985', url: '/texts/stenpriset-1985' },
+      { prefix: 'HÄMTA', label: 'Sten 1985 — artikel (PDF)', url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/02/Sten-1985opt-.pdf' },
       { prefix: 'LÄS MER', label: 'sten.se/stenpriset', url: 'https://www.sten.se/stenpriset/' },
     ],
   },
@@ -116,9 +116,6 @@ const AWARDS: Array<{
     title: 'S:t Eriksmedaljen',
     images: [
       'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/biography/priser/st-eriksmedaljen.jpg',
-    ],
-    links: [
-      { prefix: 'LÄS MER', label: 'Om S:t Eriksmedaljen 2002', url: 'https://sivertlindblom.se/st-eriksmedaljen-2002/' },
     ],
   },
   {
