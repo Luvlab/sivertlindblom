@@ -187,6 +187,7 @@ export async function getPublicWorks(): Promise<PublicWork[]> {
     const { data, error } = await supabase
       .from('public_works')
       .select('*, public_work_images(url, alt, sort_order)')
+      .eq('published', true)
       .order('sort_order', { ascending: true })
     if (!error && data) {
       const dbWorks = data.map((w) =>
@@ -213,6 +214,7 @@ export async function getPublicWork(slug: string): Promise<PublicWork | null> {
       .from('public_works')
       .select('*, public_work_images(url, alt, sort_order)')
       .eq('slug', slug)
+      .eq('published', true)
       .single()
     if (!error && data) {
       const work = dbRowToPublicWork(
@@ -238,7 +240,7 @@ export async function getPublicWorkSlugs(): Promise<string[]> {
   cacheLife('days')
   const supabase = createAdminClient()
   if (supabase) {
-    const { data, error } = await supabase.from('public_works').select('slug')
+    const { data, error } = await supabase.from('public_works').select('slug').eq('published', true)
     if (!error && data) return data.map((r) => r.slug as string)
   }
   return STATIC_PUBLIC_WORKS.map((w) => w.slug)
