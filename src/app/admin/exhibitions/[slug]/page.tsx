@@ -180,6 +180,40 @@ function EditExhibitionPageInner() {
         <input type="text" className="input" value={form.photographerCredit ?? ''} onChange={e => update('photographerCredit', e.target.value)} />
       </div>
 
+      <div style={{ border: '1px solid var(--color-border)', borderRadius: 2, padding: '0.85rem 1rem' }}>
+        <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}>
+          <input
+            type="checkbox"
+            checked={form.showInPublicWorks ?? false}
+            onChange={e => update('showInPublicWorks', e.target.checked)}
+          />
+          <span style={{ fontSize: 'var(--fs-sm)' }}>Visa även under Offentliga arbeten</span>
+        </label>
+        {form.showInPublicWorks && (
+          <div style={{ display: 'flex', gap: '1.5rem', flexWrap: 'wrap', marginTop: '0.75rem', paddingLeft: '1.6rem' }}>
+            <div>
+              <FieldLabel>Kategori</FieldLabel>
+              <select
+                className="input"
+                value={form.publicSubcategory ?? 'exterior'}
+                onChange={e => update('publicSubcategory', e.target.value as 'exterior' | 'interior')}
+              >
+                <option value="exterior">Exteriör</option>
+                <option value="interior">Interiör</option>
+              </select>
+            </div>
+            <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer', alignSelf: 'flex-end', paddingBottom: '0.5rem' }}>
+              <input
+                type="checkbox"
+                checked={form.publicTemporary ?? false}
+                onChange={e => update('publicTemporary', e.target.checked)}
+              />
+              <span style={{ fontSize: 'var(--fs-sm)' }}>Tillfällig placering (annars permanent)</span>
+            </label>
+          </div>
+        )}
+      </div>
+
       <ImageListEditor
         images={form.images}
         onChange={imgs => update('images', imgs)}

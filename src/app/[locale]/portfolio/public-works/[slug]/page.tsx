@@ -44,8 +44,9 @@ export default async function PublicWorkDetailPage({
   ])
   if (!work) notFound()
 
-  // Prev / next within all public works that have slugs
-  const withSlugs = allWorks.filter((w) => w.slug)
+  // Prev / next within real public works only (exclude cross-listed exhibitions,
+  // which navigate within the exhibitions section, not here).
+  const withSlugs = allWorks.filter((w) => w.slug && !w.hrefBase)
   const idx  = withSlugs.findIndex((w) => w.slug === slug)
   const prev = idx > 0                       ? withSlugs[idx - 1] : null
   const next = idx < withSlugs.length - 1   ? withSlugs[idx + 1] : null

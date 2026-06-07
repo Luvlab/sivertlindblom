@@ -25,6 +25,12 @@ function slugify(s: string): string {
 
 const lbl: React.CSSProperties = { display: 'block', fontSize: '0.65rem', color: 'var(--color-muted)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.25rem' }
 
+/** Extract an 11-char YouTube video id from common URL shapes (watch, youtu.be, embed, shorts). */
+function ytId(url: string): string | null {
+  const m = (url || '').match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([A-Za-z0-9_-]{11})/)
+  return m ? m[1] : null
+}
+
 /**
  * CRUD manager for an exhibition's internal "extra pages" (sub-pages). Each
  * sub-page holds re-hosted content (title, body, images) that used to live on
@@ -81,6 +87,33 @@ export default function SubpageManager({ subpages, exhibitionSlug, onChange }: P
                 <div>
                   <label style={lbl}>Video (YouTube-URL, valfri)</label>
                   <input className="input" style={{ width: '100%' }} value={sp.videoUrl ?? ''} placeholder="https://youtu.be/…" onChange={e => setSub(i, { videoUrl: e.target.value })} />
+                  {(() => {
+                    const vid = ytId(sp.videoUrl ?? '')
+                    if (vid) {
+                      return (
+                        <div style={{ marginTop: '0.6rem' }}>
+                          <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-accent)' }}>✓ Förhandsvisning</span>
+                          <div style={{ position: 'relative', paddingBottom: '56.25%', height: 0, overflow: 'hidden', borderRadius: 2, marginTop: '0.35rem', maxWidth: 480, background: '#000' }}>
+                            <iframe
+                              src={`https://www.youtube.com/embed/${vid}`}
+                              title="Förhandsvisning av film"
+                              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                              allowFullScreen
+                              style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', border: 0 }}
+                            />
+                          </div>
+                        </div>
+                      )
+                    }
+                    if ((sp.videoUrl ?? '').trim()) {
+                      return (
+                        <p style={{ fontSize: 'var(--fs-xs)', color: '#f0a', marginTop: '0.4rem' }}>
+                          Ogiltig YouTube-URL — klistra in t.ex. https://youtu.be/XXXXXXXXXXX eller https://www.youtube.com/watch?v=XXXXXXXXXXX
+                        </p>
+                      )
+                    }
+                    return null
+                  })()}
                 </div>
                 <div>
                   <label style={lbl}>Bilder</label>

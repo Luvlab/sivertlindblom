@@ -67,7 +67,7 @@ function WorkCard({
   )
 
   return (
-    <Link href={`/${locale}/portfolio/public-works/${work.slug}`} className="card-hover" style={{
+    <Link href={`/${locale}${work.hrefBase ?? '/portfolio/public-works'}/${work.slug}`} className="card-hover" style={{
       display: 'block',
       overflow: 'hidden',
       textDecoration: 'none',

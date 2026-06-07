@@ -36,6 +36,9 @@ function dbToExhibition(w: Record<string, unknown>): Exhibition {
     links: (w.links as Exhibition['links']) ?? undefined,
     body: (w.body as string) ?? undefined,
     photographerCredit: (w.photographer_credit as string) ?? undefined,
+    showInPublicWorks: (w.show_in_public_works as boolean) ?? false,
+    publicSubcategory: (w.public_subcategory as 'exterior' | 'interior') ?? undefined,
+    publicTemporary: (w.public_temporary as boolean) ?? false,
     images: ((w.images as { url: string; sort_order?: number }[]) ?? [])
       .sort((a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0))
       .map(img => img.url),
@@ -117,6 +120,9 @@ export async function PUT(
           body: body.body ?? null,
           links: body.links ?? [],
           photographer_credit: body.photographerCredit ?? null,
+          show_in_public_works: body.showInPublicWorks ?? false,
+          public_subcategory: body.showInPublicWorks ? (body.publicSubcategory ?? 'exterior') : null,
+          public_temporary: body.publicTemporary ?? false,
         })
         .eq('slug', id)
         .select('id')

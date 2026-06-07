@@ -13,6 +13,10 @@ export interface PublicWork {
   temporary?: boolean
   /** Optional photographer credit shown below the gallery, e.g. "Jan Öqvist". */
   photographerCredit?: string
+  /** Link base for the card. Defaults to /portfolio/public-works; cross-listed
+   *  exhibitions set this to /portfolio/exhibitions so the card opens the
+   *  exhibition page where the content lives. */
+  hrefBase?: string
 }
 
 /**

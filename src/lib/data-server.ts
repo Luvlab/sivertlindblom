@@ -180,7 +180,9 @@ function dbRowToPublicWork(
 
 export async function getPublicWorks(): Promise<PublicWork[]> {
   'use cache'
-  cacheTag('public-works')
+  // Also tagged 'exhibitions' so editing an exhibition's cross-list flag
+  // invalidates this list too.
+  cacheTag('public-works', 'exhibitions')
   cacheLife('days')
   const supabase = createAdminClient()
   if (supabase) {
@@ -196,9 +198,34 @@ export async function getPublicWorks(): Promise<PublicWork[]> {
           (w.public_work_images as Array<{ url: string; alt: string | null; sort_order: number }>) ?? []
         )
       )
-      // DB is the source of truth — return DB works directly.
-      // (Static fallback for images removed: all DB works now have correct images.)
-      return dbWorks
+
+      // Cross-listed exhibitions: shown under Public Works as exterior/interior,
+      // but the card links back to the exhibition page where the content lives.
+      const { data: exRows } = await supabase
+        .from('works')
+        .select('slug, title, year_start, location, description, body, public_subcategory, public_temporary, images(url, alt, sort_order)')
+        .eq('show_in_public_works', true)
+        .eq('published', true)
+      const exWorks: PublicWork[] = (exRows ?? []).map((row) => {
+        const r = row as Record<string, unknown>
+        const imgs = ((r.images as Array<{ url: string; alt: string | null; sort_order: number }>) ?? [])
+          .sort((a, b) => a.sort_order - b.sort_order)
+          .map((img) => ({ url: img.url, alt: img.alt ?? '' }))
+        return {
+          slug: r.slug as string,
+          title: r.title as string,
+          year: String(r.year_start ?? ''),
+          location: (r.location as string) ?? '',
+          category: ((r.public_subcategory as string) === 'interior' ? 'interior' : 'exterior') as PublicWork['category'],
+          description: (r.description as string) ?? '',
+          body: (r.body as string) ?? '',
+          images: imgs,
+          temporary: (r.public_temporary as boolean) ?? false,
+          hrefBase: '/portfolio/exhibitions',
+        }
+      })
+
+      return [...dbWorks, ...exWorks]
     }
   }
   return STATIC_PUBLIC_WORKS
