@@ -4,12 +4,35 @@ import { getDictionary } from '@/i18n/getDictionary'
 import { locales } from '@/i18n/config'
 import type { Locale } from '@/i18n/config'
 import { getExhibitions } from '@/lib/data-server'
+import type { Exhibition } from '@/lib/exhibitions-data'
 import ExhibitionsHeroSlideshow from '@/components/gallery/ExhibitionsHeroSlideshow'
+import PortfolioSlideshow from '@/components/portfolio/PortfolioSlideshow'
 
 export const metadata: Metadata = { title: 'Exhibitions' }
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }))
+}
+
+// Pull YouTube video IDs from an exhibition's links/body/url and turn them into
+// thumbnail URLs, so exhibitions whose material is a film still show an image.
+const YT_RE = /(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([A-Za-z0-9_-]{11})/g
+
+function youtubeThumbs(ex: Exhibition): string[] {
+  const ids = new Set<string>()
+  const haystacks: string[] = []
+  if (ex.url) haystacks.push(ex.url)
+  if (ex.body) haystacks.push(ex.body)
+  for (const l of ex.links ?? []) if (l.url) haystacks.push(l.url)
+  for (const h of haystacks) {
+    for (const m of h.matchAll(YT_RE)) ids.add(m[1])
+  }
+  return [...ids].map((id) => `https://img.youtube.com/vi/${id}/hqdefault.jpg`)
+}
+
+// Images first, then film thumbnails — the card slideshow cycles through all.
+function slidesFor(ex: Exhibition): string[] {
+  return [...ex.images, ...youtubeThumbs(ex)]
 }
 
 export default async function ExhibitionsPage({
@@ -22,9 +45,9 @@ export default async function ExhibitionsPage({
 
   const sorted = await getExhibitions()
 
-  // One hero image per exhibition, deduped — fed to the client slideshow
+  // One hero image per exhibition (image or film thumbnail), deduped.
   const heroImages = sorted
-    .map(ex => ex.images[0])
+    .map((ex) => slidesFor(ex)[0])
     .filter((url): url is string => Boolean(url))
 
   return (
@@ -66,42 +89,62 @@ export default async function ExhibitionsPage({
 
       <hr className="divider" />
 
-      <div className="page-pad" style={{ paddingTop: '2rem' }}>
-        <div style={{ display: 'grid', gap: 0 }}>
-          {sorted.map((ex) => (
-            <Link
-              key={ex.slug}
-              href={`/${locale}/portfolio/exhibitions/${ex.slug}`}
-              id={ex.slug}
-              className="row-hover"
-              style={{
-                display: 'grid',
-                gridTemplateColumns: '72px 4rem 1fr auto',
-                gap: '1.25rem',
-                alignItems: 'center',
-                padding: '0.85rem 0',
-                borderBottom: '1px solid var(--color-border)',
-                textDecoration: 'none',
-              }}
-            >
-              {ex.images[0] ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={ex.images[0]}
-                  alt={ex.title}
-                  loading="lazy"
-                  style={{ width: '72px', height: '54px', objectFit: 'cover', borderRadius: 2, display: 'block', background: 'var(--color-bg-surface)', border: '1px solid var(--color-border)' }}
-                />
-              ) : (
-                <div style={{ width: '72px', height: '54px', borderRadius: 2, background: 'var(--color-bg-surface)', border: '1px solid var(--color-border)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.6rem', letterSpacing: '0.05em', color: 'var(--color-border)' }}>
-                  {ex.year}
+      {/* Mosaic grid — same card treatment as Public Works */}
+      <div className="page-pad" style={{ paddingTop: '2rem', paddingBottom: '1rem' }}>
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
+          gap: '1rem',
+        }}>
+          {sorted.map((ex, i) => {
+            const slides = slidesFor(ex)
+            return (
+              <Link
+                key={ex.slug}
+                href={`/${locale}/portfolio/exhibitions/${ex.slug}`}
+                id={ex.slug}
+                className="card-hover"
+                style={{
+                  display: 'block',
+                  overflow: 'hidden',
+                  textDecoration: 'none',
+                  border: '1px solid var(--color-border)',
+                  borderRadius: 2,
+                }}
+              >
+                {slides.length > 0 ? (
+                  <div style={{ aspectRatio: '4/3', position: 'relative', overflow: 'hidden', borderBottom: '1px solid var(--color-border)' }}>
+                    <PortfolioSlideshow
+                      images={slides}
+                      alt={ex.title}
+                      objectFit="cover"
+                      interval={4000 + i * 350}
+                    />
+                  </div>
+                ) : (
+                  <div style={{
+                    aspectRatio: '4/3',
+                    background: 'var(--color-bg-surface)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    borderBottom: '1px solid var(--color-border)',
+                  }}>
+                    <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-border)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+                      {ex.year}
+                    </span>
+                  </div>
+                )}
+                <div style={{ padding: '0.85rem 1rem' }}>
+                  <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-accent)', fontFamily: 'Georgia, serif', lineHeight: 1 }}>{ex.year}</span>
+                  <div style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-text)', lineHeight: 1.35, marginTop: '0.3rem' }}>{ex.title}</div>
+                  {ex.location && (
+                    <div style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', marginTop: '0.25rem' }}>{ex.location}</div>
+                  )}
                 </div>
-              )}
-              <span style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-accent)', fontFamily: 'Georgia, serif' }}>{ex.year}</span>
-              <span style={{ fontSize: 'var(--fs-base)', color: 'var(--color-text)' }}>{ex.title}</span>
-              <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', textAlign: 'right' }}>{ex.location}</span>
-            </Link>
-          ))}
+              </Link>
+            )
+          })}
         </div>
       </div>
 
