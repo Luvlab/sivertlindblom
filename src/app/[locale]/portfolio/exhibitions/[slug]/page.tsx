@@ -208,9 +208,10 @@ export default async function ExhibitionDetailPage({
             textAlign: 'right',
             letterSpacing: '0.06em',
             marginBottom: '4rem',
-            fontStyle: 'italic',
           }}>
-            Fotograf: {ex.photographerCredit}
+            {/^\s*(fotograf|foto)\b/i.test(ex.photographerCredit)
+              ? ex.photographerCredit
+              : `Fotograf: ${ex.photographerCredit}`}
           </p>
         )}
 
