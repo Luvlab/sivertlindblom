@@ -76,14 +76,27 @@ export default async function ExhibitionsPage({
               className="row-hover"
               style={{
                 display: 'grid',
-                gridTemplateColumns: '5rem 1fr auto',
-                gap: '1.5rem',
+                gridTemplateColumns: '72px 4rem 1fr auto',
+                gap: '1.25rem',
                 alignItems: 'center',
-                padding: '1.1rem 0',
+                padding: '0.85rem 0',
                 borderBottom: '1px solid var(--color-border)',
                 textDecoration: 'none',
               }}
             >
+              {ex.images[0] ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={ex.images[0]}
+                  alt={ex.title}
+                  loading="lazy"
+                  style={{ width: '72px', height: '54px', objectFit: 'cover', borderRadius: 2, display: 'block', background: 'var(--color-bg-surface)', border: '1px solid var(--color-border)' }}
+                />
+              ) : (
+                <div style={{ width: '72px', height: '54px', borderRadius: 2, background: 'var(--color-bg-surface)', border: '1px solid var(--color-border)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.6rem', letterSpacing: '0.05em', color: 'var(--color-border)' }}>
+                  {ex.year}
+                </div>
+              )}
               <span style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-accent)', fontFamily: 'Georgia, serif' }}>{ex.year}</span>
               <span style={{ fontSize: 'var(--fs-base)', color: 'var(--color-text)' }}>{ex.title}</span>
               <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', textAlign: 'right' }}>{ex.location}</span>
