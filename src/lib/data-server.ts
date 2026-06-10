@@ -358,7 +358,7 @@ function dbRowToLocation(row: Record<string, unknown>): SculptureLocation {
 
 export async function getMapPins(): Promise<SculptureLocation[]> {
   'use cache'
-  cacheTag('map-pins')
+  cacheTag('map-pins', 'public-works')
   cacheLife('days')
   const supabase = createAdminClient()
   if (supabase) {
@@ -367,15 +367,20 @@ export async function getMapPins(): Promise<SculptureLocation[]> {
       .select('*')
       .order('year', { ascending: true })
     if (!error && data) {
-      // Enrich each pin with the real category from public_works (joined by slug)
-      // so the map can colour interior vs exterior pins correctly.
-      const { data: works } = await supabase.from('public_works').select('slug, subcategory')
-      const subBySlug = new Map<string, string>(
-        (works ?? []).map((w) => [w.slug as string, w.subcategory as string]),
+      // Enrich each pin with category + the authoritative coordinates from
+      // public_works (what the admin work-edit map picker saves). The maps
+      // must reflect the position the editor set there, not the older import
+      // coordinates that live in map_pins.
+      const { data: works } = await supabase.from('public_works').select('slug, subcategory, lat, lng')
+      const bySlug = new Map<string, { subcategory?: string; lat?: number | null; lng?: number | null }>(
+        (works ?? []).map((w) => [w.slug as string, { subcategory: w.subcategory as string, lat: w.lat as number | null, lng: w.lng as number | null }]),
       )
       return data.map((r) => {
         const row = r as Record<string, unknown>
-        return dbRowToLocation({ ...row, subcategory: subBySlug.get(row.slug as string) })
+        const pw = bySlug.get(row.slug as string)
+        const lat = pw && pw.lat != null ? pw.lat : row.lat
+        const lng = pw && pw.lng != null ? pw.lng : row.lng
+        return dbRowToLocation({ ...row, lat, lng, subcategory: pw?.subcategory })
       })
     }
   }
@@ -435,21 +440,22 @@ export async function getText(slug: string): Promise<TextItem | null> {
 // Returns the map pin for a public work slug (for coordinates / Google Maps link)
 export async function getMapPinForWork(slug: string): Promise<SculptureLocation | null> {
   'use cache'
-  cacheTag('map-pins', `map-pin-${slug}`)
+  cacheTag('map-pins', 'public-works', `map-pin-${slug}`)
   cacheLife('days')
   const supabase = createAdminClient()
   if (supabase) {
+    const { data: work } = await supabase
+      .from('public_works')
+      .select('subcategory, lat, lng')
+      .eq('slug', slug)
+      .maybeSingle()
     const { data, error } = await supabase.from('map_pins').select('*').eq('slug', slug).single()
     if (!error && data) {
-      const { data: work } = await supabase
-        .from('public_works')
-        .select('subcategory')
-        .eq('slug', slug)
-        .maybeSingle()
-      return dbRowToLocation({
-        ...(data as Record<string, unknown>),
-        subcategory: work?.subcategory,
-      })
+      const row = data as Record<string, unknown>
+      // public_works coords are authoritative (set via the work-edit map picker).
+      const lat = work && work.lat != null ? work.lat : row.lat
+      const lng = work && work.lng != null ? work.lng : row.lng
+      return dbRowToLocation({ ...row, lat, lng, subcategory: work?.subcategory })
     }
   }
   return STATIC_LOCATIONS.find((l) => l.slug === slug) ?? null
