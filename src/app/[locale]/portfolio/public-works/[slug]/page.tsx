@@ -10,6 +10,8 @@ import type { LightboxImage } from '@/components/gallery/Lightbox'
 import SculptureMap from '@/components/SculptureMap'
 import { renderInlineLinks } from '@/lib/render-text'
 
+const PW_YT_RE = /(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([A-Za-z0-9_-]{11})/
+
 export async function generateStaticParams() {
   const slugs = await getPublicWorkSlugs()
   return locales.flatMap((locale) => slugs.map((slug) => ({ locale, slug })))
@@ -178,33 +180,39 @@ export default async function PublicWorkDetailPage({
           </p>
         )}
 
-        {/* Videos / film links */}
+        {/* Films — embedded YouTube players (link fallback for other URLs) */}
         {work.videos && work.videos.length > 0 && (
           <section style={{ marginBottom: '3rem' }}>
             <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '0.75rem' }}>
               {locale === 'sv' ? 'Film' : 'Film'}
             </p>
-            <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-              {work.videos.map((v, i) => (
-                <li key={i}>
-                  <a
-                    href={v.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{
-                      fontSize: 'var(--fs-sm)',
-                      color: 'var(--color-accent)',
-                      textDecoration: 'none',
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      gap: '0.4rem',
-                    }}
-                  >
-                    ▶ {v.title}
-                  </a>
-                </li>
-              ))}
-            </ul>
+            {work.videos.map((v, i) => {
+              const vid = v.url.match(PW_YT_RE)?.[1]
+              return (
+                <div key={i} style={{ marginBottom: '2rem' }}>
+                  {v.title && (
+                    <h3 style={{ fontFamily: 'Georgia, serif', fontWeight: 400, fontSize: 'var(--fs-base)', color: 'var(--color-text)', margin: '0 0 0.6rem' }}>
+                      {v.title}
+                    </h3>
+                  )}
+                  {vid ? (
+                    <div style={{ position: 'relative', paddingBottom: '56.25%', height: 0, overflow: 'hidden', borderRadius: 4, background: 'var(--color-bg-surface)', maxWidth: 880 }}>
+                      <iframe
+                        src={`https://www.youtube.com/embed/${vid}?rel=0`}
+                        title={v.title || work.title}
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                        style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', border: 0 }}
+                      />
+                    </div>
+                  ) : (
+                    <a href={v.url} target="_blank" rel="noopener noreferrer" style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-accent)', textDecoration: 'none' }}>
+                      ▶ {v.title || v.url}
+                    </a>
+                  )}
+                </div>
+              )
+            })}
           </section>
         )}
 

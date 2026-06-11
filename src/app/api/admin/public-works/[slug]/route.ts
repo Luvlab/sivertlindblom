@@ -22,6 +22,7 @@ function dbToWork(
     description: (row.description as string) ?? '',
     body: (row.description_sv as string) ?? '',
     photographerCredit: (row.photographer_credit as string) || undefined,
+    videos: ((row.videos as Array<{ url: string; title?: string }>) ?? []).map(v => ({ url: v.url, title: v.title ?? '' })),
     images: images
       .sort((a, b) => a.sort_order - b.sort_order)
       .map(img => ({ url: img.url, alt: img.alt ?? '' })),
@@ -80,6 +81,7 @@ export async function PUT(
           description: body.description,
           description_sv: body.body,
           photographer_credit: body.photographerCredit || null,
+          videos: body.videos ?? [],
           lat: body.lat ?? null,
           lng: body.lng ?? null,
           temporary: body.temporary ?? false,

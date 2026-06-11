@@ -288,6 +288,31 @@ function EditPublicWorkPageInner() {
               placeholder="t.ex. Jan Öqvist" />
           </div>
 
+          <div>
+            <FieldLabel>Film (YouTube-URL:er, visas inbäddade på sidan)</FieldLabel>
+            {(form.videos ?? []).map((v, i) => {
+              const vid = (v.url || '').match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([A-Za-z0-9_-]{11})/)?.[1]
+              return (
+                <div key={i} style={{ border: '1px solid var(--color-border)', borderRadius: 2, padding: '0.6rem', marginBottom: '0.5rem' }}>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr auto', gap: '0.5rem', alignItems: 'center' }}>
+                    <input className="input" placeholder="https://youtu.be/…" value={v.url}
+                      onChange={e => update('videos', (form.videos ?? []).map((x, j) => j === i ? { ...x, url: e.target.value } : x))} />
+                    <input className="input" placeholder="Filmtitel (valfri)" value={v.title ?? ''}
+                      onChange={e => update('videos', (form.videos ?? []).map((x, j) => j === i ? { ...x, title: e.target.value } : x))} />
+                    <button type="button" onClick={() => update('videos', (form.videos ?? []).filter((_, j) => j !== i))}
+                      style={{ background: 'none', border: '1px solid #c00', color: '#c00', cursor: 'pointer', padding: '0.25em 0.6em', fontSize: 'var(--fs-xs)', borderRadius: 2 }}>Ta bort</button>
+                  </div>
+                  {vid && (
+                    <div style={{ position: 'relative', paddingBottom: '56.25%', height: 0, overflow: 'hidden', borderRadius: 2, marginTop: '0.5rem', maxWidth: 400, background: '#000' }}>
+                      <iframe src={`https://www.youtube.com/embed/${vid}`} title="Förhandsvisning" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', border: 0 }} />
+                    </div>
+                  )}
+                </div>
+              )
+            })}
+            <button type="button" className="btn" onClick={() => update('videos', [...(form.videos ?? []), { url: '', title: '' }])} style={{ alignSelf: 'flex-start' }}>+ Lägg till film</button>
+          </div>
+
           {/* Map — full width */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
             <div>
