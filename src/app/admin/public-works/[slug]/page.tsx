@@ -7,6 +7,8 @@ import type { PublicWork } from '@/lib/public-works'
 import AdminForm, { FieldLabel } from '@/components/admin/AdminForm'
 import ImageListEditor from '@/components/admin/ImageListEditor'
 import LinkTextarea from '@/components/admin/LinkTextarea'
+import ExhibitionLinksEditor from '@/components/admin/ExhibitionLinksEditor'
+import type { ExhibitionLink } from '@/lib/exhibitions-data'
 
 declare global {
   interface Window { L: any } // eslint-disable-line @typescript-eslint/no-explicit-any
@@ -277,6 +279,17 @@ function EditPublicWorkPageInner() {
               rows={6}
               placeholder="Längre beskrivning — visas på detaljsidan"
               hint="Markera text + 🔗 Länk för att infoga hyperlänk."
+            />
+          </div>
+
+          <div>
+            <FieldLabel>Länkar (SE MER / LÄS MER / LADDA NED…)</FieldLabel>
+            <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', margin: '0 0 0.6rem' }}>
+              Interna sidor börjar med <code>/</code> (t.ex. <code>/texts/…</code> eller <code>/portfolio/…</code>). Länkar till gamla sajten (sivertlindblom.se) tas bort automatiskt — importera innehållet internt i stället.
+            </p>
+            <ExhibitionLinksEditor
+              links={(form.links ?? []) as ExhibitionLink[]}
+              onChange={links => update('links', links as PublicWork['links'])}
             />
           </div>
 

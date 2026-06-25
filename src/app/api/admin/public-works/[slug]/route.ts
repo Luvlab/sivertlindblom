@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { cookies } from 'next/headers'
 import { revalidateTag } from 'next/cache'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { sanitizeLinks } from '@/lib/old-site-guard'
 import type { PublicWork } from '@/lib/public-works'
 
 async function checkAuth(): Promise<boolean> {
@@ -23,6 +24,7 @@ function dbToWork(
     body: (row.description_sv as string) ?? '',
     photographerCredit: (row.photographer_credit as string) || undefined,
     videos: ((row.videos as Array<{ url: string; title?: string }>) ?? []).map(v => ({ url: v.url, title: v.title ?? '' })),
+    links: (row.links as PublicWork['links']) ?? [],
     images: images
       .sort((a, b) => a.sort_order - b.sort_order)
       .map(img => ({ url: img.url, alt: img.alt ?? '' })),
@@ -69,6 +71,9 @@ export async function PUT(
     const { slug } = await params
     const body = await request.json() as PublicWork
 
+    // Old-site guard: strip/flag any link pointing back to sivertlindblom.se.
+    const linkResult = sanitizeLinks(body.links)
+
     const supabase = createAdminClient()
     if (supabase) {
       const { data: work, error } = await supabase
@@ -82,6 +87,7 @@ export async function PUT(
           description_sv: body.body,
           photographer_credit: body.photographerCredit || null,
           videos: body.videos ?? [],
+          links: linkResult.links ?? [],
           lat: body.lat ?? null,
           lng: body.lng ?? null,
           temporary: body.temporary ?? false,

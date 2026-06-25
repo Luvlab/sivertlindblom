@@ -154,6 +154,25 @@ export default async function PublicWorkDetailPage({
           </div>
         )}
 
+        {/* Links — "SE MER / LÄS MER / LADDA NED" (internal links start with /) */}
+        {work.links && work.links.length > 0 && (
+          <div style={{ marginBottom: '3rem', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+            {work.links.map((link, i) => (
+              link.external ? (
+                <a key={i} href={link.url} target="_blank" rel="noopener noreferrer" style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-accent)', textDecoration: 'none', borderBottom: '1px solid var(--color-accent-dim)', paddingBottom: '0.1em', alignSelf: 'flex-start' }}>
+                  {link.prefix && <strong style={{ marginRight: '0.4rem', letterSpacing: '0.06em', fontSize: 'var(--fs-xs)', textTransform: 'uppercase' }}>{link.prefix}</strong>}
+                  {link.label} →
+                </a>
+              ) : (
+                <Link key={i} href={`/${locale}${link.url}`} style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-accent)', textDecoration: 'none', borderBottom: '1px solid var(--color-accent-dim)', paddingBottom: '0.1em', alignSelf: 'flex-start' }}>
+                  {link.prefix && <strong style={{ marginRight: '0.4rem', letterSpacing: '0.06em', fontSize: 'var(--fs-xs)', textTransform: 'uppercase' }}>{link.prefix}</strong>}
+                  {link.label} →
+                </Link>
+              )
+            ))}
+          </div>
+        )}
+
         {/* Gallery */}
         {galleryImages.length > 0 && (
           <section style={{ marginBottom: work.photographerCredit ? '0.75rem' : '3rem' }}>
