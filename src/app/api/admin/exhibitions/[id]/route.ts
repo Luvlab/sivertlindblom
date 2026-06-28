@@ -123,6 +123,9 @@ export async function PUT(
           show_in_public_works: body.showInPublicWorks ?? false,
           public_subcategory: body.showInPublicWorks ? (body.publicSubcategory ?? 'exterior') : null,
           public_temporary: body.publicTemporary ?? false,
+          // Saving an exhibition (re)publishes it — so a hidden/soft-deleted
+          // post is recovered simply by opening it and saving.
+          published: true,
         })
         .eq('slug', id)
         .select('id')
@@ -210,10 +213,12 @@ export async function DELETE(
 
     const supabase = createAdminClient()
     if (supabase) {
-      const { error } = await supabase.from('works').delete().eq('slug', id)
+      // Soft-delete: hide (unpublish) instead of erasing, so an accidental
+      // "Radera" never destroys data — the post can be republished later.
+      const { error } = await supabase.from('works').update({ published: false }).eq('slug', id)
       if (!error) {
         revalidateTag('exhibitions', 'max')
-        return NextResponse.json({ ok: true })
+        return NextResponse.json({ ok: true, hidden: true })
       }
     }
 

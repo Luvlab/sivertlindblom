@@ -134,10 +134,12 @@ export async function DELETE(
     const { slug } = await params
     const supabase = createAdminClient()
     if (supabase) {
-      const { error } = await supabase.from('public_works').delete().eq('slug', slug)
+      // Soft-delete: hide (unpublish) instead of erasing, so an accidental
+      // "Radera" never destroys data — the post can be republished later.
+      const { error } = await supabase.from('public_works').update({ published: false }).eq('slug', slug)
       if (!error) {
         revalidateTag('public-works', 'max')
-        return NextResponse.json({ ok: true })
+        return NextResponse.json({ ok: true, hidden: true })
       }
       return NextResponse.json({ error: error.message }, { status: 500 })
     }

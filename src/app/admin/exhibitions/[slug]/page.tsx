@@ -84,7 +84,7 @@ function EditExhibitionPageInner() {
   }
 
   async function handleDelete() {
-    if (!confirm(`Radera utställningen "${form?.title}"? Detta kan inte ångras.`)) return
+    if (!confirm(`Dölj utställningen "${form?.title}" från sajten? Posten tas bort från sajten men raderas inte — du kan ta tillbaka den genom att öppna den och spara igen.`)) return
     try {
       const res = await fetch(`/api/admin/exhibitions/${slug}`, { method: 'DELETE' })
       const data = await res.json() as { ok: boolean; error?: string }
@@ -112,7 +112,7 @@ function EditExhibitionPageInner() {
       saved={saved}
       error={error}
       dirty={dirty}
-      deleteLabel="Radera utställning"
+      deleteLabel="Dölj utställning"
       maxWidth="none"
     >
       <div>

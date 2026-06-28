@@ -176,7 +176,7 @@ function EditPublicWorkPageInner() {
   }
 
   async function handleDelete() {
-    if (!confirm(`Radera "${form?.title}"? Detta kan inte ångras.`)) return
+    if (!confirm(`Dölj "${form?.title}" från sajten? Posten tas bort från sajten men raderas inte — du kan ta tillbaka den genom att öppna den och spara igen.`)) return
     try {
       const res = await fetch(`/api/admin/public-works/${slug}`, { method: 'DELETE' })
       const data = await res.json() as { ok: boolean; error?: string }
@@ -209,7 +209,7 @@ function EditPublicWorkPageInner() {
         saved={saved}
         error={error}
         dirty={dirty}
-        deleteLabel="Radera verk"
+        deleteLabel="Dölj verk"
         maxWidth="none"
       >
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
