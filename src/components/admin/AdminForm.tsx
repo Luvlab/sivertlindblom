@@ -1,6 +1,7 @@
 'use client'
 
-import Link from 'next/link'
+import { useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 
 interface AdminFormProps {
   title: string
@@ -34,6 +35,22 @@ export default function AdminForm({
   error = null,
   maxWidth = 800,
 }: AdminFormProps) {
+  const router = useRouter()
+
+  // Warn on browser refresh / tab close when there are unsaved changes.
+  useEffect(() => {
+    if (!dirty) return
+    const handler = (e: BeforeUnloadEvent) => { e.preventDefault(); e.returnValue = '' }
+    window.addEventListener('beforeunload', handler)
+    return () => window.removeEventListener('beforeunload', handler)
+  }, [dirty])
+
+  function handleBack() {
+    if (!dirty || confirm('Du har osparade ändringar. Vill du lämna sidan utan att spara?')) {
+      router.push(backHref)
+    }
+  }
+
   return (
     <div style={{ padding: 'clamp(1rem, 3vw, 3rem)', maxWidth: maxWidth === 'none' ? undefined : maxWidth }}>
       {/* Sticky save toolbar — top offset managed by .admin-form-toolbar CSS class (0 desktop, 3rem mobile) */}
@@ -51,9 +68,14 @@ export default function AdminForm({
           gap: '0.5rem',
         }}
       >
-        <Link
-          href={backHref}
+        <button
+          type="button"
+          onClick={handleBack}
           style={{
+            background: 'none',
+            border: 'none',
+            padding: 0,
+            cursor: 'pointer',
             fontSize: 'var(--fs-xs)',
             color: 'var(--color-muted)',
             textTransform: 'uppercase',
@@ -61,12 +83,18 @@ export default function AdminForm({
           }}
         >
           ← {backLabel}
-        </Link>
+        </button>
         <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
           {saved && (
             <span style={{ color: 'var(--color-accent)', fontSize: 'var(--fs-sm)' }}>✓ Sparad</span>
           )}
-          {dirty && !saved && (
+          {/* Error in toolbar so it's visible even when scrolled down */}
+          {error && !saved && (
+            <span style={{ color: '#f88', fontSize: 'var(--fs-xs)', maxWidth: 300, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={error}>
+              ⚠ Fel vid sparning
+            </span>
+          )}
+          {dirty && !saved && !error && (
             <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', fontStyle: 'italic' }}>Osparade ändringar</span>
           )}
           <button
@@ -95,7 +123,7 @@ export default function AdminForm({
           fontSize: 'var(--fs-sm)',
           marginBottom: '1.5rem',
         }}>
-          {error}
+          ⚠ Sparningen misslyckades: {error}
         </div>
       )}
 
@@ -115,9 +143,7 @@ export default function AdminForm({
             <button type="submit" className="btn btn-primary" disabled={saving}>
               {saving ? 'Sparar...' : saveLabel}
             </button>
-            <Link href={backHref}>
-              <button type="button" className="btn">Avbryt</button>
-            </Link>
+            <button type="button" className="btn" onClick={handleBack}>Avbryt</button>
             {saved && (
               <span style={{ color: 'var(--color-accent)', fontSize: 'var(--fs-sm)' }}>
                 ✓ Sparad

@@ -55,7 +55,7 @@ function EditPublicWorkPageInner() {
   }, [])
 
   useEffect(() => {
-    fetch(`/api/admin/public-works/${slug}`)
+    fetch(`/api/admin/public-works/${slug}`, { cache: 'no-store' })
       .then(r => r.json())
       .then((data: PublicWork | { error: string }) => {
         if ('error' in data) setError(String(data.error))

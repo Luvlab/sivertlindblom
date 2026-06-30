@@ -19,6 +19,7 @@ const NAV_ITEMS = [
   { href: '/admin/media',          label: 'Media',              icon: '▣' },
   { href: '/admin/seo',            label: 'SEO & Delning',      icon: '◈' },
   { href: '/admin/settings',       label: 'Inställningar',      icon: '⚙' },
+  { href: '/admin/backup',         label: 'Säkerhetskopia',     icon: '⬇' },
 ]
 
 export default function AdminSidebar() {

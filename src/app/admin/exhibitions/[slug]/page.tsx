@@ -33,7 +33,7 @@ function EditExhibitionPageInner() {
   const [dirty, setDirty] = useState(false)
 
   useEffect(() => {
-    fetch(`/api/admin/exhibitions/${slug}`)
+    fetch(`/api/admin/exhibitions/${slug}`, { cache: 'no-store' })
       .then(r => r.json())
       .then((data: Exhibition | { error: string }) => {
         if ('error' in data) {
