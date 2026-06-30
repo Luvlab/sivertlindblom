@@ -448,16 +448,29 @@ export async function getMapPinForWork(slug: string): Promise<SculptureLocation 
   if (supabase) {
     const { data: work } = await supabase
       .from('public_works')
-      .select('subcategory, lat, lng')
+      .select('subcategory, lat, lng, title, year, city, country')
       .eq('slug', slug)
       .maybeSingle()
-    const { data, error } = await supabase.from('map_pins').select('*').eq('slug', slug).single()
-    if (!error && data) {
-      const row = data as Record<string, unknown>
-      // public_works coords are authoritative (set via the work-edit map picker).
-      const lat = work && work.lat != null ? work.lat : row.lat
-      const lng = work && work.lng != null ? work.lng : row.lng
-      return dbRowToLocation({ ...row, lat, lng, subcategory: work?.subcategory })
+    const { data: pin } = await supabase.from('map_pins').select('*').eq('slug', slug).maybeSingle()
+
+    // public_works coords are authoritative (set via the work-edit map picker).
+    // Show the map whenever coordinates exist there, even if no map_pins row —
+    // otherwise the "Visa platsen" map silently disappears (Jan, Undring 6).
+    const pwHasCoords = work?.lat != null && work?.lng != null
+    const pinHasCoords = pin?.lat != null && pin?.lng != null
+    if (pwHasCoords || pinHasCoords) {
+      const lat = pwHasCoords ? work!.lat : (pin as Record<string, unknown>).lat
+      const lng = pwHasCoords ? work!.lng : (pin as Record<string, unknown>).lng
+      // Prefer the map_pins row for metadata (title/year/desc); fall back to the
+      // public_works row when there is no pin.
+      const base = (pin as Record<string, unknown>) ?? {
+        slug,
+        title: work?.title,
+        year: work?.year,
+        city: work?.city,
+        country: work?.country,
+      }
+      return dbRowToLocation({ ...base, slug, lat, lng, subcategory: work?.subcategory })
     }
   }
   return STATIC_LOCATIONS.find((l) => l.slug === slug) ?? null
