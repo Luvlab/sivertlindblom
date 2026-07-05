@@ -364,26 +364,41 @@ export async function getMapPins(): Promise<SculptureLocation[]> {
   cacheLife('days')
   const supabase = createAdminClient()
   if (supabase) {
-    const { data, error } = await supabase
-      .from('map_pins')
-      .select('*')
-      .order('year', { ascending: true })
-    if (!error && data) {
-      // Enrich each pin with category + the authoritative coordinates from
-      // public_works (what the admin work-edit map picker saves). The maps
-      // must reflect the position the editor set there, not the older import
-      // coordinates that live in map_pins.
-      const { data: works } = await supabase.from('public_works').select('slug, subcategory, lat, lng')
+    const [{ data: pins, error }, { data: works }] = await Promise.all([
+      supabase.from('map_pins').select('*').order('year', { ascending: true }),
+      supabase.from('public_works').select('slug, subcategory, lat, lng, title, year, city, country, description').eq('published', true),
+    ])
+    if (!error && pins) {
+      // Build lookup from public_works for coord enrichment + dedup
       const bySlug = new Map<string, { subcategory?: string; lat?: number | null; lng?: number | null }>(
         (works ?? []).map((w) => [w.slug as string, { subcategory: w.subcategory as string, lat: w.lat as number | null, lng: w.lng as number | null }]),
       )
-      return data.map((r) => {
-        const row = r as Record<string, unknown>
+      const pinSlugs = new Set((pins as Record<string, unknown>[]).map((p) => p.slug as string))
+
+      // Enrich map_pins rows with authoritative coords from public_works
+      const pinLocations = (pins as Record<string, unknown>[]).map((row) => {
         const pw = bySlug.get(row.slug as string)
         const lat = pw && pw.lat != null ? pw.lat : row.lat
         const lng = pw && pw.lng != null ? pw.lng : row.lng
         return dbRowToLocation({ ...row, lat, lng, subcategory: pw?.subcategory })
       })
+
+      // Include public_works that have coords but no map_pins row
+      const pwOnlyLocations = (works ?? [])
+        .filter((w) => !pinSlugs.has(w.slug as string) && w.lat != null && w.lng != null)
+        .map((w) => dbRowToLocation({
+          slug: w.slug,
+          title: w.title,
+          year: w.year,
+          city: w.city,
+          country: w.country,
+          description: w.description,
+          lat: w.lat,
+          lng: w.lng,
+          subcategory: w.subcategory,
+        }))
+
+      return [...pinLocations, ...pwOnlyLocations].sort((a, b) => (a.year ?? 0) - (b.year ?? 0))
     }
   }
   return STATIC_LOCATIONS
