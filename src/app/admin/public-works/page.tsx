@@ -144,6 +144,8 @@ export default function AdminPublicWorks() {
     finally { setSaving(false) }
   }
 
+  const hasNewEntries = works.some(w => !w.slug)
+
   const thStyle: React.CSSProperties = {
     padding: '0.6rem 0.75rem 0.6rem 0', color: 'var(--color-muted)', fontWeight: 400,
     textTransform: 'uppercase', letterSpacing: '0.08em', fontSize: '0.7rem', textAlign: 'left',
@@ -205,9 +207,11 @@ export default function AdminPublicWorks() {
           <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
             {saved && <span style={{ color: 'var(--color-accent)', fontSize: 'var(--fs-sm)' }}>✓ Sparad</span>}
             {error && <span style={{ color: '#f88', fontSize: 'var(--fs-sm)' }}>{error}</span>}
-            <button className="btn btn-primary" onClick={handleSave} disabled={saving}>
-              {saving ? 'Sparar…' : 'Spara alla ändringar'}
-            </button>
+            {hasNewEntries && (
+              <button className="btn btn-primary" onClick={handleSave} disabled={saving}>
+                {saving ? 'Sparar…' : 'Spara ny post'}
+              </button>
+            )}
           </div>
         </div>
 

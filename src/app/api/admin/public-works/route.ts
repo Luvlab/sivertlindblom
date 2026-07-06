@@ -64,25 +64,25 @@ export async function PUT(request: Request) {
 
     const supabase = createAdminClient()
     if (supabase) {
-      // Upsert all works
-      for (const work of body) {
+      // Only process new entries (no slug yet). Existing entries must be
+      // edited via the detail page — saving them here would overwrite
+      // description/body with whatever was in memory when the list loaded.
+      const newEntries = body.filter(work => !work.slug)
+      for (const work of newEntries) {
         const { data: pw, error } = await supabase
           .from('public_works')
-          .upsert({
-            slug: work.slug,
+          .insert({
             title: work.title,
             year: parseInt(work.year) || null,
             location: work.location,
             subcategory: work.category,
-            description: work.description,
-            description_sv: work.body,
-          }, { onConflict: 'slug' })
+            description: work.description ?? '',
+            description_sv: work.body ?? '',
+          })
           .select('id')
           .single()
 
         if (!error && pw) {
-          // Replace images
-          await supabase.from('public_work_images').delete().eq('work_id', pw.id)
           if (work.images?.length) {
             await supabase.from('public_work_images').insert(
               work.images.map((img, i) => ({
