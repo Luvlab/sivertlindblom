@@ -114,6 +114,7 @@ function EditExhibitionPageInner() {
       dirty={dirty}
       deleteLabel="Dölj utställning"
       maxWidth="none"
+      previewHref={`/sv/portfolio/exhibitions/${slug}`}
     >
       <div>
         <FieldLabel>Titel *</FieldLabel>

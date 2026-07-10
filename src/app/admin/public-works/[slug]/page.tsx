@@ -211,6 +211,7 @@ function EditPublicWorkPageInner() {
         dirty={dirty}
         deleteLabel="Dölj verk"
         maxWidth="none"
+        previewHref={`/sv/portfolio/public-works/${slug}`}
       >
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
 

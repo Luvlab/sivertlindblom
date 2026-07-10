@@ -18,6 +18,8 @@ interface AdminFormProps {
   error?: string | null
   /** Override the default max-width (800). Pass 'none' for full width. */
   maxWidth?: number | 'none'
+  /** Public-facing URL to preview after saving (e.g. /sv/portfolio/exhibitions/slug). */
+  previewHref?: string
 }
 
 export default function AdminForm({
@@ -34,6 +36,7 @@ export default function AdminForm({
   dirty = false,
   error = null,
   maxWidth = 800,
+  previewHref,
 }: AdminFormProps) {
   const router = useRouter()
 
@@ -86,7 +89,14 @@ export default function AdminForm({
         </button>
         <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
           {saved && (
-            <span style={{ color: 'var(--color-accent)', fontSize: 'var(--fs-sm)' }}>✓ Sparad</span>
+            <span style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+              <span style={{ color: 'var(--color-accent)', fontSize: 'var(--fs-sm)' }}>✓ Sparat</span>
+              {previewHref && (
+                <a href={previewHref} target="_blank" rel="noopener noreferrer" style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', textDecoration: 'none', borderBottom: '1px solid var(--color-border)' }}>
+                  Visa på sajten ↗
+                </a>
+              )}
+            </span>
           )}
           {/* Error in toolbar so it's visible even when scrolled down */}
           {error && !saved && (
@@ -145,8 +155,13 @@ export default function AdminForm({
             </button>
             <button type="button" className="btn" onClick={handleBack}>Avbryt</button>
             {saved && (
-              <span style={{ color: 'var(--color-accent)', fontSize: 'var(--fs-sm)' }}>
-                ✓ Sparad
+              <span style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                <span style={{ color: 'var(--color-accent)', fontSize: 'var(--fs-sm)' }}>✓ Sparat</span>
+                {previewHref && (
+                  <a href={previewHref} target="_blank" rel="noopener noreferrer" style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', textDecoration: 'none', borderBottom: '1px solid var(--color-border)' }}>
+                    Visa på sajten ↗
+                  </a>
+                )}
               </span>
             )}
           </div>
