@@ -16,6 +16,86 @@ import type { SculptureLocation } from '@/lib/sculpture-locations'
 import { SCULPTURE_LOCATIONS as STATIC_LOCATIONS } from '@/lib/sculpture-locations'
 import type { TextItem } from '@/lib/texts-data'
 import { TEXTS_DATA as STATIC_TEXTS } from '@/lib/texts-data'
+import {
+  DEFAULT_PORTFOLIO_THUMBS,
+  PORTFOLIO_CATEGORY_KEYS,
+  portfolioThumbsKey,
+  type PortfolioThumbs,
+  type PortfolioCategoryKey,
+} from '@/lib/portfolio-thumbs'
+
+// ─── Portfolio category thumbnails (the 4 slideshows on /portfolio) ──────────
+
+/**
+ * Image lists for the 4 portfolio category cards, editable in admin.
+ * Reads the `settings` table (one JSON key per category); any category the
+ * admin hasn't customised falls back to DEFAULT_PORTFOLIO_THUMBS, so the page
+ * is unchanged until Jan edits it.
+ */
+export async function getPortfolioThumbs(): Promise<PortfolioThumbs> {
+  'use cache'
+  cacheTag('portfolio-thumbs')
+  cacheLife('days')
+
+  const result: PortfolioThumbs = {
+    exhibitions: [...DEFAULT_PORTFOLIO_THUMBS.exhibitions],
+    'public-works': [...DEFAULT_PORTFOLIO_THUMBS['public-works']],
+    watercolors: [...DEFAULT_PORTFOLIO_THUMBS.watercolors],
+    scenography: [...DEFAULT_PORTFOLIO_THUMBS.scenography],
+  }
+
+  try {
+    const supabase = createAdminClient()
+    if (supabase) {
+      const { data } = await supabase.from('settings').select('key, value')
+      const byKey = new Map<string, string>((data ?? []).map((r) => [(r as { key: string }).key, (r as { value?: string }).value ?? '']))
+      for (const cat of PORTFOLIO_CATEGORY_KEYS) {
+        const raw = byKey.get(portfolioThumbsKey(cat))
+        if (raw) {
+          try {
+            const parsed = JSON.parse(raw)
+            if (Array.isArray(parsed) && parsed.every((u) => typeof u === 'string')) {
+              // Empty array = "cleared" → keep defaults so a card is never blank.
+              if (parsed.length) result[cat] = parsed as string[]
+            }
+          } catch {
+            // malformed value — keep default
+          }
+        }
+      }
+    }
+  } catch {
+    // DB/fetch error — serve defaults so the page always renders.
+  }
+  return result
+}
+
+/** Non-cached read for admin GET (always fresh, includes empty customisations). */
+export async function getPortfolioThumbsAdmin(): Promise<PortfolioThumbs> {
+  const result: PortfolioThumbs = {
+    exhibitions: [...DEFAULT_PORTFOLIO_THUMBS.exhibitions],
+    'public-works': [...DEFAULT_PORTFOLIO_THUMBS['public-works']],
+    watercolors: [...DEFAULT_PORTFOLIO_THUMBS.watercolors],
+    scenography: [...DEFAULT_PORTFOLIO_THUMBS.scenography],
+  }
+  const supabase = createAdminClient()
+  if (supabase) {
+    const { data } = await supabase.from('settings').select('key, value')
+    const byKey = new Map<string, string>((data ?? []).map((r) => [(r as { key: string }).key, (r as { value?: string }).value ?? '']))
+    for (const cat of PORTFOLIO_CATEGORY_KEYS) {
+      const raw = byKey.get(portfolioThumbsKey(cat))
+      if (raw) {
+        try {
+          const parsed = JSON.parse(raw)
+          if (Array.isArray(parsed)) result[cat] = parsed.filter((u) => typeof u === 'string')
+        } catch { /* keep default */ }
+      }
+    }
+  }
+  return result
+}
+
+export type { PortfolioCategoryKey }
 
 // ─── Exhibitions ────────────────────────────────────────────────────────────
 

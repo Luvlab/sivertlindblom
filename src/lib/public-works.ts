@@ -20,6 +20,8 @@ export interface PublicWork {
    *  exhibitions set this to /portfolio/exhibitions so the card opens the
    *  exhibition page where the content lives. */
   hrefBase?: string
+  /** Internal extra pages nested under this work (text/media/YouTube). */
+  subpages?: PublicWorkSubpage[]
 }
 
 /**

@@ -227,7 +227,7 @@ function EditExhibitionPageInner() {
         </p>
         <SubpageManager
           subpages={form.subpages ?? []}
-          exhibitionSlug={form.slug}
+          basePath={`/portfolio/exhibitions/${form.slug}`}
           onChange={subpages => update('subpages', subpages as ExhibitionSubpage[])}
         />
       </div>

@@ -4,48 +4,12 @@ import { getDictionary } from '@/i18n/getDictionary'
 import { locales } from '@/i18n/config'
 import type { Locale } from '@/i18n/config'
 import PortfolioSlideshow from '@/components/portfolio/PortfolioSlideshow'
-import { getMapPins } from '@/lib/data-server'
+import { getMapPins, getPortfolioThumbs } from '@/lib/data-server'
 
 export const metadata: Metadata = { title: 'Portfolio' }
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }))
-}
-
-const S = 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images'
-
-const SLIDESHOW_IMAGES: Record<string, string[]> = {
-  exhibitions: [
-    `${S}/wp/2015/01/Siverts-exit.jpg`,
-    `${S}/wp/2015/01/Sivert-Lindblom-Lunds-konsthall-10.jpg`,
-    `${S}/wp/2015/01/Sivert-Lindblom-Lunds-konsthall-7.jpg`,
-    `${S}/wp/2015/01/SAM_7624.jpg`,
-    `${S}/wp/2015/01/20121028_135410.jpg`,
-    `${S}/wp/2015/01/20121028_160220.jpg`,
-  ],
-  'public-works': [
-    `${S}/wp/2015/01/Sivert-Lindblom-Blasieholms-Torg-31.jpg`,
-    `${S}/wp/2015/01/Sivert-Lindblom-Frescati-Atlas.jpg`,
-    `${S}/wp/2015/01/Sivert-Lindblom-Frescati-Klot.jpg`,
-    `${S}/wp/2018/02/20180114_142218.jpg`,
-    `${S}/wp/2015/01/Sivert566-kopia.jpg`,
-    `${S}/wp/2015/06/CampusTbana.jpg`,
-    `${S}/wp/2019/05/20190506_182925.jpg`,
-  ],
-  watercolors: [
-    `${S}/wp/2015/01/Sivert-Lindblom-akvarell-01-1507-2.jpg`,
-    `${S}/wp/2015/01/Sivert-Lindblom-akvarell-12-1489.jpg`,
-    `${S}/wp/2015/01/Sivert-Lindblom-akvarell-29-1431-2.jpg`,
-    `${S}/wp/2015/01/Sivert-Lindblom-akvarell-38-1478.jpg`,
-    `${S}/wp/2015/01/Sivert-Lindblom-akvarell-64-1453-2.jpg`,
-    `${S}/wp/2015/01/Sivert-Lindblom-akvarell-42-1473.jpg`,
-    `${S}/wp/2015/01/Sivert-Lindblom-akvarell-59-1458.jpg`,
-  ],
-  scenography: [
-    `${S}/wp/2015/03/Sivert-Triumf-Paris.jpg`,
-    `${S}/wp/2015/01/Sivert-Lindblom-Profiler_0069.jpg`,
-    `${S}/wp/2015/01/Sivert-Lindblom-Profiler_0072.jpg`,
-  ],
 }
 
 export default async function PortfolioPage({
@@ -54,9 +18,10 @@ export default async function PortfolioPage({
   params: Promise<{ locale: string }>
 }) {
   const { locale } = await params
-  const [dict, mapPins] = await Promise.all([
+  const [dict, mapPins, SLIDESHOW_IMAGES] = await Promise.all([
     getDictionary(locale as Locale),
     getMapPins(),
+    getPortfolioThumbs(),
   ])
 
   const CATEGORIES = [
@@ -113,7 +78,7 @@ export default async function PortfolioPage({
               <article className="card" style={{ overflow: 'hidden' }}>
                 <div style={{ aspectRatio: '4/3', position: 'relative', overflow: 'hidden' }}>
                   <PortfolioSlideshow
-                    images={SLIDESHOW_IMAGES[cat.key] ?? []}
+                    images={SLIDESHOW_IMAGES[cat.key as keyof typeof SLIDESHOW_IMAGES] ?? []}
                     alt={cat.label}
                     objectFit={cat.key === 'watercolors' ? 'contain' : 'cover'}
                     background={cat.key === 'watercolors' ? '#ede9e2' : 'var(--color-bg-card)'}

@@ -3,11 +3,37 @@ import { cookies } from 'next/headers'
 import { revalidateTag } from 'next/cache'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { sanitizeLinks } from '@/lib/old-site-guard'
-import type { PublicWork } from '@/lib/public-works'
+import type { PublicWork, PublicWorkSubpage } from '@/lib/public-works'
 
 async function checkAuth(): Promise<boolean> {
   const store = await cookies()
   return store.get('admin_session')?.value === 'authenticated'
+}
+
+/** Slugify a sub-page title for use in the URL. */
+function slugifySubpage(s: string): string {
+  return s
+    .toLowerCase()
+    .replace(/[åä]/g, 'a').replace(/ö/g, 'o')
+    .normalize('NFKD')
+    .replace(/[̀-ͯ]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .slice(0, 80) || 'sida'
+}
+
+function dbToSubpage(r: Record<string, unknown>): PublicWorkSubpage {
+  const imgs = (r.images as string[] | null) ?? []
+  return {
+    slug: r.slug as string,
+    title: (r.title as string) ?? '',
+    body: (r.body as string) ?? '',
+    images: Array.isArray(imgs) ? imgs : [],
+    videoUrl: (r.video_url as string) || undefined,
+    videos: (r.videos as Array<{ url: string; title?: string }>) ?? undefined,
+    sortOrder: (r.sort_order as number) ?? 0,
+    published: (r.published as boolean) ?? true,
+  }
 }
 
 function dbToWork(
@@ -49,12 +75,17 @@ export async function GET(
       .eq('slug', slug)
       .single()
     if (!error && data) {
-      return NextResponse.json(
-        dbToWork(
-          data as Record<string, unknown>,
-          (data.public_work_images as Array<{ url: string; alt: string | null; sort_order: number }>) ?? []
-        )
+      const work = dbToWork(
+        data as Record<string, unknown>,
+        (data.public_work_images as Array<{ url: string; alt: string | null; sort_order: number }>) ?? []
       )
+      const { data: subs } = await supabase
+        .from('public_work_subpages')
+        .select('*')
+        .eq('work_id', (data as Record<string, unknown>).id as string)
+        .order('sort_order', { ascending: true })
+      work.subpages = (subs ?? []).map(r => dbToSubpage(r as Record<string, unknown>))
+      return NextResponse.json(work)
     }
     if (error) return NextResponse.json({ error: error.message }, { status: 404 })
   }
@@ -113,6 +144,40 @@ export async function PUT(
             return NextResponse.json({ error: `Bilder sparades inte: ${imgErr.message}` }, { status: 500 })
           }
         }
+
+        // Sync sub-pages: upsert incoming, delete removed
+        if (body.subpages !== undefined) {
+          const incoming = (body.subpages ?? []).map((sp, i) => ({
+            ...sp,
+            slug: sp.slug?.trim() || slugifySubpage(sp.title),
+            sortOrder: sp.sortOrder ?? i,
+          }))
+          const keepSlugs = incoming.map(sp => sp.slug)
+          let del = supabase.from('public_work_subpages').delete().eq('work_id', work.id)
+          if (keepSlugs.length) del = del.not('slug', 'in', `(${keepSlugs.map(s => `"${s}"`).join(',')})`)
+          await del
+          if (incoming.length) {
+            const { error: subErr } = await supabase.from('public_work_subpages').upsert(
+              incoming.map(sp => ({
+                work_id: work.id,
+                slug: sp.slug,
+                title: sp.title,
+                body: sp.body ?? '',
+                images: sp.images ?? [],
+                video_url: sp.videoUrl ?? '',
+                videos: sp.videos ?? [],
+                sort_order: sp.sortOrder,
+                published: sp.published ?? true,
+                updated_at: new Date().toISOString(),
+              })),
+              { onConflict: 'work_id,slug' }
+            )
+            if (subErr) {
+              return NextResponse.json({ error: `Undersidor sparades inte: ${subErr.message}` }, { status: 500 })
+            }
+          }
+        }
+
         revalidateTag('public-works', 'max')
         return NextResponse.json(body)
       }

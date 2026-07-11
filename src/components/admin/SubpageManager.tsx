@@ -1,15 +1,35 @@
 'use client'
 
 import { useState } from 'react'
-import type { ExhibitionSubpage } from '@/lib/exhibitions-data'
 import ImageListEditor from '@/components/admin/ImageListEditor'
 import LinkTextarea from '@/components/admin/LinkTextarea'
 
+/**
+ * Shared shape for an internal "extra page" nested under any content item
+ * (exhibition, public work, scenography, text, biography entry). Structurally
+ * compatible with ExhibitionSubpage / PublicWorkSubpage — parents cast on save.
+ */
+export interface ManagedSubpage {
+  slug: string
+  title: string
+  body: string
+  images: string[]
+  videoUrl?: string
+  sortOrder?: number
+  published?: boolean
+}
+
 interface Props {
-  subpages: ExhibitionSubpage[]
-  /** Parent exhibition slug — used to show the resulting internal link path. */
-  exhibitionSlug: string
-  onChange: (subpages: ExhibitionSubpage[]) => void
+  subpages: ManagedSubpage[]
+  /**
+   * Parent item's internal path WITHOUT a trailing slash, e.g.
+   * "/portfolio/exhibitions/live-show" or "/portfolio/public-works/profilen".
+   * The sub-page slug is appended to show the resulting internal link.
+   */
+  basePath: string
+  onChange: (subpages: ManagedSubpage[]) => void
+  /** Label for the add button — defaults to "Ny undersida". */
+  addLabel?: string
 }
 
 function slugify(s: string): string {
@@ -36,10 +56,10 @@ function ytId(url: string): string | null {
  * sub-page holds re-hosted content (title, body, images) that used to live on
  * the old WordPress site, so internal links can point here instead of off-site.
  */
-export default function SubpageManager({ subpages, exhibitionSlug, onChange }: Props) {
+export default function SubpageManager({ subpages, basePath, onChange, addLabel = 'Ny undersida' }: Props) {
   const [openIdx, setOpenIdx] = useState<number | null>(null)
 
-  function setSub(i: number, patch: Partial<ExhibitionSubpage>) {
+  function setSub(i: number, patch: Partial<ManagedSubpage>) {
     onChange(subpages.map((s, idx) => (idx === i ? { ...s, ...patch } : s)))
   }
   function add() {
@@ -57,7 +77,7 @@ export default function SubpageManager({ subpages, exhibitionSlug, onChange }: P
       {subpages.map((sp, i) => {
         const open = openIdx === i
         const effSlug = sp.slug?.trim() || slugify(sp.title) || 'sida'
-        const path = `/portfolio/exhibitions/${exhibitionSlug}/${effSlug}`
+        const path = `${basePath}/${effSlug}`
         return (
           <div key={i} style={{ border: '1px solid var(--color-border)', borderRadius: 2 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.75rem 0.85rem' }}>
@@ -128,7 +148,7 @@ export default function SubpageManager({ subpages, exhibitionSlug, onChange }: P
           </div>
         )
       })}
-      <button type="button" onClick={add} className="btn" style={{ alignSelf: 'flex-start' }}>+ Ny undersida</button>
+      <button type="button" onClick={add} className="btn" style={{ alignSelf: 'flex-start' }}>+ {addLabel}</button>
     </div>
   )
 }

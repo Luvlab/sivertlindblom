@@ -13,9 +13,9 @@ const QUICK_ACTIONS = [
 
 const OLD_SITE_LINKS = [
   { label: 'Startsida',        url: 'https://sivertlindblom.se' },
-  { label: 'Portfolio',        url: 'https://sivertlindblom.se/portfolio/' },
-  { label: 'Skulptur',         url: 'https://sivertlindblom.se/skulptur-grafik/' },
-  { label: 'Texter',           url: 'https://sivertlindblom.se/biografi/texter/' },
+  { label: 'Portfolio',        url: 'https://sivertlindblom.se/folio/utstallningar/' },
+  { label: 'Skulptur',         url: 'https://sivertlindblom.se/folio/skulptur/' },
+  { label: 'Texter',           url: 'https://sivertlindblom.se/texter/' },
   { label: 'Biografi',         url: 'https://sivertlindblom.se/biografi/' },
   { label: 'Publicerat',       url: 'https://sivertlindblom.se/biografi/publicerat/' },
   { label: 'Fotografier',      url: 'https://sivertlindblom.se/biografi/referens-och-inspirationsbilder/' },

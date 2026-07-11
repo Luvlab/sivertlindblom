@@ -3,11 +3,12 @@
 import { useState, useEffect, useRef, Suspense } from 'react'
 import { useRouter, useParams } from 'next/navigation'
 import Script from 'next/script'
-import type { PublicWork } from '@/lib/public-works'
+import type { PublicWork, PublicWorkSubpage } from '@/lib/public-works'
 import AdminForm, { FieldLabel } from '@/components/admin/AdminForm'
 import ImageListEditor from '@/components/admin/ImageListEditor'
 import LinkTextarea from '@/components/admin/LinkTextarea'
 import ExhibitionLinksEditor from '@/components/admin/ExhibitionLinksEditor'
+import SubpageManager from '@/components/admin/SubpageManager'
 import type { ExhibitionLink } from '@/lib/exhibitions-data'
 
 declare global {
@@ -366,6 +367,19 @@ function EditPublicWorkPageInner() {
           images={form.images.map(img => (typeof img === 'string' ? img : img.url))}
           onChange={urls => update('images', urls.map(url => ({ url, alt: '' })))}
         />
+
+        {/* Undersidor — internal extra pages (text/media/YouTube) */}
+        <div style={{ marginTop: '1.5rem' }}>
+          <FieldLabel>Undersidor (interna extrasidor)</FieldLabel>
+          <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', margin: '0 0 0.6rem' }}>
+            Skapa extrasidor med text, bilder och film som hör till verket. Länka till dem från Länkar ovan med sökvägen <code>/portfolio/public-works/{form.slug}/&lt;slug&gt;</code>.
+          </p>
+          <SubpageManager
+            subpages={form.subpages ?? []}
+            basePath={`/portfolio/public-works/${form.slug}`}
+            onChange={subpages => update('subpages', subpages as PublicWorkSubpage[])}
+          />
+        </div>
 
       </AdminForm>
     </>

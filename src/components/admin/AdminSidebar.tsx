@@ -7,6 +7,7 @@ import { useState } from 'react'
 const NAV_ITEMS = [
   { href: '/admin',                label: 'Dashboard',          icon: '◈' },
   { href: '/admin/home',           label: 'Startsida',          icon: '⌂' },
+  { href: '/admin/portfolio',      label: 'Portfolio-bilder',   icon: '▤' },
   { href: '/admin/exhibitions',    label: 'Utställningar',      icon: '◻' },
   { href: '/admin/public-works',   label: 'Offentliga arbeten', icon: '▦' },
   { href: '/admin/scenography',    label: 'Scenografi',         icon: '◳' },
