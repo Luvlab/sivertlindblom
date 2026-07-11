@@ -14,7 +14,7 @@ import type { PublicWork, PublicWorkSubpage } from '@/lib/public-works'
 import { PUBLIC_WORKS as STATIC_PUBLIC_WORKS } from '@/lib/public-works'
 import type { SculptureLocation } from '@/lib/sculpture-locations'
 import { SCULPTURE_LOCATIONS as STATIC_LOCATIONS } from '@/lib/sculpture-locations'
-import type { TextItem } from '@/lib/texts-data'
+import type { TextItem, TextSubpage } from '@/lib/texts-data'
 import { TEXTS_DATA as STATIC_TEXTS } from '@/lib/texts-data'
 import {
   DEFAULT_PORTFOLIO_THUMBS,
@@ -532,6 +532,67 @@ export async function getText(slug: string): Promise<TextItem | null> {
     if (!error && data) return dbRowToText(data as Record<string, unknown>)
   }
   return STATIC_TEXTS.find((t) => t.slug === slug) ?? null
+}
+
+function dbRowToTextSubpage(r: Record<string, unknown>): TextSubpage {
+  const imgs = (r.images as string[] | null) ?? []
+  return {
+    slug: r.slug as string,
+    title: (r.title as string) ?? '',
+    body: (r.body as string) ?? '',
+    images: Array.isArray(imgs) ? imgs : [],
+    videoUrl: (r.video_url as string) || undefined,
+    videos: (r.videos as Array<{ url: string; title?: string }>) ?? undefined,
+    sortOrder: (r.sort_order as number) ?? 0,
+    published: (r.published as boolean) ?? true,
+  }
+}
+
+/** A single internal sub-page of a text, plus its parent text. */
+export async function getTextSubpage(
+  textSlug: string,
+  subSlug: string,
+): Promise<{ text: TextItem; subpage: TextSubpage } | null> {
+  'use cache'
+  cacheTag('texts', `text-${textSlug}`, `text-subpage-${textSlug}-${subSlug}`)
+  cacheLife('days')
+  const supabase = createAdminClient()
+  if (!supabase) return null
+  const { data: text } = await supabase.from('texts').select('*').eq('slug', textSlug).single()
+  if (!text) return null
+  const { data: sub } = await supabase
+    .from('text_subpages')
+    .select('*')
+    .eq('text_id', (text as Record<string, unknown>).id as string)
+    .eq('slug', subSlug)
+    .eq('published', true)
+    .maybeSingle()
+  if (!sub) return null
+  return {
+    text: dbRowToText(text as Record<string, unknown>),
+    subpage: dbRowToTextSubpage(sub as Record<string, unknown>),
+  }
+}
+
+/** All { slug, subpage } pairs for text sub-pages — for generateStaticParams. */
+export async function getAllTextSubpageParams(): Promise<{ slug: string; subpage: string }[]> {
+  'use cache'
+  cacheTag('texts')
+  cacheLife('days')
+  const supabase = createAdminClient()
+  if (!supabase) return []
+  const { data, error } = await supabase
+    .from('text_subpages')
+    .select('slug, published, texts!inner(slug)')
+    .eq('published', true)
+  if (error || !data) return []
+  return data
+    .map((r) => {
+      const texts = (r as Record<string, unknown>).texts as { slug: string } | { slug: string }[] | null
+      const parentSlug = Array.isArray(texts) ? texts[0]?.slug : texts?.slug
+      return parentSlug ? { slug: parentSlug, subpage: (r as Record<string, unknown>).slug as string } : null
+    })
+    .filter((x): x is { slug: string; subpage: string } => x !== null)
 }
 
 // Returns the map pin for a public work slug (for coordinates / Google Maps link)

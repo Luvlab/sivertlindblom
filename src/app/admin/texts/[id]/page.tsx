@@ -6,6 +6,17 @@ import Link from 'next/link'
 import LinkTextarea from '@/components/admin/LinkTextarea'
 import ImageListEditor from '@/components/admin/ImageListEditor'
 import TextImageSlideshow from '@/components/TextImageSlideshow'
+import SubpageManager, { type ManagedSubpage } from '@/components/admin/SubpageManager'
+
+interface TextSubpage {
+  slug: string
+  title: string
+  body: string
+  images: string[]
+  videoUrl?: string
+  sortOrder?: number
+  published?: boolean
+}
 
 interface TextItem {
   slug: string
@@ -19,6 +30,7 @@ interface TextItem {
   body: string
   images?: string[]
   showOcr?: boolean
+  subpages?: TextSubpage[]
 }
 
 const TYPE_LABELS = {
@@ -202,6 +214,21 @@ function EditTextPageInner() {
               </label>
             </div>
           </aside>
+        </div>
+
+        {/* ── Undersidor (interna extrasidor) ── */}
+        <div style={{ borderTop: '1px solid var(--color-border)', paddingTop: '1.5rem' }}>
+          <label style={{ display: 'block', fontSize: '0.7rem', color: 'var(--color-muted)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '0.35rem' }}>
+            Undersidor (interna extrasidor)
+          </label>
+          <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', margin: '0 0 0.6rem' }}>
+            Skapa en ny undersida med egen text, bilder och film som hör till denna text. Sökväg: <code>/texts/{form.slug}/&lt;slug&gt;</code>.
+          </p>
+          <SubpageManager
+            subpages={(form.subpages ?? []) as ManagedSubpage[]}
+            basePath={`/texts/${form.slug}`}
+            onChange={subpages => set('subpages', subpages as TextSubpage[])}
+          />
         </div>
 
         <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', paddingTop: '1rem', borderTop: '1px solid var(--color-border)' }}>

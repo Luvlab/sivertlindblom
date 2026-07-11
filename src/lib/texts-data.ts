@@ -1,5 +1,17 @@
 import { TEXT_TRANSLATIONS } from './text-translations'
 
+/** Internal extra page nested under a text (text/media/YouTube). */
+export interface TextSubpage {
+  slug: string
+  title: string
+  body: string
+  images: string[]
+  videoUrl?: string
+  videos?: Array<{ url: string; title?: string }>
+  sortOrder?: number
+  published?: boolean
+}
+
 export interface TextItem {
   slug: string
   type: 'essay' | 'preface' | 'review' | 'interview' | 'own_writing' | 'translated' | 'film'
@@ -14,6 +26,7 @@ export interface TextItem {
   images?: string[]                         // scanned article image URLs (reviews)
   videoUrl?: string                         // YouTube embed URL (https://www.youtube.com/embed/ID) or external video link
   showOcr?: boolean                         // show the transcribed OCR/body text column beside scan images (default false — OCR hidden until reviewed)
+  subpages?: TextSubpage[]                  // internal extra pages nested under this text
 }
 
 const RAW_TEXTS_DATA: Omit<TextItem, 'bodies'>[] = [
