@@ -2,6 +2,7 @@
 
 import type { ExhibitionLink } from '@/lib/exhibitions-data'
 import { isOldSiteUrl } from '@/lib/old-site-guard'
+import InternalPagePicker from '@/components/admin/InternalPagePicker'
 
 interface Props {
   links: ExhibitionLink[]
@@ -66,7 +67,15 @@ export default function ExhibitionLinksEditor({ links, onChange }: Props) {
             </div>
             <div>
               <label style={lbl}>URL</label>
-              <input className="input" style={cell} value={link.url} placeholder="/texts/... eller https://..." onChange={e => setLink(i, { url: e.target.value })} />
+              <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', flexWrap: 'wrap' }}>
+                <input className="input" style={{ flex: 1, minWidth: 180 }} value={link.url} placeholder="/texts/... eller https://..." onChange={e => setLink(i, { url: e.target.value })} />
+                <InternalPagePicker
+                  onSelect={({ path, title }) => setLink(i, { url: path, external: false, label: link.label?.trim() ? link.label : title })}
+                />
+              </div>
+              <p style={{ fontSize: '0.65rem', color: 'var(--color-muted)', margin: '0.3rem 0 0' }}>
+                Klicka <strong>Välj befintlig sida</strong> för att länka till en sida som redan finns på nya sajten — då fylls sökvägen i automatiskt.
+              </p>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
               <label style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', cursor: 'pointer' }}>
