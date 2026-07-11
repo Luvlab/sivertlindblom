@@ -143,6 +143,11 @@ export default async function ScenographyDetailPage({
               aspectRatio="4/3"
               columns="sm"
             />
+            {work.photographerCredit && (
+              <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', marginTop: '1rem', fontStyle: 'italic' }}>
+                Foto: {work.photographerCredit}
+              </p>
+            )}
           </section>
         )}
 

@@ -166,6 +166,13 @@ function EditScenographyPageInner() {
             </div>
 
             <div>
+              <FieldLabel>Fotograf (visas under galleriet)</FieldLabel>
+              <input type="text" className="input" style={{ width: '100%' }}
+                value={form.photographer_credit ?? ''} onChange={e => update('photographer_credit', e.target.value)}
+                placeholder="t.ex. Jan Öqvist" />
+            </div>
+
+            <div>
               <FieldLabel>Slug (URL)</FieldLabel>
               <input type="text" className="input" style={{ width: '100%', fontFamily: 'monospace' }}
                 value={form.slug} onChange={e => update('slug', e.target.value.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, ''))}

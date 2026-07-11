@@ -21,6 +21,7 @@ function NewScenographyForm() {
     type: defaultType,
     description: '',
     video_url: '',
+    photographer_credit: '',
     sort_order: 0,
     published: true,
     images: [],

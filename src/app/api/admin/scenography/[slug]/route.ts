@@ -35,6 +35,7 @@ export async function GET(_req: Request, { params }: Props) {
     type: (data.type as 'Teaterscenografi' | 'Koreografi') ?? 'Teaterscenografi',
     description: data.description ?? '',
     video_url: data.video_url ?? '',
+    photographer_credit: data.photographer_credit ?? '',
     sort_order: data.sort_order ?? 0,
     published: data.published ?? true,
     images: ((data.scenography_images ?? []) as { url: string; alt: string | null; sort_order: number }[])
@@ -65,6 +66,7 @@ export async function PUT(request: Request, { params }: Props) {
         type: body.type ?? 'Teaterscenografi',
         description: body.description ?? '',
         video_url: body.video_url ?? '',
+        photographer_credit: body.photographer_credit ?? '',
         sort_order: body.sort_order ?? 0,
         published: body.published ?? true,
       }, { onConflict: 'slug' })

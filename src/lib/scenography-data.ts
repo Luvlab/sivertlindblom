@@ -10,6 +10,7 @@ export interface Work {
   description: string
   images: string[]
   video_url: string
+  photographerCredit?: string
   sort_order: number
   published: boolean
 }
@@ -79,6 +80,7 @@ export async function getWorks(): Promise<Work[]> {
       type: (w.type as 'Teaterscenografi' | 'Koreografi') ?? 'Teaterscenografi',
       description: w.description ?? '',
       video_url: w.video_url ?? '',
+      photographerCredit: (w.photographer_credit as string) || undefined,
       sort_order: w.sort_order ?? 0,
       published: w.published ?? true,
       images: ((w.scenography_images ?? []) as { url: string; alt: string | null; sort_order: number }[])

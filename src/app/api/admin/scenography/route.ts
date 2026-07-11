@@ -16,6 +16,7 @@ export interface ScenographyWork {
   type: 'Teaterscenografi' | 'Koreografi'
   description: string
   video_url: string
+  photographer_credit: string
   sort_order: number
   published: boolean
   images: { url: string; alt: string }[]
@@ -45,6 +46,7 @@ export async function GET() {
     type: (w.type as 'Teaterscenografi' | 'Koreografi') ?? 'Teaterscenografi',
     description: w.description ?? '',
     video_url: w.video_url ?? '',
+    photographer_credit: w.photographer_credit ?? '',
     sort_order: w.sort_order ?? 0,
     published: w.published ?? true,
     images: ((w.scenography_images ?? []) as { url: string; alt: string | null; sort_order: number }[])
