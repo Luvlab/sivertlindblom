@@ -6,9 +6,9 @@ const SECTIONS = [
   {
     id: 'skulptur',
     label: 'Skulptur',
-    desc: 'Skulpturprojekt och serier. Redigeras via Offentliga arbeten och Karta.',
-    href: '/admin/public-works',
-    cta: 'Öppna Offentliga arbeten →',
+    desc: 'Skulpturserier: Profiler, Metamorfoser, Monoliter, Azteker m.fl.',
+    href: '/sv/references/skulptur',
+    cta: '↗ Öppna Skulptur',
   },
   {
     id: 'grafik',
