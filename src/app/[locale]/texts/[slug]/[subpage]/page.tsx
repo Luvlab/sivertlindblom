@@ -9,6 +9,11 @@ import { renderParagraphs } from '@/lib/render-text'
 
 export async function generateStaticParams() {
   const pairs = await getAllTextSubpageParams()
+  // Cache Components requires generateStaticParams to return ≥1 result. When no
+  // text sub-pages exist yet, emit a placeholder that resolves to notFound().
+  if (pairs.length === 0) {
+    return locales.map((locale) => ({ locale, slug: '__none__', subpage: '__none__' }))
+  }
   return locales.flatMap((locale) =>
     pairs.map(({ slug, subpage }) => ({ locale, slug, subpage })),
   )
