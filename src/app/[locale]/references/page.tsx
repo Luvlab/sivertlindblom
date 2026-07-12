@@ -9,9 +9,8 @@ import GalleryGrid from '@/components/gallery/GalleryGrid'
 import type { LightboxImage } from '@/components/gallery/Lightbox'
 import TabsLayout from '@/components/TabsLayout'
 import { SCULPTURE_PROJECTS } from '@/lib/sculpture-projects'
-import { getFotografi, getGrafik } from '@/lib/data-server'
+import { getFotografi, getGrafik, getFilms } from '@/lib/data-server'
 import { PUBLICATIONS } from '@/lib/publications-data'
-import { FILMS } from '@/lib/films-data'
 import FilmGrid from '@/components/references/FilmGrid'
 
 export const metadata: Metadata = { title: 'Sculpture & Graphics' }
@@ -80,6 +79,7 @@ export default async function ReferencesPage({
   const dict = await getDictionary(locale as Locale)
   const fotografi = await getFotografi()
   const grafik = await getGrafik()
+  const films = await getFilms()
 
   const grafikImages = grafik.images.map((i) => i.url)
 
@@ -98,7 +98,7 @@ export default async function ReferencesPage({
   const TABS = [
     { id: 'skulptur',    label: dict.references?.sculpture_series ?? 'Skulptur',   count: SCULPTURE_SERIES.length },
     { id: 'grafik',      label: 'Grafik',                                           count: grafikImages.length },
-    { id: 'film-tv',     label: dict.references?.film_tv ?? 'Film & TV',            count: FILMS.length },
+    { id: 'film-tv',     label: dict.references?.film_tv ?? 'Film & TV',            count: films.length },
     { id: 'publicerat',  label: dict.references?.publicerat ?? 'Publicerat' },
     { id: 'fotografi',   label: dict.references?.fotografier ?? 'Fotografier' },
     { id: 'utmarkelser', label: 'Utmärkelser' },
@@ -178,7 +178,7 @@ export default async function ReferencesPage({
               {dict.references?.film_tv ?? 'Film & TV'}
             </h2>
           </div>
-          <FilmGrid locale={locale} />
+          <FilmGrid locale={locale} films={films} />
         </section>
 
         {/* ── 4. Publicerat ─────────────────────────────────── */}

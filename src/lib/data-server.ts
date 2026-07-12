@@ -35,6 +35,12 @@ import {
   parseGrafik,
   type GrafikSection,
 } from '@/lib/reference-grafik'
+import {
+  FILM_SETTINGS_KEY,
+  DEFAULT_FILMS,
+  parseFilms,
+  type FilmEntry,
+} from '@/lib/reference-film'
 
 // ─── References → Fotografier (editable inspiration gallery) ─────────────────
 
@@ -88,6 +94,32 @@ export async function getGrafikAdmin(): Promise<GrafikSection> {
   const { data } = await supabase.from('settings').select('key, value')
   const raw = (data ?? []).find((r) => (r as { key: string }).key === GRAFIK_SETTINGS_KEY) as { value?: string } | undefined
   return parseGrafik(raw?.value)
+}
+
+export async function getFilms(): Promise<FilmEntry[]> {
+  'use cache'
+  cacheTag('references-film')
+  cacheLife('days')
+  try {
+    const supabase = createAdminClient()
+    if (supabase) {
+      const { data } = await supabase.from('settings').select('key, value')
+      const raw = (data ?? []).find((r) => (r as { key: string }).key === FILM_SETTINGS_KEY) as { value?: string } | undefined
+      return parseFilms(raw?.value)
+    }
+  } catch {
+    // fall through to defaults
+  }
+  return DEFAULT_FILMS
+}
+
+/** Fresh (non-cached) read for admin GET. */
+export async function getFilmsAdmin(): Promise<FilmEntry[]> {
+  const supabase = createAdminClient()
+  if (!supabase) return DEFAULT_FILMS
+  const { data } = await supabase.from('settings').select('key, value')
+  const raw = (data ?? []).find((r) => (r as { key: string }).key === FILM_SETTINGS_KEY) as { value?: string } | undefined
+  return parseFilms(raw?.value)
 }
 
 // ─── Portfolio category thumbnails (the 4 slideshows on /portfolio) ──────────

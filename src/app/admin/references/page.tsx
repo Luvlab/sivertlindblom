@@ -27,9 +27,9 @@ const SECTIONS = [
   {
     id: 'film-tv',
     label: 'Film & TV',
-    desc: 'Filmklipp och TV-inslag. Lägg till YouTube/Vimeo-URL:er via statisk data.',
-    href: null,
-    cta: null,
+    desc: 'Filmklipp och TV-inslag. Redigerbara: lägg till/ta bort filmer med video-URL.',
+    href: '/admin/references/film-tv',
+    cta: 'Redigera Film & TV →',
   },
   {
     id: 'publicerat',

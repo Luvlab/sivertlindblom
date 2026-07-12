@@ -5,16 +5,19 @@ import { FILMS, getYouTubeId, ytThumb, type FilmEntry } from '@/lib/films-data'
 
 interface Props {
   locale: string
+  /** Editable film list from the DB; falls back to the static FILMS. */
+  films?: FilmEntry[]
 }
 
-export default function FilmGrid({ locale }: Props) {
+export default function FilmGrid({ locale, films }: Props) {
+  const list = films ?? FILMS
   return (
     <div style={{
       display: 'grid',
       gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
       gap: '3px',
     }}>
-      {FILMS.map((f) => {
+      {list.map((f) => {
         const ytId = f.videoUrl ? getYouTubeId(f.videoUrl) : null
         const thumb = ytId ? ytThumb(ytId) : null
         return (
