@@ -9,7 +9,7 @@ import GalleryGrid from '@/components/gallery/GalleryGrid'
 import type { LightboxImage } from '@/components/gallery/Lightbox'
 import TabsLayout from '@/components/TabsLayout'
 import { SCULPTURE_PROJECTS } from '@/lib/sculpture-projects'
-import { getFotografi } from '@/lib/data-server'
+import { getFotografi, getGrafik } from '@/lib/data-server'
 import { PUBLICATIONS } from '@/lib/publications-data'
 import { FILMS } from '@/lib/films-data'
 import FilmGrid from '@/components/references/FilmGrid'
@@ -79,12 +79,12 @@ export default async function ReferencesPage({
   const { locale } = await params
   const dict = await getDictionary(locale as Locale)
   const fotografi = await getFotografi()
+  const grafik = await getGrafik()
 
-  const grafikProject = SCULPTURE_PROJECTS.find((p) => p.slug === 'grafik')
-  const grafikImages = grafikProject?.images.map((i) => i.url) ?? []
+  const grafikImages = grafik.images.map((i) => i.url)
 
   // LightboxImage arrays for thumbnail-grid tabs
-  const grafikLightboxImages: LightboxImage[] = grafikImages.map((url) => ({ url, alt: 'Grafik' }))
+  const grafikLightboxImages: LightboxImage[] = grafik.images.map((i) => ({ url: i.url, alt: i.caption ?? 'Grafik', caption: i.caption }))
   const pubLightboxImages: LightboxImage[] = PUBLICATIONS
     .filter((p) => !!p.imageUrl)
     .map((p) => ({ url: p.imageUrl!, alt: p.title, caption: [p.title, p.year].filter(Boolean).join(' — ') }))
@@ -142,21 +142,28 @@ export default async function ReferencesPage({
 
         {/* ── 2. Grafik ─────────────────────────────────────── */}
         <section className="page-pad" style={{ paddingTop: '3rem', paddingBottom: '3rem' }}>
-          {grafikProject && (
-            <>
-              <p style={{ fontSize: 'var(--fs-xs)', letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--color-accent)', marginBottom: '0.5rem' }}>
-                {grafikProject.years}
-              </p>
-              <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-2xl)', fontWeight: 400, marginBottom: '0.75rem' }}>
-                {grafikProject.title}
-              </h2>
-              <p style={{ color: 'var(--color-muted)', maxWidth: '65ch', fontSize: 'var(--fs-base)', lineHeight: 1.7, marginBottom: '2rem' }}>
-                {grafikProject.body}
-              </p>
-            </>
+          {grafik.years && (
+            <p style={{ fontSize: 'var(--fs-xs)', letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--color-accent)', marginBottom: '0.5rem' }}>
+              {grafik.years}
+            </p>
+          )}
+          <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-2xl)', fontWeight: 400, marginBottom: '0.75rem' }}>
+            {grafik.title}
+          </h2>
+          {grafik.intro && (
+            <p style={{ color: 'var(--color-muted)', maxWidth: '65ch', fontSize: 'var(--fs-base)', lineHeight: 1.7, marginBottom: '2rem' }}>
+              {grafik.intro}
+            </p>
           )}
           {grafikLightboxImages.length > 0 ? (
-            <GalleryGrid images={grafikLightboxImages} aspectRatio="1/1" columns="sm" />
+            <>
+              <GalleryGrid images={grafikLightboxImages} aspectRatio="1/1" columns="sm" />
+              {grafik.photographer && (
+                <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', marginTop: '1rem', fontStyle: 'italic' }}>
+                  Foto: {grafik.photographer}
+                </p>
+              )}
+            </>
           ) : (
             <p style={{ color: 'var(--color-muted)', fontStyle: 'italic', fontSize: 'var(--fs-sm)' }}>
               Bilder laddas in…

@@ -13,9 +13,9 @@ const SECTIONS = [
   {
     id: 'grafik',
     label: 'Grafik',
-    desc: 'Grafiska verk och serier. Kopplade till sculpture-projects-data.',
-    href: null,
-    cta: null,
+    desc: 'Grafiska verk. Redigerbara: rubrik, ingress, bilder och fotograf.',
+    href: '/admin/references/grafik',
+    cta: 'Redigera Grafik →',
   },
   {
     id: 'fotografi',

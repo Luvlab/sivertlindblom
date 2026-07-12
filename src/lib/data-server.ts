@@ -29,6 +29,12 @@ import {
   parseFotografi,
   type FotografiSection,
 } from '@/lib/reference-fotografi'
+import {
+  GRAFIK_SETTINGS_KEY,
+  DEFAULT_GRAFIK,
+  parseGrafik,
+  type GrafikSection,
+} from '@/lib/reference-grafik'
 
 // ─── References → Fotografier (editable inspiration gallery) ─────────────────
 
@@ -56,6 +62,32 @@ export async function getFotografiAdmin(): Promise<FotografiSection> {
   const { data } = await supabase.from('settings').select('key, value')
   const raw = (data ?? []).find((r) => (r as { key: string }).key === FOTOGRAFI_SETTINGS_KEY) as { value?: string } | undefined
   return parseFotografi(raw?.value)
+}
+
+export async function getGrafik(): Promise<GrafikSection> {
+  'use cache'
+  cacheTag('references-grafik')
+  cacheLife('days')
+  try {
+    const supabase = createAdminClient()
+    if (supabase) {
+      const { data } = await supabase.from('settings').select('key, value')
+      const raw = (data ?? []).find((r) => (r as { key: string }).key === GRAFIK_SETTINGS_KEY) as { value?: string } | undefined
+      return parseGrafik(raw?.value)
+    }
+  } catch {
+    // fall through to defaults
+  }
+  return { ...DEFAULT_GRAFIK }
+}
+
+/** Fresh (non-cached) read for admin GET. */
+export async function getGrafikAdmin(): Promise<GrafikSection> {
+  const supabase = createAdminClient()
+  if (!supabase) return { ...DEFAULT_GRAFIK }
+  const { data } = await supabase.from('settings').select('key, value')
+  const raw = (data ?? []).find((r) => (r as { key: string }).key === GRAFIK_SETTINGS_KEY) as { value?: string } | undefined
+  return parseGrafik(raw?.value)
 }
 
 // ─── Portfolio category thumbnails (the 4 slideshows on /portfolio) ──────────
