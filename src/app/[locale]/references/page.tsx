@@ -9,7 +9,7 @@ import GalleryGrid from '@/components/gallery/GalleryGrid'
 import type { LightboxImage } from '@/components/gallery/Lightbox'
 import TabsLayout from '@/components/TabsLayout'
 import { SCULPTURE_PROJECTS } from '@/lib/sculpture-projects'
-import { FOTOGRAFIER_IMAGES } from '@/lib/fotografier-data'
+import { getFotografi } from '@/lib/data-server'
 import { PUBLICATIONS } from '@/lib/publications-data'
 import { FILMS } from '@/lib/films-data'
 import FilmGrid from '@/components/references/FilmGrid'
@@ -78,6 +78,7 @@ export default async function ReferencesPage({
 }) {
   const { locale } = await params
   const dict = await getDictionary(locale as Locale)
+  const fotografi = await getFotografi()
 
   const grafikProject = SCULPTURE_PROJECTS.find((p) => p.slug === 'grafik')
   const grafikImages = grafikProject?.images.map((i) => i.url) ?? []
@@ -87,7 +88,7 @@ export default async function ReferencesPage({
   const pubLightboxImages: LightboxImage[] = PUBLICATIONS
     .filter((p) => !!p.imageUrl)
     .map((p) => ({ url: p.imageUrl!, alt: p.title, caption: [p.title, p.year].filter(Boolean).join(' — ') }))
-  const fotoLightboxImages: LightboxImage[] = FOTOGRAFIER_IMAGES.map((img) => ({
+  const fotoLightboxImages: LightboxImage[] = fotografi.images.map((img) => ({
     url: img.url,
     alt: img.caption ?? 'Fotografi',
     caption: img.caption,
@@ -193,6 +194,11 @@ export default async function ReferencesPage({
             {dict.references?.fotografier_desc ?? 'Bilder som på ett eller annat sätt berört och inspirerat Sivert Lindblom i sitt arbete.'}
           </p>
           <GalleryGrid images={fotoLightboxImages} aspectRatio="3/2" columns="sm" />
+          {fotografi.photographer && (
+            <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', marginTop: '1rem', fontStyle: 'italic' }}>
+              Foto: {fotografi.photographer}
+            </p>
+          )}
         </section>
 
         {/* ── 6. Utmärkelser ────────────────────────────────── */}

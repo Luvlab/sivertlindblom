@@ -20,9 +20,9 @@ const SECTIONS = [
   {
     id: 'fotografi',
     label: 'Fotografier',
-    desc: 'Fotografier av Siverts verk. Bilder hanteras via Media-biblioteket.',
-    href: '/admin/media',
-    cta: 'Öppna Media →',
+    desc: 'Fotografier & inspiration. Redigerbara: lägg till/ta bort bilder, bildtexter och fotograf.',
+    href: '/admin/references/fotografi',
+    cta: 'Redigera Fotografier →',
   },
   {
     id: 'film-tv',

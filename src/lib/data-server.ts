@@ -23,6 +23,40 @@ import {
   type PortfolioThumbs,
   type PortfolioCategoryKey,
 } from '@/lib/portfolio-thumbs'
+import {
+  FOTOGRAFI_SETTINGS_KEY,
+  DEFAULT_FOTOGRAFI,
+  parseFotografi,
+  type FotografiSection,
+} from '@/lib/reference-fotografi'
+
+// ─── References → Fotografier (editable inspiration gallery) ─────────────────
+
+export async function getFotografi(): Promise<FotografiSection> {
+  'use cache'
+  cacheTag('references-fotografi')
+  cacheLife('days')
+  try {
+    const supabase = createAdminClient()
+    if (supabase) {
+      const { data } = await supabase.from('settings').select('key, value')
+      const raw = (data ?? []).find((r) => (r as { key: string }).key === FOTOGRAFI_SETTINGS_KEY) as { value?: string } | undefined
+      return parseFotografi(raw?.value)
+    }
+  } catch {
+    // fall through to defaults
+  }
+  return { ...DEFAULT_FOTOGRAFI }
+}
+
+/** Fresh (non-cached) read for admin GET. */
+export async function getFotografiAdmin(): Promise<FotografiSection> {
+  const supabase = createAdminClient()
+  if (!supabase) return { ...DEFAULT_FOTOGRAFI }
+  const { data } = await supabase.from('settings').select('key, value')
+  const raw = (data ?? []).find((r) => (r as { key: string }).key === FOTOGRAFI_SETTINGS_KEY) as { value?: string } | undefined
+  return parseFotografi(raw?.value)
+}
 
 // ─── Portfolio category thumbnails (the 4 slideshows on /portfolio) ──────────
 
