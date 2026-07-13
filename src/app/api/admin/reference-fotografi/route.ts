@@ -20,6 +20,7 @@ export async function PUT(request: Request) {
   try {
     const body = await request.json() as FotografiSection
     const clean: FotografiSection = {
+      intro: typeof body.intro === 'string' ? body.intro : '',
       photographer: typeof body.photographer === 'string' ? body.photographer : '',
       images: Array.isArray(body.images)
         ? body.images

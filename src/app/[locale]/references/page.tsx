@@ -202,9 +202,13 @@ export default async function ReferencesPage({
           <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-2xl)', marginBottom: '0.75rem' }}>
             {dict.references?.fotografier ?? 'Fotografier & Inspiration'}
           </h2>
-          <p style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-sm)', marginBottom: '2rem', maxWidth: '60ch' }}>
-            {dict.references?.fotografier_desc ?? 'Bilder som på ett eller annat sätt berört och inspirerat Sivert Lindblom i sitt arbete.'}
-          </p>
+          <div style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-sm)', marginBottom: '2rem', maxWidth: '60ch', lineHeight: 1.7 }}>
+            {fotografi.intro
+              ? fotografi.intro.split('\n\n').filter(Boolean).map((para, i) => (
+                  <p key={i} style={{ marginBottom: '0.75rem' }}>{para}</p>
+                ))
+              : <p>{dict.references?.fotografier_desc ?? 'Bilder som på ett eller annat sätt berört och inspirerat Sivert Lindblom i sitt arbete.'}</p>}
+          </div>
           <GalleryGrid images={fotoLightboxImages} aspectRatio="3/2" columns="sm" />
           {fotografi.photographer && (
             <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', marginTop: '1rem', fontStyle: 'italic' }}>

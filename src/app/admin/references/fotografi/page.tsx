@@ -6,6 +6,7 @@ import ImageListEditor from '@/components/admin/ImageListEditor'
 import type { FotografiSection } from '@/lib/reference-fotografi'
 
 export default function AdminFotografi() {
+  const [intro, setIntro] = useState('')
   const [photographer, setPhotographer] = useState('')
   const [urls, setUrls] = useState<string[]>([])
   // Preserve captions by URL across edits (ImageListEditor only handles URLs).
@@ -21,6 +22,7 @@ export default function AdminFotografi() {
       .then(r => r.json())
       .then((d: FotografiSection | { error: string }) => {
         if ('error' in d) { setError(String(d.error)); return }
+        setIntro(d.intro ?? '')
         setPhotographer(d.photographer ?? '')
         setUrls(d.images.map(i => i.url))
         const map: Record<string, string> = {}
@@ -40,7 +42,7 @@ export default function AdminFotografi() {
       const res = await fetch('/api/admin/reference-fotografi', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ photographer, images }),
+        body: JSON.stringify({ intro, photographer, images }),
       })
       const data = await res.json() as { ok?: boolean; error?: string }
       if (data.error) setError(data.error)
@@ -70,6 +72,18 @@ export default function AdminFotografi() {
       <p style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-sm)', lineHeight: 1.7, marginTop: '-0.5rem' }}>
         Bilderna i sektionen ”Fotografier – inspiration” på referenssidan. Lägg till, ta bort och ordna om — precis som i övriga bildhanterare.
       </p>
+
+      <div>
+        <FieldLabel>Text om varför bilderna finns hos Sivert (visas ovanför galleriet)</FieldLabel>
+        <textarea
+          className="input"
+          rows={4}
+          style={{ width: '100%', resize: 'vertical' }}
+          value={intro}
+          onChange={e => { setIntro(e.target.value); setDirty(true) }}
+          placeholder="Förklarande text om bilderna…"
+        />
+      </div>
 
       <div>
         <FieldLabel>Fotograf (visas under galleriet)</FieldLabel>
