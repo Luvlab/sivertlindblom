@@ -7,7 +7,7 @@ const SECTIONS = [
     id: 'skulptur',
     label: 'Skulptur',
     desc: 'Skulpturserier: Profiler, Metamorfoser, Monoliter, Azteker m.fl.',
-    href: '/sv/references/skulptur',
+    href: '/sv/references#skulptur',
     cta: '↗ Öppna Skulptur',
   },
   {
