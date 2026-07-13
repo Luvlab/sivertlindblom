@@ -202,10 +202,28 @@ export default async function TextDetailPage({
               )}
             </div>
           ) : (
-            /* OCR off — scan images only, full width */
-            <div className="article-scan-images-full">
-              <TextImageSlideshow images={text.images} title={text.title} />
-            </div>
+            /* OCR off — scan images full width, plus the body text below it when
+               there is one (e.g. a portrait + essay). Only pure scans with no
+               body show images alone. */
+            <>
+              <div className="article-scan-images-full">
+                <TextImageSlideshow images={text.images} title={text.title} />
+              </div>
+              {body && (
+                <div style={{ marginTop: '2.5rem' }}>
+                  {body.split('\n\n').map((para, i) => {
+                    const lines = para.split('\n')
+                    return (
+                      <p key={i} style={{ fontSize: 'var(--fs-base)', lineHeight: 1.8, marginBottom: '1.5em', color: 'var(--color-text)' }}>
+                        {lines.map((line, j) => (
+                          <span key={j}>{j > 0 && <br />}{renderInlineLinks(line)}</span>
+                        ))}
+                      </p>
+                    )
+                  })}
+                </div>
+              )}
+            </>
           )
         ) : (
           /* Plain text body for essays/prefaces/etc. */
