@@ -102,6 +102,20 @@ export default function TextImageSlideshow({ images, title, thumbnailAspect = '3
           )}
         </div>
 
+        {/* Open the current image on its own page — full resolution, easier to read (Jan, Undring 11) */}
+        <a
+          href={current}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{
+            display: 'inline-flex', alignItems: 'center', gap: '0.3rem',
+            marginTop: '0.5rem', fontSize: 'var(--fs-xs)', color: 'var(--color-muted)',
+            textDecoration: 'none', letterSpacing: '0.04em',
+          }}
+        >
+          Öppna bilden i ny flik ↗
+        </a>
+
         {/* Thumbnail strip */}
         {images.length > 1 && (
           <div style={{ display: 'flex', gap: '4px', marginTop: '0.5rem' }}>

@@ -85,8 +85,13 @@ export default async function ReferencesPage({
 
   // LightboxImage arrays for thumbnail-grid tabs
   const grafikLightboxImages: LightboxImage[] = grafik.images.map((i) => ({ url: i.url, alt: i.caption ?? 'Grafik', caption: i.caption }))
-  const pubLightboxImages: LightboxImage[] = PUBLICATIONS
-    .filter((p) => !!p.imageUrl)
+  // Publicerat: keep the first 3 catalogs in place, sort the rest by year (newest first). (Jan, Undring 11)
+  const pubWithImages = PUBLICATIONS.filter((p) => !!p.imageUrl)
+  const pubOrdered = [
+    ...pubWithImages.slice(0, 3),
+    ...pubWithImages.slice(3).sort((a, b) => (parseInt(b.year ?? '0') || 0) - (parseInt(a.year ?? '0') || 0)),
+  ]
+  const pubLightboxImages: LightboxImage[] = pubOrdered
     .map((p) => ({ url: p.imageUrl!, alt: p.title, caption: [p.title, p.year].filter(Boolean).join(' — ') }))
   const fotoLightboxImages: LightboxImage[] = fotografi.images.map((img) => ({
     url: img.url,
