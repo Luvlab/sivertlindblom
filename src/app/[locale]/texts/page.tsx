@@ -108,6 +108,17 @@ export default async function TextsPage({
                       {t.year}
                     </span>
 
+                    {/* Thumbnail (mini-bild) — matches the admin list (Jan, Undring 11) */}
+                    {t.images?.[0] && (
+                      /* eslint-disable-next-line @next/next/no-img-element */
+                      <img
+                        src={t.images[0]}
+                        alt=""
+                        loading="lazy"
+                        style={{ width: 44, height: 44, objectFit: 'cover', borderRadius: 2, flexShrink: 0, background: 'var(--color-bg-card)' }}
+                      />
+                    )}
+
                     {/* Title + author */}
                     {t.slug ? (
                       <Link href={`/${locale}/texts/${t.slug}`} style={{ textDecoration: 'none', color: 'inherit' }}>
