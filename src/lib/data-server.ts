@@ -41,6 +41,12 @@ import {
   parseFilms,
   type FilmEntry,
 } from '@/lib/reference-film'
+import {
+  UTMARKELSER_SETTINGS_KEY,
+  DEFAULT_UTMARKELSER,
+  parseUtmarkelser,
+  type UtmarkelserSection,
+} from '@/lib/reference-utmarkelser'
 
 // ─── References → Fotografier (editable inspiration gallery) ─────────────────
 
@@ -120,6 +126,32 @@ export async function getFilmsAdmin(): Promise<FilmEntry[]> {
   const { data } = await supabase.from('settings').select('key, value')
   const raw = (data ?? []).find((r) => (r as { key: string }).key === FILM_SETTINGS_KEY) as { value?: string } | undefined
   return parseFilms(raw?.value)
+}
+
+export async function getUtmarkelser(): Promise<UtmarkelserSection> {
+  'use cache'
+  cacheTag('references-utmarkelser')
+  cacheLife('days')
+  try {
+    const supabase = createAdminClient()
+    if (supabase) {
+      const { data } = await supabase.from('settings').select('key, value')
+      const raw = (data ?? []).find((r) => (r as { key: string }).key === UTMARKELSER_SETTINGS_KEY) as { value?: string } | undefined
+      return parseUtmarkelser(raw?.value)
+    }
+  } catch {
+    // fall through to defaults
+  }
+  return { ...DEFAULT_UTMARKELSER }
+}
+
+/** Fresh (non-cached) read for admin GET. */
+export async function getUtmarkelserAdmin(): Promise<UtmarkelserSection> {
+  const supabase = createAdminClient()
+  if (!supabase) return { ...DEFAULT_UTMARKELSER }
+  const { data } = await supabase.from('settings').select('key, value')
+  const raw = (data ?? []).find((r) => (r as { key: string }).key === UTMARKELSER_SETTINGS_KEY) as { value?: string } | undefined
+  return parseUtmarkelser(raw?.value)
 }
 
 // ─── Portfolio category thumbnails (the 4 slideshows on /portfolio) ──────────

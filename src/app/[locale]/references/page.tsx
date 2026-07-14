@@ -9,7 +9,7 @@ import GalleryGrid from '@/components/gallery/GalleryGrid'
 import type { LightboxImage } from '@/components/gallery/Lightbox'
 import TabsLayout from '@/components/TabsLayout'
 import { SCULPTURE_PROJECTS } from '@/lib/sculpture-projects'
-import { getFotografi, getGrafik, getFilms } from '@/lib/data-server'
+import { getFotografi, getGrafik, getFilms, getUtmarkelser } from '@/lib/data-server'
 import { PUBLICATIONS } from '@/lib/publications-data'
 import FilmGrid from '@/components/references/FilmGrid'
 
@@ -80,6 +80,7 @@ export default async function ReferencesPage({
   const fotografi = await getFotografi()
   const grafik = await getGrafik()
   const films = await getFilms()
+  const utmarkelser = await getUtmarkelser()
 
   const grafikImages = grafik.images.map((i) => i.url)
 
@@ -223,7 +224,7 @@ export default async function ReferencesPage({
             Utmärkelser, priser och medaljer
           </h2>
           <p style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-sm)', marginBottom: '3rem', maxWidth: '60ch' }}>
-            Priser mottagna av Sivert Lindblom samt medaljer och minnesmärken formgivna av honom.
+            {utmarkelser.intro || 'Priser mottagna av Sivert Lindblom samt medaljer och minnesmärken formgivna av honom.'}
           </p>
 
           {/* Medal collage */}
@@ -241,35 +242,8 @@ export default async function ReferencesPage({
             Mottagna priser
           </h3>
 
-          {([
-            {
-              year: 1984, title: 'K A Linds Hederspris', sub: 'Moderna Museets Vänners kulturpris',
-              links: [{ label: 'K A Linds Hederspris — Moderna Museets vänners skulpturpris', url: 'https://sv.wikipedia.org/wiki/Moderna_museets_v%C3%A4nners_skulpturpris' }],
-            },
-            {
-              year: 1985, title: 'Stenpriset', sub: 'Sveriges Stenindustriförbund',
-              links: [
-                { label: 'Om Stenpriset (sten.se)', url: 'https://www.sten.se/stenpriset/' },
-              ],
-            },
-            {
-              year: 1989, title: 'Prins Eugen-medaljen',
-              desc: 'Prins Eugen-medaljen instiftades av Konung Gustaf V i samband med Prins Eugens 80-årsdag år 1945. Medaljen tilldelas för framstående konstnärlig verksamhet. Medaljförläningen sker på Eugendagen den 5 november och själva utdelningen en kort tid därefter. Medaljen utdelas i guld (förgyllt silver) av 8:e storleken och bärs på bröstet i vitt-gult-vitt band med blå kantränder. Medaljmottagarens namn och årtal präglas på medaljens nedre rand.',
-              links: [{ label: 'LÄS MER om medaljen och målarprinsen (Kungl. Maj:ts Orden)', url: 'https://kungligmajestatsorden.se/medaljer/prins-eugen-medaljen' }],
-            },
-            {
-              year: 1995, title: 'Sergelpriset', sub: 'Kungl. Akademien för de fria konsterna, Stockholm',
-              desc: 'Priset inrättades 1945 till minne av skulptören Johan Tobias Sergel. Det utdelas vart femte år på Sergels dödsdag den 26 februari och består av en guldmedalj med Sergels porträtt.',
-            },
-            {
-              year: 2002, title: 'S:t Eriksmedaljen', sub: 'Stockholm stad',
-              quote: '»Kreativ konstnär vars många sköna och spännande skulpturer på torg och broar är viktiga inslag i kulturstaden Stockholm«',
-            },
-            {
-              year: 2002, title: 'Eskilstunakurirens kulturpris', sub: 'Eskilstuna-Kuriren',
-            },
-          ] as Array<{ year: number; title: string; sub?: string; desc?: string; quote?: string; links?: Array<{ label: string; url: string }> }>).map((p) => (
-            <div key={p.title} style={{ padding: '1.5rem 0', borderBottom: '1px solid var(--color-border)' }}>
+          {utmarkelser.prizes.map((p, pi) => (
+            <div key={pi} style={{ padding: '1.5rem 0', borderBottom: '1px solid var(--color-border)' }}>
               <div style={{ display: 'grid', gridTemplateColumns: '5rem 1fr', gap: '1rem' }}>
                 <span style={{ color: 'var(--color-accent)', fontFamily: 'Georgia, serif', fontSize: 'var(--fs-sm)' }}>{p.year}</span>
                 <div>
@@ -277,7 +251,15 @@ export default async function ReferencesPage({
                   {p.sub && <div style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)' }}>{p.sub}</div>}
                   {p.desc && <p style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-muted)', lineHeight: 1.7, marginTop: '0.5rem', maxWidth: '55ch' }}>{p.desc}</p>}
                   {p.quote && <p style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-muted)', fontStyle: 'italic', lineHeight: 1.7, marginTop: '0.5rem', maxWidth: '55ch' }}>{p.quote}</p>}
-                  {p.links && (
+                  {p.images.length > 0 && (
+                    <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', marginTop: '0.85rem' }}>
+                      {p.images.map((src) => (
+                        <SafeImg key={src} src={src} alt={p.title} loading="lazy"
+                          style={{ height: 120, width: 'auto', objectFit: 'cover', border: '1px solid var(--color-border)' }} />
+                      ))}
+                    </div>
+                  )}
+                  {p.links && p.links.length > 0 && (
                     <div style={{ marginTop: '0.75rem', display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
                       {p.links.map((link) => (
                         <a key={link.url} href={link.url} target="_blank" rel="noopener noreferrer"

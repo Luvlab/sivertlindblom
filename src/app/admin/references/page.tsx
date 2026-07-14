@@ -41,9 +41,9 @@ const SECTIONS = [
   {
     id: 'utmarkelser',
     label: 'Utmärkelser',
-    desc: 'Priser och utmärkelser. Redigeras via Biografi (typ: Pris/Utmärkelse).',
-    href: '/admin/biography',
-    cta: 'Öppna Biografi →',
+    desc: 'Priser och medaljer. Redigerbara: lägg in bilder på medaljerna, text och länkar.',
+    href: '/admin/references/utmarkelser',
+    cta: 'Redigera Utmärkelser →',
   },
   {
     id: 'ogonblick',
