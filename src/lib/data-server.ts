@@ -47,6 +47,12 @@ import {
   parseUtmarkelser,
   type UtmarkelserSection,
 } from '@/lib/reference-utmarkelser'
+import {
+  OGONBLICK_SETTINGS_KEY,
+  DEFAULT_OGONBLICK,
+  parseOgonblick,
+  type OgonblickSection,
+} from '@/lib/reference-ogonblick'
 
 // ─── References → Fotografier (editable inspiration gallery) ─────────────────
 
@@ -74,6 +80,34 @@ export async function getFotografiAdmin(): Promise<FotografiSection> {
   const { data } = await supabase.from('settings').select('key, value')
   const raw = (data ?? []).find((r) => (r as { key: string }).key === FOTOGRAFI_SETTINGS_KEY) as { value?: string } | undefined
   return parseFotografi(raw?.value)
+}
+
+// ─── References → Ögonblick (editable candid gallery) ───────────────────────
+
+export async function getOgonblick(): Promise<OgonblickSection> {
+  'use cache'
+  cacheTag('references-ogonblick')
+  cacheLife('days')
+  try {
+    const supabase = createAdminClient()
+    if (supabase) {
+      const { data } = await supabase.from('settings').select('key, value')
+      const raw = (data ?? []).find((r) => (r as { key: string }).key === OGONBLICK_SETTINGS_KEY) as { value?: string } | undefined
+      return parseOgonblick(raw?.value)
+    }
+  } catch {
+    // fall through to defaults
+  }
+  return { ...DEFAULT_OGONBLICK }
+}
+
+/** Fresh (non-cached) read for admin GET. */
+export async function getOgonblickAdmin(): Promise<OgonblickSection> {
+  const supabase = createAdminClient()
+  if (!supabase) return { ...DEFAULT_OGONBLICK }
+  const { data } = await supabase.from('settings').select('key, value')
+  const raw = (data ?? []).find((r) => (r as { key: string }).key === OGONBLICK_SETTINGS_KEY) as { value?: string } | undefined
+  return parseOgonblick(raw?.value)
 }
 
 export async function getGrafik(): Promise<GrafikSection> {

@@ -9,7 +9,7 @@ import GalleryGrid from '@/components/gallery/GalleryGrid'
 import type { LightboxImage } from '@/components/gallery/Lightbox'
 import TabsLayout from '@/components/TabsLayout'
 import { SCULPTURE_PROJECTS } from '@/lib/sculpture-projects'
-import { getFotografi, getGrafik, getFilms, getUtmarkelser } from '@/lib/data-server'
+import { getFotografi, getGrafik, getFilms, getUtmarkelser, getOgonblick } from '@/lib/data-server'
 import { PUBLICATIONS } from '@/lib/publications-data'
 import FilmGrid from '@/components/references/FilmGrid'
 
@@ -38,38 +38,6 @@ const SCULPTURE_SERIES = [
   { key: 'arbetsmodeller',  label: 'Arbetsmodeller & Förslag',    desc: 'Arbetsmodeller i gips, lera och trä samt tävlingsförslag.' },
 ] as const
 
-// Ögonblick — candid / behind-the-scenes photos (scraped from sivertlindblom.se)
-const OGONBLICK_IMAGES = [
-  'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/07/20180714_181121.jpg',
-  'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/07/20180714_181104.jpg',
-  'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/07/20180714_181039.jpg',
-  'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/07/20180714_181150.jpg',
-  'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/10/20181018_195227.jpg',
-  'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/10/20181018_195108.jpg',
-  'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/10/20181018_195148.jpg',
-  'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/02/20180203_160556.jpg',
-  'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/02/20180203_160613.jpg',
-  'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/02/20180203_160538.jpg',
-  'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/02/20180203_160518.jpg',
-  'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/02/20180203_160623_001.jpg',
-  'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/02/Lykta-Konstakademin.jpg',
-  'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/02/img296.jpg',
-  'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/08/20180817_135602.jpg',
-  'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/08/20180817_135547.jpg',
-  'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/08/20180817_135534.jpg',
-  'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/08/20180817_135458.jpg',
-  'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/08/20180817_135440.jpg',
-  'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/02/20180131_111554.jpg',
-  'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/02/20180131_111159.jpg',
-  'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/02/20180131_111221.jpg',
-  'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/02/20180131_111324.jpg',
-  'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/02/20180131_111349.jpg',
-  'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/02/20180131_111425.jpg',
-  'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/20150118_201040.jpg',
-  'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2017/10/20170927_181311.jpg',
-  'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2017/10/20170927_181256.jpg',
-]
-
 export default async function ReferencesPage({
   params,
 }: {
@@ -81,6 +49,7 @@ export default async function ReferencesPage({
   const grafik = await getGrafik()
   const films = await getFilms()
   const utmarkelser = await getUtmarkelser()
+  const ogonblick = await getOgonblick()
 
   const grafikImages = grafik.images.map((i) => i.url)
 
@@ -99,7 +68,7 @@ export default async function ReferencesPage({
     alt: img.caption ?? 'Fotografi',
     caption: img.caption,
   }))
-  const ogonblickLightboxImages: LightboxImage[] = OGONBLICK_IMAGES.map((url) => ({ url, alt: 'Ögonblick' }))
+  const ogonblickLightboxImages: LightboxImage[] = ogonblick.images.map((img) => ({ url: img.url, alt: img.caption ?? 'Ögonblick', caption: img.caption }))
 
   const TABS = [
     { id: 'skulptur',    label: dict.references?.sculpture_series ?? 'Skulptur',   count: SCULPTURE_SERIES.length },
@@ -336,9 +305,11 @@ export default async function ReferencesPage({
           <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-2xl)', fontWeight: 400, marginBottom: '0.75rem' }}>
             Ögonblick
           </h2>
-          <p style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-base)', maxWidth: '60ch', lineHeight: 1.7, marginBottom: '2rem' }}>
-            Bilder på och med Sivert Lindblom — i ateljén, vid invigningar och i vardagen.
-          </p>
+          {ogonblick.intro && (
+            <p style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-base)', maxWidth: '60ch', lineHeight: 1.7, marginBottom: '2rem' }}>
+              {ogonblick.intro}
+            </p>
+          )}
           {ogonblickLightboxImages.length > 0 && (
             <GalleryGrid images={ogonblickLightboxImages} aspectRatio="4/3" columns="sm" />
           )}

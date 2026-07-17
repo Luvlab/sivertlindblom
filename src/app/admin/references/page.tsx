@@ -48,9 +48,9 @@ const SECTIONS = [
   {
     id: 'ogonblick',
     label: 'Ögonblick',
-    desc: 'Personliga fotografier av Sivert. Hanteras via Biografi (Fotografier-fliken).',
-    href: '/admin/biography',
-    cta: 'Öppna Biografi →',
+    desc: 'Personliga fotografier av Sivert. Redigerbara: lägg till/ta bort bilder, bildtexter och ingress.',
+    href: '/admin/references/ogonblick',
+    cta: 'Redigera Ögonblick →',
   },
 ]
 
