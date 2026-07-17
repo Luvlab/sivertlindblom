@@ -201,16 +201,46 @@ export default async function TextDetailPage({
                 </div>
               )}
             </div>
-          ) : (
-            /* OCR off — scan images full width, plus the body text below it when
-               there is one (e.g. a portrait + essay). Only pure scans with no
-               body show images alone. */
+          ) : text.type === 'review' ? (
+            /* Scanned article (review) — images full width, body below. */
             <>
               <div className="article-scan-images-full">
                 <TextImageSlideshow images={text.images} title={text.title} />
               </div>
               {body && (
                 <div style={{ marginTop: '2.5rem' }}>
+                  {body.split('\n\n').map((para, i) => {
+                    const lines = para.split('\n')
+                    return (
+                      <p key={i} style={{ fontSize: 'var(--fs-base)', lineHeight: 1.8, marginBottom: '1.5em', color: 'var(--color-text)' }}>
+                        {lines.map((line, j) => (
+                          <span key={j}>{j > 0 && <br />}{renderInlineLinks(line)}</span>
+                        ))}
+                      </p>
+                    )
+                  })}
+                </div>
+              )}
+            </>
+          ) : (
+            /* Author texts (essay/preface/own/translated/interview): show the
+               portrait at portrait size, then the text — Jan, Undring 13. */
+            <>
+              <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginBottom: '2rem' }}>
+                {text.images.map((img, i) => (
+                  <a key={i} href={img} target="_blank" rel="noopener noreferrer" title="Öppna bilden i ny flik" style={{ display: 'block' }}>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={img}
+                      alt={text.author || text.title}
+                      loading="lazy"
+                      style={{ width: 200, maxWidth: '100%', height: 'auto', display: 'block', border: '1px solid var(--color-border)', background: 'var(--color-bg-card)' }}
+                    />
+                  </a>
+                ))}
+              </div>
+              {body && (
+                <div>
                   {body.split('\n\n').map((para, i) => {
                     const lines = para.split('\n')
                     return (
