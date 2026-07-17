@@ -39,6 +39,14 @@ const RELATED_PATHS: Record<string, { relatedPath: string; relatedLabel: string 
   'torsten-ekbom-1980':               { relatedPath: 'portfolio/exhibitions/sans-titre-ccs-paris-1980',              relatedLabel: 'CCS Paris 1980' },
   'ulf-linde-1971':                   { relatedPath: 'portfolio/exhibitions/galerie-gimpel-hanover-zurich-1971',     relatedLabel: 'Galerie Gimpel 1971' },
   'leon-rappaport-1963':              { relatedPath: 'portfolio/exhibitions/galerie-buren-1963',                     relatedLabel: 'Galerie Burén 1963' },
+  // Cross-links requested by Jan (Undring 11/13) — verified targets, all published
+  'torsten-ekbom-ccs-1980-sv':        { relatedPath: 'portfolio/exhibitions/sans-titre-ccs-paris-1980',              relatedLabel: 'CCS Paris 1980' },
+  'torsten-ekbom-aronowitsch-1981':   { relatedPath: 'portfolio/exhibitions/galerie-aronowitsch-1981',               relatedLabel: 'Galerie Aronowitsch 1981' },
+  'konstnaren-kro-1993':              { relatedPath: 'portfolio/exhibitions/lunds-konsthall-1993',                   relatedLabel: 'Lunds konsthall 1993' },
+  'recension-vadsbo-museum-mariestad-1962': { relatedPath: 'portfolio/exhibitions/vadsbo-museum-mariestad-1962',     relatedLabel: 'Vadsbo 1962' },
+  'tankar-om-konst-rodin':            { relatedPath: 'portfolio/exhibitions/vadsbo-museum-mariestad-1962',           relatedLabel: 'Vadsbo 1962' },
+  'gestaltningar-stockholms-universitet': { relatedPath: 'portfolio/public-works/frescati-1987',                    relatedLabel: 'Frescati 1987–91' },
+  'inga-maj-beck-terrakotta':         { relatedPath: 'portfolio/public-works/frescati-1987',                        relatedLabel: 'Frescati 1987–91' },
 }
 
 const LANG_LABELS: Record<string, string> = {
