@@ -44,9 +44,23 @@ export default async function TextDetailPage({
     getTexts(),
   ])
 
-  const text = TEXTS_DATA.find((t) => t.slug === slug)
-    ?? allTexts.find((t) => t.slug === slug)
-    ?? await getText(slug)
+  // DB is authoritative (that's where Jan edits images/body). The legacy
+  // TEXTS_DATA is only a fallback + source of translations/video the DB lacks.
+  // Previously TEXTS_DATA was checked first, which shadowed DB-added images.
+  const dbText = allTexts.find((t) => t.slug === slug) ?? await getText(slug)
+  const staticText = TEXTS_DATA.find((t) => t.slug === slug)
+  const text = dbText
+    ? {
+        ...staticText,
+        ...dbText,
+        // Never blank content the DB happens not to have:
+        body: dbText.body || staticText?.body || '',
+        images: dbText.images?.length ? dbText.images : (staticText?.images ?? []),
+        // Legacy-only fields the DB row doesn't carry:
+        bodies: staticText?.bodies ?? dbText.bodies,
+        videoUrl: dbText.videoUrl ?? staticText?.videoUrl,
+      }
+    : staticText
   if (!text) notFound()
 
   // Prev / next within the same type group (already ordered newest-first)
