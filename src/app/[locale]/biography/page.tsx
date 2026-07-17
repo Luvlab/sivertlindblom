@@ -9,6 +9,7 @@ import TabsLayout from '@/components/TabsLayout'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { cacheTag, cacheLife } from 'next/cache'
 import { FALLBACK_SETTINGS } from '@/lib/db'
+import { getUtmarkelser } from '@/lib/data-server'
 
 const DEFAULT_PORTRAIT = 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Portratt-SivertMattias.jpg'
 
@@ -89,68 +90,6 @@ const TIMELINE = [
   { year: '1989–',     label: 'Ledamot, Vägverkets skönhetsråd' },
   { year: '1991–',     label: 'Professor i skulptur, Kungliga Konsthögskolan' },
   { year: '1995',      label: 'Sergelpriset, Stockholm' },
-]
-
-const AWARDS: Array<{
-  year: string
-  title: string
-  description?: string
-  images?: string[]
-  links?: Array<{ prefix: string; label: string; url: string }>
-}> = [
-  {
-    year: '1985',
-    title: 'Stenpriset — Sveriges Stenindustriförbund',
-    links: [
-      { prefix: 'LÄS OM', label: 'Om Stenpriset till Sivert Lindblom — Sveriges Stenindustriförbund 1985', url: '/texts/stenpriset-1985' },
-      { prefix: 'HÄMTA', label: 'Sten 1985 — artikel (PDF)', url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/02/Sten-1985opt-.pdf' },
-      { prefix: 'LÄS MER', label: 'sten.se/stenpriset', url: 'https://www.sten.se/stenpriset/' },
-    ],
-  },
-  {
-    year: '1995',
-    title: 'Sergelpriset, Stockholm',
-  },
-  {
-    year: '2002',
-    title: 'S:t Eriksmedaljen',
-    images: [
-      'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/biography/priser/st-eriksmedaljen.jpg',
-    ],
-  },
-  {
-    year: '',
-    title: 'K A Linds Hederspris — Moderna Museets vänners kulturpris',
-    links: [
-      { prefix: 'LÄS MER', label: 'Moderna museets vänners skulpturpris — Wikipedia', url: 'https://sv.wikipedia.org/wiki/Moderna_museets_v%C3%A4nners_skulpturpris' },
-    ],
-  },
-  {
-    year: '',
-    title: 'Prins Eugen-medaljen',
-    description: 'Prins Eugen-medaljen instiftades av Konung Gustaf V i samband med Prins Eugens 80-årsdag år 1945. Medaljen tilldelas för framstående konstnärlig verksamhet. Medaljförläningen sker på Eugendagen den 5 november och själva utdelningen en kort tid därefter. Medaljen utdelas i guld (förgyllt silver) av 8:e storleken och bärs på bröstet i vitt-gult-vitt band med blå kantränder. Medaljmottagarens namn och årtal präglas på medaljens nedre rand.',
-    images: [
-      'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/biography/priser/prins-eugen-medaljen.jpg',
-    ],
-    links: [
-      { prefix: 'LÄS MER', label: 'Om medaljen och målarprinsen — Kungl. Maj:ts Orden', url: 'https://kungligmajestatsorden.se/medaljer/prins-eugen-medaljen' },
-    ],
-  },
-  {
-    year: '',
-    title: 'Eskilstuna Kuriren Kulturpris',
-    images: [
-      'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/biography/priser/eskilstuna-kulturpris-1.jpg',
-      'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/biography/priser/eskilstuna-kulturpris-2.jpg',
-      'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/biography/priser/eskilstuna-kulturpris-3.jpg',
-      'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/biography/priser/eskilstuna-kulturpris-4.jpg',
-      'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/biography/priser/eskilstuna-kulturpris-5.jpg',
-      'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/biography/priser/eskilstuna-kulturpris-6.jpg',
-      'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/biography/priser/eskilstuna-kulturpris-7.jpg',
-      'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/biography/priser/eskilstuna-kulturpris-8.jpg',
-      'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/biography/priser/eskilstuna-kulturpris-9.jpg',
-    ],
-  },
 ]
 
 const PUBLIC_COMMISSIONS: Array<{ year: string; title: string; location: string; slug?: string }> = [
@@ -268,11 +207,13 @@ export default async function BiographyPage({
   params: Promise<{ locale: string }>
 }) {
   const { locale } = await params
-  const [dict, bioSettings] = await Promise.all([
+  const [dict, bioSettings, utmarkelser] = await Promise.all([
     getDictionary(locale as Locale),
     getBiographySettings(),
+    getUtmarkelser(),
   ])
   const { intro: bioIntro, portrait: PORTRAIT_URL, photos: bioPhotos } = bioSettings
+  const awards = utmarkelser.prizes
 
   return (
     <div style={{ paddingBottom: '5rem', marginTop: 'calc(-1 * var(--header-h))' }}>
@@ -348,20 +289,26 @@ export default async function BiographyPage({
           <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-2xl)', marginTop: '3rem', marginBottom: '2rem' }}>
             Priser &amp; utmärkelser
           </h2>
-          {AWARDS.map((a, i) => (
+          {awards.map((a, i) => (
             <div key={i} style={{ display: 'grid', gridTemplateColumns: '7rem 1fr', gap: '1rem', padding: '0.9rem 0', borderBottom: '1px solid var(--color-border)', alignItems: 'start' }}>
               <span style={{ color: 'var(--color-accent)', fontFamily: 'Georgia, serif', fontSize: 'var(--fs-sm)', flexShrink: 0, paddingTop: '0.1rem' }}>{a.year}</span>
               <div>
                 <span style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-text)', display: 'block' }}>{a.title}</span>
-                {a.description && (
-                  <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', lineHeight: 1.7, marginTop: '0.5rem', marginBottom: '0.25rem' }}>{a.description}</p>
+                {a.sub && (
+                  <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', display: 'block', marginTop: '0.15rem' }}>{a.sub}</span>
+                )}
+                {a.quote && (
+                  <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', fontStyle: 'italic', lineHeight: 1.7, marginTop: '0.5rem', marginBottom: '0.25rem' }}>{a.quote}</p>
+                )}
+                {a.desc && (
+                  <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', lineHeight: 1.7, marginTop: '0.5rem', marginBottom: '0.25rem' }}>{a.desc}</p>
                 )}
                 {a.images && a.images.length > 0 && (
                   <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginTop: '0.75rem', marginBottom: '0.25rem' }}>
                     {a.images.map((src, k) => (
-                      <div key={k} style={{ position: 'relative', width: '9rem', height: '6.5rem', borderRadius: 2, overflow: 'hidden', background: 'var(--color-bg-surface)', flexShrink: 0 }}>
+                      <a key={k} href={src} target="_blank" rel="noopener noreferrer" style={{ position: 'relative', width: '9rem', height: '6.5rem', borderRadius: 2, overflow: 'hidden', background: 'var(--color-bg-surface)', flexShrink: 0, display: 'block' }}>
                         <Image src={src} alt={a.title} fill sizes="9rem" style={{ objectFit: 'cover' }} />
-                      </div>
+                      </a>
                     ))}
                   </div>
                 )}
@@ -375,7 +322,6 @@ export default async function BiographyPage({
                         rel="noopener noreferrer"
                         style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-accent)', textDecoration: 'none', letterSpacing: '0.06em' }}
                       >
-                        <span style={{ opacity: 0.6, marginRight: '0.35em' }}>{lnk.prefix}</span>
                         {lnk.label} →
                       </a>
                     ))}

@@ -23,17 +23,23 @@ export interface UtmarkelserSection {
   prizes: PrizeEntry[]
 }
 
+const PRISER = 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/biography/priser'
+
 export const DEFAULT_UTMARKELSER: UtmarkelserSection = {
   intro: 'Priser mottagna av Sivert Lindblom samt medaljer och minnesmärken formgivna av honom.',
   prizes: [
     { year: '1984', title: 'K A Linds Hederspris', sub: 'Moderna Museets Vänners kulturpris', images: [],
       links: [{ label: 'K A Linds Hederspris — Moderna Museets vänners skulpturpris', url: 'https://sv.wikipedia.org/wiki/Moderna_museets_v%C3%A4nners_skulpturpris' }] },
     { year: '1985', title: 'Stenpriset', sub: 'Sveriges Stenindustriförbund', images: [],
-      links: [{ label: 'Om Stenpriset (sten.se)', url: 'https://www.sten.se/stenpriset/' }] },
+      links: [
+        { label: 'LÄS OM: Stenpriset till Sivert Lindblom — Sveriges Stenindustriförbund 1985', url: '/texts/stenpriset-1985' },
+        { label: 'HÄMTA: Sten 1985 — artikel (PDF)', url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/02/Sten-1985opt-.pdf' },
+        { label: 'LÄS MER: sten.se/stenpriset', url: 'https://www.sten.se/stenpriset/' },
+      ] },
     {
       year: '1989', title: 'Prins Eugen-medaljen',
-      desc: 'Prins Eugen-medaljen instiftades av Konung Gustaf V i samband med Prins Eugens 80-årsdag år 1945. Medaljen tilldelas för framstående konstnärlig verksamhet.',
-      images: [],
+      desc: 'Prins Eugen-medaljen instiftades av Konung Gustaf V i samband med Prins Eugens 80-årsdag år 1945. Medaljen tilldelas för framstående konstnärlig verksamhet. Medaljförläningen sker på Eugendagen den 5 november och själva utdelningen en kort tid därefter. Medaljen utdelas i guld (förgyllt silver) av 8:e storleken och bärs på bröstet i vitt-gult-vitt band med blå kantränder.',
+      images: [`${PRISER}/prins-eugen-medaljen.jpg`],
       links: [{ label: 'LÄS MER om medaljen och målarprinsen (Kungl. Maj:ts Orden)', url: 'https://kungligmajestatsorden.se/medaljer/prins-eugen-medaljen' }],
     },
     {
@@ -44,9 +50,14 @@ export const DEFAULT_UTMARKELSER: UtmarkelserSection = {
     {
       year: '2002', title: 'S:t Eriksmedaljen', sub: 'Stockholm stad',
       quote: '»Kreativ konstnär vars många sköna och spännande skulpturer på torg och broar är viktiga inslag i kulturstaden Stockholm«',
-      images: [],
+      images: [`${PRISER}/st-eriksmedaljen.jpg`],
     },
-    { year: '2002', title: 'Eskilstunakurirens kulturpris', sub: 'Eskilstuna-Kuriren', images: [] },
+    { year: '2002', title: 'Eskilstunakurirens kulturpris', sub: 'Eskilstuna-Kuriren',
+      images: [
+        `${PRISER}/eskilstuna-kulturpris-1.jpg`, `${PRISER}/eskilstuna-kulturpris-2.jpg`, `${PRISER}/eskilstuna-kulturpris-3.jpg`,
+        `${PRISER}/eskilstuna-kulturpris-4.jpg`, `${PRISER}/eskilstuna-kulturpris-5.jpg`, `${PRISER}/eskilstuna-kulturpris-6.jpg`,
+        `${PRISER}/eskilstuna-kulturpris-7.jpg`, `${PRISER}/eskilstuna-kulturpris-8.jpg`, `${PRISER}/eskilstuna-kulturpris-9.jpg`,
+      ] },
   ],
 }
 
