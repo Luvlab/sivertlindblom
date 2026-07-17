@@ -337,7 +337,7 @@ export default async function ReferencesPage({
             Ögonblick
           </h2>
           <p style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-base)', maxWidth: '60ch', lineHeight: 1.7, marginBottom: '2rem' }}>
-            Bilder på och med Sivert Lindblom — i atelén, vid invigningar och i vardagen.
+            Bilder på och med Sivert Lindblom — i ateljén, vid invigningar och i vardagen.
           </p>
           {ogonblickLightboxImages.length > 0 && (
             <GalleryGrid images={ogonblickLightboxImages} aspectRatio="4/3" columns="sm" />

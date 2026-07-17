@@ -70,13 +70,19 @@ export default async function TextsPage({
   }
 
   // getTexts() already returns newest-first (year DESC from Supabase)
-  const grouped = TYPE_ORDER.map((type) => ({
-    type,
+  const typeGroups = TYPE_ORDER.map((type) => ({
+    type: type as string,
     label: TYPE_LABELS[type],
     items: type === 'andras_texter'
       ? allTexts.filter((t) => t.type === 'essay' || t.type === 'preface')
       : allTexts.filter((t) => t.type === type),
   })).filter((g) => g.items.length)
+
+  // "Alla texter" first — every text in one list, so nothing looks missing (Jan, Undring 12/13)
+  const grouped = [
+    { type: 'alla', label: dict.texts?.all ?? 'Alla texter', items: allTexts },
+    ...typeGroups,
+  ]
 
   const TABS = grouped.map((g) => ({
     id: g.type,
