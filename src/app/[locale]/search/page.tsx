@@ -3,6 +3,7 @@ import { getDictionary } from '@/i18n/getDictionary'
 import { locales } from '@/i18n/config'
 import type { Locale } from '@/i18n/config'
 import { buildSearchIndex } from '@/lib/search-index'
+import { getExhibitions, getTexts, getPublicWorks, getMapPins } from '@/lib/data-server'
 import SearchClient from './SearchClient'
 import Link from 'next/link'
 
@@ -32,8 +33,21 @@ export default async function SearchPage({
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const s = (dict.search ?? {}) as Record<string, string>
 
-  // Build the locale-aware index on the server
-  const index = buildSearchIndex(locale, dict)
+  // Build the locale-aware index on the server from live (DB) data, so texts and
+  // works Jan adds/edits in admin are searchable. Falls back to static defaults
+  // inside buildSearchIndex if any source is empty.
+  const [exhibitionsData, textsData, publicWorksData, sculptureData] = await Promise.all([
+    getExhibitions(),
+    getTexts(),
+    getPublicWorks(),
+    getMapPins(),
+  ])
+  const index = buildSearchIndex(locale, dict, {
+    exhibitions: exhibitionsData.length ? exhibitionsData : undefined,
+    texts: textsData.length ? textsData : undefined,
+    publicWorks: publicWorksData.length ? publicWorksData : undefined,
+    sculptureLocations: sculptureData.length ? sculptureData : undefined,
+  })
 
   // Translated type labels passed to the client so the UI speaks the right language
   const typeLabels = {

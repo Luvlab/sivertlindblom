@@ -42,14 +42,28 @@ const BIO_TIMELINE: Array<{ id: string; year: string; fallback: string }> = [
   { id: 'bio-13', year: '1995',    fallback: 'Sergelpriset, Stockholm' },
 ]
 
+// Optional live (DB) data sources. When omitted, the static imports are used —
+// so search still works if the DB is unavailable, but passing DB data makes the
+// index complete and current (texts/works Jan added in admin become searchable).
+export interface SearchSources {
+  exhibitions?: typeof exhibitions
+  texts?: typeof TEXTS_DATA
+  publicWorks?: typeof PUBLIC_WORKS
+  sculptureLocations?: typeof SCULPTURE_LOCATIONS
+}
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function buildSearchIndex(locale = 'sv', dict: any = {}): SearchItem[] {
+export function buildSearchIndex(locale = 'sv', dict: any = {}, sources: SearchSources = {}): SearchItem[] {
   const items: SearchItem[] = []
   const bio = (dict.biography ?? {}) as Record<string, string>
+  const exhibitionsData = sources.exhibitions ?? exhibitions
+  const textsData = sources.texts ?? TEXTS_DATA
+  const publicWorksData = sources.publicWorks ?? PUBLIC_WORKS
+  const sculptureData = sources.sculptureLocations ?? SCULPTURE_LOCATIONS
 
   // ── Exhibitions ───────────────────────────────────────────
   // Exhibition content is in Swedish; always indexed so any locale can find works
-  for (const ex of exhibitions) {
+  for (const ex of exhibitionsData) {
     items.push({
       id: `ex-${ex.slug}`,
       type: 'exhibition',
@@ -63,7 +77,7 @@ export function buildSearchIndex(locale = 'sv', dict: any = {}): SearchItem[] {
 
   // ── Texts ─────────────────────────────────────────────────
   // Use locale-translated body when available; always index the original too
-  for (const t of TEXTS_DATA) {
+  for (const t of textsData) {
     const localBody = t.bodies?.[locale] ?? t.body
     items.push({
       id: `txt-${t.slug}`,
@@ -79,7 +93,7 @@ export function buildSearchIndex(locale = 'sv', dict: any = {}): SearchItem[] {
   }
 
   // ── Public works ──────────────────────────────────────────
-  for (const w of PUBLIC_WORKS) {
+  for (const w of publicWorksData) {
     items.push({
       id: `pw-${w.slug}`,
       type: 'public-work',
@@ -92,8 +106,8 @@ export function buildSearchIndex(locale = 'sv', dict: any = {}): SearchItem[] {
   }
 
   // ── Sculpture map locations ───────────────────────────────
-  for (const s of SCULPTURE_LOCATIONS) {
-    if (PUBLIC_WORKS.some((pw) => pw.slug === s.slug)) continue
+  for (const s of sculptureData) {
+    if (publicWorksData.some((pw) => pw.slug === s.slug)) continue
     items.push({
       id: `sc-${s.id}`,
       type: 'sculpture',

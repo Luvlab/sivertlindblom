@@ -139,7 +139,7 @@ export default async function HomePage({
           color: 'var(--color-muted)',
           marginBottom: '2rem',
         }}>
-          {dict.home?.press_source ?? 'Kulturnytt, Sveriges Radio P1 · 4 aug 2016'}
+          {dict.home?.press_source ?? 'Kulturnytt, Sveriges Radio P1 · 4 aug 2016'} · {dict.home?.press_duration ?? '3:20 min'}
         </p>
 
         {/* Native audio player */}
