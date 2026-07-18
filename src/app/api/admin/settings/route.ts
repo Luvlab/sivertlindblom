@@ -50,6 +50,7 @@ export async function PUT(request: Request) {
       if (!error) {
         revalidateTag('hero', 'max')
         revalidateTag('watercolors', 'max')
+        revalidateTag('biography', 'max')
         return NextResponse.json({ ok: true })
       }
     }

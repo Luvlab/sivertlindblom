@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import AdminForm, { FieldLabel } from '@/components/admin/AdminForm'
 import ImageListEditor from '@/components/admin/ImageListEditor'
 import type { FotografiSection } from '@/lib/reference-fotografi'
@@ -9,8 +9,8 @@ export default function AdminFotografi() {
   const [intro, setIntro] = useState('')
   const [photographer, setPhotographer] = useState('')
   const [urls, setUrls] = useState<string[]>([])
-  // Preserve captions by URL across edits (ImageListEditor only handles URLs).
-  const captionsRef = useRef<Record<string, string>>({})
+  // Captions keyed by image URL (editable per thumbnail).
+  const [captions, setCaptions] = useState<Record<string, string>>({})
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [saved, setSaved] = useState(false)
@@ -27,7 +27,7 @@ export default function AdminFotografi() {
         setUrls(d.images.map(i => i.url))
         const map: Record<string, string> = {}
         for (const i of d.images) if (i.caption) map[i.url] = i.caption
-        captionsRef.current = map
+        setCaptions(map)
       })
       .catch(e => setError(String(e)))
       .finally(() => setLoading(false))
@@ -38,7 +38,7 @@ export default function AdminFotografi() {
     setSaving(true)
     setError(null)
     try {
-      const images = urls.map(url => ({ url, caption: captionsRef.current[url] || undefined }))
+      const images = urls.map(url => ({ url, caption: captions[url] || undefined }))
       const res = await fetch('/api/admin/reference-fotografi', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
@@ -103,6 +103,8 @@ export default function AdminFotografi() {
           images={urls}
           onChange={(next) => { setUrls(next); setDirty(true) }}
           label="Fotografier"
+          captions={captions}
+          onCaptionsChange={(next) => { setCaptions(next); setDirty(true) }}
         />
       </div>
     </AdminForm>

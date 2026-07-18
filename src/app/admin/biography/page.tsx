@@ -54,6 +54,7 @@ export default function AdminBiography() {
   // Intro text + portrait (stored in settings)
   const [intro, setIntro] = useState('')
   const [portrait, setPortrait] = useState(DEFAULT_PORTRAIT)
+  const [portraitCredit, setPortraitCredit] = useState('Foto: Mathias Johansson')
   const [portraitUploading, setPortraitUploading] = useState(false)
   const [introSaving, setIntroSaving] = useState(false)
   const [introSaved, setIntroSaved] = useState(false)
@@ -85,6 +86,7 @@ export default function AdminBiography() {
       .then((s: Record<string, string>) => {
         if (s.biography_intro) setIntro(s.biography_intro)
         if (s.biography_portrait) setPortrait(s.biography_portrait)
+        if (s.biography_portrait_credit !== undefined) setPortraitCredit(s.biography_portrait_credit)
         if (s.biography_photos) {
           try { setPhotos(JSON.parse(s.biography_photos)) } catch { /* ignore */ }
         }
@@ -100,13 +102,13 @@ export default function AdminBiography() {
       await fetch('/api/admin/settings', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...current, biography_intro: intro, biography_portrait: portrait }),
+        body: JSON.stringify({ ...current, biography_intro: intro, biography_portrait: portrait, biography_portrait_credit: portraitCredit }),
       })
       setIntroSaved(true)
       setTimeout(() => setIntroSaved(false), 3000)
     } catch { /* ignore */ }
     finally { setIntroSaving(false) }
-  }, [intro, portrait])
+  }, [intro, portrait, portraitCredit])
 
   const savePhotos = useCallback(async (list: BioPhoto[]) => {
     setPhotosSaving(true)
@@ -247,6 +249,15 @@ export default function AdminBiography() {
               {portraitUploading ? 'Laddar upp…' : '↑ Byt porträtt'}
             </button>
             <span style={{ fontSize: '0.6rem', color: 'var(--color-muted)', textAlign: 'center' }}>Porträtt (visas på biografisidan)</span>
+            <input
+              type="text"
+              value={portraitCredit}
+              onChange={e => setPortraitCredit(e.target.value)}
+              placeholder="Foto: …"
+              title="Fotokredit som visas på porträttet"
+              style={{ width: '100%', fontSize: '0.65rem', background: 'var(--color-bg)', border: '1px solid var(--color-border)', color: 'var(--color-text)', padding: '0.3rem 0.4rem', textAlign: 'center', outline: 'none' }}
+            />
+            <span style={{ fontSize: '0.55rem', color: 'var(--color-muted)', textAlign: 'center' }}>Fotokredit — spara med ”Spara text”</span>
           </div>
         </div>
       </div>

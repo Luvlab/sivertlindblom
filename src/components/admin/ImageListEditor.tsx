@@ -9,6 +9,9 @@ interface ImageListEditorProps {
   images: string[]
   onChange: (images: string[]) => void
   label?: string
+  /** When provided, each thumbnail gets a caption (bildtext) input. */
+  captions?: Record<string, string>
+  onCaptionsChange?: (next: Record<string, string>) => void
 }
 
 interface VaultImage {
@@ -17,7 +20,15 @@ interface VaultImage {
   alt: string
 }
 
-export default function ImageListEditor({ images, onChange, label = 'Bilder' }: ImageListEditorProps) {
+export default function ImageListEditor({ images, onChange, label = 'Bilder', captions, onCaptionsChange }: ImageListEditorProps) {
+  const captionsEnabled = !!captions && !!onCaptionsChange
+  function setCaption(url: string, value: string) {
+    if (!captions || !onCaptionsChange) return
+    const next = { ...captions }
+    if (value.trim()) next[url] = value
+    else delete next[url]
+    onCaptionsChange(next)
+  }
   const [newUrl, setNewUrl] = useState('')
   const [uploading, setUploading] = useState(false)
   const [uploadError, setUploadError] = useState<string | null>(null)
@@ -274,6 +285,29 @@ export default function ImageListEditor({ images, onChange, label = 'Bilder' }: 
                 <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--color-border)', fontSize: '1.5rem' }}>□</div>
               )}
             </div>
+
+            {/* Caption (bildtext) — persistent input under the image */}
+            {captionsEnabled && url && (
+              <div style={{ padding: '0.3rem', borderTop: '1px solid var(--color-border)', background: 'var(--color-bg-card)' }}>
+                <input
+                  type="text"
+                  value={captions?.[url] ?? ''}
+                  onChange={e => setCaption(url, e.target.value)}
+                  placeholder="Bildtext…"
+                  onMouseDown={e => e.stopPropagation()}
+                  draggable={false}
+                  style={{
+                    width: '100%',
+                    background: 'var(--color-bg)',
+                    border: '1px solid var(--color-border)',
+                    color: 'var(--color-text)',
+                    fontSize: '0.65rem',
+                    padding: '0.25rem 0.35rem',
+                    outline: 'none',
+                  }}
+                />
+              </div>
+            )}
 
             {/* Number badge — top-left */}
             <div style={{ position: 'absolute', top: 4, left: 4, background: 'rgba(0,0,0,0.72)', color: '#fff', fontSize: '0.6rem', padding: '0.1rem 0.38rem', fontFamily: 'Georgia,serif', lineHeight: 1.4, pointerEvents: 'none' }}>

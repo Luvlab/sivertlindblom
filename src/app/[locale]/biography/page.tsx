@@ -32,9 +32,12 @@ const DEFAULT_PHOTOS: Array<{ url: string; caption: string }> = [
   { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/20130308_103958.jpg',         caption: 'Gjuteriet 2013. Foto: Jan Öqvist' },
 ]
 
+const DEFAULT_PORTRAIT_CREDIT = 'Foto: Mathias Johansson'
+
 async function getBiographySettings(): Promise<{
   intro: string
   portrait: string
+  portraitCredit: string
   photos: Array<{ url: string; caption: string }>
 }> {
   'use cache'
@@ -46,7 +49,7 @@ async function getBiographySettings(): Promise<{
       const { data } = await supabase
         .from('settings')
         .select('key, value')
-        .in('key', ['biography_intro', 'biography_portrait', 'biography_photos'])
+        .in('key', ['biography_intro', 'biography_portrait', 'biography_portrait_credit', 'biography_photos'])
       if (data?.length) {
         const map: Record<string, string> = {}
         data.forEach(({ key, value }: { key: string; value: string }) => { map[key] = value })
@@ -57,6 +60,7 @@ async function getBiographySettings(): Promise<{
         return {
           intro: map.biography_intro ?? FALLBACK_SETTINGS.biography_intro ?? '',
           portrait: map.biography_portrait ?? DEFAULT_PORTRAIT,
+          portraitCredit: map.biography_portrait_credit ?? DEFAULT_PORTRAIT_CREDIT,
           photos,
         }
       }
@@ -65,6 +69,7 @@ async function getBiographySettings(): Promise<{
   return {
     intro: FALLBACK_SETTINGS.biography_intro ?? '',
     portrait: FALLBACK_SETTINGS.biography_portrait ?? DEFAULT_PORTRAIT,
+    portraitCredit: DEFAULT_PORTRAIT_CREDIT,
     photos: DEFAULT_PHOTOS,
   }
 }
@@ -212,7 +217,7 @@ export default async function BiographyPage({
     getBiographySettings(),
     getUtmarkelser(),
   ])
-  const { intro: bioIntro, portrait: PORTRAIT_URL, photos: bioPhotos } = bioSettings
+  const { intro: bioIntro, portrait: PORTRAIT_URL, portraitCredit: PORTRAIT_CREDIT, photos: bioPhotos } = bioSettings
   const awards = utmarkelser.prizes
 
   return (
@@ -266,12 +271,17 @@ export default async function BiographyPage({
             <div className="bio-portrait">
               <Image
                 src={PORTRAIT_URL}
-                alt="Sivert Lindblom. Foto: Mathias Johansson"
+                alt={PORTRAIT_CREDIT ? `Sivert Lindblom. ${PORTRAIT_CREDIT}` : 'Sivert Lindblom'}
                 fill
                 sizes="(max-width: 700px) 100vw, 50vw"
                 style={{ objectFit: 'cover', objectPosition: 'top center' }}
                 priority
               />
+              {PORTRAIT_CREDIT && (
+                <span style={{ position: 'absolute', bottom: 0, right: 0, background: 'rgba(0,0,0,0.55)', color: 'rgba(255,255,255,0.9)', fontSize: '0.62rem', padding: '0.2rem 0.5rem', letterSpacing: '0.03em' }}>
+                  {PORTRAIT_CREDIT}
+                </span>
+              )}
             </div>
           </div>
           <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-2xl)', marginBottom: '2rem' }}>
