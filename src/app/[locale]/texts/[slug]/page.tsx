@@ -69,9 +69,12 @@ export default async function TextDetailPage({
   const prev = idx > 0 ? sameType[idx - 1] : null
   const next = idx < sameType.length - 1 ? sameType[idx + 1] : null
 
-  // Use locale-specific translation when available, fall back to original
-  const body = text.bodies?.[locale] ?? text.body
-  const isTranslated = text.bodies?.[locale] !== undefined && locale !== text.lang
+  // Admin/DB content is authoritative: show the text Jan edits in admin, not a
+  // hardcoded translation that silently overrides it (Jan, Undring 14). Fall
+  // back to a legacy translation only when there is no admin body at all.
+  const hasAdminBody = !!(text.body && text.body.trim())
+  const body = hasAdminBody ? text.body : (text.bodies?.[locale] ?? '')
+  const isTranslated = !hasAdminBody && text.bodies?.[locale] !== undefined && locale !== text.lang
 
   const typeLabel = (dict.texts as Record<string, string> | undefined)?.[text.type] ?? text.type
   const langLabel = LANG_LABELS[text.lang] || text.lang.toUpperCase()
