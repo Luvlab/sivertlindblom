@@ -11,6 +11,10 @@ export interface SculptureProject {
   body: string
   images: SculptureImage[]
   links?: Array<{ label: string; url: string }>
+  /** Short blurb shown on the Skulptur submenu card (falls back to an excerpt). */
+  shortDesc?: string
+  /** Whether this series appears in the Skulptur submenu/tab (default true). */
+  inTab?: boolean
 }
 
 export const SCULPTURE_PROJECTS: SculptureProject[] = [
@@ -413,3 +417,68 @@ Se även: [Västerhaninge bibliotek — Haninge kulturhus 1970](/portfolio/publi
     ],
   },
 ]
+
+// ─── Editable overlay (Jan, Undring 13: edit the Skulptur submenus) ──────────
+export const SCULPTURE_SETTINGS_KEY = 'reference_sculpture'
+
+// Series that are NOT shown as cards in the Skulptur submenu by default
+// (grafik has its own tab; the others are supporting material).
+const DEFAULT_TAB_EXCLUDED = new Set(['grafik', 'i-stalverkstaden', 'haninge-konst-2002'])
+
+// Curated short blurbs for the submenu cards (fall back to a description excerpt).
+const DEFAULT_SHORT_DESC: Record<string, string> = {
+  'profiler': 'Profilskulpturer i sten och brons.',
+  'metamorfoser': 'Sittande figurer i metamorfos.',
+  'monoliter': 'Monolitiska former, inkl. Paris 1977.',
+  'azteker': 'Aztekiskt inspirerade skulpturer.',
+  'tidiga-skulpturer': 'Verk från 1950- och 1960-talen.',
+  'kofeser': 'En serie om meningslös meningsfullhet.',
+  'blyplattor': 'Reliefverk i bly.',
+  'tradkonstruktioner': 'Skulpturer i trä.',
+  'tornmodeller': 'Modeller och förslag för torn.',
+  'arbetsmodeller': 'Arbetsmodeller i gips, lera och trä samt tävlingsförslag.',
+}
+
+function excerptText(text: string, maxLen = 90): string {
+  const clean = (text ?? '').replace(/\s+/g, ' ').trim()
+  return clean.length <= maxLen ? clean : clean.slice(0, maxLen).replace(/\s\S*$/, '') + '…'
+}
+
+/** Fill in shortDesc/inTab defaults so consumers get fully-resolved data. */
+export function resolveSculptureProjects(list: SculptureProject[]): SculptureProject[] {
+  return list.map((p) => ({
+    ...p,
+    shortDesc: p.shortDesc?.trim() || DEFAULT_SHORT_DESC[p.slug] || excerptText(p.description),
+    inTab: p.inTab === undefined ? !DEFAULT_TAB_EXCLUDED.has(p.slug) : p.inTab,
+  }))
+}
+
+export function parseSculptureProjects(raw: string | null | undefined): SculptureProject[] {
+  if (!raw) return resolveSculptureProjects(SCULPTURE_PROJECTS)
+  try {
+    const v = JSON.parse(raw) as { projects?: SculptureProject[] } | SculptureProject[]
+    const arr = Array.isArray(v) ? v : v.projects
+    if (!Array.isArray(arr)) return resolveSculptureProjects(SCULPTURE_PROJECTS)
+    const cleaned = arr
+      .filter((p) => p && typeof p.slug === 'string' && p.slug.trim() && typeof p.title === 'string')
+      .map((p): SculptureProject => ({
+        slug: p.slug.trim(),
+        title: p.title,
+        years: p.years?.trim() || undefined,
+        description: typeof p.description === 'string' ? p.description : '',
+        body: typeof p.body === 'string' ? p.body : '',
+        images: Array.isArray(p.images)
+          ? p.images.filter((im) => im && typeof im.url === 'string' && im.url.trim())
+              .map((im) => ({ url: im.url, alt: typeof im.alt === 'string' ? im.alt : '' }))
+          : [],
+        links: Array.isArray(p.links)
+          ? p.links.filter((l) => l && typeof l.url === 'string' && typeof l.label === 'string')
+          : undefined,
+        shortDesc: p.shortDesc?.trim() || undefined,
+        inTab: typeof p.inTab === 'boolean' ? p.inTab : undefined,
+      }))
+    return cleaned.length ? resolveSculptureProjects(cleaned) : resolveSculptureProjects(SCULPTURE_PROJECTS)
+  } catch {
+    return resolveSculptureProjects(SCULPTURE_PROJECTS)
+  }
+}

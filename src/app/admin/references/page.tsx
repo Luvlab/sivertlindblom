@@ -6,9 +6,9 @@ const SECTIONS = [
   {
     id: 'skulptur',
     label: 'Skulptur',
-    desc: 'Skulpturserier: Profiler, Metamorfoser, Monoliter, Azteker m.fl.',
-    href: '/sv/references#skulptur',
-    cta: '↗ Öppna Skulptur',
+    desc: 'Skulpturserier: rubrik, text, bilder, ordning och vilka som visas i undermenyn.',
+    href: '/admin/references/skulptur',
+    cta: 'Redigera Skulptur →',
   },
   {
     id: 'grafik',
@@ -100,11 +100,7 @@ export default function AdminReferences() {
 
       <div style={{ marginTop: '2.5rem', padding: '1.25rem', border: '1px solid var(--color-border)', background: 'var(--color-bg-surface)', borderRadius: 2, fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', lineHeight: 1.7 }}>
         <strong style={{ color: 'var(--color-text)', display: 'block', marginBottom: '0.5rem' }}>Tips</strong>
-        Sektioner märkta med "Statisk data" redigeras i källfilerna{' '}
-        <code style={{ fontSize: '0.7rem', color: 'var(--color-accent)' }}>src/lib/sculpture-projects.ts</code>{' '}
-        och{' '}
-        <code style={{ fontSize: '0.7rem', color: 'var(--color-accent)' }}>src/app/[locale]/references/page.tsx</code>.
-        Kontakta webbutvecklaren för att lägga till stöd för databasdriven redigering av dessa sektioner.
+        Alla sektioner här är nu redigerbara. Ändringar sparas direkt och syns på sajten efter att du klickat ”Spara” (ladda om sidan om du ser ”Ny version tillgänglig”).
       </div>
 
       <div style={{ marginTop: '1rem' }}>

@@ -8,8 +8,7 @@ import SafeImg from '@/components/SafeImg'
 import GalleryGrid from '@/components/gallery/GalleryGrid'
 import type { LightboxImage } from '@/components/gallery/Lightbox'
 import TabsLayout from '@/components/TabsLayout'
-import { SCULPTURE_PROJECTS } from '@/lib/sculpture-projects'
-import { getFotografi, getGrafik, getFilms, getUtmarkelser, getOgonblick } from '@/lib/data-server'
+import { getFotografi, getGrafik, getFilms, getUtmarkelser, getOgonblick, getSculptureProjects } from '@/lib/data-server'
 import { PUBLICATIONS } from '@/lib/publications-data'
 import FilmGrid from '@/components/references/FilmGrid'
 
@@ -18,25 +17,6 @@ export const metadata: Metadata = { title: 'Sculpture & Graphics' }
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }))
 }
-
-// Build slug → image URL[] lookup from sculpture-projects data
-const SLIDESHOW_IMAGES: Record<string, string[]> = Object.fromEntries(
-  SCULPTURE_PROJECTS.map((p) => [p.slug, p.images.slice(0, 8).map((i) => i.url)])
-)
-
-// Skulptur series — excludes grafik (it gets its own tab)
-const SCULPTURE_SERIES = [
-  { key: 'profiler',        label: 'Profiler',                    desc: 'Profilskulpturer i sten och brons.' },
-  { key: 'metamorfoser',    label: 'Metamorfoser — Sittare',      desc: 'Sittande figurer i metamorfos.' },
-  { key: 'monoliter',       label: 'Monoliter & Blystoder',       desc: 'Monolitiska former, inkl. Paris 1977.' },
-  { key: 'azteker',         label: 'Azteker',                     desc: 'Aztekiskt inspirerade skulpturer.' },
-  { key: 'tidiga-skulpturer', label: 'Tidiga skulpturer',         desc: 'Verk från 1950- och 1960-talen.' },
-  { key: 'kofeser',         label: 'Kofeser',                     desc: 'En serie om meningslös meningsfullhet.' },
-  { key: 'blyplattor',      label: 'Blyplattor',                  desc: 'Reliefverk i bly.' },
-  { key: 'tradkonstruktioner', label: 'Trädkonstruktioner',       desc: 'Skulpturer i trä.' },
-  { key: 'tornmodeller',    label: 'Tornmodeller',                 desc: 'Modeller och förslag för torn.' },
-  { key: 'arbetsmodeller',  label: 'Arbetsmodeller & Förslag',    desc: 'Arbetsmodeller i gips, lera och trä samt tävlingsförslag.' },
-] as const
 
 export default async function ReferencesPage({
   params,
@@ -50,6 +30,13 @@ export default async function ReferencesPage({
   const films = await getFilms()
   const utmarkelser = await getUtmarkelser()
   const ogonblick = await getOgonblick()
+  const sculpture = await getSculptureProjects()
+
+  // Skulptur submenu cards — the series flagged inTab, derived from editable data
+  const sculptureSeries = sculpture.filter((p) => p.inTab !== false)
+  const slideshowImages: Record<string, string[]> = Object.fromEntries(
+    sculpture.map((p) => [p.slug, p.images.slice(0, 8).map((i) => i.url)])
+  )
 
   const grafikImages = grafik.images.map((i) => i.url)
 
@@ -71,7 +58,7 @@ export default async function ReferencesPage({
   const ogonblickLightboxImages: LightboxImage[] = ogonblick.images.map((img) => ({ url: img.url, alt: img.caption ?? 'Ögonblick', caption: img.caption }))
 
   const TABS = [
-    { id: 'skulptur',    label: dict.references?.sculpture_series ?? 'Skulptur',   count: SCULPTURE_SERIES.length },
+    { id: 'skulptur',    label: dict.references?.sculpture_series ?? 'Skulptur',   count: sculptureSeries.length },
     { id: 'grafik',      label: 'Grafik',                                           count: grafikImages.length },
     { id: 'film-tv',     label: dict.references?.film_tv ?? 'Film & TV',            count: films.length },
     { id: 'publicerat',  label: dict.references?.publicerat ?? 'Publicerat' },
@@ -92,22 +79,22 @@ export default async function ReferencesPage({
         {/* ── 1. Skulptur ───────────────────────────────────── */}
         <section className="page-pad" style={{ paddingTop: '3rem', paddingBottom: '3rem' }}>
           <div className="auto-grid-wide">
-            {SCULPTURE_SERIES.map((s, i) => {
-              const images = SLIDESHOW_IMAGES[s.key] ?? []
+            {sculptureSeries.map((s, i) => {
+              const images = slideshowImages[s.slug] ?? []
               return (
-                <Link key={s.key} href={`/${locale}/references/${s.key}`} className="card card-hover" style={{ display: 'block', overflow: 'hidden', textDecoration: 'none' }}>
+                <Link key={s.slug} href={`/${locale}/references/${s.slug}`} className="card card-hover" style={{ display: 'block', overflow: 'hidden', textDecoration: 'none' }}>
                   {images.length > 0 ? (
                     <div style={{ aspectRatio: '4/3', position: 'relative', overflow: 'hidden' }}>
-                      <PortfolioSlideshow images={images} alt={s.label} objectFit="cover" interval={3200 + i * 300} />
+                      <PortfolioSlideshow images={images} alt={s.title} objectFit="cover" interval={3200 + i * 300} />
                     </div>
                   ) : (
                     <div style={{ aspectRatio: '4/3', background: 'var(--color-bg-surface)', display: 'flex', alignItems: 'center', justifyContent: 'center', borderBottom: '1px solid var(--color-border)' }}>
-                      <span style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-xs)', fontStyle: 'italic' }}>{s.label}</span>
+                      <span style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-xs)', fontStyle: 'italic' }}>{s.title}</span>
                     </div>
                   )}
                   <div style={{ padding: '1.25rem 1.5rem 1.5rem' }}>
-                    <h3 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-lg)', marginBottom: '0.4rem' }}>{s.label}</h3>
-                    <p style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-sm)', margin: 0 }}>{s.desc}</p>
+                    <h3 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-lg)', marginBottom: '0.4rem' }}>{s.title}</h3>
+                    <p style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-sm)', margin: 0 }}>{s.shortDesc}</p>
                   </div>
                 </Link>
               )

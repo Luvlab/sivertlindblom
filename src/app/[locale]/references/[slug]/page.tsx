@@ -5,6 +5,7 @@ import { locales } from '@/i18n/config'
 import type { Locale } from '@/i18n/config'
 import { getDictionary } from '@/i18n/getDictionary'
 import { SCULPTURE_PROJECTS } from '@/lib/sculpture-projects'
+import { getSculptureProjects } from '@/lib/data-server'
 import GalleryGrid from '@/components/gallery/GalleryGrid'
 import type { LightboxImage } from '@/components/gallery/Lightbox'
 import { renderInlineLinks } from '@/lib/render-text'
@@ -35,9 +36,13 @@ export default async function SculptureSeriesPage({
   params: Promise<{ locale: string; slug: string }>
 }) {
   const { locale, slug } = await params
-  const dict = await getDictionary(locale as Locale)
+  const [dict, projects] = await Promise.all([
+    getDictionary(locale as Locale),
+    getSculptureProjects(),
+  ])
 
-  const project = SCULPTURE_PROJECTS.find((p) => p.slug === slug)
+  const project = projects.find((p) => p.slug === slug)
+    ?? SCULPTURE_PROJECTS.find((p) => p.slug === slug)
   if (!project) notFound()
 
   const lightboxImages: LightboxImage[] = project.images.map((img) => ({

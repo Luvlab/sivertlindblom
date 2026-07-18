@@ -59,6 +59,13 @@ import {
   parseBibliography,
   type BibEntry,
 } from '@/lib/bibliography'
+import {
+  SCULPTURE_SETTINGS_KEY,
+  SCULPTURE_PROJECTS,
+  parseSculptureProjects,
+  resolveSculptureProjects,
+  type SculptureProject,
+} from '@/lib/sculpture-projects'
 
 // ─── References → Fotografier (editable inspiration gallery) ─────────────────
 
@@ -142,6 +149,34 @@ export async function getBibliographyAdmin(): Promise<BibEntry[]> {
   const { data } = await supabase.from('settings').select('key, value')
   const raw = (data ?? []).find((r) => (r as { key: string }).key === BIBLIOGRAPHY_SETTINGS_KEY) as { value?: string } | undefined
   return parseBibliography(raw?.value)
+}
+
+// ─── References → Skulptur (editable series/submenus) ───────────────────────
+
+export async function getSculptureProjects(): Promise<SculptureProject[]> {
+  'use cache'
+  cacheTag('references-sculpture')
+  cacheLife('days')
+  try {
+    const supabase = createAdminClient()
+    if (supabase) {
+      const { data } = await supabase.from('settings').select('key, value')
+      const raw = (data ?? []).find((r) => (r as { key: string }).key === SCULPTURE_SETTINGS_KEY) as { value?: string } | undefined
+      return parseSculptureProjects(raw?.value)
+    }
+  } catch {
+    // fall through to defaults
+  }
+  return resolveSculptureProjects(SCULPTURE_PROJECTS)
+}
+
+/** Fresh (non-cached) read for admin GET. */
+export async function getSculptureProjectsAdmin(): Promise<SculptureProject[]> {
+  const supabase = createAdminClient()
+  if (!supabase) return resolveSculptureProjects(SCULPTURE_PROJECTS)
+  const { data } = await supabase.from('settings').select('key, value')
+  const raw = (data ?? []).find((r) => (r as { key: string }).key === SCULPTURE_SETTINGS_KEY) as { value?: string } | undefined
+  return parseSculptureProjects(raw?.value)
 }
 
 export async function getGrafik(): Promise<GrafikSection> {
