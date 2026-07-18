@@ -4,7 +4,7 @@ import { useState, useEffect, useMemo, useCallback } from 'react'
 import type { PublicWork } from '@/lib/public-works'
 import ImageEnhancer from '@/components/admin/ImageEnhancer'
 
-type ImageSource = 'public_work' | 'text' | 'upload'
+type ImageSource = 'public_work' | 'text' | 'upload' | 'storage'
 
 interface MediaImage {
   url: string
@@ -72,6 +72,19 @@ export default function AdminMedia() {
         if (!('error' in uploadsData) && uploadsData.files) {
           for (const f of uploadsData.files) {
             collected.push({ url: f.url, alt: f.alt ?? '', work: 'Uppladdningar', source: 'upload' })
+          }
+        }
+
+        // Full media library — every image in the bucket (incl. historical wp/**),
+        // so nothing is hidden. Skip URLs already collected above (keeps their labels).
+        const seen = new Set(collected.map((c) => c.url))
+        const libRes = await fetch('/api/admin/media-library')
+        const libData = await libRes.json() as { files?: Array<{ url: string; name: string; folder: string }> } | { error: string }
+        if (!('error' in libData) && libData.files) {
+          for (const f of libData.files) {
+            if (seen.has(f.url)) continue
+            seen.add(f.url)
+            collected.push({ url: f.url, alt: '', work: f.folder === 'uploads' ? 'Uppladdningar' : (f.folder || 'Media'), source: 'storage' })
           }
         }
 
