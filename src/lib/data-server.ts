@@ -53,6 +53,12 @@ import {
   parseOgonblick,
   type OgonblickSection,
 } from '@/lib/reference-ogonblick'
+import {
+  BIBLIOGRAPHY_SETTINGS_KEY,
+  DEFAULT_BIBLIOGRAPHY,
+  parseBibliography,
+  type BibEntry,
+} from '@/lib/bibliography'
 
 // ─── References → Fotografier (editable inspiration gallery) ─────────────────
 
@@ -108,6 +114,34 @@ export async function getOgonblickAdmin(): Promise<OgonblickSection> {
   const { data } = await supabase.from('settings').select('key, value')
   const raw = (data ?? []).find((r) => (r as { key: string }).key === OGONBLICK_SETTINGS_KEY) as { value?: string } | undefined
   return parseOgonblick(raw?.value)
+}
+
+// ─── Biografi → Litteraturförteckning (editable, entries link to texts) ──────
+
+export async function getBibliography(): Promise<BibEntry[]> {
+  'use cache'
+  cacheTag('biography', 'bibliography')
+  cacheLife('days')
+  try {
+    const supabase = createAdminClient()
+    if (supabase) {
+      const { data } = await supabase.from('settings').select('key, value')
+      const raw = (data ?? []).find((r) => (r as { key: string }).key === BIBLIOGRAPHY_SETTINGS_KEY) as { value?: string } | undefined
+      return parseBibliography(raw?.value)
+    }
+  } catch {
+    // fall through to defaults
+  }
+  return DEFAULT_BIBLIOGRAPHY
+}
+
+/** Fresh (non-cached) read for admin GET. */
+export async function getBibliographyAdmin(): Promise<BibEntry[]> {
+  const supabase = createAdminClient()
+  if (!supabase) return DEFAULT_BIBLIOGRAPHY
+  const { data } = await supabase.from('settings').select('key, value')
+  const raw = (data ?? []).find((r) => (r as { key: string }).key === BIBLIOGRAPHY_SETTINGS_KEY) as { value?: string } | undefined
+  return parseBibliography(raw?.value)
 }
 
 export async function getGrafik(): Promise<GrafikSection> {

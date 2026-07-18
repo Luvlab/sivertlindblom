@@ -194,9 +194,14 @@ export default function AdminBiography() {
             {loading ? 'Laddar...' : `${items.length} poster`}
           </p>
         </div>
-        <Link href="/admin/biography/new">
-          <button className="btn btn-primary">+ Ny post</button>
-        </Link>
+        <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+          <Link href="/admin/biography/bibliography">
+            <button className="btn">Litteraturförteckning →</button>
+          </Link>
+          <Link href="/admin/biography/new">
+            <button className="btn btn-primary">+ Ny post</button>
+          </Link>
+        </div>
       </div>
 
       {error && (
