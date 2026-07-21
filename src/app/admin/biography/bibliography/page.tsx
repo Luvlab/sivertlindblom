@@ -131,6 +131,13 @@ export default function AdminBibliography() {
                   </a>
                 )}
               </div>
+              <textarea
+                value={entry.note ?? ''}
+                onChange={e => update(i, { note: e.target.value })}
+                rows={2}
+                placeholder="Källa / faktatext (valfritt) — visas under posten på sidan"
+                style={{ ...cell, resize: 'vertical', width: '100%' }}
+              />
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
               <button type="button" onClick={() => move(i, -1)} disabled={i === 0} title="Flytta upp" style={{ ...cell, cursor: 'pointer', padding: '0.2rem 0.5rem' }}>↑</button>

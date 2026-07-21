@@ -26,6 +26,7 @@ export async function PUT(request: Request) {
             year: typeof e.year === 'string' ? e.year : String(e.year ?? ''),
             text: e.text.trim(),
             slug: e.slug?.trim() || undefined,
+            note: e.note?.trim() || undefined,
           }))
       : []
 

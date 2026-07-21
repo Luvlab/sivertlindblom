@@ -333,14 +333,26 @@ export default async function BiographyPage({
           {bibliography.map((entry, i) => (
             <div key={i} style={{ display: 'grid', gridTemplateColumns: '5rem 1fr', gap: '1rem', padding: '0.75rem 0', borderBottom: '1px solid var(--color-border)' }}>
               <span style={{ color: 'var(--color-accent)', fontFamily: 'Georgia, serif', fontSize: 'var(--fs-sm)', flexShrink: 0 }}>{entry.year}</span>
-              {entry.slug ? (
-                <Link href={`/${locale}/texts/${entry.slug}`} style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-text)', lineHeight: 1.6, textDecoration: 'none' }}>
-                  <span style={{ borderBottom: '1px solid var(--color-accent-dim)' }}>{entry.text}</span>
-                  <span style={{ color: 'var(--color-accent)', marginLeft: '0.4rem', whiteSpace: 'nowrap' }}>läs →</span>
-                </Link>
-              ) : (
-                <span style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-text)', lineHeight: 1.6 }}>{entry.text}</span>
-              )}
+              <div>
+                {entry.slug ? (
+                  <Link href={`/${locale}/texts/${entry.slug}`} style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-text)', lineHeight: 1.6, textDecoration: 'none' }}>
+                    <span style={{ borderBottom: '1px solid var(--color-accent-dim)' }}>{entry.text}</span>
+                    <span style={{ color: 'var(--color-accent)', marginLeft: '0.4rem', whiteSpace: 'nowrap' }}>läs →</span>
+                  </Link>
+                ) : (
+                  <span style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-text)', lineHeight: 1.6 }}>{entry.text}</span>
+                )}
+                {entry.note && (
+                  <details style={{ marginTop: '0.4rem' }}>
+                    <summary style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-accent)', cursor: 'pointer', letterSpacing: '0.04em' }}>
+                      Källa / mer
+                    </summary>
+                    <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', lineHeight: 1.7, marginTop: '0.5rem', whiteSpace: 'pre-wrap' }}>
+                      {entry.note}
+                    </p>
+                  </details>
+                )}
+              </div>
             </div>
           ))}
         </section>

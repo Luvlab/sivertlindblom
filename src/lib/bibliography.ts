@@ -11,6 +11,8 @@ export interface BibEntry {
   text: string
   /** Optional slug of a text in /texts this entry links to. */
   slug?: string
+  /** Optional source note / extra facts shown under the entry (Jan, Undring 16). */
+  note?: string
 }
 
 export interface BibliographySection {
@@ -88,6 +90,7 @@ export function parseBibliography(raw: string | null | undefined): BibEntry[] {
         year: typeof e.year === 'string' ? e.year : String(e.year ?? ''),
         text: e.text,
         slug: e.slug?.trim() || undefined,
+        note: e.note?.trim() || undefined,
       }))
     return cleaned.length ? cleaned : DEFAULT_BIBLIOGRAPHY
   } catch {
