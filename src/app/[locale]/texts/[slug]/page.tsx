@@ -218,8 +218,10 @@ export default async function TextDetailPage({
                 </div>
               )}
             </div>
-          ) : text.type === 'review' ? (
-            /* Scanned article (review) — images full width, body below. */
+          ) : (text.type === 'review' || text.images.length > 1) ? (
+            /* Scanned article (review, or any text with multiple scan pages) —
+               images full width, body below. A single image is treated as an
+               author portrait in the branch below. */
             <>
               <div className="article-scan-images-full">
                 <TextImageSlideshow images={text.images} title={text.title} />
