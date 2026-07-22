@@ -155,7 +155,7 @@ function EditTextPageInner() {
               <div>
                 {label('Språk')}
                 <select className="input" style={inp} value={form.lang} onChange={e => set('lang', e.target.value)}>
-                  {['sv','en','de','fr','it','nl','es','pl','pt','ru','ja','ko','zh','ar','th'].map(l => <option key={l} value={l}>{l.toUpperCase()}</option>)}
+                  {['sv','en','de','fr','it','hu','nl','es','pl','pt','ru','ja','ko','zh','ar','th'].map(l => <option key={l} value={l}>{l.toUpperCase()}</option>)}
                 </select>
               </div>
             </div>

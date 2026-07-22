@@ -206,7 +206,7 @@ export default async function BiographyPage({
                 {dict.biography?.title ?? 'Sivert Lindblom'}
               </h1>
               {(bioIntro || dict.biography?.intro) && (
-                <p style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-base)', lineHeight: 1.8 }}>
+                <p style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-base)', lineHeight: 1.8, whiteSpace: 'pre-wrap' }}>
                   {bioIntro || dict.biography?.intro}
                 </p>
               )}

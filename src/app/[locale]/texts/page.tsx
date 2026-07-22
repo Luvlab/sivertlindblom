@@ -50,7 +50,7 @@ const RELATED_PATHS: Record<string, { relatedPath: string; relatedLabel: string 
 }
 
 const LANG_LABELS: Record<string, string> = {
-  sv: 'SV', en: 'EN', de: 'DE', fr: 'FR', it: 'IT',
+  sv: 'SV', en: 'EN', de: 'DE', fr: 'FR', it: 'IT', hu: 'HU',
 }
 
 // "andras_texter" is a virtual group that combines essay + preface (texts by others about Sivert)

@@ -96,7 +96,7 @@ function NewTextPageInner() {
           <div>
             {lbl('Språk')}
             <select className="input" style={{ width: '100%' }} value={form.lang} onChange={f('lang')}>
-              {[['sv','Svenska'],['en','English'],['de','Deutsch'],['fr','Français'],['it','Italiano']].map(([v, l]) => (
+              {[['sv','Svenska'],['en','English'],['de','Deutsch'],['fr','Français'],['it','Italiano'],['hu','Magyar (Ungerska)']].map(([v, l]) => (
                 <option key={v} value={v}>{l}</option>
               ))}
             </select>

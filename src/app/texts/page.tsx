@@ -46,7 +46,7 @@ const TYPE_LABELS: Record<string, string> = {
 }
 
 const LANG_LABELS: Record<string, string> = {
-  sv: 'SV', en: 'EN', de: 'DE', fr: 'FR', it: 'IT',
+  sv: 'SV', en: 'EN', de: 'DE', fr: 'FR', it: 'IT', hu: 'HU',
 }
 
 const TYPE_ORDER = ['own_writing', 'essay', 'preface', 'interview', 'review', 'translated']

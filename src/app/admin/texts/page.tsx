@@ -9,7 +9,7 @@ const TYPE_LABELS: Record<string, string> = {
   interview: 'Intervju', own_writing: 'Egen text', translated: 'Översatt', film: 'Film & TV',
 }
 
-const LANG_LABELS: Record<string, string> = { sv: 'SV', en: 'EN', de: 'DE', fr: 'FR', it: 'IT' }
+const LANG_LABELS: Record<string, string> = { sv: 'SV', en: 'EN', de: 'DE', fr: 'FR', it: 'IT', hu: 'HU' }
 
 export default function AdminTexts() {
   const [items, setItems] = useState<TextItem[]>([])

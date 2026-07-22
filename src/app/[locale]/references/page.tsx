@@ -113,7 +113,7 @@ export default async function ReferencesPage({
             {grafik.title}
           </h2>
           {grafik.intro && (
-            <p style={{ color: 'var(--color-muted)', maxWidth: '65ch', fontSize: 'var(--fs-base)', lineHeight: 1.7, marginBottom: '2rem' }}>
+            <p style={{ color: 'var(--color-muted)', maxWidth: '65ch', fontSize: 'var(--fs-base)', lineHeight: 1.7, marginBottom: '2rem', whiteSpace: 'pre-wrap' }}>
               {grafik.intro}
             </p>
           )}
@@ -179,7 +179,7 @@ export default async function ReferencesPage({
           <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-2xl)', marginBottom: '0.75rem' }}>
             Utmärkelser, priser och medaljer
           </h2>
-          <p style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-sm)', marginBottom: '3rem', maxWidth: '60ch' }}>
+          <p style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-sm)', marginBottom: '3rem', maxWidth: '60ch', whiteSpace: 'pre-wrap' }}>
             {utmarkelser.intro || 'Priser mottagna av Sivert Lindblom samt medaljer och minnesmärken formgivna av honom.'}
           </p>
 
@@ -293,7 +293,7 @@ export default async function ReferencesPage({
             Ögonblick
           </h2>
           {ogonblick.intro && (
-            <p style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-base)', maxWidth: '60ch', lineHeight: 1.7, marginBottom: '2rem' }}>
+            <p style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-base)', maxWidth: '60ch', lineHeight: 1.7, marginBottom: '2rem', whiteSpace: 'pre-wrap' }}>
               {ogonblick.intro}
             </p>
           )}

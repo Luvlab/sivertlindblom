@@ -30,7 +30,7 @@ export async function generateMetadata({
 }
 
 const LANG_LABELS: Record<string, string> = {
-  sv: 'SV', en: 'EN', de: 'DE', fr: 'FR', it: 'IT',
+  sv: 'SV', en: 'EN', de: 'DE', fr: 'FR', it: 'IT', hu: 'HU',
 }
 
 export default async function TextDetailPage({
