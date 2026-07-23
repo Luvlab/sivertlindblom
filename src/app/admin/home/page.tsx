@@ -306,6 +306,19 @@ export default function AdminHome() {
   const [editingIdx, setEditingIdx] = useState<number | null>(null)
   const [editingUrl, setEditingUrl] = useState('')
 
+  // Natural pixel size per image URL, read when the thumbnail loads.
+  const [dims, setDims] = useState<Record<string, { w: number; h: number }>>({})
+  function noteDims(url: string, el: HTMLImageElement) {
+    const w = el.naturalWidth, h = el.naturalHeight
+    if (!w || !h) return
+    setDims(prev => prev[url] ? prev : { ...prev, [url]: { w, h } })
+  }
+
+  // Snapshot of what's actually stored, so we can tell if there are unsaved edits.
+  const [baseline, setBaseline] = useState<string>('')
+  const currentState = JSON.stringify({ slides, random })
+  const isDirty = !loading && baseline !== '' && currentState !== baseline
+
   useEffect(() => {
     fetch('/api/admin/home')
       .then(r => r.json())
@@ -313,10 +326,21 @@ export default function AdminHome() {
         if ('slides' in d) {
           setSlides(d.slides)
           setRandom(d.random ?? true)
+          setBaseline(JSON.stringify({ slides: d.slides, random: d.random ?? true }))
         }
       })
       .finally(() => setLoading(false))
   }, [])
+
+  // Warn before leaving/refreshing with unsaved edits — removing a slide only
+  // changes the list on screen until you press Spara, and a refresh used to
+  // silently discard it.
+  useEffect(() => {
+    if (!isDirty) return
+    const warn = (e: BeforeUnloadEvent) => { e.preventDefault(); e.returnValue = '' }
+    window.addEventListener('beforeunload', warn)
+    return () => window.removeEventListener('beforeunload', warn)
+  }, [isDirty])
 
   // ── Preview logic ──────────────────────────────────────────────────────────
   function startPreview() {
@@ -349,6 +373,7 @@ export default function AdminHome() {
       const d = await r.json() as { ok?: boolean; error?: string }
       if (d.ok) {
         setMessage({ type: 'ok', text: 'Sparad!' })
+        setBaseline(JSON.stringify({ slides, random }))   // now clean
       } else {
         setMessage({ type: 'error', text: d.error ?? 'Fel vid sparning' })
       }
@@ -566,10 +591,19 @@ export default function AdminHome() {
               className="btn btn-primary"
               onClick={save}
               disabled={saving}
-              style={{ fontSize: 'var(--fs-xs)', padding: '0.45rem 0.85rem', minWidth: 80 }}
+              style={{
+                fontSize: 'var(--fs-xs)', padding: '0.45rem 0.85rem', minWidth: 80,
+                ...(isDirty ? { boxShadow: '0 0 0 2px var(--color-accent)' } : {}),
+              }}
+              title={isDirty ? 'Du har ändringar som inte är sparade' : 'Allt är sparat'}
             >
-              {saving ? 'Sparar…' : 'Spara'}
+              {saving ? 'Sparar…' : isDirty ? '● Spara' : 'Spara'}
             </button>
+            {isDirty && (
+              <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-accent)', whiteSpace: 'nowrap' }}>
+                Osparade ändringar
+              </span>
+            )}
 
             {/* Vault toggle: load vault OR restore curated list */}
             {vaultMode ? (
@@ -778,6 +812,7 @@ export default function AdminHome() {
                         objectPosition: slide.focal || 'center',
                         pointerEvents: 'none',
                       }}
+                      onLoad={e => noteDims(slide.url, e.currentTarget)}
                       onError={e => { (e.currentTarget as HTMLImageElement).style.opacity = '0.1' }}
                     />
                     {/* Crosshair marker at the chosen focal point */}
@@ -795,6 +830,20 @@ export default function AdminHome() {
                         />
                       )
                     })()}
+                  </div>
+
+                  {/* Värden: bildpunkt (center) + storlek */}
+                  <div style={{
+                    display: 'flex', justifyContent: 'space-between', gap: '0.5rem',
+                    padding: '0.3rem 0.45rem', fontSize: '0.6rem', lineHeight: 1.4,
+                    borderTop: '1px solid var(--color-border)', background: 'var(--color-bg)',
+                  }}>
+                    <span style={{ color: slide.focal ? 'var(--color-accent)' : 'var(--color-muted)', whiteSpace: 'nowrap' }}>
+                      ◎ {slide.focal ?? 'mitten (50% 50%)'}
+                    </span>
+                    <span style={{ color: 'var(--color-muted)', whiteSpace: 'nowrap' }}>
+                      {dims[slide.url] ? `${dims[slide.url].w}×${dims[slide.url].h}` : '…'}
+                    </span>
                   </div>
 
                   {/* Number badge — top-left */}
@@ -815,8 +864,9 @@ export default function AdminHome() {
                     type="button"
                     onClick={() => editingIdx === i ? cancelEdit() : startEdit(i)}
                     style={overlayBtn({
-                      bottom: editingIdx === i ? undefined : 4,
-                      top: editingIdx === i ? 4 : undefined,
+                      // Sits under the ✕ so it stays over the image, clear of the
+                      // values bar below the thumbnail.
+                      top: editingIdx === i ? 4 : 28,
                       right: editingIdx === i ? 24 : 4,
                       background: editingIdx === i ? 'rgba(201,169,76,0.9)' : 'rgba(40,40,40,0.82)',
                       color: editingIdx === i ? '#0a0a0a' : 'var(--color-muted)',
@@ -831,7 +881,7 @@ export default function AdminHome() {
                     <button
                       type="button"
                       onClick={() => clearFocal(i)}
-                      style={overlayBtn({ bottom: 4, left: 4, background: 'rgba(201,169,76,0.9)', color: '#0a0a0a' })}
+                      style={overlayBtn({ top: 28, left: 4, background: 'rgba(201,169,76,0.9)', color: '#0a0a0a' })}
                       title={`Bildpunkt: ${slide.focal} — klicka för att återgå till mitten`}
                     >◎</button>
                   )}

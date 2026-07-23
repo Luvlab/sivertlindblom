@@ -3,6 +3,8 @@ import type { NextRequest } from 'next/server'
 import { locales, defaultLocale } from '@/i18n/config'
 
 const ADMIN_TOKEN_NAME = 'admin_session'
+/** Keep in sync with /api/admin/auth. 30 days, slid forward on each admin page load. */
+const ADMIN_SESSION_MAX_AGE = 60 * 60 * 24 * 30
 
 function getLocaleFromRequest(request: NextRequest): string {
   // 1. Check cookie
@@ -49,7 +51,17 @@ export function proxy(request: NextRequest) {
       loginUrl.pathname = '/admin-login'
       return NextResponse.redirect(loginUrl)
     }
-    return NextResponse.next()
+    // Sliding session: re-issue the cookie on every admin page load so someone
+    // who keeps working is never logged out mid-edit.
+    const res = NextResponse.next()
+    res.cookies.set(ADMIN_TOKEN_NAME, 'authenticated', {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: ADMIN_SESSION_MAX_AGE,
+      path: '/',
+    })
+    return res
   }
 
   // --- Locale routing ---
