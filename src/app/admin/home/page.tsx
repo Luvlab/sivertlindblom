@@ -7,6 +7,8 @@ import { uploadImageFile } from '@/lib/upload-image'
 interface Slide {
   url: string
   alt: string
+  /** CSS object-position ("50% 30%") — which part stays visible when cropped. */
+  focal?: string
 }
 
 interface MediaImage {
@@ -465,6 +467,31 @@ export default function AdminHome() {
   }
   function handleDragEnd() { setDraggingIdx(null); setDragOverIdx(null) }
 
+  // ── Focal point ────────────────────────────────────────────────────────────
+  // Click anywhere on a slide's image to say "keep THIS part visible". The hero
+  // crops images to a wide shape, so without this the centre is always kept and
+  // the subject can end up cut off.
+  function setFocal(idx: number, e: React.MouseEvent<HTMLDivElement>) {
+    const r = e.currentTarget.getBoundingClientRect()
+    const x = Math.round(((e.clientX - r.left) / r.width) * 100)
+    const y = Math.round(((e.clientY - r.top) / r.height) * 100)
+    const clamp = (n: number) => Math.max(0, Math.min(100, n))
+    setSlides(prev => prev.map((s, i) => i === idx ? { ...s, focal: `${clamp(x)}% ${clamp(y)}%` } : s))
+  }
+  function clearFocal(idx: number) {
+    setSlides(prev => prev.map((s, i) => {
+      if (i !== idx) return s
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { focal, ...rest } = s
+      return rest
+    }))
+  }
+  /** Parse "50% 30%" back into pixel-percent numbers for the crosshair marker. */
+  function focalXY(focal?: string): { x: number; y: number } {
+    const m = (focal ?? '').match(/(-?\d+(?:\.\d+)?)%\s+(-?\d+(?:\.\d+)?)%/)
+    return m ? { x: parseFloat(m[1]), y: parseFloat(m[2]) } : { x: 50, y: 50 }
+  }
+
   // ── Inline URL edit ────────────────────────────────────────────────────────
   function startEdit(idx: number) { setEditingIdx(idx); setEditingUrl(slides[idx].url) }
   function commitEdit(idx: number) {
@@ -501,6 +528,11 @@ export default function AdminHome() {
           <p style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-sm)' }}>
             {loading ? 'Laddar…' : `${slides.length} bilder i slideshow`}
           </p>
+          {!loading && slides.length > 0 && (
+            <p style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-xs)', marginTop: '0.35rem', maxWidth: '52ch', lineHeight: 1.6 }}>
+              Tips: bilderna beskärs till en bred yta på startsidan. <strong style={{ color: 'var(--color-text)' }}>Klicka på motivet</strong> i en bild för att välja vad som ska synas — t.ex. mitt på skulpturen. Klicka på ◎ för att återgå till mitten.
+            </p>
+          )}
         </div>
 
         {/* Controls: random toggle + preview */}
@@ -620,6 +652,7 @@ export default function AdminHome() {
                   width: '100%',
                   height: '100%',
                   objectFit: 'cover',
+                  objectPosition: slide.focal || 'center',
                   opacity: i === previewIdx ? 1 : 0,
                   transition: 'opacity 0.8s ease-in-out',
                   display: 'block',
@@ -729,16 +762,39 @@ export default function AdminHome() {
                     transition: 'opacity 0.1s, border-color 0.1s',
                   }}
                 >
-                  {/* Image */}
-                  <div style={{ aspectRatio: '4/3', overflow: 'hidden', background: '#111' }}>
+                  {/* Image — click to set the focal point (what stays visible when cropped) */}
+                  <div
+                    onClick={e => setFocal(i, e)}
+                    title="Klicka på motivet för att välja vad som ska synas i bildspelet"
+                    style={{ aspectRatio: '4/3', overflow: 'hidden', background: '#111', position: 'relative', cursor: 'crosshair' }}
+                  >
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={slide.url}
                       alt={slide.alt}
                       loading="lazy"
-                      style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', pointerEvents: 'none' }}
+                      style={{
+                        width: '100%', height: '100%', objectFit: 'cover', display: 'block',
+                        objectPosition: slide.focal || 'center',
+                        pointerEvents: 'none',
+                      }}
                       onError={e => { (e.currentTarget as HTMLImageElement).style.opacity = '0.1' }}
                     />
+                    {/* Crosshair marker at the chosen focal point */}
+                    {slide.focal && (() => {
+                      const { x, y } = focalXY(slide.focal)
+                      return (
+                        <span
+                          aria-hidden="true"
+                          style={{
+                            position: 'absolute', left: `${x}%`, top: `${y}%`,
+                            width: 16, height: 16, marginLeft: -8, marginTop: -8,
+                            border: '2px solid var(--color-accent)', borderRadius: '50%',
+                            boxShadow: '0 0 0 2px rgba(0,0,0,0.55)', pointerEvents: 'none',
+                          }}
+                        />
+                      )
+                    })()}
                   </div>
 
                   {/* Number badge — top-left */}
@@ -769,6 +825,16 @@ export default function AdminHome() {
                   >
                     {editingIdx === i ? '✕' : '✎'}
                   </button>
+
+                  {/* Reset focal point — only when one has been set */}
+                  {slide.focal && (
+                    <button
+                      type="button"
+                      onClick={() => clearFocal(i)}
+                      style={overlayBtn({ bottom: 4, left: 4, background: 'rgba(201,169,76,0.9)', color: '#0a0a0a' })}
+                      title={`Bildpunkt: ${slide.focal} — klicka för att återgå till mitten`}
+                    >◎</button>
+                  )}
 
                   {/* Alt-text input — always visible below image */}
                   <div style={{ padding: '0.4rem' }}>

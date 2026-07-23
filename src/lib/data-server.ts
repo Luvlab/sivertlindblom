@@ -923,14 +923,14 @@ export async function getHeroSlides(): Promise<Array<{ url: string; alt: string 
  * Falls back to FALLBACK_HERO_SLIDES + random=true when no DB data exists.
  */
 export async function getHeroConfig(): Promise<{
-  slides: Array<{ url: string; alt: string }>
+  slides: Array<{ url: string; alt: string; focal?: string }>
   random: boolean
 }> {
   'use cache'
   cacheTag('hero')
   cacheLife('hours')
   const supabase = createAdminClient()
-  let slides: Array<{ url: string; alt: string }> = []
+  let slides: Array<{ url: string; alt: string; focal?: string }> = []
   let random = true
 
   if (supabase) {
@@ -942,7 +942,7 @@ export async function getHeroConfig(): Promise<{
     for (const row of data ?? []) {
       if (row.key === 'hero_slides') {
         try {
-          const parsed = JSON.parse(row.value) as Array<{ url: string; alt: string }>
+          const parsed = JSON.parse(row.value) as Array<{ url: string; alt: string; focal?: string }>
           if (Array.isArray(parsed) && parsed.length > 0) slides = parsed
         } catch { /* ignore */ }
       }

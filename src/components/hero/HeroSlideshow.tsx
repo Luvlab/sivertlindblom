@@ -54,9 +54,17 @@ function shuffle<T>(arr: T[]): T[] {
 const DISPLAY_MS = 12000 // hold time per slide
 const FADE_MS    = 3000  // fade-out duration — matches exhibitions hero
 
+/** A hero slide. `focal` is a CSS object-position ("50% 30%") that decides which
+ *  part of the image stays visible when it's cropped to the hero's shape. */
+export interface HeroSlide {
+  url: string
+  alt: string
+  focal?: string
+}
+
 interface Props {
   children?: React.ReactNode
-  slides?: Array<{ url: string; alt: string }>
+  slides?: HeroSlide[]
   /** When false the slides play in the saved order; default true (shuffle on mount) */
   random?: boolean
 }
@@ -82,7 +90,7 @@ interface Props {
  */
 export default function HeroSlideshow({ children, slides, random = true }: Props) {
   // Start unshuffled to avoid SSR/client hydration mismatch; shuffle on mount if random
-  const [images, setImages]     = useState<typeof ALL_IMAGES>(slides && slides.length > 0 ? slides : ALL_IMAGES)
+  const [images, setImages]     = useState<HeroSlide[]>(slides && slides.length > 0 ? slides : ALL_IMAGES)
   const [frontIdx, setFrontIdx] = useState(0)
   const [backIdx,  setBackIdx]  = useState(1)
   const [fading,   setFading]   = useState(false)
@@ -178,7 +186,7 @@ export default function HeroSlideshow({ children, slides, random = true }: Props
         src={backImg.url}
         alt={backImg.alt}
         className="hero-image"
-        style={{ zIndex: 0, opacity: 1 }}
+        style={{ zIndex: 0, opacity: 1, objectPosition: backImg.focal || 'center' }}
       />
 
       {/* ── FRONT layer — fades OUT to reveal BACK, then snaps back ── */}
@@ -190,6 +198,7 @@ export default function HeroSlideshow({ children, slides, random = true }: Props
         style={{
           zIndex: 1,
           opacity: fading ? 0 : 1,
+          objectPosition: frontImg.focal || 'center',
           // transition only when fading OUT; instant (0ms) when resetting to 1
           transition: fading ? `opacity ${FADE_MS}ms ease-in-out` : 'none',
         }}
