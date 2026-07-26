@@ -76,7 +76,7 @@ export default function WatercolorsGallery({ locale, dict, images, title, descri
               {displayTitle}
             </h1>
           )}
-          <p style={{ color: 'var(--color-muted)', maxWidth: '60ch', fontSize: 'var(--fs-base)', lineHeight: 1.8, marginBottom: '1rem' }}>
+          <p style={{ color: 'var(--color-muted)', maxWidth: '60ch', fontSize: 'var(--fs-base)', lineHeight: 1.8, marginBottom: '1rem', whiteSpace: 'pre-wrap' }}>
             {displayDesc}
           </p>
           <p style={{ color: 'var(--color-muted)', maxWidth: '60ch', fontSize: 'var(--fs-sm)', lineHeight: 1.7 }}>

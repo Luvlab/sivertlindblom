@@ -107,8 +107,9 @@ export default async function SculptureSeriesPage({
                     width: 'fit-content',
                   }}
                 >
-                  <span>{dict.references?.read_here ?? 'LÄS HÄR'}</span>
-                  <span style={{ fontStyle: 'italic', color: 'var(--color-text)' }}>{link.label}</span>
+                  {/* The label IS the link text, so Jan controls the exact wording
+                      ("Läs artikeln —", "Se även:", …) rather than a fixed "LÄS HÄR". */}
+                  <span style={{ color: 'var(--color-text)' }}>{link.label || (dict.references?.read_here ?? 'Läs mer')}</span>
                   <span>→</span>
                 </a>
                 )
