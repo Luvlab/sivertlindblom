@@ -92,7 +92,29 @@ export const FILMS: FilmEntry[] = [
     desc: 'Film över resningen och installationen av Sivert Lindbloms skulptur "Profilen" på Potatisåkern bostadsområde i Malmö, 2001.',
     videoUrl: 'https://www.youtube.com/embed/hfwecUKJCJo',
   },
+  {
+    slug: 't-banan-sivert-marianne-lindblom',
+    year: 2025,
+    title: 'T-banan — Sivert & Marianne Lindblom',
+    venue: 'Stockholm',
+    desc: 'Sivert och Marianne Lindblom i Stockholms tunnelbana, augusti 2025. Cirka tre minuter.',
+    videoUrl: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/videos/t-banan-sivert-marianne-lindblom.mp4',
+  },
+  {
+    slug: 'magnus-uggla',
+    year: 0,
+    title: 'Magnus Uggla',
+    desc: 'Kort filmklipp (ca 30 sekunder).',
+    videoUrl: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/videos/magnus-uggla-30s.mp4',
+  },
 ]
+
+/** True if the videoUrl is a file we host and should play inline in a
+ *  <video> element (mp4/webm/mov in our own storage), not a YouTube or
+ *  external embed. */
+export function isSelfHostedVideo(url: string): boolean {
+  return /\.(mp4|webm|mov)(\?|$)/i.test(url) || url.includes('/storage/v1/object/public/videos/')
+}
 
 /** Extract YouTube video ID from any YouTube URL format */
 export function getYouTubeId(url: string): string | null {

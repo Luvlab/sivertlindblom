@@ -4,7 +4,8 @@ import type { Metadata } from 'next'
 import { locales } from '@/i18n/config'
 import type { Locale } from '@/i18n/config'
 import { getDictionary } from '@/i18n/getDictionary'
-import { FILMS, getYouTubeId } from '@/lib/films-data'
+import { FILMS, getYouTubeId, isSelfHostedVideo } from '@/lib/films-data'
+import { getFilms } from '@/lib/data-server'
 
 export function generateStaticParams() {
   return locales.flatMap((locale) =>
@@ -32,13 +33,19 @@ export default async function FilmDetailPage({
   params: Promise<{ locale: string; slug: string }>
 }) {
   const { locale, slug } = await params
-  const dict = await getDictionary(locale as Locale)
+  const [dict, films] = await Promise.all([
+    getDictionary(locale as Locale),
+    getFilms(),
+  ])
 
-  const film = FILMS.find((f) => f.slug === slug)
+  // Prefer the editable (DB) list so admin edits/additions aren't shadowed by
+  // the static defaults; fall back to the static FILMS.
+  const film = films.find((f) => f.slug === slug) ?? FILMS.find((f) => f.slug === slug)
   if (!film) notFound()
 
   const ytId = film.videoUrl ? getYouTubeId(film.videoUrl) : null
-  const isExternalLink = film.videoUrl && !ytId
+  const selfHosted = !!film.videoUrl && !ytId && isSelfHostedVideo(film.videoUrl)
+  const isExternalLink = !!film.videoUrl && !ytId && !selfHosted
 
   return (
     <div className="section-gap">
@@ -53,15 +60,17 @@ export default async function FilmDetailPage({
           <span className="back-link-label">{dict.references?.film_tv ?? 'Film & TV'}</span>
         </Link>
 
-        <p style={{
-          fontSize: 'var(--fs-xs)',
-          letterSpacing: '0.14em',
-          textTransform: 'uppercase',
-          color: 'var(--color-accent)',
-          marginBottom: '0.75rem',
-        }}>
-          {film.year}
-        </p>
+        {film.year > 0 && (
+          <p style={{
+            fontSize: 'var(--fs-xs)',
+            letterSpacing: '0.14em',
+            textTransform: 'uppercase',
+            color: 'var(--color-accent)',
+            marginBottom: '0.75rem',
+          }}>
+            {film.year}
+          </p>
+        )}
 
         <h1 style={{
           fontFamily: 'Georgia, serif',
@@ -118,6 +127,24 @@ export default async function FilmDetailPage({
           </a>
         )}
       </div>
+
+      {/* Self-hosted video (mp4 in our storage) — full viewport width */}
+      {selfHosted && film.videoUrl && (
+        <div style={{
+          width: '100%',
+          aspectRatio: '16/9',
+          background: '#000',
+          marginBottom: '2rem',
+        }}>
+          <video
+            src={film.videoUrl}
+            controls
+            playsInline
+            preload="metadata"
+            style={{ width: '100%', height: '100%', display: 'block', background: '#000' }}
+          />
+        </div>
+      )}
 
       {/* Primary YouTube embed — full viewport width */}
       {ytId && (

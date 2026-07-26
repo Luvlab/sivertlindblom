@@ -1,7 +1,7 @@
 'use client'
 import { useState } from 'react'
 import Link from 'next/link'
-import { FILMS, getYouTubeId, ytThumb, type FilmEntry } from '@/lib/films-data'
+import { FILMS, getYouTubeId, ytThumb, isSelfHostedVideo, type FilmEntry } from '@/lib/films-data'
 
 interface Props {
   locale: string
@@ -20,11 +20,13 @@ export default function FilmGrid({ locale, films }: Props) {
       {list.map((f) => {
         const ytId = f.videoUrl ? getYouTubeId(f.videoUrl) : null
         const thumb = ytId ? ytThumb(ytId) : null
+        const selfHosted = !!f.videoUrl && !ytId && isSelfHostedVideo(f.videoUrl)
         return (
           <FilmCard
             key={f.slug}
             film={f}
             thumb={thumb}
+            videoSrc={selfHosted ? f.videoUrl! : null}
             href={`/${locale}/references/film-tv/${f.slug}`}
           />
         )
@@ -36,13 +38,16 @@ export default function FilmGrid({ locale, films }: Props) {
 function FilmCard({
   film,
   thumb,
+  videoSrc,
   href,
 }: {
   film: FilmEntry
   thumb: string | null
+  videoSrc: string | null
   href: string
 }) {
   const [hovered, setHovered] = useState(false)
+  const hasMedia = !!thumb || !!videoSrc
 
   return (
     <Link
@@ -65,6 +70,24 @@ function FilmCard({
           src={thumb}
           alt={film.title}
           loading="lazy"
+          style={{
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+            display: 'block',
+            opacity: hovered ? 1 : 0.75,
+            transform: hovered ? 'scale(1.04)' : 'scale(1)',
+            transition: 'transform 0.35s ease, opacity 0.25s ease',
+          }}
+        />
+      ) : videoSrc ? (
+        // Self-hosted mp4: show the first frame as the thumbnail (metadata only,
+        // muted, never autoplays). #t=0.1 nudges browsers to paint a frame.
+        <video
+          src={`${videoSrc}#t=0.1`}
+          muted
+          playsInline
+          preload="metadata"
           style={{
             width: '100%',
             height: '100%',
@@ -100,7 +123,7 @@ function FilmCard({
       }} />
 
       {/* Play badge */}
-      {thumb && (
+      {hasMedia && (
         <div style={{
           position: 'absolute',
           top: '50%',
@@ -131,15 +154,17 @@ function FilmCard({
         padding: '2rem 0.875rem 0.75rem',
         pointerEvents: 'none',
       }}>
-        <div style={{
-          color: 'var(--color-accent)',
-          fontSize: '0.65rem',
-          letterSpacing: '0.15em',
-          textTransform: 'uppercase',
-          marginBottom: '0.2rem',
-        }}>
-          {film.year}
-        </div>
+        {film.year > 0 && (
+          <div style={{
+            color: 'var(--color-accent)',
+            fontSize: '0.65rem',
+            letterSpacing: '0.15em',
+            textTransform: 'uppercase',
+            marginBottom: '0.2rem',
+          }}>
+            {film.year}
+          </div>
+        )}
         <div style={{
           color: '#fff',
           fontSize: 'var(--fs-sm)',
