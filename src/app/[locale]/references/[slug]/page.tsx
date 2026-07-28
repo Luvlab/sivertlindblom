@@ -45,9 +45,12 @@ export default async function SculptureSeriesPage({
     ?? SCULPTURE_PROJECTS.find((p) => p.slug === slug)
   if (!project) notFound()
 
+  // The alt text on a sculpture image IS the work's title ("Azteker; bly 1978"),
+  // so it doubles as the slideshow caption shown under the image.
   const lightboxImages: LightboxImage[] = project.images.map((img) => ({
     url: img.url,
     alt: img.alt,
+    caption: img.alt || undefined,
   }))
 
   return (
@@ -108,8 +111,9 @@ export default async function SculptureSeriesPage({
                   }}
                 >
                   {/* The label IS the link text, so Jan controls the exact wording
-                      ("Läs artikeln —", "Se även:", …) rather than a fixed "LÄS HÄR". */}
-                  <span style={{ color: 'var(--color-text)' }}>{link.label || (dict.references?.read_here ?? 'Läs mer')}</span>
+                      ("Läs artikeln —", "Se även:", …) rather than a fixed "LÄS HÄR".
+                      Gold like other active links (Jan, Undring 23). */}
+                  <span style={{ color: 'var(--color-accent)' }}>{link.label || (dict.references?.read_here ?? 'Läs mer')}</span>
                   <span>→</span>
                 </a>
                 )

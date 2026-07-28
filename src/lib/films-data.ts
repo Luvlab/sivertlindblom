@@ -54,6 +54,14 @@ export const FILMS: FilmEntry[] = [
     ],
   },
   {
+    slug: 'kallan-med-obelisk-bonnierhuset',
+    year: 1995,
+    title: 'Källan med obelisk — Bonnierhuset, atrium',
+    venue: 'Bonniers kontorshus, Torsgatan 21, Stockholm',
+    desc: 'Filmklipp från Källan med obelisk i Bonnierhusets atrium, 1995.',
+    videoUrl: 'https://youtu.be/1q0J8_pjyAg',
+  },
+  {
     slug: 'tv-intervju-1996',
     year: 1996,
     title: 'TV-intervju med Sivert Lindblom',
@@ -93,19 +101,19 @@ export const FILMS: FilmEntry[] = [
     videoUrl: 'https://www.youtube.com/embed/hfwecUKJCJo',
   },
   {
+    slug: 'magnus-uggla',
+    year: 2024,
+    title: 'Magnus Uggla',
+    desc: 'Kort filmklipp (ca 30 sekunder).',
+    videoUrl: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/videos/magnus-uggla-30s.mp4',
+  },
+  {
     slug: 't-banan-sivert-marianne-lindblom',
     year: 2025,
     title: 'T-banan — Sivert & Marianne Lindblom',
     venue: 'Stockholm',
     desc: 'Sivert och Marianne Lindblom i Stockholms tunnelbana, augusti 2025. Cirka tre minuter.',
     videoUrl: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/videos/t-banan-sivert-marianne-lindblom.mp4',
-  },
-  {
-    slug: 'magnus-uggla',
-    year: 0,
-    title: 'Magnus Uggla',
-    desc: 'Kort filmklipp (ca 30 sekunder).',
-    videoUrl: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/videos/magnus-uggla-30s.mp4',
   },
 ]
 
