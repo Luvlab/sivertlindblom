@@ -8,7 +8,7 @@ import { SCULPTURE_PROJECTS } from '@/lib/sculpture-projects'
 import { getSculptureProjects } from '@/lib/data-server'
 import GalleryGrid from '@/components/gallery/GalleryGrid'
 import type { LightboxImage } from '@/components/gallery/Lightbox'
-import { renderInlineLinks } from '@/lib/render-text'
+import { renderInlineLinks, renderParagraphs } from '@/lib/render-text'
 
 export function generateStaticParams() {
   return locales.flatMap((locale) =>
@@ -72,9 +72,9 @@ export default async function SculptureSeriesPage({
           {project.title}
         </h1>
 
-        <p style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-base)', maxWidth: '60ch', marginBottom: '1.5rem' }}>
-          {project.description}
-        </p>
+        <div style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-base)', maxWidth: '60ch', marginBottom: '1.5rem' }}>
+          {renderParagraphs(project.description, { margin: 0, lineHeight: 1.75, marginBottom: '1.1em' })}
+        </div>
 
         <hr className="divider" style={{ marginBottom: '1.5rem' }} />
 

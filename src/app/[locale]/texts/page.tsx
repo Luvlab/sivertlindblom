@@ -129,7 +129,7 @@ export default async function TextsPage({
                         src={t.images[0]}
                         alt=""
                         loading="lazy"
-                        style={{ width: 44, height: 44, objectFit: 'cover', borderRadius: 2, flexShrink: 0, background: 'var(--color-bg-card)' }}
+                        style={{ width: 88, height: 88, objectFit: 'cover', borderRadius: 2, flexShrink: 0, background: 'var(--color-bg-card)' }}
                       />
                     )}
 

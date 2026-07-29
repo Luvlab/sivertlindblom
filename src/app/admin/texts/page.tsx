@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef, useMemo } from 'react'
 import Link from 'next/link'
 import type { TextItem } from '@/lib/texts-data'
 
@@ -18,6 +18,15 @@ export default function AdminTexts() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
+  // Drag-to-reorder state
+  const [savedOrder, setSavedOrder] = useState<string[]>([])
+  const [liveOrder, setLiveOrder] = useState<string[]>([])
+  const [orderDirty, setOrderDirty] = useState(false)
+  const [orderSaving, setOrderSaving] = useState(false)
+  const [orderSaved, setOrderSaved] = useState(false)
+  const dragFrom = useRef<number | null>(null)
+  const dragOverEl = useRef<HTMLTableRowElement | null>(null)
+
   useEffect(() => {
     fetch('/api/admin/texts')
       .then(r => r.json())
@@ -27,15 +36,93 @@ export default function AdminTexts() {
       })
       .catch(e => setError(String(e)))
       .finally(() => setLoading(false))
+
+    fetch('/api/admin/texts-order')
+      .then(r => r.json())
+      .then((d: { order?: string[] }) => { if (Array.isArray(d.order)) setSavedOrder(d.order) })
+      .catch(() => {})
   }, [])
 
-  const filtered = items
-    .filter(t => !filter ||
-      t.title.toLowerCase().includes(filter.toLowerCase()) ||
-      t.author.toLowerCase().includes(filter.toLowerCase())
-    )
-    .filter(t => !typeFilter || t.type === typeFilter)
-    .sort((a, b) => b.year - a.year)
+  // Merge saved order with current items
+  const isFiltering = !!(filter || typeFilter)
+
+  const displayItems = useMemo<TextItem[]>(() => {
+    const bySlug = new Map(items.map(it => [it.slug, it]))
+    const byYearFallback = [...items].sort((a, b) => b.year - a.year)
+
+    if (isFiltering) {
+      return byYearFallback.filter(t =>
+        (!filter || t.title.toLowerCase().includes(filter.toLowerCase()) || t.author.toLowerCase().includes(filter.toLowerCase())) &&
+        (!typeFilter || t.type === typeFilter)
+      )
+    }
+
+    // Build ordered list from liveOrder (updated by drag) or savedOrder
+    const order = liveOrder.length > 0 ? liveOrder : savedOrder
+    if (order.length === 0) return byYearFallback
+
+    const result: TextItem[] = []
+    const remaining = new Map(bySlug)
+    for (const slug of order) {
+      const item = remaining.get(slug)
+      if (item) { result.push(item); remaining.delete(slug) }
+    }
+    // Append new items not yet in saved order
+    for (const item of byYearFallback) {
+      if (remaining.has(item.slug)) result.push(item)
+    }
+    return result
+  }, [items, savedOrder, liveOrder, filter, typeFilter, isFiltering])
+
+  function onDragStart(e: React.DragEvent<HTMLTableRowElement>, idx: number) {
+    dragFrom.current = idx
+    e.dataTransfer.effectAllowed = 'move'
+    e.currentTarget.style.opacity = '0.5'
+  }
+
+  function onDragEnd(e: React.DragEvent<HTMLTableRowElement>) {
+    e.currentTarget.style.opacity = ''
+    if (dragOverEl.current) { dragOverEl.current.style.borderTop = ''; dragOverEl.current = null }
+  }
+
+  function onDragOver(e: React.DragEvent<HTMLTableRowElement>, idx: number) {
+    e.preventDefault()
+    const from = dragFrom.current
+    if (from === null || from === idx) return
+    if (dragOverEl.current && dragOverEl.current !== e.currentTarget) dragOverEl.current.style.borderTop = ''
+    e.currentTarget.style.borderTop = '2px solid var(--color-accent)'
+    dragOverEl.current = e.currentTarget
+  }
+
+  function onDrop(e: React.DragEvent<HTMLTableRowElement>, toIdx: number) {
+    e.preventDefault()
+    if (dragOverEl.current) { dragOverEl.current.style.borderTop = ''; dragOverEl.current = null }
+    const from = dragFrom.current
+    if (from === null || from === toIdx) return
+    const newOrder = [...displayItems]
+    const [moved] = newOrder.splice(from, 1)
+    newOrder.splice(toIdx, 0, moved)
+    setLiveOrder(newOrder.map(it => it.slug))
+    setOrderDirty(true)
+    dragFrom.current = null
+  }
+
+  async function saveOrder() {
+    const order = liveOrder.length > 0 ? liveOrder : savedOrder
+    setOrderSaving(true)
+    try {
+      await fetch('/api/admin/texts-order', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ order }),
+      })
+      setSavedOrder(order)
+      setLiveOrder([])
+      setOrderDirty(false)
+      setOrderSaved(true)
+      setTimeout(() => setOrderSaved(false), 2500)
+    } finally { setOrderSaving(false) }
+  }
 
   return (
     <div style={{ padding: 'clamp(1rem, 3vw, 3rem)' }}>
@@ -46,9 +133,17 @@ export default function AdminTexts() {
             {loading ? 'Laddar...' : `${items.length} texter`}
           </p>
         </div>
-        <Link href="/admin/texts/new">
-          <button className="btn btn-primary">+ Ny text</button>
-        </Link>
+        <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center', flexWrap: 'wrap' }}>
+          {orderDirty && (
+            <button className="btn btn-primary" onClick={saveOrder} disabled={orderSaving}>
+              {orderSaving ? 'Sparar…' : 'Spara ordning'}
+            </button>
+          )}
+          {orderSaved && <span style={{ color: 'var(--color-accent)', fontSize: 'var(--fs-sm)' }}>✓ Sparad</span>}
+          <Link href="/admin/texts/new">
+            <button className="btn btn-primary">+ Ny text</button>
+          </Link>
+        </div>
       </div>
 
       {error && (
@@ -89,6 +184,11 @@ export default function AdminTexts() {
             </button>
           ))}
         </div>
+        {!isFiltering && (
+          <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)' }}>
+            Dra raderna för att ändra ordning. Klicka "Spara ordning" för att spara.
+          </p>
+        )}
       </div>
 
       {loading ? (
@@ -98,19 +198,27 @@ export default function AdminTexts() {
           <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 'var(--fs-sm)' }}>
             <thead>
               <tr style={{ borderBottom: '1px solid var(--color-border)' }}>
-                {['', 'Titel', 'Författare', 'Typ', 'År', 'Språk', ''].map((h, i) => (
-                  <th key={i} style={{ padding: '0.75rem 1rem 0.75rem 0', width: i === 0 ? 56 : undefined, color: 'var(--color-muted)', fontWeight: 400, textTransform: 'uppercase', letterSpacing: '0.08em', fontSize: 'var(--fs-xs)', textAlign: 'left' }}>{h}</th>
+                {['', '', 'Titel', 'Författare', 'Typ', 'År', 'Språk', ''].map((h, i) => (
+                  <th key={i} style={{ padding: '0.75rem 1rem 0.75rem 0', width: i === 0 ? 28 : i === 1 ? 56 : undefined, color: 'var(--color-muted)', fontWeight: 400, textTransform: 'uppercase', letterSpacing: '0.08em', fontSize: 'var(--fs-xs)', textAlign: 'left' }}>{h}</th>
                 ))}
               </tr>
             </thead>
             <tbody>
-              {filtered.map(t => (
+              {displayItems.map((t, idx) => (
                 <tr
                   key={t.slug}
-                  style={{ borderBottom: '1px solid var(--color-border)' }}
+                  draggable={!isFiltering}
+                  onDragStart={!isFiltering ? e => onDragStart(e, idx) : undefined}
+                  onDragEnd={!isFiltering ? onDragEnd : undefined}
+                  onDragOver={!isFiltering ? e => onDragOver(e, idx) : undefined}
+                  onDrop={!isFiltering ? e => onDrop(e, idx) : undefined}
+                  style={{ borderBottom: '1px solid var(--color-border)', cursor: isFiltering ? 'default' : 'grab' }}
                   onMouseEnter={e => (e.currentTarget.style.background = 'var(--color-bg-card)')}
                   onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
                 >
+                  <td style={{ padding: '0.5rem 0.25rem', width: 28, color: 'var(--color-border)', userSelect: 'none' }}>
+                    {!isFiltering && <span style={{ fontSize: 16, cursor: 'grab', display: 'inline-block', padding: '0 4px' }} title="Dra för att flytta">⠿</span>}
+                  </td>
                   <td style={{ padding: '0.5rem 0.75rem 0.5rem 0', width: 56 }}>
                     {t.images?.[0] ? (
                       // eslint-disable-next-line @next/next/no-img-element
@@ -150,7 +258,7 @@ export default function AdminTexts() {
         </div>
       )}
 
-      {!loading && filtered.length === 0 && (
+      {!loading && displayItems.length === 0 && (
         <div style={{ padding: 'clamp(1rem, 3vw, 3rem)', textAlign: 'center', color: 'var(--color-muted)' }}>
           Inga texter hittades.
         </div>

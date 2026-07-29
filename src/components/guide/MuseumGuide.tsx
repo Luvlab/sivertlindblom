@@ -31,7 +31,7 @@ const T = {
     subtitle: 'Fråga om Sivert, verken och utställningarna',
     placeholder: 'Skriv en fråga…',
     greeting: 'Hej! Jag är guiden till Sivert Lindbloms konst. Fråga mig om ett verk, en utställning eller hans konstnärskap.',
-    suggestions: ['Vem är Sivert Lindblom?', 'Berätta om Blasieholmstorg', 'Vad är hans mest kända verk?'],
+    suggestions: ['Vem är Sivert Lindblom?', 'Vilka arkitekter jobbade Sivert Lindblom med?', 'När hade han sin första utställning?', 'Berätta om Blasieholmstorg', 'Vad är hans mest kända verk?'],
     error: 'Något gick fel. Försök igen.',
     send: 'Skicka',
   },
@@ -41,7 +41,7 @@ const T = {
     subtitle: 'Ask about Sivert, the works and exhibitions',
     placeholder: 'Type a question…',
     greeting: "Hello! I'm the guide to Sivert Lindblom's art. Ask me about a work, an exhibition, or his practice.",
-    suggestions: ['Who is Sivert Lindblom?', 'Tell me about Blasieholmstorg', 'What is his best-known work?'],
+    suggestions: ['Who is Sivert Lindblom?', 'Which architects did Sivert Lindblom work with?', 'When was his first exhibition?', 'Tell me about Blasieholmstorg', 'What is his best-known work?'],
     error: 'Something went wrong. Please try again.',
     send: 'Send',
   },
@@ -62,8 +62,19 @@ export default function MuseumGuide({ locale }: { locale: string }) {
       let sid = sessionStorage.getItem('mg_sid')
       if (!sid) { sid = Math.random().toString(36).slice(2) + Date.now().toString(36); sessionStorage.setItem('mg_sid', sid) }
       sessionId.current = sid
-    } catch { /* private mode */ }
+      // Restore conversation history so it survives page navigations within this tab.
+      const saved = sessionStorage.getItem('mg_history')
+      if (saved) {
+        const parsed = JSON.parse(saved) as Msg[]
+        if (Array.isArray(parsed) && parsed.length > 0) setMessages(parsed)
+      }
+    } catch { /* private mode or parse error */ }
   }, [])
+
+  useEffect(() => {
+    if (messages.length === 0) return
+    try { sessionStorage.setItem('mg_history', JSON.stringify(messages.slice(-40))) } catch { /* private mode */ }
+  }, [messages])
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: 'smooth' })

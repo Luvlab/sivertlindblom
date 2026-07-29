@@ -10,7 +10,7 @@ import { getPublicWork, getPublicWorkSlugs, getPublicWorks, getMapPinForWork } f
 import GalleryGrid from '@/components/gallery/GalleryGrid'
 import type { LightboxImage } from '@/components/gallery/Lightbox'
 import SculptureMap from '@/components/SculptureMap'
-import { renderInlineLinks } from '@/lib/render-text'
+import { renderInlineLinks, renderParagraphs } from '@/lib/render-text'
 
 const PW_YT_RE = /(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([A-Za-z0-9_-]{11})/
 
@@ -133,15 +133,15 @@ export default async function PublicWorkDetailPage({
       <div className="page-pad">
         {/* Description */}
         {work.description && (
-          <p style={{
+          <div style={{
             color: 'var(--color-muted)',
             fontSize: 'var(--fs-base)',
             lineHeight: 1.85,
             maxWidth: '68ch',
             marginBottom: '1.5rem',
           }}>
-            {work.description}
-          </p>
+            {renderParagraphs(work.description, { margin: 0, lineHeight: 1.85, marginBottom: '1.1em' })}
+          </div>
         )}
 
         {/* Body text */}
