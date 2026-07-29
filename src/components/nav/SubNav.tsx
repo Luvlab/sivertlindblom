@@ -39,6 +39,7 @@ export default function SubNav({ locale, dict }: Props) {
       label: dict?.nav?.portfolio ?? 'Portfolio',
       items: [
         { label: dict?.portfolio?.cat_exhibitions ?? 'Utställningar', href: `/${locale}/portfolio/exhibitions` },
+        { label: dict?.portfolio?.cat_group_exhibitions ?? 'Grupputställningar', href: `/${locale}/portfolio/group-exhibitions` },
         { label: dict?.portfolio?.cat_public      ?? 'Offentliga arbeten', href: `/${locale}/portfolio/public-works` },
         { label: dict?.portfolio?.cat_scenography ?? 'Scenografier', href: `/${locale}/portfolio/scenography` },
         { label: dict?.portfolio?.cat_watercolors ?? 'Akvareller', href: `/${locale}/portfolio/watercolors` },

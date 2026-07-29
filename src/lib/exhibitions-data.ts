@@ -40,6 +40,8 @@ export interface Exhibition {
   audioUrl?: string;
   audioCaption?: string;
   photographerCredit?: string;
+  /** Also list this exhibition under Portfolio → Grupputställningar. */
+  group?: boolean;
   /** Cross-list this exhibition under Offentliga arbeten (Public Works). */
   showInPublicWorks?: boolean;
   /** Which Public Works column when cross-listed: 'exterior' | 'interior'. */
