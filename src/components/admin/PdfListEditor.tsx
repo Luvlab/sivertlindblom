@@ -2,6 +2,7 @@
 
 import { useRef, useState } from 'react'
 import { uploadFileDirect } from '@/lib/upload-direct'
+import PdfFlipbook from '@/components/pdf/PdfFlipbook'
 
 export interface PdfItem { label: string; url: string }
 
@@ -21,6 +22,7 @@ export default function PdfListEditor({ pdfs, onChange, label = 'PDF-filer att l
   const fileRef = useRef<HTMLInputElement>(null)
   const [uploading, setUploading] = useState(false)
   const [err, setErr] = useState<string | null>(null)
+  const [preview, setPreview] = useState<PdfItem | null>(null)
 
   async function handleFile(file: File | undefined) {
     if (!file) return
@@ -59,6 +61,7 @@ export default function PdfListEditor({ pdfs, onChange, label = 'PDF-filer att l
             onChange={e => onChange(pdfs.map((x, idx) => idx === i ? { ...x, label: e.target.value } : x))}
             placeholder="Titel (visas som nedladdningslänk)"
           />
+          <button type="button" onClick={() => setPreview(p)} className="btn" style={{ fontSize: 'var(--fs-xs)', flexShrink: 0 }}>📖 Bläddra</button>
           <a href={p.url} target="_blank" rel="noopener noreferrer" className="btn" style={{ fontSize: 'var(--fs-xs)', flexShrink: 0 }}>Visa</a>
           <button
             type="button"
@@ -82,6 +85,8 @@ export default function PdfListEditor({ pdfs, onChange, label = 'PDF-filer att l
         {uploading ? 'Laddar upp…' : '⬆ Ladda upp PDF'}
       </button>
       {err && <p style={{ color: '#f87', fontSize: 'var(--fs-xs)', marginTop: '0.4rem' }}>{err}</p>}
+
+      {preview && <PdfFlipbook url={preview.url} title={preview.label} onClose={() => setPreview(null)} />}
     </div>
   )
 }

@@ -8,6 +8,7 @@ import GalleryGrid from '@/components/gallery/GalleryGrid'
 import type { LightboxImage } from '@/components/gallery/Lightbox'
 import { getWorks, FALLBACK_WORKS } from '@/lib/scenography-data'
 import { renderParagraphs } from '@/lib/render-text'
+import PdfDownloads from '@/components/pdf/PdfDownloads'
 
 export async function generateStaticParams() {
   return locales.flatMap((locale) =>
@@ -167,17 +168,8 @@ export default async function ScenographyDetailPage({
           </div>
         )}
 
-        {/* PDF downloads */}
-        {work.pdfs && work.pdfs.length > 0 && (
-          <div style={{ marginBottom: '3rem', display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
-            <p style={{ fontSize: 'var(--fs-xs)', letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--color-accent)', marginBottom: '0.2rem' }}>Ladda ner</p>
-            {work.pdfs.map((pdf, i) => (
-              <a key={i} href={pdf.url} target="_blank" rel="noopener noreferrer" style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-accent)', textDecoration: 'none', borderBottom: '1px solid var(--color-accent-dim)', paddingBottom: '0.1em', alignSelf: 'flex-start', display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}>
-                <span aria-hidden>📄</span>{pdf.label} (PDF) ↓
-              </a>
-            ))}
-          </div>
-        )}
+        {/* PDF downloads + flip-book */}
+        {work.pdfs && work.pdfs.length > 0 && <PdfDownloads pdfs={work.pdfs} />}
 
         {/* Audio player */}
         {work.audioUrl && (
