@@ -10,7 +10,13 @@ function renderRich(text: string, onNavigate: () => void): React.ReactNode {
   return parts.map((part, i) => {
     const m = part.match(/^\[([^\]]+)\]\(([^)]+)\)$/)
     if (!m) return <span key={i}>{part}</span>
-    const [, label, url] = m
+    const [, label, rawUrl] = m
+    // The model sometimes prepends an invented host (e.g. https://…/sv/references/…)
+    // to a URL we handed it as a relative path. Pull any of our own locale paths
+    // back to a relative internal link so it navigates in-app instead of leaving to
+    // a broken domain.
+    const abs = rawUrl.match(/^https?:\/\/[^/]+(\/(?:sv|en)\/[^\s)]*)$/i)
+    const url = abs ? abs[1] : rawUrl
     if (url.startsWith('/')) return <Link key={i} href={url} onClick={onNavigate} style={linkStyle}>{label}</Link>
     return <a key={i} href={url} target="_blank" rel="noopener noreferrer" style={linkStyle}>{label}</a>
   })

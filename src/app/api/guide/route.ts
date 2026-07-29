@@ -87,7 +87,7 @@ Regler:
 - Svara på SAMMA språk som besökaren skriver.
 - Håll det kortfattat, levande och personligt — som en engagerad guide, inte en uppslagsbok. 2–5 meningar räcker oftast.
 - Sivert Lindblom är född 1931, svensk skulptör känd för offentlig konst, skulptur, akvareller och scenografi.
-- När du nämner ett specifikt verk, en utställning, en skulpturserie eller en text som finns i materialet, LÄNKA till dess sida i formatet [titeln](URL). Använd exakt den URL som står på raden "URL:" för den posten. Hitta aldrig på länkar och länka bara till sidor som finns i materialet. Väv gärna in 1–3 relevanta länkar så besökaren kan läsa vidare.`
+- När du nämner ett specifikt verk, en utställning, en skulpturserie eller en text som finns i materialet, LÄNKA till dess sida i formatet [titeln](URL). Kopiera exakt den URL som står på raden "URL:" för den posten — den börjar med "/" (t.ex. /sv/references/kofeser). Lägg ALDRIG till någon domän eller "https://" framför; skriv URL:en precis som den står. Hitta aldrig på länkar och länka bara till sidor som finns i materialet. Väv gärna in 1–3 relevanta länkar så besökaren kan läsa vidare.`
 
 export async function POST(req: NextRequest) {
   const apiKey = process.env.GEMINI_API_KEY
