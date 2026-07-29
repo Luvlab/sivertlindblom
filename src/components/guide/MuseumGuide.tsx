@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
+import { usePathname } from 'next/navigation'
 import Link from 'next/link'
 
 /** Render assistant text, turning [label](url) markdown into clickable links. */
@@ -55,6 +56,9 @@ export default function MuseumGuide({ locale, guideDict }: { locale: string; gui
   const t: GuideDict = guideDict ?? FALLBACK[locale] ?? FALLBACK.sv
   const suggestions = [t.s1, t.s2, t.s3, t.s4, t.s5].filter(Boolean)
   const [open, setOpen] = useState(false)
+  const pathname = usePathname()
+  // Close guide whenever the user navigates (header links, back button, guide links, etc.)
+  useEffect(() => { setOpen(false) }, [pathname])
   const [messages, setMessages] = useState<Msg[]>([])
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)

@@ -133,11 +133,10 @@ export default async function PublicWorkDetailPage({
       <div className="page-pad">
         {/* Description */}
         {work.description && (
-          <div style={{
+          <div className="prose-cols" style={{
             color: 'var(--color-muted)',
             fontSize: 'var(--fs-base)',
             lineHeight: 1.85,
-            maxWidth: '68ch',
             marginBottom: '1.5rem',
           }}>
             {renderParagraphs(work.description, { margin: 0, lineHeight: 1.85, marginBottom: '1.1em' })}

@@ -24,7 +24,6 @@ export default function AdminTexts() {
   const [orderDirty, setOrderDirty] = useState(false)
   const [orderSaving, setOrderSaving] = useState(false)
   const [orderSaved, setOrderSaved] = useState(false)
-  const dragFrom = useRef<number | null>(null)
   const dragOverEl = useRef<HTMLTableRowElement | null>(null)
 
   useEffect(() => {
@@ -75,9 +74,9 @@ export default function AdminTexts() {
   }, [items, savedOrder, liveOrder, filter, typeFilter, isFiltering])
 
   function onDragStart(e: React.DragEvent<HTMLTableRowElement>, idx: number) {
-    dragFrom.current = idx
+    e.dataTransfer.setData('text/plain', String(idx))
     e.dataTransfer.effectAllowed = 'move'
-    e.currentTarget.style.opacity = '0.5'
+    e.currentTarget.style.opacity = '0.45'
   }
 
   function onDragEnd(e: React.DragEvent<HTMLTableRowElement>) {
@@ -87,8 +86,9 @@ export default function AdminTexts() {
 
   function onDragOver(e: React.DragEvent<HTMLTableRowElement>, idx: number) {
     e.preventDefault()
-    const from = dragFrom.current
-    if (from === null || from === idx) return
+    e.dataTransfer.dropEffect = 'move'
+    const fromIdx = parseInt(e.dataTransfer.getData('text/plain'))
+    if (!isNaN(fromIdx) && fromIdx === idx) return
     if (dragOverEl.current && dragOverEl.current !== e.currentTarget) dragOverEl.current.style.borderTop = ''
     e.currentTarget.style.borderTop = '2px solid var(--color-accent)'
     dragOverEl.current = e.currentTarget
@@ -97,14 +97,14 @@ export default function AdminTexts() {
   function onDrop(e: React.DragEvent<HTMLTableRowElement>, toIdx: number) {
     e.preventDefault()
     if (dragOverEl.current) { dragOverEl.current.style.borderTop = ''; dragOverEl.current = null }
-    const from = dragFrom.current
-    if (from === null || from === toIdx) return
+    const fromIdx = parseInt(e.dataTransfer.getData('text/plain'))
+    if (isNaN(fromIdx) || fromIdx === toIdx) return
     const newOrder = [...displayItems]
-    const [moved] = newOrder.splice(from, 1)
+    const [moved] = newOrder.splice(fromIdx, 1)
     newOrder.splice(toIdx, 0, moved)
-    setLiveOrder(newOrder.map(it => it.slug))
+    const slugOrder = newOrder.map(it => it.slug).filter(Boolean)
+    setLiveOrder(slugOrder)
     setOrderDirty(true)
-    dragFrom.current = null
   }
 
   async function saveOrder() {

@@ -102,11 +102,10 @@ export default async function ExhibitionDetailPage({
       <div className="page-pad">
         {/* Description */}
         {ex.description && ex.description !== 'TEXT kommer' && (
-          <div style={{
+          <div className="prose-cols" style={{
             color: 'var(--color-muted)',
             fontSize: 'var(--fs-base)',
             lineHeight: 1.85,
-            maxWidth: '68ch',
             marginBottom: ex.body || (ex.links && ex.links.length > 0) ? '1.5rem' : '3.5rem',
           }}>
             {renderParagraphs(ex.description, { margin: 0, lineHeight: 1.85 })}
@@ -115,11 +114,10 @@ export default async function ExhibitionDetailPage({
 
         {/* Body text */}
         {ex.body && (
-          <div style={{
+          <div className="prose-cols" style={{
             color: 'var(--color-muted)',
             fontSize: 'var(--fs-base)',
             lineHeight: 1.85,
-            maxWidth: '68ch',
             marginBottom: (ex.links && ex.links.length > 0) ? '1.5rem' : '3.5rem',
           }}>
             {renderParagraphs(ex.body, { margin: 0, lineHeight: 1.85 })}

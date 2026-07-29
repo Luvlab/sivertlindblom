@@ -70,11 +70,9 @@ export default async function ReferencesPage({
 
   return (
     <div style={{ paddingBottom: '5rem', marginTop: 'calc(-1 * var(--header-h))' }}>
-      {/* Tabs — label embedded in tab strip row */}
       <TabsLayout
         tabs={TABS}
         defaultTab="skulptur"
-        label={dict.references?.title ?? 'Referensmaterial'}
       >
 
         {/* ── 1. Skulptur ───────────────────────────────────── */}

@@ -16,6 +16,7 @@ export interface TextItem {
   slug: string
   type: 'essay' | 'preface' | 'review' | 'interview' | 'own_writing' | 'translated' | 'film'
   year: number
+  month?: number                             // 1–12, for ordering texts within the same year
   title: string
   author: string
   authorBio?: string                        // short bio shown under signature

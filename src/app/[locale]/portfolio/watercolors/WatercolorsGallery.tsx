@@ -76,12 +76,14 @@ export default function WatercolorsGallery({ locale, dict, images, title, descri
               {displayTitle}
             </h1>
           )}
-          <p style={{ color: 'var(--color-muted)', maxWidth: '60ch', fontSize: 'var(--fs-base)', lineHeight: 1.8, marginBottom: '1rem', whiteSpace: 'pre-wrap' }}>
-            {displayDesc}
-          </p>
-          <p style={{ color: 'var(--color-muted)', maxWidth: '60ch', fontSize: 'var(--fs-sm)', lineHeight: 1.7 }}>
-            {wc.context_1 ?? ''} {wc.context_2 ?? ''}
-          </p>
+          <div className="prose-cols" style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-base)', lineHeight: 1.8, marginBottom: '1rem' }}>
+            <p style={{ whiteSpace: 'pre-wrap', margin: 0 }}>{displayDesc}</p>
+            {(wc.context_1 || wc.context_2) && (
+              <p style={{ fontSize: 'var(--fs-sm)', lineHeight: 1.7, marginTop: '0.75em', marginBottom: 0 }}>
+                {wc.context_1 ?? ''} {wc.context_2 ?? ''}
+              </p>
+            )}
+          </div>
           {/* Catalogue text links */}
           <div style={{ marginTop: '1rem', display: 'flex', flexWrap: 'wrap', gap: '0.5rem 1.5rem', fontSize: 'var(--fs-xs)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
             <Link href={`/${locale}/texts/jan-oqvist-2012`} style={{ color: 'var(--color-accent)', textDecoration: 'none' }}>LÄS MER — Jan Öqvist</Link>
@@ -110,14 +112,14 @@ export default function WatercolorsGallery({ locale, dict, images, title, descri
               style={{
                 display: 'block',
                 width: '100%',
-                aspectRatio: '1 / 1',
-                padding: '6px',
+                padding: '6px 6px 0',
                 border: 'none',
                 background: '#f0ede8',
                 cursor: 'pointer',
                 overflow: 'hidden',
                 boxSizing: 'border-box',
                 lineHeight: 0,
+                textAlign: 'left',
               }}
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -127,11 +129,25 @@ export default function WatercolorsGallery({ locale, dict, images, title, descri
                 loading={i < 16 ? 'eager' : 'lazy'}
                 style={{
                   width: '100%',
-                  height: '100%',
+                  aspectRatio: '1 / 1',
                   objectFit: 'contain',
                   display: 'block',
                 }}
               />
+              {img.alt && (
+                <span style={{
+                  display: 'block',
+                  fontSize: '0.6rem',
+                  color: '#5a5048',
+                  padding: '4px 2px 6px',
+                  lineHeight: 1.3,
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                }}>
+                  {img.alt}
+                </span>
+              )}
             </button>
           ))}
         </div>
@@ -148,7 +164,7 @@ export default function WatercolorsGallery({ locale, dict, images, title, descri
       {/* Fullscreen lightbox */}
       {lightboxIdx !== null && (
         <Lightbox
-          images={images}
+          images={images.map(img => ({ ...img, caption: img.caption ?? img.alt }))}
           startIndex={lightboxIdx}
           onClose={() => setLightboxIdx(null)}
         />

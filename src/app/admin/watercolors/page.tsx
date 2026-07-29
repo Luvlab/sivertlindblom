@@ -293,7 +293,7 @@ export default function AdminWatercolors() {
           <button
             className="btn btn-primary"
             onClick={handleSave}
-            disabled={saving || (!dirty && !saved)}
+            disabled={saving}
             style={saved ? { background: '#2c6e2c', borderColor: '#2c6e2c', opacity: 1, cursor: 'default' } : {}}
           >
             {saving ? 'Sparar…' : saved ? '✓ Sparad!' : 'Spara ändringar'}

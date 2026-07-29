@@ -72,7 +72,7 @@ export default async function SculptureSeriesPage({
           {project.title}
         </h1>
 
-        <div style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-base)', maxWidth: '60ch', marginBottom: '1.5rem' }}>
+        <div className="prose-cols" style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-base)', marginBottom: '1.5rem' }}>
           {renderParagraphs(project.description, { margin: 0, lineHeight: 1.75, marginBottom: '1.1em' })}
         </div>
 

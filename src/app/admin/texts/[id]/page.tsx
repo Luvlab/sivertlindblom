@@ -24,6 +24,7 @@ interface TextItem {
   slug: string
   type: 'essay' | 'preface' | 'review' | 'interview' | 'own_writing' | 'translated' | 'film'
   year: number
+  month?: number
   title: string
   author: string
   authorBio?: string
@@ -135,7 +136,7 @@ function EditTextPageInner() {
               </div>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '1.5rem' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: '1.5rem' }}>
               <div>
                 {label('Författare')}
                 <input className="input" style={inp} value={form.author} onChange={e => set('author', e.target.value)} />
@@ -149,6 +150,11 @@ function EditTextPageInner() {
               <div>
                 {label('År')}
                 <input className="input" type="number" style={inp} value={form.year} onChange={e => set('year', Number(e.target.value))} />
+              </div>
+              <div>
+                {label('Månad (1–12)')}
+                <input className="input" type="number" style={inp} min={1} max={12} placeholder="—"
+                  value={form.month ?? ''} onChange={e => set('month', e.target.value ? Number(e.target.value) : undefined)} />
               </div>
             </div>
 

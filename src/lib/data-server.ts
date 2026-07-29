@@ -731,6 +731,7 @@ function dbRowToText(row: Record<string, unknown>): TextItem {
     slug: row.slug as string,
     type: row.text_type as TextItem['type'],
     year: (row.year as number) ?? 0,
+    month: (row.month as number) ?? undefined,
     title: row.title as string,
     author: (row.author as string) ?? '',
     authorBio: (row.author_bio as string) ?? '',
@@ -756,6 +757,7 @@ export async function getTexts(): Promise<TextItem[]> {
       .select('*')
       .eq('published', true)
       .order('year', { ascending: false })
+      .order('month', { ascending: false, nullsFirst: false })
     if (!error && data) return data.map((r) => dbRowToText(r as Record<string, unknown>))
   }
   return STATIC_TEXTS
