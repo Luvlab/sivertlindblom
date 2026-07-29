@@ -81,6 +81,7 @@ export default async function HomePage({
             color: 'rgba(245,245,240,0.75)',
             maxWidth: '55ch',
             marginBottom: '2.5rem',
+            whiteSpace: 'pre-wrap',
           }}>
             {dict.home?.tagline ?? settings.hero_tagline}
           </p>
@@ -217,6 +218,7 @@ export default async function HomePage({
               fontSize: 'var(--fs-base)',
               lineHeight: 1.85,
               margin: 0,
+              whiteSpace: 'pre-wrap',
             }}>
               {dict.home?.about_text ?? settings.about_short}
             </p>
