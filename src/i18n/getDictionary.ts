@@ -17,6 +17,16 @@ const dictionaries: Record<Locale, () => Promise<Record<string, unknown>>> = {
   pl: () => import('./locales/pl.json').then((m) => m.default as Record<string, unknown>),
   ko: () => import('./locales/ko.json').then((m) => m.default as Record<string, unknown>),
   th: () => import('./locales/th.json').then((m) => m.default as Record<string, unknown>),
+  hu: () => import('./locales/hu.json').then((m) => m.default as Record<string, unknown>),
+  cs: () => import('./locales/cs.json').then((m) => m.default as Record<string, unknown>),
+  ro: () => import('./locales/ro.json').then((m) => m.default as Record<string, unknown>),
+  fi: () => import('./locales/fi.json').then((m) => m.default as Record<string, unknown>),
+  da: () => import('./locales/da.json').then((m) => m.default as Record<string, unknown>),
+  no: () => import('./locales/no.json').then((m) => m.default as Record<string, unknown>),
+  el: () => import('./locales/el.json').then((m) => m.default as Record<string, unknown>),
+  uk: () => import('./locales/uk.json').then((m) => m.default as Record<string, unknown>),
+  tr: () => import('./locales/tr.json').then((m) => m.default as Record<string, unknown>),
+  gsw: () => import('./locales/gsw.json').then((m) => m.default as Record<string, unknown>),
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
