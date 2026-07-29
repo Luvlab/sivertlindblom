@@ -25,6 +25,16 @@ const NATIVE_NAMES: Record<Locale, string> = {
   pl: 'Polski',
   ko: '한국어',
   th: 'ภาษาไทย',
+  hu: 'Magyar',
+  cs: 'Čeština',
+  ro: 'Română',
+  fi: 'Suomi',
+  da: 'Dansk',
+  no: 'Norsk',
+  el: 'Ελληνικά',
+  uk: 'Українська',
+  tr: 'Türkçe',
+  gsw: 'Schweizerdeutsch',
 }
 
 export default function LanguageSwitcher({ locale }: LanguageSwitcherProps) {
