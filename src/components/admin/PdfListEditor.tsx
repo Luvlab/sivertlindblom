@@ -1,7 +1,7 @@
 'use client'
 
 import { useRef, useState } from 'react'
-import { uploadImageFile } from '@/lib/upload-image'
+import { uploadFileDirect } from '@/lib/upload-direct'
 
 export interface PdfItem { label: string; url: string }
 
@@ -30,7 +30,7 @@ export default function PdfListEditor({ pdfs, onChange, label = 'PDF-filer att l
     }
     setUploading(true)
     setErr(null)
-    const d = await uploadImageFile(file, file.name)
+    const d = await uploadFileDirect(file, { bucket: 'images', folder: 'pdfs' })
     if (d.url) {
       onChange([...pdfs, { label: file.name.replace(/\.pdf$/i, ''), url: d.url }])
     } else {

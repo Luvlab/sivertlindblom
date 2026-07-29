@@ -35,6 +35,7 @@ function dbToExhibition(w: Record<string, unknown>): Exhibition {
     description: (w.description as string) ?? '',
     links: (w.links as Exhibition['links']) ?? undefined,
     pdfs: (w.pdfs as Exhibition['pdfs']) ?? undefined,
+    audioUrl: (w.audio_url as string) ?? undefined,
     body: (w.body as string) ?? undefined,
     photographerCredit: (w.photographer_credit as string) ?? undefined,
     showInPublicWorks: (w.show_in_public_works as boolean) ?? false,
@@ -125,6 +126,7 @@ export async function PUT(
                 .filter((p) => p && typeof p.url === 'string' && p.url.trim())
                 .map((p) => ({ label: (p.label ?? '').toString().trim() || 'PDF', url: p.url }))
             : [],
+          audio_url: body.audioUrl?.trim() || null,
           photographer_credit: body.photographerCredit ?? null,
           show_in_public_works: body.showInPublicWorks ?? false,
           public_subcategory: body.showInPublicWorks ? (body.publicSubcategory ?? 'exterior') : null,

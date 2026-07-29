@@ -344,6 +344,7 @@ function dbRowToExhibition(w: Record<string, unknown>): Exhibition {
     body: (w.body as string) ?? undefined,
     links: (w.links as ExhibitionLink[]) ?? undefined,
     pdfs: (w.pdfs as Array<{ label: string; url: string }>) ?? undefined,
+    audioUrl: (w.audio_url as string) || undefined,
     group: (w.group_exhibition as boolean) || undefined,
     photographerCredit: (w.photographer_credit as string) ?? undefined,
     images: imgs
