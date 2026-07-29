@@ -43,7 +43,7 @@ export default function BackupPage() {
         <div>
           <FieldLabel>Exportera hela databasen</FieldLabel>
           <p style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-muted)', margin: '0 0 1rem' }}>
-            Laddar ned en JSON-fil med allt innehåll: offentliga arbeten, utställningar, undersidor, bilder och kartnålar. Filen kan sparas lokalt och användas för att återskapa innehåll om något går fel.
+            Laddar ned en JSON-fil med <strong>hela sajtens innehåll</strong> — alla sektioner och inställningar. Filen kan sparas lokalt och användas för att återskapa innehåll om något går fel.
           </p>
           <button
             className="btn btn-primary"
@@ -70,16 +70,19 @@ export default function BackupPage() {
       <div style={{ border: '1px solid var(--color-border)', borderRadius: 2, padding: '1.5rem' }}>
         <FieldLabel>Vad ingår i exporten?</FieldLabel>
         <ul style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-muted)', paddingLeft: '1.2rem', margin: 0, lineHeight: 1.7 }}>
-          <li>Alla offentliga arbeten (titlar, texter, år, platser, koordinater, filmer, länkar)</li>
-          <li>Bilder kopplade till offentliga arbeten</li>
-          <li>Undersidor till offentliga arbeten</li>
-          <li>Alla utställningar (titlar, texter, år, platser, länkar)</li>
-          <li>Bilder kopplade till utställningar</li>
-          <li>Undersidor till utställningar</li>
+          <li>Utställningar — med bilder, undersidor, länkar, PDF, ljud/video</li>
+          <li>Offentliga arbeten — med bilder, undersidor, koordinater, länkar, media</li>
+          <li>Scenografi — med bilder och media</li>
+          <li>Texter — med bilder, undersidor, PDF, media</li>
+          <li>Biografi (poster/kronologi)</li>
+          <li>Akvareller</li>
+          <li>Referenser (Skulptur, Fotografier, Grafik, Ögonblick, Utmärkelser, Film &amp; TV)</li>
           <li>Kartnålar</li>
+          <li>SEO &amp; Delning, Startsida, Litteraturförteckning, Kontakt m.m. (inställningar)</li>
+          <li>AI-guidens chatt-logg</li>
         </ul>
         <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-border)', margin: '1rem 0 0' }}>
-          Obs: Bilder lagras i Supabase Storage och ingår inte i JSON-filen — bara bildlänkarna exporteras.
+          Obs: Själva bild-, ljud-, video- och PDF-filerna lagras i Supabase Storage och ingår inte i JSON-filen — deras länkar (URL:er) exporteras med posterna.
         </p>
       </div>
     </div>

@@ -7,45 +7,42 @@ async function checkAuth(): Promise<boolean> {
   return store.get('admin_session')?.value === 'authenticated'
 }
 
+// Every content table on the site. `settings` holds references (skulptur, film,
+// fotografier, grafik, ögonblick, utmärkelser), start page, SEO & delning,
+// litteraturförteckning, akvarell-config, kontakt and the AI-guide config.
+const TABLES = [
+  'works', 'images', 'work_subpages',                        // Utställningar
+  'public_works', 'public_work_images', 'public_work_subpages', // Offentliga arbeten
+  'scenography_works', 'scenography_images',                  // Scenografi
+  'texts', 'text_subpages',                                   // Texter
+  'biography_entries',                                        // Biografi
+  'watercolors',                                              // Akvareller
+  'map_pins',                                                 // Karta
+  'settings',                                                 // Referenser, SEO/Delning, Inställningar m.m.
+  'guide_chats',                                              // AI-guide (logg)
+  'content_nodes', 'documents',                               // Övrigt
+] as const
+
 export async function GET() {
   if (!(await checkAuth())) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
   const supabase = createAdminClient()
   if (!supabase) return NextResponse.json({ error: 'Supabase ej tillgänglig' }, { status: 500 })
 
-  const [
-    { data: publicWorks, error: e1 },
-    { data: publicWorkImages, error: e2 },
-    { data: publicWorkSubpages, error: e3 },
-    { data: exhibitions, error: e4 },
-    { data: exhibitionImages, error: e5 },
-    { data: exhibitionSubpages, error: e6 },
-    { data: mapPins, error: e7 },
-  ] = await Promise.all([
-    supabase.from('public_works').select('*').order('year', { ascending: false }),
-    supabase.from('public_work_images').select('*').order('sort_order'),
-    supabase.from('public_work_subpages').select('*').order('sort_order'),
-    supabase.from('works').select('*').order('year', { ascending: false }),
-    supabase.from('images').select('*').order('sort_order'),
-    supabase.from('work_subpages').select('*').order('sort_order'),
-    supabase.from('map_pins').select('*'),
-  ])
+  const results = await Promise.all(TABLES.map((t) => supabase.from(t).select('*')))
 
-  const errors = [e1, e2, e3, e4, e5, e6, e7].filter(Boolean)
-  if (errors.length) {
-    return NextResponse.json({ error: errors.map(e => e?.message).join('; ') }, { status: 500 })
-  }
-
-  const backup = {
+  const errors: string[] = []
+  const backup: Record<string, unknown> = {
     exportedAt: new Date().toISOString(),
-    publicWorks: publicWorks ?? [],
-    publicWorkImages: publicWorkImages ?? [],
-    publicWorkSubpages: publicWorkSubpages ?? [],
-    exhibitions: exhibitions ?? [],
-    exhibitionImages: exhibitionImages ?? [],
-    exhibitionSubpages: exhibitionSubpages ?? [],
-    mapPins: mapPins ?? [],
+    site: 'sivertlindblom',
+    note: 'Fullständig innehållssäkerhetskopia. Bild-, ljud-, video- och PDF-filerna ligger i Supabase Storage; deras URL:er finns i posterna nedan.',
   }
+  TABLES.forEach((t, i) => {
+    if (results[i].error) errors.push(`${t}: ${results[i].error!.message}`)
+    backup[t] = results[i].data ?? []
+  })
+
+  if (errors.length) return NextResponse.json({ error: errors.join('; ') }, { status: 500 })
 
   return new NextResponse(JSON.stringify(backup, null, 2), {
     headers: {
