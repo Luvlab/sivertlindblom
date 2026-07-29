@@ -16,6 +16,7 @@ export default function WatercolorsGallery({ locale, dict, images, title, descri
   const nav = dict?.nav ?? {}
   const displayTitle = title ?? wc.title ?? 'Akvareller 1975–2012'
   const displayDesc = description ?? wc.short_description ?? 'En serie axonometriska arkitektoniska visioner.'
+  const hasDbDesc = Boolean(description)
   const hasHero = heroImages && heroImages.length > 0
 
   return (
@@ -78,7 +79,7 @@ export default function WatercolorsGallery({ locale, dict, images, title, descri
           )}
           <div className="prose-cols" style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-base)', lineHeight: 1.8, marginBottom: '1rem' }}>
             <p style={{ whiteSpace: 'pre-wrap', margin: 0 }}>{displayDesc}</p>
-            {(wc.context_1 || wc.context_2) && (
+            {!hasDbDesc && (wc.context_1 || wc.context_2) && (
               <p style={{ fontSize: 'var(--fs-sm)', lineHeight: 1.7, marginTop: '0.75em', marginBottom: 0 }}>
                 {wc.context_1 ?? ''} {wc.context_2 ?? ''}
               </p>
