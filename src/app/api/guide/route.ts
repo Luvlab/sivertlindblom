@@ -104,6 +104,16 @@ export async function POST(req: NextRequest) {
   const relevant = retrieve(corpus, lastUser.content)
   const context = relevant.map((d) => `## ${d.title}\n${d.meta}\n${d.text}`).join('\n\n')
 
+  // Extra curator-supplied knowledge (e.g. a CV about Jan Öqvist), always included.
+  let knowledge = ''
+  try {
+    const supa = createAdminClient()
+    if (supa) {
+      const { data } = await supa.from('settings').select('value').eq('key', 'guide_knowledge').maybeSingle()
+      knowledge = ((data?.value as string) ?? '').slice(0, 12000)
+    }
+  } catch { /* optional */ }
+
   const contents = messages.map((m) => ({
     role: m.role === 'assistant' ? 'model' : 'user',
     parts: [{ text: m.content }],
@@ -114,7 +124,7 @@ export async function POST(req: NextRequest) {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        system_instruction: { parts: [{ text: `${SYSTEM}\n\n=== MATERIAL FRÅN SAJTEN ===\n${context || '(inget relevant material hittades)'}` }] },
+        system_instruction: { parts: [{ text: `${SYSTEM}\n\n${knowledge ? `=== EXTRA MATERIAL (bakgrund, t.ex. om curatorn Jan Öqvist) ===\n${knowledge}\n\n` : ''}=== MATERIAL FRÅN SAJTEN ===\n${context || '(inget relevant material hittades)'}` }] },
         contents,
         generationConfig: { temperature: 0.4, maxOutputTokens: 700, topP: 0.9 },
       }),

@@ -15,7 +15,7 @@
 // refresh. The browser only re-installs the service worker when /sw.js differs
 // byte-for-byte, so a new version here is what makes the "Ny version
 // tillgänglig" banner appear and clears the old caches.
-const CACHE_VERSION = 'v49-2026-07-29'
+const CACHE_VERSION = 'v50-2026-07-29'
 const STATIC_CACHE  = `sivert-static-${CACHE_VERSION}`
 const IMAGE_CACHE   = `sivert-images-${CACHE_VERSION}`
 const PAGE_CACHE    = `sivert-pages-${CACHE_VERSION}`

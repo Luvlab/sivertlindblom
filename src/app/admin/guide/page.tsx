@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 
 interface Chat {
   id: string
@@ -37,6 +37,31 @@ export default function AdminGuide() {
   const [stats, setStats] = useState({ total: 0, sessions: 0, ips: 0 })
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+
+  // Extra knowledge the guide always sees (e.g. a CV about Jan Öqvist).
+  const [knowledge, setKnowledge] = useState('')
+  const [kSaving, setKSaving] = useState(false)
+  const [kSaved, setKSaved] = useState(false)
+  const fileRef = useRef<HTMLInputElement>(null)
+
+  useEffect(() => {
+    fetch('/api/admin/guide-knowledge', { cache: 'no-store' })
+      .then(r => r.json()).then((d: { text?: string }) => setKnowledge(d.text ?? '')).catch(() => {})
+  }, [])
+
+  async function loadTxt(file: File | undefined) {
+    if (!file) return
+    const text = await file.text()
+    setKnowledge(prev => (prev.trim() ? prev + '\n\n' : '') + text)
+  }
+
+  async function saveKnowledge() {
+    setKSaving(true)
+    try {
+      await fetch('/api/admin/guide-knowledge', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text: knowledge }) })
+      setKSaved(true); setTimeout(() => setKSaved(false), 3000)
+    } finally { setKSaving(false) }
+  }
 
   function load() {
     setLoading(true)
@@ -88,6 +113,29 @@ export default function AdminGuide() {
       <p style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-sm)', marginBottom: '2rem' }}>
         Alla samtal besökare fört med guiden, grupperade per session, med IP och plats.
       </p>
+
+      {/* Guide knowledge (extra background the AI always sees) */}
+      <div style={{ border: '1px solid var(--color-border)', borderRadius: 6, padding: '1.25rem', marginBottom: '2.5rem' }}>
+        <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-lg)', margin: '0 0 0.25rem' }}>Guidens kunskap</h2>
+        <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', margin: '0 0 0.9rem' }}>
+          Extra bakgrund som guiden alltid får med sig — t.ex. en CV om Jan Öqvist. Klistra in text eller ladda upp en .txt-fil. Guiden svarar utifrån detta om en besökare frågar.
+        </p>
+        <textarea
+          className="input"
+          rows={10}
+          style={{ width: '100%', resize: 'vertical', fontSize: 'var(--fs-sm)', lineHeight: 1.6 }}
+          value={knowledge}
+          onChange={e => setKnowledge(e.target.value)}
+          placeholder="Klistra in text om Jan Öqvist (eller annat guiden bör känna till)…"
+        />
+        <div style={{ display: 'flex', gap: '0.6rem', alignItems: 'center', marginTop: '0.75rem', flexWrap: 'wrap' }}>
+          <input ref={fileRef} type="file" accept=".txt,text/plain" style={{ display: 'none' }} onChange={e => { loadTxt(e.target.files?.[0]); e.target.value = '' }} />
+          <button type="button" className="btn" onClick={() => fileRef.current?.click()}>⬆ Ladda upp .txt</button>
+          <button type="button" className="btn btn-primary" onClick={saveKnowledge} disabled={kSaving}>{kSaving ? 'Sparar…' : 'Spara kunskap'}</button>
+          {kSaved && <span style={{ color: 'var(--color-accent)', fontSize: 'var(--fs-sm)' }}>✓ Sparad</span>}
+          <span style={{ color: 'var(--color-border)', fontSize: 'var(--fs-xs)', marginLeft: 'auto' }}>{knowledge.length} tecken</span>
+        </div>
+      </div>
 
       {error && <div style={{ background: '#3a0010', border: '1px solid #c00', padding: '1rem', marginBottom: '1.5rem', fontSize: 'var(--fs-sm)', color: '#f88', borderRadius: 4 }}>{error}</div>}
 
