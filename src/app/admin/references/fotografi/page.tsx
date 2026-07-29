@@ -11,6 +11,8 @@ export default function AdminFotografi() {
   const [urls, setUrls] = useState<string[]>([])
   // Captions keyed by image URL (editable per thumbnail).
   const [captions, setCaptions] = useState<Record<string, string>>({})
+  // Photographer credits keyed by image URL (editable per thumbnail).
+  const [credits, setCredits] = useState<Record<string, string>>({})
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [saved, setSaved] = useState(false)
@@ -28,6 +30,9 @@ export default function AdminFotografi() {
         const map: Record<string, string> = {}
         for (const i of d.images) if (i.caption) map[i.url] = i.caption
         setCaptions(map)
+        const cmap: Record<string, string> = {}
+        for (const i of d.images) if (i.photographer) cmap[i.url] = i.photographer
+        setCredits(cmap)
       })
       .catch(e => setError(String(e)))
       .finally(() => setLoading(false))
@@ -38,7 +43,7 @@ export default function AdminFotografi() {
     setSaving(true)
     setError(null)
     try {
-      const images = urls.map(url => ({ url, caption: captions[url] || undefined }))
+      const images = urls.map(url => ({ url, caption: captions[url] || undefined, photographer: credits[url] || undefined }))
       const res = await fetch('/api/admin/reference-fotografi', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
@@ -105,6 +110,8 @@ export default function AdminFotografi() {
           label="Fotografier"
           captions={captions}
           onCaptionsChange={(next) => { setCaptions(next); setDirty(true) }}
+          credits={credits}
+          onCreditsChange={(next) => { setCredits(next); setDirty(true) }}
         />
       </div>
     </AdminForm>

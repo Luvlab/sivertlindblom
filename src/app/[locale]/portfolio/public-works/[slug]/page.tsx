@@ -58,6 +58,7 @@ export default async function PublicWorkDetailPage({
   const galleryImages: LightboxImage[] = work.images.map((img, i) => ({
     url: img.url,
     alt: img.alt ?? `${work.title} — bild ${i + 1}`,
+    credit: work.photographerCredit || undefined,
   }))
 
   const googleMapsUrl = mapPin

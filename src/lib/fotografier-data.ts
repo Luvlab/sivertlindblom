@@ -1,6 +1,8 @@
 export interface FotografiImage {
   url: string
   caption?: string
+  /** Per-image photographer credit (rendered as "Foto: …"). */
+  photographer?: string
 }
 
 // All reference/inspiration images from sivertlindblom.se/biografi/referens-och-inspirationsbilder/

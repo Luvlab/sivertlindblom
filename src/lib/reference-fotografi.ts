@@ -27,7 +27,7 @@ export function parseFotografi(raw: string | null | undefined): FotografiSection
     const v = JSON.parse(raw) as Partial<FotografiSection>
     const images = Array.isArray(v.images)
       ? v.images.filter((i) => i && typeof i.url === 'string' && i.url.trim())
-          .map((i) => ({ url: i.url, caption: i.caption || undefined }))
+          .map((i) => ({ url: i.url, caption: i.caption || undefined, photographer: i.photographer || undefined }))
       : []
     return {
       intro: typeof v.intro === 'string' ? v.intro : '',

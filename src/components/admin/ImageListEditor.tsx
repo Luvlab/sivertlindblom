@@ -12,6 +12,9 @@ interface ImageListEditorProps {
   /** When provided, each thumbnail gets a caption (bildtext) input. */
   captions?: Record<string, string>
   onCaptionsChange?: (next: Record<string, string>) => void
+  /** When provided, each thumbnail gets a photographer credit (Foto:) input. */
+  credits?: Record<string, string>
+  onCreditsChange?: (next: Record<string, string>) => void
 }
 
 interface VaultImage {
@@ -20,7 +23,7 @@ interface VaultImage {
   alt: string
 }
 
-export default function ImageListEditor({ images, onChange, label = 'Bilder', captions, onCaptionsChange }: ImageListEditorProps) {
+export default function ImageListEditor({ images, onChange, label = 'Bilder', captions, onCaptionsChange, credits, onCreditsChange }: ImageListEditorProps) {
   const captionsEnabled = !!captions && !!onCaptionsChange
   function setCaption(url: string, value: string) {
     if (!captions || !onCaptionsChange) return
@@ -28,6 +31,14 @@ export default function ImageListEditor({ images, onChange, label = 'Bilder', ca
     if (value.trim()) next[url] = value
     else delete next[url]
     onCaptionsChange(next)
+  }
+  const creditsEnabled = !!credits && !!onCreditsChange
+  function setCredit(url: string, value: string) {
+    if (!credits || !onCreditsChange) return
+    const next = { ...credits }
+    if (value.trim()) next[url] = value
+    else delete next[url]
+    onCreditsChange(next)
   }
   const [newUrl, setNewUrl] = useState('')
   const [uploading, setUploading] = useState(false)
@@ -294,6 +305,29 @@ export default function ImageListEditor({ images, onChange, label = 'Bilder', ca
                   value={captions?.[url] ?? ''}
                   onChange={e => setCaption(url, e.target.value)}
                   placeholder="Bildtext…"
+                  onMouseDown={e => e.stopPropagation()}
+                  draggable={false}
+                  style={{
+                    width: '100%',
+                    background: 'var(--color-bg)',
+                    border: '1px solid var(--color-border)',
+                    color: 'var(--color-text)',
+                    fontSize: '0.65rem',
+                    padding: '0.25rem 0.35rem',
+                    outline: 'none',
+                  }}
+                />
+              </div>
+            )}
+
+            {/* Photographer credit (Foto:) — persistent input under the image */}
+            {creditsEnabled && url && (
+              <div style={{ padding: '0.3rem', borderTop: '1px solid var(--color-border)', background: 'var(--color-bg-card)' }}>
+                <input
+                  type="text"
+                  value={credits?.[url] ?? ''}
+                  onChange={e => setCredit(url, e.target.value)}
+                  placeholder="Foto: (fotografens namn)"
                   onMouseDown={e => e.stopPropagation()}
                   draggable={false}
                   style={{

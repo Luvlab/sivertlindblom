@@ -54,6 +54,7 @@ export default async function ReferencesPage({
     url: img.url,
     alt: img.caption ?? 'Fotografi',
     caption: img.caption,
+    credit: img.photographer || fotografi.photographer || undefined,
   }))
   const ogonblickLightboxImages: LightboxImage[] = ogonblick.images.map((img) => ({ url: img.url, alt: img.caption ?? 'Ögonblick', caption: img.caption }))
 

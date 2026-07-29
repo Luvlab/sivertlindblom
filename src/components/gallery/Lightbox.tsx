@@ -25,6 +25,8 @@ export interface LightboxImage {
   url: string
   alt: string
   caption?: string
+  /** Photographer credit — rendered as "Foto: …" under the caption. */
+  credit?: string
 }
 
 interface Props {
@@ -344,26 +346,30 @@ export default function Lightbox({ images, startIndex, onClose }: Props) {
         }}
       />
 
-      {/* Caption */}
-      {current.caption && (
-        <p
+      {/* Caption + photographer credit */}
+      {(current.caption || current.credit) && (
+        <div
           style={{
             position: 'absolute',
             bottom: '1.5rem',
             left: '50%',
             transform: 'translateX(-50%)',
-            color: 'rgba(255,255,255,0.6)',
-            fontSize: 'var(--fs-sm)',
             textAlign: 'center',
             pointerEvents: 'none',
-            whiteSpace: 'nowrap',
             maxWidth: '80vw',
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
           }}
         >
-          {current.caption}
-        </p>
+          {current.caption && (
+            <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: 'var(--fs-sm)', margin: 0, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+              {current.caption}
+            </p>
+          )}
+          {current.credit && (
+            <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: 'var(--fs-xs)', margin: '0.2rem 0 0', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+              Foto: {current.credit}
+            </p>
+          )}
+        </div>
       )}
 
       {/* Progress bar keyframe animation */}

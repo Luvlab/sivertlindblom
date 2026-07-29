@@ -25,7 +25,7 @@ export async function PUT(request: Request) {
       images: Array.isArray(body.images)
         ? body.images
             .filter((i) => i && typeof i.url === 'string' && i.url.trim())
-            .map((i) => ({ url: i.url, caption: i.caption?.trim() || undefined }))
+            .map((i) => ({ url: i.url, caption: i.caption?.trim() || undefined, photographer: i.photographer?.trim() || undefined }))
         : [],
     }
 

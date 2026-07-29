@@ -47,6 +47,7 @@ export default async function ExhibitionDetailPage({
   const galleryImages: LightboxImage[] = ex.images.map((url, i) => ({
     url,
     alt: `${ex.title} — bild ${i + 1}`,
+    credit: ex.photographerCredit || undefined,
   }))
 
   return (

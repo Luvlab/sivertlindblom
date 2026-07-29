@@ -49,6 +49,7 @@ export default async function ScenographyDetailPage({
   const galleryImages: LightboxImage[] = work.images.map((url, i) => ({
     url,
     alt: `${work.title} — bild ${i + 1}`,
+    credit: work.photographerCredit || undefined,
   }))
 
   return (
