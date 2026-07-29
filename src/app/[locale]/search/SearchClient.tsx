@@ -149,38 +149,48 @@ export default function SearchClient({ index, locale, placeholder, typeLabels, u
 
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             {items.map((item) => (
-              <Link
-                key={item.id}
-                href={`/${locale}${item.href}`}
-                className="row-hover"
-                style={{
-                  display: 'block',
-                  padding: '0.9rem 0.5rem',
-                  borderBottom: '1px solid var(--color-border)',
-                  textDecoration: 'none',
-                }}
-              >
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: '1rem', flexWrap: 'wrap' }}>
-                  <span style={{ fontSize: 'var(--fs-base)', fontFamily: 'Georgia, serif', color: 'var(--color-text)' }}>
-                    {highlight(item.title, q)}
-                  </span>
-                  {item.year && (
-                    <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-accent)', fontFamily: 'Georgia, serif', flexShrink: 0 }}>
-                      {item.year}
+              <div key={item.id} style={{ borderBottom: '1px solid var(--color-border)' }}>
+                <Link
+                  href={`/${locale}${item.href}`}
+                  className="row-hover"
+                  style={{
+                    display: 'block',
+                    padding: '0.9rem 0.5rem 0.5rem',
+                    textDecoration: 'none',
+                  }}
+                >
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: '1rem', flexWrap: 'wrap' }}>
+                    <span style={{ fontSize: 'var(--fs-base)', fontFamily: 'Georgia, serif', color: 'var(--color-text)' }}>
+                      {highlight(item.title, q)}
                     </span>
+                    {item.year && (
+                      <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-accent)', fontFamily: 'Georgia, serif', flexShrink: 0 }}>
+                        {item.year}
+                      </span>
+                    )}
+                  </div>
+                  {item.subtitle && (
+                    <div style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', marginTop: '0.2rem' }}>
+                      {highlight(item.subtitle, q)}
+                    </div>
                   )}
-                </div>
-                {item.subtitle && (
-                  <div style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', marginTop: '0.2rem' }}>
-                    {highlight(item.subtitle, q)}
-                  </div>
+                  {item.excerpt && (
+                    <div style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-muted)', marginTop: '0.35rem', opacity: 0.8, lineHeight: 1.5 }}>
+                      {highlight(item.excerpt, q)}
+                    </div>
+                  )}
+                </Link>
+                {typeof item.lat === 'number' && typeof item.lng === 'number' && (
+                  <a
+                    href={`https://www.google.com/maps?q=${item.lat},${item.lng}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem', margin: '0 0 0.7rem 0.5rem', fontSize: 'var(--fs-xs)', color: 'var(--color-accent)', textDecoration: 'none', letterSpacing: '0.06em', textTransform: 'uppercase' }}
+                  >
+                    📍 Visa platsen →
+                  </a>
                 )}
-                {item.excerpt && (
-                  <div style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-muted)', marginTop: '0.35rem', opacity: 0.8, lineHeight: 1.5 }}>
-                    {highlight(item.excerpt, q)}
-                  </div>
-                )}
-              </Link>
+              </div>
             ))}
           </div>
         </section>

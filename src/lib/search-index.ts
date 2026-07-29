@@ -16,6 +16,8 @@ export type SearchItem = {
   excerpt: string    // short text snippet (always indexed in every locale)
   year?: number
   href: string       // locale-relative path (without /{locale} prefix)
+  lat?: number       // when the item is a place, so search can show "VISA PLATSEN"
+  lng?: number
 }
 
 function excerpt(text: string, maxLen = 140): string {
@@ -61,6 +63,15 @@ export function buildSearchIndex(locale = 'sv', dict: any = {}, sources: SearchS
   const publicWorksData = sources.publicWorks ?? PUBLIC_WORKS
   const sculptureData = sources.sculptureLocations ?? SCULPTURE_LOCATIONS
 
+  // Coordinates keyed by work slug, so a public-work result without its own
+  // lat/lng can still show "VISA PLATSEN" using the map-pin location.
+  const coordsBySlug = new Map<string, { lat: number; lng: number }>()
+  for (const s of sculptureData) {
+    if (s.slug && typeof s.lat === 'number' && typeof s.lng === 'number') {
+      coordsBySlug.set(s.slug, { lat: s.lat, lng: s.lng })
+    }
+  }
+
   // ── Exhibitions ───────────────────────────────────────────
   // Exhibition content is in Swedish; always indexed so any locale can find works
   for (const ex of exhibitionsData) {
@@ -94,6 +105,10 @@ export function buildSearchIndex(locale = 'sv', dict: any = {}, sources: SearchS
 
   // ── Public works ──────────────────────────────────────────
   for (const w of publicWorksData) {
+    const wc = w as { lat?: number | null; lng?: number | null }
+    const coord = (typeof wc.lat === 'number' && typeof wc.lng === 'number')
+      ? { lat: wc.lat, lng: wc.lng }
+      : coordsBySlug.get(w.slug)
     items.push({
       id: `pw-${w.slug}`,
       type: 'public-work',
@@ -102,6 +117,8 @@ export function buildSearchIndex(locale = 'sv', dict: any = {}, sources: SearchS
       excerpt: excerpt(w.description ?? ''),
       year: typeof w.year === 'string' ? parseInt(w.year) || undefined : w.year,
       href: `/portfolio/public-works/${w.slug}`,
+      lat: coord?.lat,
+      lng: coord?.lng,
     })
   }
 
@@ -116,6 +133,8 @@ export function buildSearchIndex(locale = 'sv', dict: any = {}, sources: SearchS
       excerpt: excerpt(s.description ?? ''),
       year: s.year,
       href: s.slug ? `/portfolio/public-works/${s.slug}` : `/portfolio/map`,
+      lat: typeof s.lat === 'number' ? s.lat : undefined,
+      lng: typeof s.lng === 'number' ? s.lng : undefined,
     })
   }
 
