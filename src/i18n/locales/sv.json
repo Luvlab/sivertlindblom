@@ -185,5 +185,19 @@
     "min_chars": "Skriv minst 2 tecken för att söka…",
     "no_results": "Inga träffar",
     "no_results_for": "Ingen post matchade"
+  },
+  "guide": {
+    "open": "Fråga guiden",
+    "title": "Hemsidans Guide",
+    "subtitle": "Fråga om Sivert, verken och utställningarna",
+    "placeholder": "Skriv en fråga…",
+    "greeting": "Hej! Jag är guiden till Sivert Lindbloms konst. Fråga mig om ett verk, en utställning eller hans konstnärskap.",
+    "s1": "Vem är Sivert Lindblom?",
+    "s2": "Vilka arkitekter jobbade Sivert Lindblom med?",
+    "s3": "När hade han sin första utställning?",
+    "s4": "Berätta om Blasieholmstorg",
+    "s5": "Vad är hans mest kända verk?",
+    "error": "Något gick fel. Försök igen.",
+    "send": "Skicka"
   }
 }

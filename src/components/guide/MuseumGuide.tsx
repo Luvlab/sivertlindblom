@@ -24,31 +24,36 @@ function renderRich(text: string, onNavigate: () => void): React.ReactNode {
 
 interface Msg { role: 'user' | 'assistant'; content: string }
 
-const T = {
+interface GuideDict {
+  open: string; title: string; subtitle: string; placeholder: string
+  greeting: string; s1: string; s2: string; s3: string; s4: string; s5: string
+  error: string; send: string
+}
+
+const FALLBACK: Record<string, GuideDict> = {
   sv: {
-    open: 'Fråga guiden',
-    title: 'Museiguiden',
+    open: 'Fråga guiden', title: 'Hemsidans Guide',
     subtitle: 'Fråga om Sivert, verken och utställningarna',
     placeholder: 'Skriv en fråga…',
     greeting: 'Hej! Jag är guiden till Sivert Lindbloms konst. Fråga mig om ett verk, en utställning eller hans konstnärskap.',
-    suggestions: ['Vem är Sivert Lindblom?', 'Vilka arkitekter jobbade Sivert Lindblom med?', 'När hade han sin första utställning?', 'Berätta om Blasieholmstorg', 'Vad är hans mest kända verk?'],
-    error: 'Något gick fel. Försök igen.',
-    send: 'Skicka',
+    s1: 'Vem är Sivert Lindblom?', s2: 'Vilka arkitekter jobbade Sivert Lindblom med?',
+    s3: 'När hade han sin första utställning?', s4: 'Berätta om Blasieholmstorg',
+    s5: 'Vad är hans mest kända verk?', error: 'Något gick fel. Försök igen.', send: 'Skicka',
   },
   en: {
-    open: 'Ask the guide',
-    title: 'Museum guide',
+    open: 'Ask the guide', title: 'Website Guide',
     subtitle: 'Ask about Sivert, the works and exhibitions',
     placeholder: 'Type a question…',
     greeting: "Hello! I'm the guide to Sivert Lindblom's art. Ask me about a work, an exhibition, or his practice.",
-    suggestions: ['Who is Sivert Lindblom?', 'Which architects did Sivert Lindblom work with?', 'When was his first exhibition?', 'Tell me about Blasieholmstorg', 'What is his best-known work?'],
-    error: 'Something went wrong. Please try again.',
-    send: 'Send',
+    s1: 'Who is Sivert Lindblom?', s2: 'Which architects did Sivert Lindblom work with?',
+    s3: 'When was his first exhibition?', s4: 'Tell me about Blasieholmstorg',
+    s5: "What is his best-known work?", error: 'Something went wrong. Please try again.', send: 'Send',
   },
 }
 
-export default function MuseumGuide({ locale }: { locale: string }) {
-  const t = locale === 'en' ? T.en : T.sv
+export default function MuseumGuide({ locale, guideDict }: { locale: string; guideDict?: GuideDict }) {
+  const t: GuideDict = guideDict ?? FALLBACK[locale] ?? FALLBACK.sv
+  const suggestions = [t.s1, t.s2, t.s3, t.s4, t.s5].filter(Boolean)
   const [open, setOpen] = useState(false)
   const [messages, setMessages] = useState<Msg[]>([])
   const [input, setInput] = useState('')
@@ -163,7 +168,7 @@ export default function MuseumGuide({ locale }: { locale: string }) {
               <>
                 <Bubble role="assistant">{t.greeting}</Bubble>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem', marginTop: '0.25rem' }}>
-                  {t.suggestions.map((s) => (
+                  {suggestions.map((s) => (
                     <button key={s} onClick={() => send(s)} style={{
                       fontSize: 'var(--fs-xs)', padding: '0.35rem 0.6rem', borderRadius: 999,
                       background: 'transparent', border: '1px solid var(--color-border)', color: 'var(--color-accent)', cursor: 'pointer',

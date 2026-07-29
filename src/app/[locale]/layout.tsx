@@ -171,7 +171,7 @@ export default async function LocaleLayout({
         <main className="main-content">{children}</main>
         <BackgroundPrefetch urls={prefetchUrls} />
         <PwaProvider />
-        <MuseumGuide locale={validLocale} />
+        <MuseumGuide locale={validLocale} guideDict={dict.guide} />
         <footer
           style={{
             borderTop: '1px solid var(--color-border)',

@@ -185,5 +185,19 @@
     "min_chars": "Wpisz co najmniej 2 znaki…",
     "no_results": "Brak wyników",
     "no_results_for": "Nic nie pasuje do"
+  },
+  "guide": {
+    "open": "Zapytaj przewodnika",
+    "title": "Przewodnik po stronie",
+    "subtitle": "Pytaj o Siverta, dzieła i wystawy",
+    "placeholder": "Wpisz pytanie…",
+    "greeting": "Cześć! Jestem przewodnikiem po sztuce Siverta Lindbloma. Zapytaj mnie o dzieło, wystawę lub jego praktykę artystyczną.",
+    "s1": "Kim jest Sivert Lindblom?",
+    "s2": "Z jakimi architektami współpracował Sivert Lindblom?",
+    "s3": "Kiedy odbyła się jego pierwsza wystawa?",
+    "s4": "Opowiedz mi o Blasieholmstorg",
+    "s5": "Jakie jest jego najbardziej znane dzieło?",
+    "error": "Coś poszło nie tak. Spróbuj ponownie.",
+    "send": "Wyślij"
   }
 }

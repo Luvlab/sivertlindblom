@@ -185,5 +185,19 @@
     "min_chars": "Type at least 2 characters to search…",
     "no_results": "No results",
     "no_results_for": "Nothing matched"
+  },
+  "guide": {
+    "open": "Ask the guide",
+    "title": "Website Guide",
+    "subtitle": "Ask about Sivert, the works and exhibitions",
+    "placeholder": "Type a question…",
+    "greeting": "Hello! I'm the guide to Sivert Lindblom's art. Ask me about a work, an exhibition, or his practice.",
+    "s1": "Who is Sivert Lindblom?",
+    "s2": "Which architects did Sivert Lindblom work with?",
+    "s3": "When was his first exhibition?",
+    "s4": "Tell me about Blasieholmstorg",
+    "s5": "What is his best-known work?",
+    "error": "Something went wrong. Please try again.",
+    "send": "Send"
   }
 }
