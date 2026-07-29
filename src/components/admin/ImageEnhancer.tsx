@@ -25,6 +25,30 @@ function base64ToBlob(base64: string, mime: string): Blob {
   return new Blob([buf], { type: mime })
 }
 
+/** Build a CSS filter string for brightness/contrast/saturation/hue (100 = neutral). */
+function cssFilter(brightness: number, contrast: number, saturation: number, hue: number): string {
+  const parts: string[] = []
+  if (brightness !== 100) parts.push(`brightness(${brightness}%)`)
+  if (contrast   !== 100) parts.push(`contrast(${contrast}%)`)
+  if (saturation !== 100) parts.push(`saturate(${saturation}%)`)
+  if (hue        !== 0)   parts.push(`hue-rotate(${hue}deg)`)
+  return parts.length ? parts.join(' ') : 'none'
+}
+
+/** White-balance (temperature) by scaling the red/blue channels. temp: -100 (cool) … +100 (warm). */
+function whiteBalanceImageData(imageData: ImageData, temp: number): ImageData {
+  if (!temp) return imageData
+  const { data, width, height } = imageData
+  const out = new Uint8ClampedArray(data)
+  const rMul = 1 + temp / 250
+  const bMul = 1 - temp / 250
+  for (let i = 0; i < out.length; i += 4) {
+    out[i]     = data[i]     * rMul
+    out[i + 2] = data[i + 2] * bMul
+  }
+  return new ImageData(out, width, height)
+}
+
 /** Unsharp-mask convolution on raw ImageData */
 function sharpenImageData(imageData: ImageData, strength: number): ImageData {
   if (strength === 0) return imageData
@@ -61,10 +85,22 @@ export default function ImageEnhancer({ imageUrl, onClose, onSaved }: Props) {
   const [srcMime,       setSrcMime]       = useState<string>('image/jpeg')
   const [srcBytes,      setSrcBytes]      = useState<number>(0)
 
-  // controls
+  // controls — tone/colour adjustments (100 = neutral, temp/hue 0 = neutral)
+  const [brightness,    setBrightness]    = useState(100)
+  const [contrast,      setContrast]      = useState(100)
+  const [saturation,    setSaturation]    = useState(100)
+  const [hue,           setHue]           = useState(0)
+  const [temperature,   setTemperature]   = useState(0)
   const [sharpness,     setSharpness]     = useState(5)
   const [quality,       setQuality]       = useState(82)
   const [format,        setFormat]        = useState<OutputFormat>('webp')
+
+  const adjustmentsNeutral =
+    brightness === 100 && contrast === 100 && saturation === 100 && hue === 0 && temperature === 0
+
+  function resetAdjustments() {
+    setBrightness(100); setContrast(100); setSaturation(100); setHue(0); setTemperature(0); setSharpness(0)
+  }
 
   // result
   const [resultDataUrl, setResultDataUrl] = useState<string | null>(null)
@@ -116,11 +152,16 @@ export default function ImageEnhancer({ imageUrl, onClose, onSaved }: Props) {
           canvas.width  = img.naturalWidth
           canvas.height = img.naturalHeight
           const ctx = canvas.getContext('2d')!
+          // Brightness/contrast/saturation/hue are baked in during draw…
+          ctx.filter = cssFilter(brightness, contrast, saturation, hue)
           ctx.drawImage(img, 0, 0)
+          ctx.filter = 'none'
 
-          const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height)
-          const sharpened = sharpenImageData(imageData, sharpness)
-          ctx.putImageData(sharpened, 0, 0)
+          // …then white-balance and sharpen operate on the raw pixels.
+          let imageData = ctx.getImageData(0, 0, canvas.width, canvas.height)
+          imageData = whiteBalanceImageData(imageData, temperature)
+          imageData = sharpenImageData(imageData, sharpness)
+          ctx.putImageData(imageData, 0, 0)
 
           const q = quality / 100
           canvas.toBlob(blob => {
@@ -144,7 +185,7 @@ export default function ImageEnhancer({ imageUrl, onClose, onSaved }: Props) {
       setError(String(e))
       setPhase('ready')
     }
-  }, [srcBase64, srcMime, sharpness, quality, format])
+  }, [srcBase64, srcMime, brightness, contrast, saturation, hue, temperature, sharpness, quality, format])
 
   // ── Gemini AI enhance ──────────────────────────────────────────────────────
   const applyAI = useCallback(async () => {
@@ -165,8 +206,8 @@ export default function ImageEnhancer({ imageUrl, onClose, onSaved }: Props) {
       const aiB64   = data.imageBase64 ?? ''
       const outMime = `image/${format}`
 
-      if (format === 'png' && aiMime === 'image/png') {
-        // keep as-is
+      if (format === 'png' && aiMime === 'image/png' && adjustmentsNeutral && sharpness === 0) {
+        // keep as-is — no tone/sharpen adjustments requested
         const blob = base64ToBlob(aiB64, aiMime)
         const dataUrl = `data:${aiMime};base64,${aiB64}`
         setResultDataUrl(dataUrl)
@@ -184,11 +225,15 @@ export default function ImageEnhancer({ imageUrl, onClose, onSaved }: Props) {
           canvas.width  = img.naturalWidth
           canvas.height = img.naturalHeight
           const ctx = canvas.getContext('2d')!
+          ctx.filter = cssFilter(brightness, contrast, saturation, hue)
           ctx.drawImage(img, 0, 0)
+          ctx.filter = 'none'
 
-          if (sharpness > 0) {
-            const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height)
-            ctx.putImageData(sharpenImageData(imageData, sharpness), 0, 0)
+          if (!adjustmentsNeutral || sharpness > 0) {
+            let imageData = ctx.getImageData(0, 0, canvas.width, canvas.height)
+            imageData = whiteBalanceImageData(imageData, temperature)
+            imageData = sharpenImageData(imageData, sharpness)
+            ctx.putImageData(imageData, 0, 0)
           }
 
           canvas.toBlob(blob => {
@@ -211,7 +256,7 @@ export default function ImageEnhancer({ imageUrl, onClose, onSaved }: Props) {
       setError(String(e))
       setPhase('ready')
     }
-  }, [srcBase64, srcMime, sharpness, quality, format])
+  }, [srcBase64, srcMime, adjustmentsNeutral, brightness, contrast, saturation, hue, temperature, sharpness, quality, format])
 
   // ── Upload to Supabase ─────────────────────────────────────────────────────
   const uploadResult = useCallback(async () => {
@@ -292,10 +337,10 @@ export default function ImageEnhancer({ imageUrl, onClose, onSaved }: Props) {
         }}>
           <div>
             <h2 style={{ fontFamily: 'Georgia, serif', fontWeight: 400, fontSize: 'var(--fs-xl)', margin: 0 }}>
-              ✨ AI Bildförbättring
+              ✨ Bildjustering &amp; förbättring
             </h2>
             <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', marginTop: '0.2rem' }}>
-              Canvas-skärpning + Gemini AI + WebP-konvertering
+              Ljusstyrka, kontrast, mättnad, färgton, vitbalans &amp; skärpa — plus Gemini AI
             </p>
           </div>
           <button onClick={onClose} disabled={busy} style={{
@@ -382,6 +427,55 @@ export default function ImageEnhancer({ imageUrl, onClose, onSaved }: Props) {
           {/* ── Controls ── */}
           <div style={{ flex: '0 0 260px', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
 
+            {/* Tone / colour adjustments */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
+                <span style={{ ...label, marginBottom: 0 }}>Justeringar</span>
+                <button
+                  type="button"
+                  onClick={resetAdjustments}
+                  disabled={busy}
+                  style={{ background: 'none', border: 'none', color: 'var(--color-accent)', cursor: busy ? 'not-allowed' : 'pointer', fontSize: 'var(--fs-xs)', padding: 0 }}
+                >
+                  Återställ
+                </button>
+              </div>
+
+              <div>
+                <label style={label}>Ljusstyrka — {brightness}%</label>
+                <input type="range" min={0} max={200} value={brightness}
+                  onChange={e => setBrightness(Number(e.target.value))} disabled={busy}
+                  style={{ width: '100%', accentColor: 'var(--color-accent)' }} />
+              </div>
+              <div>
+                <label style={label}>Kontrast — {contrast}%</label>
+                <input type="range" min={0} max={200} value={contrast}
+                  onChange={e => setContrast(Number(e.target.value))} disabled={busy}
+                  style={{ width: '100%', accentColor: 'var(--color-accent)' }} />
+              </div>
+              <div>
+                <label style={label}>Mättnad — {saturation}%</label>
+                <input type="range" min={0} max={200} value={saturation}
+                  onChange={e => setSaturation(Number(e.target.value))} disabled={busy}
+                  style={{ width: '100%', accentColor: 'var(--color-accent)' }} />
+              </div>
+              <div>
+                <label style={label}>Färgton — {hue}°</label>
+                <input type="range" min={-180} max={180} value={hue}
+                  onChange={e => setHue(Number(e.target.value))} disabled={busy}
+                  style={{ width: '100%', accentColor: 'var(--color-accent)' }} />
+              </div>
+              <div>
+                <label style={label}>Vitbalans — {temperature > 0 ? `+${temperature} varm` : temperature < 0 ? `${temperature} kall` : 'neutral'}</label>
+                <input type="range" min={-100} max={100} value={temperature}
+                  onChange={e => setTemperature(Number(e.target.value))} disabled={busy}
+                  style={{ width: '100%', accentColor: 'var(--color-accent)' }} />
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', marginTop: '0.2rem' }}>
+                  <span>kall</span><span>varm</span>
+                </div>
+              </div>
+            </div>
+
             {/* Sharpness */}
             <div>
               <label style={label}>Skärpning (Canvas) — {sharpness}</label>
@@ -447,7 +541,7 @@ export default function ImageEnhancer({ imageUrl, onClose, onSaved }: Props) {
                 disabled={busy || !srcBase64}
                 style={{ justifyContent: 'center', opacity: (busy || !srcBase64) ? 0.5 : 1 }}
               >
-                ⚡ Canvas-skärp + {format.toUpperCase()}
+                ⚡ Applicera justeringar + {format.toUpperCase()}
               </button>
 
               <button
