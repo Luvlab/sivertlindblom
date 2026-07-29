@@ -166,7 +166,7 @@ export default async function BiographyPage({
   return (
     <div style={{ paddingBottom: '5rem', marginTop: 'calc(-1 * var(--header-h))' }}>
       {/* ── Tabs — strip sits flush under fixed header ─────────── */}
-      <TabsLayout tabs={TABS} defaultTab="biografi" label={dict.nav?.biography ?? 'Biografi'}>
+      <TabsLayout tabs={TABS} defaultTab="biografi" label="">
 
         {/* ── Tab 1: Biografi ── */}
         <section className="page-pad" style={{ paddingTop: '2.5rem', paddingBottom: '3rem' }}>

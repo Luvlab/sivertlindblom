@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getExhibitions, getPublicWorks, getTexts, getSculptureProjects } from '@/lib/data-server'
+import { createAdminClient } from '@/lib/supabase/admin'
 
 // Gemini text model — fast + cheap, reuses the GEMINI_API_KEY already in the env.
 const GEMINI_URL =
@@ -87,8 +88,13 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Guiden är inte konfigurerad ännu (saknar API-nyckel).' }, { status: 503 })
   }
 
-  let body: { messages?: ChatMessage[] }
+  let body: { messages?: ChatMessage[]; sessionId?: string; locale?: string }
   try { body = await req.json() } catch { return NextResponse.json({ error: 'Ogiltig förfrågan.' }, { status: 400 }) }
+
+  const ip = (req.headers.get('x-forwarded-for') ?? '').split(',')[0].trim() || null
+  const country = req.headers.get('x-vercel-ip-country') || null
+  const city = (() => { const c = req.headers.get('x-vercel-ip-city'); return c ? decodeURIComponent(c) : null })()
+  const userAgent = req.headers.get('user-agent')?.slice(0, 400) ?? null
 
   const messages = (body.messages ?? []).filter((m) => m && typeof m.content === 'string' && m.content.trim()).slice(-8)
   const lastUser = [...messages].reverse().find((m) => m.role === 'user')
@@ -120,6 +126,21 @@ export async function POST(req: NextRequest) {
     const json = await res.json() as { candidates?: Array<{ content?: { parts?: Array<{ text?: string }> } }> }
     const reply = json.candidates?.[0]?.content?.parts?.map((p) => p.text ?? '').join('').trim()
     if (!reply) return NextResponse.json({ error: 'Guiden gav inget svar. Försök igen.' }, { status: 502 })
+
+    // Log the exchange (best-effort; never blocks or fails the reply).
+    try {
+      const supabase = createAdminClient()
+      if (supabase) {
+        await supabase.from('guide_chats').insert({
+          session_id: (body.sessionId ?? '').slice(0, 80) || null,
+          ip, country, city, user_agent: userAgent,
+          locale: (body.locale ?? '').slice(0, 8) || null,
+          question: lastUser.content.slice(0, 2000),
+          answer: reply.slice(0, 4000),
+        })
+      }
+    } catch { /* logging is non-critical */ }
+
     return NextResponse.json({ reply, sources: relevant.map((d) => d.title).slice(0, 4) })
   } catch (e) {
     return NextResponse.json({ error: `Nätverksfel mot guiden: ${String(e)}` }, { status: 502 })

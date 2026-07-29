@@ -35,6 +35,15 @@ export default function MuseumGuide({ locale }: { locale: string }) {
   const [loading, setLoading] = useState(false)
   const scrollRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
+  const sessionId = useRef<string>('')
+
+  useEffect(() => {
+    try {
+      let sid = sessionStorage.getItem('mg_sid')
+      if (!sid) { sid = Math.random().toString(36).slice(2) + Date.now().toString(36); sessionStorage.setItem('mg_sid', sid) }
+      sessionId.current = sid
+    } catch { /* private mode */ }
+  }, [])
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: 'smooth' })
@@ -55,7 +64,7 @@ export default function MuseumGuide({ locale }: { locale: string }) {
       const res = await fetch('/api/guide', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: next, locale }),
+        body: JSON.stringify({ messages: next, locale, sessionId: sessionId.current }),
       })
       const data = await res.json() as { reply?: string; error?: string }
       setMessages((m) => [...m, { role: 'assistant', content: data.reply || data.error || t.error }])

@@ -19,6 +19,7 @@ const NAV_ITEMS = [
   { href: '/admin/contact',        label: 'Kontakt',            icon: '✉' },
   { href: '/admin/media',          label: 'Media',              icon: '▣' },
   { href: '/admin/seo',            label: 'SEO & Delning',      icon: '◈' },
+  { href: '/admin/guide',          label: 'AI-guide (logg)',    icon: '✦' },
   { href: '/admin/settings',       label: 'Inställningar',      icon: '⚙' },
   { href: '/admin/backup',         label: 'Säkerhetskopia',     icon: '⬇' },
 ]
