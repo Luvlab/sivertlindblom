@@ -37,6 +37,10 @@ export function parseFilms(raw: string | null | undefined): FilmEntry[] {
         videoUrl: f.videoUrl || undefined,
         extraVideos: Array.isArray(f.extraVideos) ? f.extraVideos.filter((u: unknown) => typeof u === 'string') : undefined,
         poster: f.poster || undefined,
+        links: Array.isArray(f.links)
+          ? f.links.filter((l: { url?: string }) => l && typeof l.url === 'string' && l.url.trim())
+              .map((l: { label?: string; url: string; prefix?: string; external?: boolean }) => ({ label: l.label ?? '', url: l.url, prefix: l.prefix || undefined, external: !!l.external }))
+          : undefined,
       }))
     return films.length ? films : DEFAULT_FILMS
   } catch {
@@ -61,6 +65,10 @@ export function cleanFilms(input: unknown): FilmEntry[] {
         videoUrl: e.videoUrl?.trim() || undefined,
         extraVideos: Array.isArray(e.extraVideos) ? e.extraVideos.filter((u) => typeof u === 'string' && u.trim()) : undefined,
         poster: e.poster?.trim() || undefined,
+        links: Array.isArray(e.links)
+          ? e.links.filter((l) => l && typeof l.url === 'string' && l.url.trim())
+              .map((l) => ({ label: (l.label ?? '').trim(), url: l.url.trim(), prefix: l.prefix?.trim() || undefined, external: !!l.external }))
+          : undefined,
       }
     })
 }

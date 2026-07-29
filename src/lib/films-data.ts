@@ -10,6 +10,8 @@ export interface FilmEntry {
   /** Start-card image, used when there's no YouTube/self-hosted video to derive a
    *  thumbnail from (e.g. external-link or archive-only films). Editable in admin. */
   poster?: string
+  /** Extra links shown on the film page — internal (/…) or external (https://…). */
+  links?: Array<{ label: string; url: string; prefix?: string; external?: boolean }>
 }
 
 export const FILMS: FilmEntry[] = [

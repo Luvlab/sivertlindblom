@@ -126,6 +126,24 @@ export default async function FilmDetailPage({
             ▶ {dict.references?.watch ?? 'Se filmen'} →
           </a>
         )}
+
+        {film.links && film.links.length > 0 && (
+          <div style={{ marginTop: '1.5rem', display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
+            {film.links.map((link, i) => {
+              const isExternal = link.external || /^https?:\/\//.test(link.url)
+              const inner = (
+                <>
+                  {link.prefix && <strong style={{ marginRight: '0.4rem', letterSpacing: '0.06em', fontSize: 'var(--fs-xs)', textTransform: 'uppercase' }}>{link.prefix}</strong>}
+                  {link.label || link.url} →
+                </>
+              )
+              const style = { fontSize: 'var(--fs-sm)', color: 'var(--color-accent)', textDecoration: 'none', borderBottom: '1px solid var(--color-accent-dim)', paddingBottom: '0.1em', alignSelf: 'flex-start' } as const
+              return isExternal
+                ? <a key={i} href={link.url} target="_blank" rel="noopener noreferrer" style={style}>{inner}</a>
+                : <Link key={i} href={`/${locale}${link.url}`} style={style}>{inner}</Link>
+            })}
+          </div>
+        )}
       </div>
 
       {/* Self-hosted video (mp4 in our storage) — full viewport width */}

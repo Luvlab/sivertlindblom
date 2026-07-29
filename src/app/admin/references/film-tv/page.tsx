@@ -3,6 +3,8 @@
 import { useState, useEffect } from 'react'
 import AdminForm, { FieldLabel } from '@/components/admin/AdminForm'
 import InlineUploadButton from '@/components/admin/InlineUploadButton'
+import ExhibitionLinksEditor from '@/components/admin/ExhibitionLinksEditor'
+import type { ExhibitionLink } from '@/lib/exhibitions-data'
 import type { FilmEntry } from '@/lib/reference-film'
 
 const lbl: React.CSSProperties = { display: 'block', fontSize: '0.65rem', color: 'var(--color-muted)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.25rem' }
@@ -128,6 +130,13 @@ export default function AdminFilmTv() {
           <div>
             <label style={lbl}>Beskrivning (valfri)</label>
             <textarea className="input" rows={2} style={{ width: '100%', resize: 'vertical' }} value={f.desc ?? ''} onChange={e => setFilm(i, { desc: e.target.value })} />
+          </div>
+          <div>
+            <label style={lbl}>Länkar (intern sida börjar med /, extern med https://)</label>
+            <ExhibitionLinksEditor
+              links={(f.links ?? []) as ExhibitionLink[]}
+              onChange={links => setFilm(i, { links: links as FilmEntry['links'] })}
+            />
           </div>
           <div style={{ display: 'flex', gap: '0.4rem', justifyContent: 'flex-end' }}>
             <button type="button" onClick={() => move(i, -1)} disabled={i === 0} className="btn" style={{ fontSize: 'var(--fs-xs)', padding: '0.25em 0.6em' }}>↑</button>
