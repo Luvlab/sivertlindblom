@@ -68,11 +68,20 @@ export default function MuseumGuide({ locale }: { locale: string }) {
 
   return (
     <>
+      <style>{`
+        @media (max-width: 640px) {
+          .mg-launch-label { display: none; }
+          .mg-launch-btn { width: 54px !important; height: 54px !important; padding: 0 !important; justify-content: center !important; gap: 0 !important; }
+          .mg-launch-icon { font-size: 1.5rem !important; }
+        }
+      `}</style>
+
       {/* Launcher */}
       {!open && (
         <button
           onClick={() => setOpen(true)}
           aria-label={t.open}
+          className="mg-launch-btn"
           style={{
             position: 'fixed', bottom: '1.25rem', right: '1.25rem', zIndex: 900,
             display: 'flex', alignItems: 'center', gap: '0.5rem',
@@ -82,21 +91,21 @@ export default function MuseumGuide({ locale }: { locale: string }) {
             boxShadow: '0 6px 24px rgba(0,0,0,0.28)',
           }}
         >
-          <span style={{ fontSize: '1.1rem', lineHeight: 1 }}>✦</span>{t.open}
+          <span className="mg-launch-icon" style={{ fontSize: '1.1rem', lineHeight: 1 }}>✦</span>
+          <span className="mg-launch-label">{t.open}</span>
         </button>
       )}
 
-      {/* Panel */}
+      {/* Panel — fullscreen below the site header */}
       {open && (
         <div
           role="dialog"
           aria-label={t.title}
           style={{
-            position: 'fixed', bottom: '1.25rem', right: '1.25rem', zIndex: 900,
-            width: 'min(380px, calc(100vw - 2rem))', height: 'min(560px, calc(100vh - 2.5rem))',
+            position: 'fixed', top: 'var(--header-h)', left: 0, right: 0, bottom: 0, zIndex: 850,
             display: 'flex', flexDirection: 'column',
-            background: 'var(--color-bg-surface)', border: '1px solid var(--color-border)',
-            borderRadius: 12, overflow: 'hidden', boxShadow: '0 12px 48px rgba(0,0,0,0.4)',
+            background: 'var(--color-bg-surface)', borderTop: '1px solid var(--color-border)',
+            overflow: 'hidden', boxShadow: '0 -4px 24px rgba(0,0,0,0.25)',
           }}
         >
           {/* Header */}
@@ -109,7 +118,7 @@ export default function MuseumGuide({ locale }: { locale: string }) {
           </div>
 
           {/* Messages */}
-          <div ref={scrollRef} style={{ flex: 1, overflowY: 'auto', padding: '1rem', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+          <div ref={scrollRef} style={{ flex: 1, overflowY: 'auto', padding: '1rem', display: 'flex', flexDirection: 'column', gap: '0.75rem', width: '100%', maxWidth: 820, margin: '0 auto' }}>
             {messages.length === 0 && (
               <>
                 <Bubble role="assistant">{t.greeting}</Bubble>
@@ -130,19 +139,21 @@ export default function MuseumGuide({ locale }: { locale: string }) {
           {/* Input */}
           <form
             onSubmit={(e) => { e.preventDefault(); send(input) }}
-            style={{ borderTop: '1px solid var(--color-border)', padding: '0.6rem', display: 'flex', gap: '0.5rem' }}
+            style={{ borderTop: '1px solid var(--color-border)', padding: '0.6rem' }}
           >
-            <input
-              ref={inputRef}
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              placeholder={t.placeholder}
-              className="input"
-              style={{ flex: 1, minWidth: 0 }}
-            />
-            <button type="submit" className="btn btn-primary" disabled={loading || !input.trim()} style={{ flexShrink: 0 }}>
-              {t.send}
-            </button>
+            <div style={{ display: 'flex', gap: '0.5rem', width: '100%', maxWidth: 820, margin: '0 auto' }}>
+              <input
+                ref={inputRef}
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                placeholder={t.placeholder}
+                className="input"
+                style={{ flex: 1, minWidth: 0 }}
+              />
+              <button type="submit" className="btn btn-primary" disabled={loading || !input.trim()} style={{ flexShrink: 0 }}>
+                {t.send}
+              </button>
+            </div>
           </form>
         </div>
       )}
