@@ -1308,6 +1308,13 @@ export const PUBLIC_WORKS: PublicWork[] = [
       { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/uploads/1780172194144-vallingby-backe-3.jpg', alt: '' },
       { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/uploads/1780172195740-vallingby-backe-4.jpg', alt: '' },
       { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/uploads/1780172196598-vallingby-backe-5.jpg', alt: '' },
+      { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/uploads/1785356292196-vallingby-409.jpg', alt: '' },
+      { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/uploads/1785356292197-vallingby-407.jpg', alt: '' },
+      { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/uploads/1785356292198-vallingby-405.jpg', alt: '' },
+      { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/uploads/1785356292199-vallingby-400.jpg', alt: '' },
+      { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/uploads/1785356292200-vallingby-408.jpg', alt: '' },
+      { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/uploads/1785356292201-vallingby-402.jpg', alt: '' },
+      { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/uploads/1785356292202-vallingby-406.jpg', alt: '' },
     ],
   },
   {
