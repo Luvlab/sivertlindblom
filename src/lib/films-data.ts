@@ -7,6 +7,9 @@ export interface FilmEntry {
   desc?: string
   videoUrl?: string
   extraVideos?: string[]
+  /** Start-card image, used when there's no YouTube/self-hosted video to derive a
+   *  thumbnail from (e.g. external-link or archive-only films). Editable in admin. */
+  poster?: string
 }
 
 export const FILMS: FilmEntry[] = [
@@ -32,6 +35,7 @@ export const FILMS: FilmEntry[] = [
     venue: 'Sveriges Riksbank',
     desc: 'Dokumentation av utsmyckningen av Riksbankens fasad vid Gustav Adolfs torg, Stockholm, 1973.',
     videoUrl: 'https://www.riksbank.se/sv/om-riksbanken/riksbankens-hus/',
+    poster: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/uploads/film-posters/skandinaviska-riksbanken.jpg',
   },
   {
     slug: 'vad-var-multikonst',
@@ -40,6 +44,7 @@ export const FILMS: FilmEntry[] = [
     venue: 'SVT Play',
     desc: 'Program från SVT om Multikonst-projektet 1967 — en vandringsutställning i samarbete med Moderna Museet och Riksutställningar. Finns att se hos SVT Play.',
     videoUrl: 'https://www.svtplay.se/video/eEgzYWK/multikonst-hela-sverige-gar-pa-utstallning',
+    poster: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/uploads/film-posters/multikonst.jpg',
   },
   {
     slug: 'skissernas-museum-lund-1993',

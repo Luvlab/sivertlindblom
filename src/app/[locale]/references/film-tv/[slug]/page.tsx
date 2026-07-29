@@ -146,6 +146,14 @@ export default async function FilmDetailPage({
         </div>
       )}
 
+      {/* Poster image — for external-link / archive-only films with no playable embed */}
+      {!ytId && !selfHosted && film.poster && (
+        <div style={{ width: '100%', maxHeight: '70vh', overflow: 'hidden', background: '#000', marginBottom: '2rem', display: 'flex', justifyContent: 'center' }}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={film.poster} alt={film.title} style={{ width: '100%', maxWidth: 1100, objectFit: 'contain', display: 'block' }} />
+        </div>
+      )}
+
       {/* Primary YouTube embed — full viewport width */}
       {ytId && (
         <div style={{

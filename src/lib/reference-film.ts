@@ -36,6 +36,7 @@ export function parseFilms(raw: string | null | undefined): FilmEntry[] {
         desc: f.desc || undefined,
         videoUrl: f.videoUrl || undefined,
         extraVideos: Array.isArray(f.extraVideos) ? f.extraVideos.filter((u: unknown) => typeof u === 'string') : undefined,
+        poster: f.poster || undefined,
       }))
     return films.length ? films : DEFAULT_FILMS
   } catch {
@@ -59,6 +60,7 @@ export function cleanFilms(input: unknown): FilmEntry[] {
         desc: e.desc?.trim() || undefined,
         videoUrl: e.videoUrl?.trim() || undefined,
         extraVideos: Array.isArray(e.extraVideos) ? e.extraVideos.filter((u) => typeof u === 'string' && u.trim()) : undefined,
+        poster: e.poster?.trim() || undefined,
       }
     })
 }

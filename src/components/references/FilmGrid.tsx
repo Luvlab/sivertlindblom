@@ -19,8 +19,10 @@ export default function FilmGrid({ locale, films }: Props) {
     }}>
       {list.map((f) => {
         const ytId = f.videoUrl ? getYouTubeId(f.videoUrl) : null
-        const thumb = ytId ? ytThumb(ytId) : null
         const selfHosted = !!f.videoUrl && !ytId && isSelfHostedVideo(f.videoUrl)
+        // Prefer a YouTube thumbnail; else fall back to an editable poster image
+        // (for external-link / archive-only films with no derivable frame).
+        const thumb = ytId ? ytThumb(ytId) : (!selfHosted && f.poster ? f.poster : null)
         return (
           <FilmCard
             key={f.slug}

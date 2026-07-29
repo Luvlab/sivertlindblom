@@ -111,6 +111,10 @@ export default function AdminFilmTv() {
             <input className="input" style={{ width: '100%' }} value={f.videoUrl ?? ''} onChange={e => setFilm(i, { videoUrl: e.target.value })} placeholder="https://youtu.be/… eller https://svtplay.se/…" />
           </div>
           <div>
+            <label style={lbl}>Startbild-URL (valfri)</label>
+            <input className="input" style={{ width: '100%' }} value={f.poster ?? ''} onChange={e => setFilm(i, { poster: e.target.value })} placeholder="Bild i startrutan — används när filmen saknar YouTube/uppladdad video" />
+          </div>
+          <div>
             <label style={lbl}>Beskrivning (valfri)</label>
             <textarea className="input" rows={2} style={{ width: '100%', resize: 'vertical' }} value={f.desc ?? ''} onChange={e => setFilm(i, { desc: e.target.value })} />
           </div>
