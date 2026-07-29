@@ -9,6 +9,7 @@ import type { LightboxImage } from '@/components/gallery/Lightbox'
 import { getExhibition, getExhibitions, getExhibitionSlugs } from '@/lib/data-server'
 import { renderParagraphs } from '@/lib/render-text'
 import PdfDownloads from '@/components/pdf/PdfDownloads'
+import MediaPlayers from '@/components/MediaPlayers'
 
 export async function generateStaticParams() {
   const slugs = await getExhibitionSlugs()
@@ -176,8 +177,11 @@ export default async function ExhibitionDetailPage({
         {/* PDF downloads + flip-book */}
         {ex.pdfs && ex.pdfs.length > 0 && <PdfDownloads pdfs={ex.pdfs} />}
 
-        {/* Audio player */}
-        {ex.audioUrl && (
+        {/* Uploaded audio/video (reorderable) */}
+        <MediaPlayers media={ex.media} />
+
+        {/* Legacy single audio (static fallback exhibitions) */}
+        {(!ex.media || ex.media.length === 0) && ex.audioUrl && (
           <div style={{ marginBottom: '3rem', maxWidth: '52ch' }}>
             {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
             <audio

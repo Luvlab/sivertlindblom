@@ -99,19 +99,30 @@ export default function PdfFlipbook({ url, title, onClose }: Props) {
         }
         if (cancelled || !bookRef.current) return
 
-        // Size the book to the viewport, one page's aspect ratio.
-        const maxH = window.innerHeight * 0.9
-        const maxW = window.innerWidth * 0.94
+        // Desktop shows an open-book 2-page spread; narrow screens show one page.
+        const isDesktop = window.innerWidth >= 820
+        const maxH = window.innerHeight * 0.86
+        const maxW = window.innerWidth * 0.96
         let pageH = maxH
         let pageW = pageH / ratio
-        if (pageW * 2 > maxW) { pageW = maxW / 2; pageH = pageW * ratio }
+        const spreadW = () => (isDesktop ? pageW * 2 : pageW)
+        if (spreadW() > maxW) { pageW = isDesktop ? maxW / 2 : maxW; pageH = pageW * ratio }
+
+        const bookW = Math.round(isDesktop ? pageW * 2 : pageW)
+        bookRef.current.style.width = `${bookW}px`
+        bookRef.current.style.height = `${Math.round(pageH)}px`
 
         const pageFlip = new St.PageFlip(bookRef.current, {
           width: Math.round(pageW),
           height: Math.round(pageH),
-          size: 'fixed',
-          showCover: false,
-          maxShadowOpacity: 0.4,
+          size: 'stretch',
+          minWidth: 260,
+          maxWidth: 3000,
+          minHeight: 380,
+          maxHeight: 2400,
+          showCover: true,          // first & last page render as single covers
+          usePortrait: !isDesktop,  // desktop: force the 2-page spread
+          maxShadowOpacity: 0.5,
           mobileScrollSupport: true,
           useMouseEvents: true,
           drawShadow: true,

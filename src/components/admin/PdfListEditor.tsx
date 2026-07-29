@@ -24,6 +24,14 @@ export default function PdfListEditor({ pdfs, onChange, label = 'PDF-filer att l
   const [err, setErr] = useState<string | null>(null)
   const [preview, setPreview] = useState<PdfItem | null>(null)
 
+  function move(i: number, dir: -1 | 1) {
+    const j = i + dir
+    if (j < 0 || j >= pdfs.length) return
+    const next = [...pdfs]
+    ;[next[i], next[j]] = [next[j], next[i]]
+    onChange(next)
+  }
+
   async function handleFile(file: File | undefined) {
     if (!file) return
     if (file.type && file.type !== 'application/pdf') {
@@ -53,6 +61,10 @@ export default function PdfListEditor({ pdfs, onChange, label = 'PDF-filer att l
 
       {pdfs.map((p, i) => (
         <div key={i} style={rowStyle}>
+          <div style={{ display: 'flex', flexDirection: 'column', flexShrink: 0 }}>
+            <button type="button" aria-label="Flytta upp" disabled={i === 0} onClick={() => move(i, -1)} style={{ background: 'none', border: 'none', color: 'var(--color-muted)', cursor: i === 0 ? 'default' : 'pointer', lineHeight: 1, padding: '0 0.2rem', opacity: i === 0 ? 0.3 : 1 }}>▲</button>
+            <button type="button" aria-label="Flytta ner" disabled={i === pdfs.length - 1} onClick={() => move(i, 1)} style={{ background: 'none', border: 'none', color: 'var(--color-muted)', cursor: i === pdfs.length - 1 ? 'default' : 'pointer', lineHeight: 1, padding: '0 0.2rem', opacity: i === pdfs.length - 1 ? 0.3 : 1 }}>▼</button>
+          </div>
           <span style={{ fontSize: '1rem' }}>📄</span>
           <input
             className="input"

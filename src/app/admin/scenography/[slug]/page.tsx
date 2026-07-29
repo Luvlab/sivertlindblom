@@ -7,7 +7,7 @@ import AdminForm, { FieldLabel } from '@/components/admin/AdminForm'
 import ImageListEditor from '@/components/admin/ImageListEditor'
 import LinkTextarea from '@/components/admin/LinkTextarea'
 import PdfListEditor from '@/components/admin/PdfListEditor'
-import AudioUploader from '@/components/admin/AudioUploader'
+import MediaListEditor from '@/components/admin/MediaListEditor'
 import Lightbox from '@/components/gallery/Lightbox'
 import type { LightboxImage } from '@/components/gallery/Lightbox'
 
@@ -179,7 +179,7 @@ function EditScenographyPageInner() {
             </div>
 
             <div>
-              <AudioUploader value={form.audioUrl ?? ''} onChange={url => update('audioUrl', url)} />
+              <MediaListEditor media={form.media ?? []} onChange={media => update('media', media)} />
             </div>
 
             <div>

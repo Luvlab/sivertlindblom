@@ -12,6 +12,7 @@ export interface Work {
   video_url: string
   pdfs?: Array<{ label: string; url: string }>
   audioUrl?: string
+  media?: Array<{ label: string; url: string }>
   photographerCredit?: string
   sort_order: number
   published: boolean
@@ -84,6 +85,7 @@ export async function getWorks(): Promise<Work[]> {
       video_url: w.video_url ?? '',
       pdfs: (w.pdfs as Work['pdfs']) ?? undefined,
       audioUrl: (w.audio_url as string) || undefined,
+      media: (w.media as Work['media']) ?? undefined,
       photographerCredit: (w.photographer_credit as string) || undefined,
       sort_order: w.sort_order ?? 0,
       published: w.published ?? true,

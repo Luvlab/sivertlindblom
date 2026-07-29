@@ -53,6 +53,7 @@ function dbToWork(
     links: (row.links as PublicWork['links']) ?? [],
     pdfs: (row.pdfs as PublicWork['pdfs']) ?? [],
     audioUrl: (row.audio_url as string) ?? undefined,
+    media: (row.media as PublicWork['media']) ?? [],
     images: images
       .sort((a, b) => a.sort_order - b.sort_order)
       .map(img => ({ url: img.url, alt: img.alt ?? '' })),
@@ -126,6 +127,10 @@ export async function PUT(
                 .map((p) => ({ label: (p.label ?? '').toString().trim() || 'PDF', url: p.url }))
             : [],
           audio_url: body.audioUrl?.trim() || null,
+          media: Array.isArray(body.media)
+            ? body.media.filter((m) => m && typeof m.url === 'string' && m.url.trim())
+                .map((m) => ({ label: (m.label ?? '').toString().trim(), url: m.url }))
+            : [],
           lat: body.lat ?? null,
           lng: body.lng ?? null,
           temporary: body.temporary ?? false,

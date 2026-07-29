@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import PdfDownloads from '@/components/pdf/PdfDownloads'
+import MediaPlayers from '@/components/MediaPlayers'
 import type { Metadata } from 'next'
 import { locales } from '@/i18n/config'
 import type { Locale } from '@/i18n/config'
@@ -178,8 +179,9 @@ export default async function PublicWorkDetailPage({
         {/* PDF downloads + flip-book */}
         {work.pdfs && work.pdfs.length > 0 && <PdfDownloads pdfs={work.pdfs} />}
 
-        {/* Audio player */}
-        {work.audioUrl && (
+        {/* Uploaded audio/video (reorderable) */}
+        <MediaPlayers media={work.media} />
+        {(!work.media || work.media.length === 0) && work.audioUrl && (
           <div style={{ marginBottom: '3rem' }}>
             {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
             <audio controls preload="none" src={work.audioUrl} style={{ width: '100%', maxWidth: 480, height: 40, accentColor: 'var(--color-accent)' }} />

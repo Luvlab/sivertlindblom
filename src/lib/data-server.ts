@@ -345,6 +345,7 @@ function dbRowToExhibition(w: Record<string, unknown>): Exhibition {
     links: (w.links as ExhibitionLink[]) ?? undefined,
     pdfs: (w.pdfs as Array<{ label: string; url: string }>) ?? undefined,
     audioUrl: (w.audio_url as string) || undefined,
+    media: (w.media as Array<{ label: string; url: string }>) ?? undefined,
     group: (w.group_exhibition as boolean) || undefined,
     photographerCredit: (w.photographer_credit as string) ?? undefined,
     images: imgs
@@ -491,6 +492,7 @@ function dbRowToPublicWork(
     links: (row.links as PublicWork['links']) ?? undefined,
     pdfs: (row.pdfs as PublicWork['pdfs']) ?? undefined,
     audioUrl: (row.audio_url as string) || undefined,
+    media: (row.media as PublicWork['media']) ?? undefined,
     photographerCredit: (row.photographer_credit as string) || undefined,
     images: images
       .sort((a, b) => a.sort_order - b.sort_order)
@@ -739,6 +741,7 @@ function dbRowToText(row: Record<string, unknown>): TextItem {
     showOcr: (row.show_ocr as boolean | null) ?? false,
     pdfs: (row.pdfs as TextItem['pdfs']) ?? undefined,
     audioUrl: (row.audio_url as string) || undefined,
+    media: (row.media as TextItem['media']) ?? undefined,
   }
 }
 

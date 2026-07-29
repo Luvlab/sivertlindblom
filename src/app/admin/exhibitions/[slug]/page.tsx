@@ -8,7 +8,7 @@ import ImageListEditor from '@/components/admin/ImageListEditor'
 import LinkTextarea from '@/components/admin/LinkTextarea'
 import ExhibitionLinksEditor from '@/components/admin/ExhibitionLinksEditor'
 import PdfListEditor from '@/components/admin/PdfListEditor'
-import AudioUploader from '@/components/admin/AudioUploader'
+import MediaListEditor from '@/components/admin/MediaListEditor'
 import SubpageManager from '@/components/admin/SubpageManager'
 
 interface Props {
@@ -186,9 +186,9 @@ function EditExhibitionPageInner() {
       </div>
 
       <div>
-        <AudioUploader
-          value={form.audioUrl ?? ''}
-          onChange={url => update('audioUrl', url)}
+        <MediaListEditor
+          media={form.media ?? []}
+          onChange={media => update('media', media)}
         />
       </div>
 

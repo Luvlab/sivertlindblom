@@ -38,6 +38,7 @@ export async function GET(_req: Request, { params }: Props) {
     photographer_credit: data.photographer_credit ?? '',
     pdfs: (data.pdfs as { label: string; url: string }[]) ?? [],
     audioUrl: (data.audio_url as string) ?? undefined,
+    media: (data.media as { label: string; url: string }[]) ?? [],
     sort_order: data.sort_order ?? 0,
     published: data.published ?? true,
     images: ((data.scenography_images ?? []) as { url: string; alt: string | null; sort_order: number }[])
@@ -74,6 +75,10 @@ export async function PUT(request: Request, { params }: Props) {
               .map((p) => ({ label: (p.label ?? '').toString().trim() || 'PDF', url: p.url }))
           : [],
         audio_url: body.audioUrl?.trim() || null,
+        media: Array.isArray(body.media)
+          ? body.media.filter((m) => m && typeof m.url === 'string' && m.url.trim())
+              .map((m) => ({ label: (m.label ?? '').toString().trim(), url: m.url }))
+          : [],
         sort_order: body.sort_order ?? 0,
         published: body.published ?? true,
       }, { onConflict: 'slug' })

@@ -8,7 +8,7 @@ import ImageListEditor from '@/components/admin/ImageListEditor'
 import TextImageSlideshow from '@/components/TextImageSlideshow'
 import SubpageManager, { type ManagedSubpage } from '@/components/admin/SubpageManager'
 import PdfListEditor from '@/components/admin/PdfListEditor'
-import AudioUploader from '@/components/admin/AudioUploader'
+import MediaListEditor from '@/components/admin/MediaListEditor'
 
 interface TextSubpage {
   slug: string
@@ -34,6 +34,7 @@ interface TextItem {
   showOcr?: boolean
   pdfs?: { label: string; url: string }[]
   audioUrl?: string
+  media?: { label: string; url: string }[]
   subpages?: TextSubpage[]
 }
 
@@ -207,7 +208,7 @@ function EditTextPageInner() {
             </div>
 
             <div>
-              <AudioUploader value={form.audioUrl ?? ''} onChange={url => set('audioUrl', url)} />
+              <MediaListEditor media={form.media ?? []} onChange={media => set('media', media)} />
             </div>
 
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', border: '1px solid var(--color-border)', padding: '0.85rem 1rem', borderRadius: 2 }}>

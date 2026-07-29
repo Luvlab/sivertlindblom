@@ -9,6 +9,7 @@ import type { LightboxImage } from '@/components/gallery/Lightbox'
 import { getWorks, FALLBACK_WORKS } from '@/lib/scenography-data'
 import { renderParagraphs } from '@/lib/render-text'
 import PdfDownloads from '@/components/pdf/PdfDownloads'
+import MediaPlayers from '@/components/MediaPlayers'
 
 export async function generateStaticParams() {
   return locales.flatMap((locale) =>
@@ -171,8 +172,9 @@ export default async function ScenographyDetailPage({
         {/* PDF downloads + flip-book */}
         {work.pdfs && work.pdfs.length > 0 && <PdfDownloads pdfs={work.pdfs} />}
 
-        {/* Audio player */}
-        {work.audioUrl && (
+        {/* Uploaded audio/video (reorderable) */}
+        <MediaPlayers media={work.media} />
+        {(!work.media || work.media.length === 0) && work.audioUrl && (
           <div style={{ marginBottom: '3rem' }}>
             {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
             <audio controls preload="none" src={work.audioUrl} style={{ width: '100%', maxWidth: 480, height: 40, accentColor: 'var(--color-accent)' }} />

@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import PdfDownloads from '@/components/pdf/PdfDownloads'
+import MediaPlayers from '@/components/MediaPlayers'
 import type { Metadata } from 'next'
 import { locales } from '@/i18n/config'
 import type { Locale } from '@/i18n/config'
@@ -297,8 +298,9 @@ export default async function TextDetailPage({
         {/* PDF downloads + flip-book */}
         {text.pdfs && text.pdfs.length > 0 && <PdfDownloads pdfs={text.pdfs} />}
 
-        {/* Audio player */}
-        {text.audioUrl && (
+        {/* Uploaded audio/video (reorderable) */}
+        <MediaPlayers media={text.media} />
+        {(!text.media || text.media.length === 0) && text.audioUrl && (
           <div style={{ marginTop: '2rem' }}>
             {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
             <audio controls preload="none" src={text.audioUrl} style={{ width: '100%', maxWidth: 480, height: 40, accentColor: 'var(--color-accent)' }} />

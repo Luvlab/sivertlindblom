@@ -28,6 +28,7 @@ export interface TextItem {
   showOcr?: boolean                         // show the transcribed OCR/body text column beside scan images (default false — OCR hidden until reviewed)
   pdfs?: Array<{ label: string; url: string }>  // uploaded PDFs offered for download
   audioUrl?: string                         // uploaded audio clip played on the page
+  media?: Array<{ label: string; url: string }>  // uploaded audio/video (reorderable)
   subpages?: TextSubpage[]                  // internal extra pages nested under this text
 }
 
