@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
+import { uploadImageFile } from '@/lib/upload-image'
 
 interface SeoSettings {
   site_title: string
@@ -24,7 +25,20 @@ export default function AdminSeo() {
   const [saving, setSaving] = useState(false)
   const [saved,  setSaved]  = useState(false)
   const [error,  setError]  = useState<string | null>(null)
+  const [uploading, setUploading] = useState(false)
+  const [uploadErr, setUploadErr] = useState<string | null>(null)
   const imgRef = useRef<HTMLImageElement>(null)
+  const fileRef = useRef<HTMLInputElement>(null)
+
+  async function handleUpload(file: File | undefined) {
+    if (!file) return
+    setUploading(true)
+    setUploadErr(null)
+    const d = await uploadImageFile(file, 'Delningsbild')
+    if (d.url) setS(p => ({ ...p, og_image: d.url! }))
+    else setUploadErr(d.error ?? 'Uppladdningen misslyckades')
+    setUploading(false)
+  }
 
   useEffect(() => {
     fetch('/api/admin/settings')
@@ -147,17 +161,38 @@ export default function AdminSeo() {
             </div>
 
             <div>
-              <label style={labelStyle}>BILD-URL (og:image)</label>
-              <input
-                type="url"
-                className="input"
-                style={{ width: '100%' }}
-                placeholder="https://..."
-                value={s.og_image}
-                onChange={e => setS(p => ({ ...p, og_image: e.target.value }))}
-              />
+              <label style={labelStyle}>DELNINGSBILD (og:image)</label>
+              <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'stretch', flexWrap: 'wrap' }}>
+                <input
+                  type="url"
+                  className="input"
+                  style={{ flex: '1 1 260px', minWidth: 0 }}
+                  placeholder="https://... eller ladda upp en bild →"
+                  value={s.og_image}
+                  onChange={e => setS(p => ({ ...p, og_image: e.target.value }))}
+                />
+                <input
+                  ref={fileRef}
+                  type="file"
+                  accept="image/*"
+                  style={{ display: 'none' }}
+                  onChange={e => { handleUpload(e.target.files?.[0]); e.target.value = '' }}
+                />
+                <button
+                  type="button"
+                  className="btn"
+                  disabled={uploading}
+                  onClick={() => fileRef.current?.click()}
+                  style={{ flexShrink: 0 }}
+                >
+                  {uploading ? 'Laddar upp…' : '⬆ Ladda upp bild'}
+                </button>
+              </div>
+              {uploadErr && (
+                <p style={{ fontSize: 'var(--fs-xs)', color: '#f87', marginTop: '0.4rem' }}>{uploadErr}</p>
+              )}
               <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', marginTop: '0.4rem' }}>
-                Rekommenderad storlek: 1200×630 px. Bilden visas som förhandsgranskning vid länkdelning.
+                Ladda upp en bild direkt, eller klistra in en URL. Rekommenderad storlek: 1200×630 px. Bilden visas som förhandsgranskning vid länkdelning. Glöm inte att spara.
               </p>
             </div>
           </div>
