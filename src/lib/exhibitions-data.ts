@@ -36,6 +36,8 @@ export interface Exhibition {
   description: string;
   body?: string;
   links?: ExhibitionLink[];
+  /** Uploaded PDF files offered for download on the exhibition page. */
+  pdfs?: Array<{ label: string; url: string }>;
   subpages?: ExhibitionSubpage[];
   audioUrl?: string;
   audioCaption?: string;

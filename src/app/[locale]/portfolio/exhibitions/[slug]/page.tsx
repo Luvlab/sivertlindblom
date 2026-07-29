@@ -172,6 +172,26 @@ export default async function ExhibitionDetailPage({
           </div>
         )}
 
+        {/* PDF downloads */}
+        {ex.pdfs && ex.pdfs.length > 0 && (
+          <div style={{ marginBottom: '3.5rem', display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
+            <p style={{ fontSize: 'var(--fs-xs)', letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--color-accent)', marginBottom: '0.2rem' }}>
+              {dict.references?.download ?? 'Ladda ner'}
+            </p>
+            {ex.pdfs.map((pdf, i) => (
+              <a
+                key={i}
+                href={pdf.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-accent)', textDecoration: 'none', borderBottom: '1px solid var(--color-accent-dim)', paddingBottom: '0.1em', alignSelf: 'flex-start', display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}
+              >
+                <span aria-hidden>📄</span>{pdf.label} (PDF) ↓
+              </a>
+            ))}
+          </div>
+        )}
+
         {/* Audio player */}
         {ex.audioUrl && (
           <div style={{ marginBottom: '3rem', maxWidth: '52ch' }}>
