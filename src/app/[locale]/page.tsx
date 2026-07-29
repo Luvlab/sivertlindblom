@@ -85,11 +85,17 @@ export default async function HomePage({
           }}>
             {dict.home?.tagline ?? settings.hero_tagline}
           </p>
-          <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', paddingBottom: '0.5rem' }}>
-            <Link href={`/${locale}/portfolio`} className="btn btn-primary" style={{ fontSize: 'var(--fs-sm)' }}>
+          <style>{`
+            @media (max-width: 640px) {
+              .home-hero-cta { font-size: var(--fs-xs) !important; padding: 0.5rem 0.85rem !important; }
+              .home-hero-actions { gap: 0.6rem !important; padding-right: 4.5rem; }
+            }
+          `}</style>
+          <div className="home-hero-actions" style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', paddingBottom: '0.5rem' }}>
+            <Link href={`/${locale}/portfolio`} className="btn btn-primary home-hero-cta" style={{ fontSize: 'var(--fs-sm)' }}>
               {dict.home?.see_portfolio ?? 'Se portfolion'}
             </Link>
-            <Link href={`/${locale}/biography`} className="btn" style={{ fontSize: 'var(--fs-sm)' }}>
+            <Link href={`/${locale}/biography`} className="btn home-hero-cta" style={{ fontSize: 'var(--fs-sm)' }}>
               {dict.home?.biography_btn ?? 'Biografi'}
             </Link>
           </div>
