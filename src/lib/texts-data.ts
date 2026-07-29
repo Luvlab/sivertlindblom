@@ -26,6 +26,8 @@ export interface TextItem {
   images?: string[]                         // scanned article image URLs (reviews)
   videoUrl?: string                         // YouTube embed URL (https://www.youtube.com/embed/ID) or external video link
   showOcr?: boolean                         // show the transcribed OCR/body text column beside scan images (default false — OCR hidden until reviewed)
+  pdfs?: Array<{ label: string; url: string }>  // uploaded PDFs offered for download
+  audioUrl?: string                         // uploaded audio clip played on the page
   subpages?: TextSubpage[]                  // internal extra pages nested under this text
 }
 

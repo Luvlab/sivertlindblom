@@ -36,6 +36,8 @@ export async function GET(_req: Request, { params }: Props) {
     description: data.description ?? '',
     video_url: data.video_url ?? '',
     photographer_credit: data.photographer_credit ?? '',
+    pdfs: (data.pdfs as { label: string; url: string }[]) ?? [],
+    audioUrl: (data.audio_url as string) ?? undefined,
     sort_order: data.sort_order ?? 0,
     published: data.published ?? true,
     images: ((data.scenography_images ?? []) as { url: string; alt: string | null; sort_order: number }[])
@@ -67,6 +69,11 @@ export async function PUT(request: Request, { params }: Props) {
         description: body.description ?? '',
         video_url: body.video_url ?? '',
         photographer_credit: body.photographer_credit ?? '',
+        pdfs: Array.isArray(body.pdfs)
+          ? body.pdfs.filter((p) => p && typeof p.url === 'string' && p.url.trim())
+              .map((p) => ({ label: (p.label ?? '').toString().trim() || 'PDF', url: p.url }))
+          : [],
+        audio_url: body.audioUrl?.trim() || null,
         sort_order: body.sort_order ?? 0,
         published: body.published ?? true,
       }, { onConflict: 'slug' })

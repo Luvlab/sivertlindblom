@@ -17,6 +17,8 @@ export interface ScenographyWork {
   description: string
   video_url: string
   photographer_credit: string
+  pdfs?: { label: string; url: string }[]
+  audioUrl?: string
   sort_order: number
   published: boolean
   images: { url: string; alt: string }[]

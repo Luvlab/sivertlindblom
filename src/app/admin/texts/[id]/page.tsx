@@ -7,6 +7,8 @@ import LinkTextarea from '@/components/admin/LinkTextarea'
 import ImageListEditor from '@/components/admin/ImageListEditor'
 import TextImageSlideshow from '@/components/TextImageSlideshow'
 import SubpageManager, { type ManagedSubpage } from '@/components/admin/SubpageManager'
+import PdfListEditor from '@/components/admin/PdfListEditor'
+import AudioUploader from '@/components/admin/AudioUploader'
 
 interface TextSubpage {
   slug: string
@@ -30,6 +32,8 @@ interface TextItem {
   body: string
   images?: string[]
   showOcr?: boolean
+  pdfs?: { label: string; url: string }[]
+  audioUrl?: string
   subpages?: TextSubpage[]
 }
 
@@ -196,6 +200,14 @@ function EditTextPageInner() {
               <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', marginTop: '0.4rem' }}>
                 Inskannade sidor av artikeln. Visas som bildspel på textsidan.
               </p>
+            </div>
+
+            <div>
+              <PdfListEditor pdfs={form.pdfs ?? []} onChange={pdfs => set('pdfs', pdfs)} />
+            </div>
+
+            <div>
+              <AudioUploader value={form.audioUrl ?? ''} onChange={url => set('audioUrl', url)} />
             </div>
 
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', border: '1px solid var(--color-border)', padding: '0.85rem 1rem', borderRadius: 2 }}>

@@ -489,6 +489,8 @@ function dbRowToPublicWork(
     body: (row.description_sv as string) ?? '',
     videos: (normalizeVideos(row.videos) ?? []).map((v) => ({ url: v.url, title: v.title ?? '' })),
     links: (row.links as PublicWork['links']) ?? undefined,
+    pdfs: (row.pdfs as PublicWork['pdfs']) ?? undefined,
+    audioUrl: (row.audio_url as string) || undefined,
     photographerCredit: (row.photographer_credit as string) || undefined,
     images: images
       .sort((a, b) => a.sort_order - b.sort_order)
@@ -735,6 +737,8 @@ function dbRowToText(row: Record<string, unknown>): TextItem {
     body: (row.content as string) ?? '',
     images: (row.images as string[] | null) ?? [],
     showOcr: (row.show_ocr as boolean | null) ?? false,
+    pdfs: (row.pdfs as TextItem['pdfs']) ?? undefined,
+    audioUrl: (row.audio_url as string) || undefined,
   }
 }
 

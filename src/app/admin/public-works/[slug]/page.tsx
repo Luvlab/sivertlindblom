@@ -8,6 +8,8 @@ import AdminForm, { FieldLabel } from '@/components/admin/AdminForm'
 import ImageListEditor from '@/components/admin/ImageListEditor'
 import LinkTextarea from '@/components/admin/LinkTextarea'
 import ExhibitionLinksEditor from '@/components/admin/ExhibitionLinksEditor'
+import PdfListEditor from '@/components/admin/PdfListEditor'
+import AudioUploader from '@/components/admin/AudioUploader'
 import SubpageManager from '@/components/admin/SubpageManager'
 import type { ExhibitionLink } from '@/lib/exhibitions-data'
 
@@ -293,6 +295,14 @@ function EditPublicWorkPageInner() {
               links={(form.links ?? []) as ExhibitionLink[]}
               onChange={links => update('links', links as PublicWork['links'])}
             />
+          </div>
+
+          <div>
+            <PdfListEditor pdfs={form.pdfs ?? []} onChange={pdfs => update('pdfs', pdfs)} />
+          </div>
+
+          <div>
+            <AudioUploader value={form.audioUrl ?? ''} onChange={url => update('audioUrl', url)} />
           </div>
 
           <div>

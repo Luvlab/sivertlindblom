@@ -51,6 +51,8 @@ function dbToWork(
     photographerCredit: (row.photographer_credit as string) || undefined,
     videos: ((row.videos as Array<{ url: string; title?: string }>) ?? []).map(v => ({ url: v.url, title: v.title ?? '' })),
     links: (row.links as PublicWork['links']) ?? [],
+    pdfs: (row.pdfs as PublicWork['pdfs']) ?? [],
+    audioUrl: (row.audio_url as string) ?? undefined,
     images: images
       .sort((a, b) => a.sort_order - b.sort_order)
       .map(img => ({ url: img.url, alt: img.alt ?? '' })),
@@ -119,6 +121,11 @@ export async function PUT(
           photographer_credit: body.photographerCredit || null,
           videos: body.videos ?? [],
           links: linkResult.links ?? [],
+          pdfs: Array.isArray(body.pdfs)
+            ? body.pdfs.filter((p) => p && typeof p.url === 'string' && p.url.trim())
+                .map((p) => ({ label: (p.label ?? '').toString().trim() || 'PDF', url: p.url }))
+            : [],
+          audio_url: body.audioUrl?.trim() || null,
           lat: body.lat ?? null,
           lng: body.lng ?? null,
           temporary: body.temporary ?? false,

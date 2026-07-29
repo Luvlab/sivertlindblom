@@ -6,6 +6,8 @@ import type { ScenographyWork } from '@/app/api/admin/scenography/route'
 import AdminForm, { FieldLabel } from '@/components/admin/AdminForm'
 import ImageListEditor from '@/components/admin/ImageListEditor'
 import LinkTextarea from '@/components/admin/LinkTextarea'
+import PdfListEditor from '@/components/admin/PdfListEditor'
+import AudioUploader from '@/components/admin/AudioUploader'
 import Lightbox from '@/components/gallery/Lightbox'
 import type { LightboxImage } from '@/components/gallery/Lightbox'
 
@@ -170,6 +172,14 @@ function EditScenographyPageInner() {
               <input type="text" className="input" style={{ width: '100%' }}
                 value={form.photographer_credit ?? ''} onChange={e => update('photographer_credit', e.target.value)}
                 placeholder="t.ex. Jan Öqvist" />
+            </div>
+
+            <div>
+              <PdfListEditor pdfs={form.pdfs ?? []} onChange={pdfs => update('pdfs', pdfs)} />
+            </div>
+
+            <div>
+              <AudioUploader value={form.audioUrl ?? ''} onChange={url => update('audioUrl', url)} />
             </div>
 
             <div>

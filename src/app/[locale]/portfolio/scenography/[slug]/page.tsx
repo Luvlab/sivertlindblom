@@ -167,6 +167,26 @@ export default async function ScenographyDetailPage({
           </div>
         )}
 
+        {/* PDF downloads */}
+        {work.pdfs && work.pdfs.length > 0 && (
+          <div style={{ marginBottom: '3rem', display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
+            <p style={{ fontSize: 'var(--fs-xs)', letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--color-accent)', marginBottom: '0.2rem' }}>Ladda ner</p>
+            {work.pdfs.map((pdf, i) => (
+              <a key={i} href={pdf.url} target="_blank" rel="noopener noreferrer" style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-accent)', textDecoration: 'none', borderBottom: '1px solid var(--color-accent-dim)', paddingBottom: '0.1em', alignSelf: 'flex-start', display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}>
+                <span aria-hidden>📄</span>{pdf.label} (PDF) ↓
+              </a>
+            ))}
+          </div>
+        )}
+
+        {/* Audio player */}
+        {work.audioUrl && (
+          <div style={{ marginBottom: '3rem' }}>
+            {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
+            <audio controls preload="none" src={work.audioUrl} style={{ width: '100%', maxWidth: 480, height: 40, accentColor: 'var(--color-accent)' }} />
+          </div>
+        )}
+
         {/* Prev / Next navigation */}
         <nav style={{
           display: 'grid',

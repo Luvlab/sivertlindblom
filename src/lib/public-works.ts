@@ -16,6 +16,8 @@ export interface PublicWork {
   /** "SE MER / LÄS MER / LADDA NED"-style links shown on the work page.
    *  Internal links start with "/"; external open in a new tab. */
   links?: Array<{ label: string; url: string; prefix?: string; external?: boolean }>
+  pdfs?: Array<{ label: string; url: string }>
+  audioUrl?: string
   /** Link base for the card. Defaults to /portfolio/public-works; cross-listed
    *  exhibitions set this to /portfolio/exhibitions so the card opens the
    *  exhibition page where the content lives. */

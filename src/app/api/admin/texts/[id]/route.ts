@@ -49,6 +49,8 @@ function dbToTextItem(row: Record<string, unknown>): TextItem {
     body: (row.content as string) ?? '',
     images: (row.images as string[] | null) ?? [],
     showOcr: (row.show_ocr as boolean | null) ?? false,
+    pdfs: (row.pdfs as TextItem['pdfs']) ?? [],
+    audioUrl: (row.audio_url as string) ?? undefined,
   }
 }
 
@@ -102,6 +104,11 @@ export async function PUT(
         content: body.body,
         images: body.images ?? [],
         show_ocr: body.showOcr ?? false,
+        pdfs: Array.isArray(body.pdfs)
+          ? body.pdfs.filter((p) => p && typeof p.url === 'string' && p.url.trim())
+              .map((p) => ({ label: (p.label ?? '').toString().trim() || 'PDF', url: p.url }))
+          : [],
+        audio_url: body.audioUrl?.trim() || null,
       }).eq('slug', id).select('id').single()
       if (!error && text) {
         // Sync sub-pages: upsert incoming, delete removed
