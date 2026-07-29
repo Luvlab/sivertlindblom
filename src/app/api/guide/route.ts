@@ -7,15 +7,16 @@ const GEMINI_URL =
   'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent'
 
 interface ChatMessage { role: 'user' | 'assistant'; content: string }
-interface Doc { title: string; meta: string; text: string }
+interface Doc { title: string; meta: string; text: string; href: string }
 
 function truncate(s: string | undefined | null, n: number): string {
   const v = (s ?? '').trim()
   return v.length > n ? v.slice(0, n) + '…' : v
 }
 
-/** Build a compact, grounded corpus from the site's own content. */
-async function buildCorpus(): Promise<Doc[]> {
+/** Build a compact, grounded corpus from the site's own content. Each doc carries
+ *  the page URL (locale-prefixed) so the guide can link to it. */
+async function buildCorpus(locale: string): Promise<Doc[]> {
   const [exhibitions, publicWorks, texts, sculptures] = await Promise.all([
     getExhibitions().catch(() => []),
     getPublicWorks().catch(() => []),
@@ -23,12 +24,14 @@ async function buildCorpus(): Promise<Doc[]> {
     getSculptureProjects().catch(() => []),
   ])
   const docs: Doc[] = []
+  const L = `/${locale}`
 
   for (const e of exhibitions) {
     docs.push({
       title: e.title,
       meta: `Utställning${e.year ? ' ' + e.year : ''}${e.location ? ', ' + e.location : ''}`,
       text: `${truncate(e.description, 400)} ${truncate(e.body, 600)}`.trim(),
+      href: `${L}/portfolio/exhibitions/${e.slug}`,
     })
   }
   for (const w of publicWorks) {
@@ -36,6 +39,7 @@ async function buildCorpus(): Promise<Doc[]> {
       title: w.title,
       meta: `Offentligt verk${w.year ? ' ' + w.year : ''}${w.location ? ', ' + w.location : ''}`,
       text: `${truncate(w.description, 400)} ${truncate(w.body, 600)}`.trim(),
+      href: w.hrefBase ? `${L}${w.hrefBase}/${w.slug}` : `${L}/portfolio/public-works/${w.slug}`,
     })
   }
   for (const s of sculptures) {
@@ -43,6 +47,7 @@ async function buildCorpus(): Promise<Doc[]> {
       title: s.title,
       meta: `Skulpturserie${s.years ? ' ' + s.years : ''}`,
       text: `${truncate(s.description, 400)} ${truncate(s.body, 600)}`.trim(),
+      href: `${L}/references/${s.slug}`,
     })
   }
   for (const t of texts) {
@@ -50,6 +55,7 @@ async function buildCorpus(): Promise<Doc[]> {
       title: t.title,
       meta: `Text${t.author ? ' av ' + t.author : ''}${t.year ? ' (' + t.year + ')' : ''}`,
       text: truncate(t.body, 700),
+      href: `${L}/texts/${t.slug}`,
     })
   }
   return docs.filter((d) => d.title && d.text)
@@ -80,7 +86,8 @@ Regler:
 - Om svaret inte finns i materialet: säg ärligt att just det inte framgår här, och föreslå vänligt att besökaren utforskar Portfolio, Referenser eller Texter på sajten.
 - Svara på SAMMA språk som besökaren skriver.
 - Håll det kortfattat, levande och personligt — som en engagerad guide, inte en uppslagsbok. 2–5 meningar räcker oftast.
-- Sivert Lindblom är född 1931, svensk skulptör känd för offentlig konst, skulptur, akvareller och scenografi.`
+- Sivert Lindblom är född 1931, svensk skulptör känd för offentlig konst, skulptur, akvareller och scenografi.
+- När du nämner ett specifikt verk, en utställning, en skulpturserie eller en text som finns i materialet, LÄNKA till dess sida i formatet [titeln](URL). Använd exakt den URL som står på raden "URL:" för den posten. Hitta aldrig på länkar och länka bara till sidor som finns i materialet. Väv gärna in 1–3 relevanta länkar så besökaren kan läsa vidare.`
 
 export async function POST(req: NextRequest) {
   const apiKey = process.env.GEMINI_API_KEY
@@ -100,9 +107,10 @@ export async function POST(req: NextRequest) {
   const lastUser = [...messages].reverse().find((m) => m.role === 'user')
   if (!lastUser) return NextResponse.json({ error: 'Ingen fråga.' }, { status: 400 })
 
-  const corpus = await buildCorpus()
+  const locale = (body.locale ?? 'sv').replace(/[^a-z-]/gi, '').slice(0, 8) || 'sv'
+  const corpus = await buildCorpus(locale)
   const relevant = retrieve(corpus, lastUser.content)
-  const context = relevant.map((d) => `## ${d.title}\n${d.meta}\n${d.text}`).join('\n\n')
+  const context = relevant.map((d) => `## ${d.title}\nURL: ${d.href}\n${d.meta}\n${d.text}`).join('\n\n')
 
   // Extra curator-supplied knowledge (e.g. a CV about Jan Öqvist), always included.
   let knowledge = ''

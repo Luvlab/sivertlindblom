@@ -1,6 +1,20 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
+import Link from 'next/link'
+
+/** Render assistant text, turning [label](url) markdown into clickable links. */
+function renderRich(text: string, onNavigate: () => void): React.ReactNode {
+  const parts = text.split(/(\[[^\]]+\]\([^)]+\))/g)
+  const linkStyle: React.CSSProperties = { color: 'var(--color-accent)', textDecoration: 'underline', textUnderlineOffset: '2px' }
+  return parts.map((part, i) => {
+    const m = part.match(/^\[([^\]]+)\]\(([^)]+)\)$/)
+    if (!m) return <span key={i}>{part}</span>
+    const [, label, url] = m
+    if (url.startsWith('/')) return <Link key={i} href={url} onClick={onNavigate} style={linkStyle}>{label}</Link>
+    return <a key={i} href={url} target="_blank" rel="noopener noreferrer" style={linkStyle}>{label}</a>
+  })
+}
 
 interface Msg { role: 'user' | 'assistant'; content: string }
 
@@ -141,7 +155,11 @@ export default function MuseumGuide({ locale }: { locale: string }) {
                 </div>
               </>
             )}
-            {messages.map((m, i) => <Bubble key={i} role={m.role}>{m.content}</Bubble>)}
+            {messages.map((m, i) => (
+              <Bubble key={i} role={m.role}>
+                {m.role === 'assistant' ? renderRich(m.content, () => setOpen(false)) : m.content}
+              </Bubble>
+            ))}
             {loading && <Bubble role="assistant"><span style={{ opacity: 0.6 }}>…</span></Bubble>}
           </div>
 
