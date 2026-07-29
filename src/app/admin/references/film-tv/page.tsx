@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import AdminForm, { FieldLabel } from '@/components/admin/AdminForm'
+import InlineUploadButton from '@/components/admin/InlineUploadButton'
 import type { FilmEntry } from '@/lib/reference-film'
 
 const lbl: React.CSSProperties = { display: 'block', fontSize: '0.65rem', color: 'var(--color-muted)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.25rem' }
@@ -107,12 +108,22 @@ export default function AdminFilmTv() {
             </div>
           </div>
           <div>
-            <label style={lbl}>Video-URL</label>
-            <input className="input" style={{ width: '100%' }} value={f.videoUrl ?? ''} onChange={e => setFilm(i, { videoUrl: e.target.value })} placeholder="https://youtu.be/… eller https://svtplay.se/…" />
+            <label style={lbl}>Video-URL — eller ladda upp en mp4</label>
+            <div style={{ display: 'flex', gap: '0.4rem', alignItems: 'center', flexWrap: 'wrap' }}>
+              <input className="input" style={{ flex: 1, minWidth: 200 }} value={f.videoUrl ?? ''} onChange={e => setFilm(i, { videoUrl: e.target.value })} placeholder="https://youtu.be/… eller ladda upp en mp4 →" />
+              <InlineUploadButton accept="video/mp4,video/webm,video/quicktime" bucket="videos" folder="films" label="⬆ mp4" onUploaded={url => setFilm(i, { videoUrl: url })} />
+            </div>
           </div>
           <div>
-            <label style={lbl}>Startbild-URL (valfri)</label>
-            <input className="input" style={{ width: '100%' }} value={f.poster ?? ''} onChange={e => setFilm(i, { poster: e.target.value })} placeholder="Bild i startrutan — används när filmen saknar YouTube/uppladdad video" />
+            <label style={lbl}>Startbild (valfri) — URL eller ladda upp</label>
+            <div style={{ display: 'flex', gap: '0.4rem', alignItems: 'center', flexWrap: 'wrap' }}>
+              <input className="input" style={{ flex: 1, minWidth: 200 }} value={f.poster ?? ''} onChange={e => setFilm(i, { poster: e.target.value })} placeholder="Bild i startrutan (används när filmen saknar YouTube/uppladdad video)" />
+              <InlineUploadButton accept="image/*" bucket="images" folder="film-posters" label="⬆ Bild" onUploaded={url => setFilm(i, { poster: url })} />
+            </div>
+            {f.poster && (
+              /* eslint-disable-next-line @next/next/no-img-element */
+              <img src={f.poster} alt="" style={{ marginTop: '0.4rem', maxHeight: 70, borderRadius: 2, border: '1px solid var(--color-border)' }} />
+            )}
           </div>
           <div>
             <label style={lbl}>Beskrivning (valfri)</label>

@@ -7,10 +7,13 @@ import { exhibitions } from './exhibitions-data'
 import { TEXTS_DATA } from './texts-data'
 import { SCULPTURE_LOCATIONS } from './sculpture-locations'
 import { PUBLIC_WORKS } from './public-works'
+import { SCULPTURE_PROJECTS } from './sculpture-projects'
+import { FALLBACK_WORKS as SCENOGRAPHY_WORKS } from './scenography-data'
+import { FILMS } from './films-data'
 
 export type SearchItem = {
   id: string
-  type: 'exhibition' | 'text' | 'public-work' | 'sculpture' | 'biography'
+  type: 'exhibition' | 'text' | 'public-work' | 'sculpture' | 'scenography' | 'film' | 'biography'
   title: string
   subtitle: string   // author / location / year
   excerpt: string    // short text snippet (always indexed in every locale)
@@ -52,6 +55,9 @@ export interface SearchSources {
   texts?: typeof TEXTS_DATA
   publicWorks?: typeof PUBLIC_WORKS
   sculptureLocations?: typeof SCULPTURE_LOCATIONS
+  sculptureProjects?: typeof SCULPTURE_PROJECTS
+  scenography?: typeof SCENOGRAPHY_WORKS
+  films?: typeof FILMS
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -62,6 +68,9 @@ export function buildSearchIndex(locale = 'sv', dict: any = {}, sources: SearchS
   const textsData = sources.texts ?? TEXTS_DATA
   const publicWorksData = sources.publicWorks ?? PUBLIC_WORKS
   const sculptureData = sources.sculptureLocations ?? SCULPTURE_LOCATIONS
+  const sculptureProjectsData = sources.sculptureProjects ?? SCULPTURE_PROJECTS
+  const scenographyData = sources.scenography ?? SCENOGRAPHY_WORKS
+  const filmsData = sources.films ?? FILMS
 
   // Coordinates keyed by work slug, so a public-work result without its own
   // lat/lng can still show "VISA PLATSEN" using the map-pin location.
@@ -135,6 +144,44 @@ export function buildSearchIndex(locale = 'sv', dict: any = {}, sources: SearchS
       href: s.slug ? `/portfolio/public-works/${s.slug}` : `/portfolio/map`,
       lat: typeof s.lat === 'number' ? s.lat : undefined,
       lng: typeof s.lng === 'number' ? s.lng : undefined,
+    })
+  }
+
+  // ── Sculpture series (Referenser → Skulptur, e.g. Kofeser) ──
+  for (const p of sculptureProjectsData) {
+    items.push({
+      id: `scp-${p.slug}`,
+      type: 'sculpture',
+      title: p.title,
+      subtitle: p.years ?? '',
+      excerpt: excerpt([p.shortDesc, p.description, p.body].filter(Boolean).join(' ')),
+      href: `/references/${p.slug}`,
+    })
+  }
+
+  // ── Scenography ───────────────────────────────────────────
+  for (const w of scenographyData) {
+    items.push({
+      id: `scn-${w.slug}`,
+      type: 'scenography',
+      title: w.title,
+      subtitle: [w.year, w.venue].filter(Boolean).join(' · '),
+      excerpt: excerpt(w.description ?? ''),
+      year: w.year ?? undefined,
+      href: `/portfolio/scenography/${w.slug}`,
+    })
+  }
+
+  // ── Film & TV ─────────────────────────────────────────────
+  for (const f of filmsData) {
+    items.push({
+      id: `flm-${f.slug}`,
+      type: 'film',
+      title: f.title,
+      subtitle: [f.year > 0 ? f.year : '', f.director, f.venue].filter(Boolean).join(' · '),
+      excerpt: excerpt(f.desc ?? ''),
+      year: f.year > 0 ? f.year : undefined,
+      href: `/references/film-tv/${f.slug}`,
     })
   }
 

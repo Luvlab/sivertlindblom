@@ -22,7 +22,7 @@ interface Props {
 }
 
 const TYPE_ORDER: TypeKey[] = [
-  'public-work', 'sculpture', 'exhibition', 'text', 'biography',
+  'public-work', 'sculpture', 'exhibition', 'scenography', 'film', 'text', 'biography',
 ]
 
 function score(item: SearchItem, q: string): number {
