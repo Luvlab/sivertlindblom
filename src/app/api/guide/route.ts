@@ -4,7 +4,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 
 // Gemini text model — fast + cheap, reuses the GEMINI_API_KEY already in the env.
 const GEMINI_URL =
-  'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent'
+  'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent'
 
 interface ChatMessage { role: 'user' | 'assistant'; content: string }
 interface Doc { title: string; meta: string; text: string }
