@@ -105,10 +105,12 @@ export default function LanguageSwitcher({ locale }: LanguageSwitcherProps) {
             right: 0,
             background: 'var(--color-bg-card)',
             border: '1px solid var(--color-border)',
-            minWidth: 190,
+            width: 380,
             zIndex: 400,
             boxShadow: '0 8px 32px rgba(0,0,0,0.5)',
             overflow: 'hidden',
+            display: 'grid',
+            gridTemplateColumns: '1fr 1fr',
           }}
         >
           {locales.map((l) => (
