@@ -5,6 +5,7 @@ import { locales } from '@/i18n/config'
 import type { Locale } from '@/i18n/config'
 import { getDictionary } from '@/i18n/getDictionary'
 import { FILMS, getYouTubeId, isSelfHostedVideo } from '@/lib/films-data'
+import { renderParagraphs } from '@/lib/render-text'
 import { getFilms } from '@/lib/data-server'
 
 export function generateStaticParams() {
@@ -94,7 +95,7 @@ export default async function FilmDetailPage({
         )}
 
         {film.desc && (
-          <p style={{
+          <div style={{
             color: 'var(--color-text)',
             fontSize: 'var(--fs-base)',
             lineHeight: 1.75,
@@ -102,8 +103,8 @@ export default async function FilmDetailPage({
             marginTop: '1rem',
             marginBottom: '1.5rem',
           }}>
-            {film.desc}
-          </p>
+            {renderParagraphs(film.desc, { margin: 0, lineHeight: 1.75, marginBottom: '0.9em' })}
+          </div>
         )}
 
         {isExternalLink && film.videoUrl && (

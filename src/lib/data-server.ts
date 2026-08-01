@@ -363,7 +363,7 @@ export async function getExhibitions(): Promise<Exhibition[]> {
     const { data, error } = await supabase
       .from('works')
       .select('*, images(url, sort_order)')
-      .order('sort_order', { ascending: true })
+      .order('year_start', { ascending: false })
     if (!error && data) return data.map((r) => dbRowToExhibition(r as Record<string, unknown>))
   }
   return [...STATIC_EXHIBITIONS].sort((a, b) => b.year - a.year)
