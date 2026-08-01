@@ -22,7 +22,7 @@ interface Props {
 }
 
 const TYPE_ORDER: TypeKey[] = [
-  'public-work', 'sculpture', 'exhibition', 'scenography', 'film', 'text', 'biography',
+  'public-work', 'sculpture', 'exhibition', 'scenography', 'film', 'text', 'biography', 'reference',
 ]
 
 function score(item: SearchItem, q: string): number {
@@ -31,7 +31,16 @@ function score(item: SearchItem, q: string): number {
   if (item.title.toLowerCase().includes(lower))    s += 10
   if (item.subtitle.toLowerCase().includes(lower)) s += 5
   if (item.excerpt.toLowerCase().includes(lower))  s += 2
+  if (item.body?.toLowerCase().includes(lower))    s += 1
   return s
+}
+
+function bodySnippet(body: string, q: string, context = 80): string {
+  const idx = body.toLowerCase().indexOf(q.toLowerCase())
+  if (idx === -1) return ''
+  const start = Math.max(0, idx - context)
+  const end = Math.min(body.length, idx + q.length + context)
+  return (start > 0 ? '…' : '') + body.slice(start, end).trim() + (end < body.length ? '…' : '')
 }
 
 function highlight(text: string, q: string): React.ReactNode {
@@ -177,6 +186,11 @@ export default function SearchClient({ index, locale, placeholder, typeLabels, u
                   {item.excerpt && (
                     <div style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-muted)', marginTop: '0.35rem', opacity: 0.8, lineHeight: 1.5 }}>
                       {highlight(item.excerpt, q)}
+                    </div>
+                  )}
+                  {item.body && !item.excerpt.toLowerCase().includes(q.toLowerCase()) && item.body.toLowerCase().includes(q.toLowerCase()) && (
+                    <div style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-muted)', marginTop: '0.35rem', opacity: 0.65, lineHeight: 1.5, fontStyle: 'italic' }}>
+                      {highlight(bodySnippet(item.body, q), q)}
                     </div>
                   )}
                 </Link>

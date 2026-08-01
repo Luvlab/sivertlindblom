@@ -59,6 +59,12 @@ export default function MuseumGuide({ locale, guideDict }: { locale: string; gui
   const pathname = usePathname()
   // Close guide whenever the user navigates (header links, back button, guide links, etc.)
   useEffect(() => { setOpen(false) }, [pathname])
+  // Close when logo is clicked even if already on home page (pathname won't change)
+  useEffect(() => {
+    const close = () => setOpen(false)
+    window.addEventListener('guide:close', close)
+    return () => window.removeEventListener('guide:close', close)
+  }, [])
   const [messages, setMessages] = useState<Msg[]>([])
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)

@@ -3,7 +3,7 @@ import { getDictionary } from '@/i18n/getDictionary'
 import { locales } from '@/i18n/config'
 import type { Locale } from '@/i18n/config'
 import { buildSearchIndex } from '@/lib/search-index'
-import { getExhibitions, getTexts, getPublicWorks, getMapPins, getSculptureProjects, getFilms } from '@/lib/data-server'
+import { getExhibitions, getTexts, getPublicWorks, getMapPins, getSculptureProjects, getFilms, getUtmarkelser, getBibliography, getGrafik } from '@/lib/data-server'
 import { getWorks as getScenographyWorks } from '@/lib/scenography-data'
 import SearchClient from './SearchClient'
 import Link from 'next/link'
@@ -37,7 +37,7 @@ export default async function SearchPage({
   // Build the locale-aware index on the server from live (DB) data, so texts and
   // works Jan adds/edits in admin are searchable. Falls back to static defaults
   // inside buildSearchIndex if any source is empty.
-  const [exhibitionsData, textsData, publicWorksData, sculptureData, sculptureProjectsData, scenographyData, filmsData] = await Promise.all([
+  const [exhibitionsData, textsData, publicWorksData, sculptureData, sculptureProjectsData, scenographyData, filmsData, utmarkelserData, bibliographyData, grafikData] = await Promise.all([
     getExhibitions(),
     getTexts(),
     getPublicWorks(),
@@ -45,6 +45,9 @@ export default async function SearchPage({
     getSculptureProjects(),
     getScenographyWorks(),
     getFilms(),
+    getUtmarkelser(),
+    getBibliography(),
+    getGrafik(),
   ])
   const index = buildSearchIndex(locale, dict, {
     exhibitions: exhibitionsData.length ? exhibitionsData : undefined,
@@ -54,6 +57,9 @@ export default async function SearchPage({
     sculptureProjects: sculptureProjectsData.length ? sculptureProjectsData : undefined,
     scenography: scenographyData.length ? scenographyData : undefined,
     films: filmsData.length ? filmsData : undefined,
+    utmarkelser: utmarkelserData.prizes.length ? utmarkelserData : undefined,
+    bibliography: bibliographyData.length ? bibliographyData : undefined,
+    grafik: grafikData.title ? grafikData : undefined,
   })
 
   // Translated type labels passed to the client so the UI speaks the right language
@@ -65,6 +71,7 @@ export default async function SearchPage({
     scenography:  s.type_scenography ?? 'Scenografi',
     film:         s.type_film        ?? 'Film & TV',
     biography:    s.type_biography   ?? 'Biografi',
+    reference:    s.type_reference   ?? 'Referensmaterial',
   }
 
   // Translated UI strings

@@ -86,7 +86,7 @@ export default function Header({ locale, dict }: HeaderProps) {
               color: 'var(--color-text)',
               whiteSpace: 'nowrap',
             }}
-            onClick={() => setOpen(false)}
+            onClick={() => { setOpen(false); window.dispatchEvent(new CustomEvent('guide:close')) }}
           >
             Sivert Lindblom
           </Link>

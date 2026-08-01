@@ -10,20 +10,24 @@ import { PUBLIC_WORKS } from './public-works'
 import { SCULPTURE_PROJECTS } from './sculpture-projects'
 import { FALLBACK_WORKS as SCENOGRAPHY_WORKS } from './scenography-data'
 import { FILMS } from './films-data'
+import type { UtmarkelserSection } from './reference-utmarkelser'
+import type { BibEntry } from './bibliography'
+import type { GrafikSection } from './reference-grafik'
 
 export type SearchItem = {
   id: string
-  type: 'exhibition' | 'text' | 'public-work' | 'sculpture' | 'scenography' | 'film' | 'biography'
+  type: 'exhibition' | 'text' | 'public-work' | 'sculpture' | 'scenography' | 'film' | 'biography' | 'reference'
   title: string
   subtitle: string   // author / location / year
-  excerpt: string    // short text snippet (always indexed in every locale)
+  excerpt: string    // short text snippet shown in the result card
+  body?: string      // full text for scoring only — not displayed
   year?: number
   href: string       // locale-relative path (without /{locale} prefix)
   lat?: number       // when the item is a place, so search can show "VISA PLATSEN"
   lng?: number
 }
 
-function excerpt(text: string, maxLen = 140): string {
+function excerpt(text: string, maxLen = 200): string {
   if (!text) return ''
   const clean = text.replace(/\n+/g, ' ').trim()
   return clean.length <= maxLen ? clean : clean.slice(0, maxLen).replace(/\s\S*$/, '') + '…'
@@ -58,6 +62,9 @@ export interface SearchSources {
   sculptureProjects?: typeof SCULPTURE_PROJECTS
   scenography?: typeof SCENOGRAPHY_WORKS
   films?: typeof FILMS
+  utmarkelser?: UtmarkelserSection
+  bibliography?: BibEntry[]
+  grafik?: GrafikSection
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -84,12 +91,14 @@ export function buildSearchIndex(locale = 'sv', dict: any = {}, sources: SearchS
   // ── Exhibitions ───────────────────────────────────────────
   // Exhibition content is in Swedish; always indexed so any locale can find works
   for (const ex of exhibitionsData) {
+    const exBody = (ex as { body?: string }).body
     items.push({
       id: `ex-${ex.slug}`,
       type: 'exhibition',
       title: ex.title,
       subtitle: [ex.year, ex.location].filter(Boolean).join(' · '),
       excerpt: excerpt(ex.description ?? ''),
+      body: exBody || undefined,
       year: ex.year,
       href: `/portfolio/exhibitions/${ex.slug}`,
     })
@@ -99,14 +108,14 @@ export function buildSearchIndex(locale = 'sv', dict: any = {}, sources: SearchS
   // Use locale-translated body when available; always index the original too
   for (const t of textsData) {
     const localBody = t.bodies?.[locale] ?? t.body
+    const fullBody = localBody !== t.body ? `${localBody} ${t.body}` : t.body
     items.push({
       id: `txt-${t.slug}`,
       type: 'text',
       title: t.title,
       subtitle: [t.author, t.year, t.publication].filter(Boolean).join(' · '),
-      // Index the translated excerpt — the original Swedish excerpt is always appended
-      // so the work is discoverable regardless of the search language
       excerpt: excerpt(localBody !== t.body ? localBody : t.body),
+      body: fullBody || undefined,
       year: t.year,
       href: `/texts/${t.slug}`,
     })
@@ -124,6 +133,7 @@ export function buildSearchIndex(locale = 'sv', dict: any = {}, sources: SearchS
       title: w.title,
       subtitle: [w.year, w.location].filter(Boolean).join(' · '),
       excerpt: excerpt(w.description ?? ''),
+      body: w.body || undefined,
       year: typeof w.year === 'string' ? parseInt(w.year) || undefined : w.year,
       href: `/portfolio/public-works/${w.slug}`,
       lat: coord?.lat,
@@ -149,12 +159,14 @@ export function buildSearchIndex(locale = 'sv', dict: any = {}, sources: SearchS
 
   // ── Sculpture series (Referenser → Skulptur, e.g. Kofeser) ──
   for (const p of sculptureProjectsData) {
+    const fullBody = [p.shortDesc, p.description, p.body].filter(Boolean).join(' ')
     items.push({
       id: `scp-${p.slug}`,
       type: 'sculpture',
       title: p.title,
       subtitle: p.years ?? '',
-      excerpt: excerpt([p.shortDesc, p.description, p.body].filter(Boolean).join(' ')),
+      excerpt: excerpt([p.shortDesc, p.description].filter(Boolean).join(' ')),
+      body: fullBody || undefined,
       href: `/references/${p.slug}`,
     })
   }
@@ -182,6 +194,47 @@ export function buildSearchIndex(locale = 'sv', dict: any = {}, sources: SearchS
       excerpt: excerpt(f.desc ?? ''),
       year: f.year > 0 ? f.year : undefined,
       href: `/references/film-tv/${f.slug}`,
+    })
+  }
+
+  // ── Utmärkelser (prizes + medals) ────────────────────────
+  if (sources.utmarkelser) {
+    for (const [i, prize] of sources.utmarkelser.prizes.entries()) {
+      items.push({
+        id: `prize-${i}`,
+        type: 'reference',
+        title: prize.title,
+        subtitle: [prize.year, prize.sub].filter(Boolean).join(' · '),
+        excerpt: excerpt([prize.desc, prize.quote].filter(Boolean).join(' ')),
+        href: '/references#utmarkelser',
+      })
+    }
+  }
+
+  // ── Bibliography ──────────────────────────────────────────
+  if (sources.bibliography) {
+    for (const [i, entry] of sources.bibliography.entries()) {
+      items.push({
+        id: `bib-${i}`,
+        type: 'reference',
+        title: excerpt(entry.text, 120),
+        subtitle: entry.year,
+        excerpt: entry.note ?? '',
+        body: entry.text || undefined,
+        href: '/references/publicerat',
+      })
+    }
+  }
+
+  // ── Grafik ───────────────────────────────────────────────
+  if (sources.grafik) {
+    items.push({
+      id: 'grafik-section',
+      type: 'reference',
+      title: sources.grafik.title || 'Grafik',
+      subtitle: sources.grafik.years ?? '',
+      excerpt: excerpt(sources.grafik.intro ?? ''),
+      href: '/references/grafik',
     })
   }
 

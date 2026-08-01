@@ -583,8 +583,8 @@ a:hover { opacity: 0.7; }
 @media (min-width: 640px) {
   .text-row {
     display: grid;
-    grid-template-columns: 4rem 1fr auto;
-    gap: 1.5rem;
+    grid-template-columns: 4rem auto 1fr auto;
+    gap: 1rem;
     align-items: start;
     flex-direction: unset;
   }
