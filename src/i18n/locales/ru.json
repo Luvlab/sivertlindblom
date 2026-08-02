@@ -6,7 +6,13 @@
     "biography": "Биография",
     "contact": "Контакт",
     "admin": "Admin",
-    "references": "Ссылки"
+    "references": "Ссылки",
+    "references_skulptur": "Скульптура",
+    "references_fotografier": "Фотографии – вдохновение",
+    "references_film": "Кино и ТВ",
+    "references_publicerat": "Публикации",
+    "references_utmarkelser": "Награды и медали",
+    "references_ogonblick": "Мгновения"
   },
   "common": {
     "year": "Год",
@@ -28,7 +34,11 @@
     "open_menu": "Открыть меню",
     "close_menu": "Закрыть меню",
     "play_slideshow": "Запустить слайд-шоу",
-    "pause_slideshow": "Приостановить слайд-шоу"
+    "pause_slideshow": "Приостановить слайд-шоу",
+    "update_available": "Доступна новая версия",
+    "update_btn": "↺ Обновить",
+    "photo_credit": "Фото:",
+    "image_nr": "изображение"
   },
   "home": {
     "sculptor": "Скульптор · Стокгольм",
@@ -83,7 +93,14 @@
     "map_view": "Открыть карту",
     "type_theater": "Театральная сценография",
     "type_choreography": "Хореография",
-    "view_location": "Посмотреть место"
+    "view_location": "Посмотреть место",
+    "map_title_full": "Карта — общественные работы",
+    "map_locations": "Места",
+    "map_cities": "Города",
+    "map_all_locations": "Все места",
+    "map_type_metro": "Метро",
+    "temporary": "Временный",
+    "temporary_placement": "Временное размещение"
   },
   "watercolors": {
     "title": "Акварели 1975–2012",
@@ -106,7 +123,8 @@
     "own_writing": "Собственный текст",
     "translated": "Переведено",
     "original_language": "Оригинальный язык",
-    "others_texts": "Тексты других"
+    "others_texts": "Тексты других",
+    "watch_film": "СМОТРЕТЬ ФИЛЬМ"
   },
   "biography": {
     "title": "Сиверт Линдблом",
@@ -132,7 +150,16 @@
     "timeline_10": "Премия камня, Шведская федерация каменной промышленности",
     "timeline_11": "Член, Совет по эстетике Государственного дорожного управления",
     "timeline_12": "Профессор скульптуры, Kungliga Konsthögskolan",
-    "timeline_13": "Sergelpriset, Stockholm"
+    "timeline_13": "Sergelpriset, Stockholm",
+    "bibliography": "Библиография (избранное)",
+    "tab_biography": "Биография",
+    "tab_public": "Общественные заказы",
+    "tab_group_exhibitions": "Групповые выставки",
+    "tab_bibliography": "Библиография",
+    "tab_photographs": "Фотографии",
+    "priser_title": "Премии и награды",
+    "las": "читать →",
+    "source_more": "Источник / ещё"
   },
   "contact": {
     "title": "Связаться с нами",
@@ -165,7 +192,17 @@
     "fotografier_intro": "В этой галерее собраны изображения, которые так или иначе тронули и вдохновили Сиверта Линдблома в его работе. Его произведения, сколь бы лишёнными истории они ни казались, проистекают из долгой традиции символических образов, к которым художники всех эпох и культур обращались, чтобы запечатлеть присутствие человека.",
     "publicerat": "Опубликовано",
     "publicerat_intro": "Каталоги, журнальные статьи и книги с текстами, связанными с художественной практикой Сиверта.",
-    "watch": "Смотреть фильм"
+    "watch": "Смотреть фильм",
+    "grafik": "Графика",
+    "utmarkelser": "Награды",
+    "utmarkelser_title": "Награды, премии и медали",
+    "priser_received": "Полученные премии",
+    "medaljer_designed": "Медали, разработанные Сивертом Линдбломом",
+    "ogonblick": "Мгновения",
+    "loading": "Загрузка изображений…",
+    "watch_film": "Смотреть фильм",
+    "download_pdf": "Скачать (PDF)",
+    "read_more": "Читать далее"
   },
   "footer": {
     "rights": "Все права защищены.",

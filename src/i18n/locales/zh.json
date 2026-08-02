@@ -6,7 +6,13 @@
     "biography": "传记",
     "contact": "联系",
     "admin": "Admin",
-    "references": "参考资料"
+    "references": "参考资料",
+    "references_skulptur": "雕塑",
+    "references_fotografier": "摄影 – 灵感",
+    "references_film": "电影与电视",
+    "references_publicerat": "出版物",
+    "references_utmarkelser": "奖项与奖章",
+    "references_ogonblick": "瞬间"
   },
   "common": {
     "year": "年份",
@@ -28,7 +34,11 @@
     "open_menu": "打开菜单",
     "close_menu": "关闭菜单",
     "play_slideshow": "播放幻灯片",
-    "pause_slideshow": "暂停幻灯片"
+    "pause_slideshow": "暂停幻灯片",
+    "update_available": "有新版本",
+    "update_btn": "↺ 更新",
+    "photo_credit": "照片：",
+    "image_nr": "图片"
   },
   "home": {
     "sculptor": "雕塑家 · 斯德哥尔摩",
@@ -83,7 +93,14 @@
     "map_view": "查看地图",
     "type_theater": "戏剧舞台设计",
     "type_choreography": "编舞",
-    "view_location": "查看位置"
+    "view_location": "查看位置",
+    "map_title_full": "地图 — 公共作品",
+    "map_locations": "地点",
+    "map_cities": "城市",
+    "map_all_locations": "所有地点",
+    "map_type_metro": "地铁",
+    "temporary": "临时",
+    "temporary_placement": "临时位置"
   },
   "watercolors": {
     "title": "水彩画 1975–2012",
@@ -106,7 +123,8 @@
     "own_writing": "本人著作",
     "translated": "译文",
     "original_language": "原文语言",
-    "others_texts": "他人文章"
+    "others_texts": "他人文章",
+    "watch_film": "观看影片"
   },
   "biography": {
     "title": "西韦特·林德布洛姆",
@@ -132,7 +150,16 @@
     "timeline_10": "石材奖，瑞典石材工业联合会",
     "timeline_11": "成员，国家公路管理局美学委员会",
     "timeline_12": "雕塑教授，Kungliga Konsthögskolan",
-    "timeline_13": "Sergelpriset，Stockholm"
+    "timeline_13": "Sergelpriset，Stockholm",
+    "bibliography": "参考书目（精选）",
+    "tab_biography": "传记",
+    "tab_public": "公共委托",
+    "tab_group_exhibitions": "联展",
+    "tab_bibliography": "参考书目",
+    "tab_photographs": "照片",
+    "priser_title": "奖项与荣誉",
+    "las": "阅读 →",
+    "source_more": "来源 / 更多"
   },
   "contact": {
     "title": "联系我们",
@@ -165,7 +192,17 @@
     "fotografier_intro": "这个画廊收录了以各种方式触动并启发西韦特·林德布洛姆创作的图像。他的作品，无论看起来多么缺乏历史感，都源于一个悠久的象征传统——各个时代和文化的艺术家都曾寻求这些象征，以彰显人类的存在。",
     "publicerat": "已出版",
     "publicerat_intro": "与西韦特艺术实践相关的目录、期刊文章和书籍。",
-    "watch": "观看影片"
+    "watch": "观看影片",
+    "grafik": "版画",
+    "utmarkelser": "奖项",
+    "utmarkelser_title": "奖项、奖品与奖章",
+    "priser_received": "获奖记录",
+    "medaljer_designed": "Sivert Lindblom 设计的medals",
+    "ogonblick": "瞬间",
+    "loading": "正在加载图片…",
+    "watch_film": "观看影片",
+    "download_pdf": "下载 (PDF)",
+    "read_more": "阅读更多"
   },
   "footer": {
     "rights": "版权所有。",

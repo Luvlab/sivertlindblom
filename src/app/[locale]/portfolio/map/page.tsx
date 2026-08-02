@@ -32,36 +32,22 @@ export default async function MapPage({ params }: Props) {
           {dict.portfolio?.cat_public ?? 'Public Works'}
         </p>
         <h1 style={{ fontFamily: 'Georgia, serif', fontWeight: 400, fontSize: 'var(--fs-3xl)', marginBottom: '1rem' }}>
-          {locale === 'sv' ? 'Karta — offentliga verk' :
-           locale === 'de' ? 'Karte — öffentliche Werke' :
-           locale === 'fr' ? 'Carte — œuvres publiques' :
-           locale === 'es' ? 'Mapa — obras públicas' :
-           locale === 'it' ? 'Mappa — opere pubbliche' :
-           locale === 'zh' ? '地图 — 公共作品' :
-           locale === 'ja' ? 'マップ — パブリックアート' :
-           locale === 'ar' ? 'خريطة — الأعمال العامة' :
-           locale === 'pt' ? 'Mapa — obras públicas' :
-           locale === 'ru' ? 'Карта — общественные работы' :
-           locale === 'nl' ? 'Kaart — openbare werken' :
-           locale === 'pl' ? 'Mapa — prace publiczne' :
-           locale === 'ko' ? '지도 — 공공 작품' :
-           locale === 'th' ? 'แผนที่ — งานสาธารณะ' :
-           'Map — Public Works'}
+          {dict.portfolio?.map_title_full ?? 'Karta — offentliga verk'}
         </h1>
 
         {/* Stats */}
         <div style={{ display: 'flex', gap: '3rem', marginBottom: '0', fontSize: 'var(--fs-sm)', color: 'var(--color-muted)' }}>
           <div>
             <span style={{ color: 'var(--color-accent)', fontFamily: 'Georgia, serif', fontSize: 'var(--fs-xl)', display: 'block', lineHeight: 1 }}>{counts.total}</span>
-            {locale === 'sv' ? 'Platser' : locale === 'th' ? 'สถานที่' : 'Locations'}
+            {dict.portfolio?.map_locations ?? 'Platser'}
           </div>
           <div>
             <span style={{ color: 'var(--color-accent)', fontFamily: 'Georgia, serif', fontSize: 'var(--fs-xl)', display: 'block', lineHeight: 1 }}>{counts.cities}</span>
-            {locale === 'sv' ? 'Städer' : locale === 'th' ? 'เมือง' : 'Cities'}
+            {dict.portfolio?.map_cities ?? 'Städer'}
           </div>
           <div>
             <span style={{ color: 'var(--color-accent)', fontFamily: 'Georgia, serif', fontSize: 'var(--fs-xl)', display: 'block', lineHeight: 1 }}>{counts.countries}</span>
-            {locale === 'sv' ? 'Länder' : locale === 'th' ? 'ประเทศ' : 'Countries'}
+            {dict.portfolio?.map_countries ?? 'Länder'}
           </div>
         </div>
       </div>
@@ -72,7 +58,7 @@ export default async function MapPage({ params }: Props) {
       {/* Location list */}
       <div className="page-pad" style={{ paddingTop: '3rem', paddingBottom: '3rem' }}>
         <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-xl)', marginBottom: '1.5rem', fontWeight: 400 }}>
-          {locale === 'sv' ? 'Alla platser' : locale === 'th' ? 'สถานที่ทั้งหมด' : 'All locations'}
+          {dict.portfolio?.map_all_locations ?? 'Alla platser'}
         </h2>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '1rem' }}>
           {locations.sort((a, b) => b.year - a.year).map((loc) => (
@@ -88,7 +74,7 @@ export default async function MapPage({ params }: Props) {
                   textTransform: 'uppercase',
                   letterSpacing: '0.05em',
                 }}>
-                  {loc.type === 'metro' ? '⬟ Metro' : loc.type === 'interior' ? '◈ Interior' : '◉ Exterior'}
+                  {loc.type === 'metro' ? `⬟ ${dict.portfolio?.map_type_metro ?? 'Metro'}` : loc.type === 'interior' ? `◈ ${dict.portfolio?.interiors ?? 'Interior'}` : `◉ ${dict.portfolio?.exteriors ?? 'Exterior'}`}
                 </span>
               </div>
               <div style={{ fontSize: 'var(--fs-sm)', marginBottom: '0.25rem', lineHeight: 1.4 }}>{loc.title}</div>

@@ -6,7 +6,13 @@
     "biography": "Életrajz",
     "contact": "Kapcsolat",
     "admin": "Admin",
-    "references": "Referenciák"
+    "references": "Referenciák",
+    "references_skulptur": "Szobrászat",
+    "references_fotografier": "Fotók – inspiráció",
+    "references_film": "Film és TV",
+    "references_publicerat": "Kiadványok",
+    "references_utmarkelser": "Díjak és érmék",
+    "references_ogonblick": "Pillanatok"
   },
   "common": {
     "year": "Év",
@@ -28,7 +34,11 @@
     "open_menu": "Menü megnyitása",
     "close_menu": "Menü bezárása",
     "play_slideshow": "Diavetítés indítása",
-    "pause_slideshow": "Diavetítés szüneteltetése"
+    "pause_slideshow": "Diavetítés szüneteltetése",
+    "update_available": "Új verzió érhető el",
+    "update_btn": "↺ Frissítés",
+    "photo_credit": "Fotó:",
+    "image_nr": "kép"
   },
   "home": {
     "sculptor": "Szobrász · Stockholm",
@@ -83,7 +93,14 @@
     "map_view": "Térkép megjelenítése",
     "type_theater": "Színházi díszlet",
     "type_choreography": "Koreográfia",
-    "view_location": "Helyszín megtekintése"
+    "view_location": "Helyszín megtekintése",
+    "map_title_full": "Térkép — közterületi művek",
+    "map_locations": "Helyszínek",
+    "map_cities": "Városok",
+    "map_all_locations": "Összes helyszín",
+    "map_type_metro": "Metró",
+    "temporary": "Ideiglenes",
+    "temporary_placement": "Ideiglenes elhelyezés"
   },
   "watercolors": {
     "title": "Akvarellек 1975–2012",
@@ -107,7 +124,8 @@
     "translated": "Fordított szövegek",
     "original_language": "Eredeti nyelv",
     "others_texts": "Mások szövegei",
-    "all": "Összes szöveg"
+    "all": "Összes szöveg",
+    "watch_film": "FILM MEGTEKINTÉSE"
   },
   "biography": {
     "title": "Sivert Lindblom",
@@ -133,7 +151,16 @@
     "timeline_10": "Stenpriset, Sveriges Stenindustrifförbund",
     "timeline_11": "Tag, Vägverkets skönhetsråd",
     "timeline_12": "Szobrászat professzora, Kungliga Konsthögskolan",
-    "timeline_13": "Sergelpriset, Stockholm"
+    "timeline_13": "Sergelpriset, Stockholm",
+    "bibliography": "Irodalomjegyzék (válogatás)",
+    "tab_biography": "Életrajz",
+    "tab_public": "Közterületi megbízások",
+    "tab_group_exhibitions": "Csoportos kiállítások",
+    "tab_bibliography": "Irodalomjegyzék",
+    "tab_photographs": "Fényképek",
+    "priser_title": "Díjak és kitüntetések",
+    "las": "olvas →",
+    "source_more": "Forrás / tovább"
   },
   "contact": {
     "title": "Kapcsolatfelvétel",
@@ -166,7 +193,17 @@
     "fotografier_intro": "Ebben a galériában olyan képek találhatók, amelyek valamilyen módon megérintették és inspirálták Sivert Lindblomot munkájában. Művei, bármily történelem nélkülinek tűnjenek is, egy hosszú hagyományból fakadnak — olyan képi jelképekből, amelyeket minden kor és kultúra művészei kerestek az emberi jelenlét megnyilvánítására.",
     "publicerat": "Publikációk",
     "publicerat_intro": "Válogatás Sivert Lindblom művészetéről szóló és általa érintett katalógusokból, folyóiratcikkekből és könyvekből.",
-    "watch": "Film megtekintése"
+    "watch": "Film megtekintése",
+    "grafik": "Grafika",
+    "utmarkelser": "Díjak",
+    "utmarkelser_title": "Elismerések, díjak és érmék",
+    "priser_received": "Kapott díjak",
+    "medaljer_designed": "Sivert Lindblom által tervezett érmék",
+    "ogonblick": "Pillanatok",
+    "loading": "Képek betöltése…",
+    "watch_film": "Film megtekintése",
+    "download_pdf": "Letöltés (PDF)",
+    "read_more": "Tovább olvas"
   },
   "footer": {
     "rights": "Minden jog fenntartva.",

@@ -6,7 +6,13 @@
     "biography": "سيرة ذاتية",
     "contact": "اتصل بنا",
     "admin": "Admin",
-    "references": "مراجع"
+    "references": "مراجع",
+    "references_skulptur": "النحت",
+    "references_fotografier": "الصور – الإلهام",
+    "references_film": "الأفلام والتلفزيون",
+    "references_publicerat": "المنشورات",
+    "references_utmarkelser": "الجوائز والميداليات",
+    "references_ogonblick": "لحظات"
   },
   "common": {
     "year": "السنة",
@@ -28,7 +34,11 @@
     "open_menu": "فتح القائمة",
     "close_menu": "إغلاق القائمة",
     "play_slideshow": "تشغيل عرض الشرائح",
-    "pause_slideshow": "إيقاف عرض الشرائح مؤقتاً"
+    "pause_slideshow": "إيقاف عرض الشرائح مؤقتاً",
+    "update_available": "إصدار جديد متاح",
+    "update_btn": "↺ تحديث",
+    "photo_credit": "صورة:",
+    "image_nr": "صورة"
   },
   "home": {
     "sculptor": "نحّات · ستوكهولم",
@@ -83,7 +93,14 @@
     "map_view": "عرض الخريطة",
     "type_theater": "سينوغرافيا مسرحية",
     "type_choreography": "كوريوغرافيا",
-    "view_location": "عرض الموقع"
+    "view_location": "عرض الموقع",
+    "map_title_full": "خريطة — الأعمال العامة",
+    "map_locations": "المواقع",
+    "map_cities": "المدن",
+    "map_all_locations": "جميع المواقع",
+    "map_type_metro": "مترو",
+    "temporary": "مؤقت",
+    "temporary_placement": "موقع مؤقت"
   },
   "watercolors": {
     "title": "ألوان مائية 1975–2012",
@@ -106,7 +123,8 @@
     "own_writing": "كتابة خاصة",
     "translated": "مترجم",
     "original_language": "اللغة الأصلية",
-    "others_texts": "نصوص الآخرين"
+    "others_texts": "نصوص الآخرين",
+    "watch_film": "مشاهدة الفيلم"
   },
   "biography": {
     "title": "سيفرت ليندبلوم",
@@ -132,7 +150,16 @@
     "timeline_10": "جائزة الحجر، الاتحاد السويدي لصناعة الحجر",
     "timeline_11": "عضو، مجلس جماليات إدارة الطرق الوطنية",
     "timeline_12": "أستاذ النحت، Kungliga Konsthögskolan",
-    "timeline_13": "Sergelpriset، Stockholm"
+    "timeline_13": "Sergelpriset، Stockholm",
+    "bibliography": "ببليوغرافيا (مختارات)",
+    "tab_biography": "السيرة الذاتية",
+    "tab_public": "المهام العامة",
+    "tab_group_exhibitions": "المعارض الجماعية",
+    "tab_bibliography": "ببليوغرافيا",
+    "tab_photographs": "الصور",
+    "priser_title": "الجوائز والأوسمة",
+    "las": "← اقرأ",
+    "source_more": "المصدر / المزيد"
   },
   "contact": {
     "title": "تواصل معنا",
@@ -165,7 +192,17 @@
     "fotografier_intro": "يحتوي هذا المعرض على صور لامست سيفرت ليندبلوم وألهمته في عمله بطريقة أو بأخرى. إن أعماله، مهما بدت بلا تاريخ، تنبثق من تقليد عريق من الرموز والصور التي سعى إليها الفنانون في كل العصور والثقافات للتعبير عن حضور الإنسان.",
     "publicerat": "منشورات",
     "publicerat_intro": "كتالوجات ومقالات مجلات وكتب تحتوي على نصوص تتعلق بممارسة سيفرت الفنية.",
-    "watch": "شاهد الفيلم"
+    "watch": "شاهد الفيلم",
+    "grafik": "الجرافيك",
+    "utmarkelser": "الجوائز",
+    "utmarkelser_title": "الأوسمة والجوائز والميداليات",
+    "priser_received": "الجوائز المستلمة",
+    "medaljer_designed": "ميداليات صممها سيفرت ليندبلوم",
+    "ogonblick": "لحظات",
+    "loading": "جارٍ تحميل الصور…",
+    "watch_film": "مشاهدة الفيلم",
+    "download_pdf": "تحميل (PDF)",
+    "read_more": "اقرأ أكثر"
   },
   "footer": {
     "rights": "جميع الحقوق محفوظة.",

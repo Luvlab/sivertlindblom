@@ -6,7 +6,13 @@
     "biography": "Biografie",
     "contact": "Kontakt",
     "admin": "Admin",
-    "references": "Referenzen"
+    "references": "Referenzen",
+    "references_skulptur": "Skulptur",
+    "references_fotografier": "Fotografien – Inspiration",
+    "references_film": "Film und TV",
+    "references_publicerat": "Veröffentlichungen",
+    "references_utmarkelser": "Auszeichnungen, Preise und Medaillen",
+    "references_ogonblick": "Momente"
   },
   "common": {
     "year": "Jahr",
@@ -28,7 +34,11 @@
     "open_menu": "Menü öffnen",
     "close_menu": "Menü schließen",
     "play_slideshow": "Diashow starten",
-    "pause_slideshow": "Diashow pausieren"
+    "pause_slideshow": "Diashow pausieren",
+    "update_available": "Neue Version verfügbar",
+    "update_btn": "↺ Aktualisieren",
+    "photo_credit": "Foto:",
+    "image_nr": "Bild"
   },
   "home": {
     "sculptor": "Bildhauer · Stockholm",
@@ -83,7 +93,14 @@
     "map_view": "Karte anzeigen",
     "type_theater": "Theaterszenografie",
     "type_choreography": "Choreografie",
-    "view_location": "Standort anzeigen"
+    "view_location": "Standort anzeigen",
+    "map_title_full": "Karte — öffentliche Werke",
+    "map_locations": "Standorte",
+    "map_cities": "Städte",
+    "map_all_locations": "Alle Standorte",
+    "map_type_metro": "Metro",
+    "temporary": "Temporär",
+    "temporary_placement": "Temporärer Standort"
   },
   "watercolors": {
     "title": "Aquarelle 1975–2012",
@@ -106,7 +123,8 @@
     "own_writing": "Eigener Text",
     "translated": "Übersetzt",
     "original_language": "Originalsprache",
-    "others_texts": "Fremde Texte"
+    "others_texts": "Fremde Texte",
+    "watch_film": "FILM ANSEHEN"
   },
   "biography": {
     "title": "Sivert Lindblom",
@@ -132,7 +150,16 @@
     "timeline_10": "Steinpreis, Schwedischer Steinindustrieverband",
     "timeline_11": "Mitglied, Schönheitsrat der Straßenbauverwaltung",
     "timeline_12": "Professor für Bildhauerei, Kungliga Konsthögskolan",
-    "timeline_13": "Sergelpriset, Stockholm"
+    "timeline_13": "Sergelpriset, Stockholm",
+    "bibliography": "Bibliografie (Auswahl)",
+    "tab_biography": "Biografie",
+    "tab_public": "Öffentliche Aufträge",
+    "tab_group_exhibitions": "Gruppenausstellungen",
+    "tab_bibliography": "Bibliografie",
+    "tab_photographs": "Fotografien",
+    "priser_title": "Preise & Auszeichnungen",
+    "las": "lesen →",
+    "source_more": "Quelle / mehr"
   },
   "contact": {
     "title": "Kontakt aufnehmen",
@@ -165,7 +192,17 @@
     "fotografier_intro": "Diese Galerie enthält Bilder, die Sivert Lindblom in seiner Arbeit auf die eine oder andere Weise berührt und inspiriert haben. Seine Werke, so geschichtslos sie auch erscheinen mögen, entstammen einer langen Tradition von Sinnbildern, die Künstler aller Zeiten und Kulturen gesucht haben, um die Gegenwart des Menschen zu manifestieren.",
     "publicerat": "Veröffentlicht",
     "publicerat_intro": "Kataloge, Zeitschriftenartikel und Bücher mit Texten, die sich auf Siverts Künstlerschaft beziehen.",
-    "watch": "Film ansehen"
+    "watch": "Film ansehen",
+    "grafik": "Grafik",
+    "utmarkelser": "Auszeichnungen",
+    "utmarkelser_title": "Auszeichnungen, Preise und Medaillen",
+    "priser_received": "Erhaltene Preise",
+    "medaljer_designed": "Von Sivert Lindblom gestaltete Medaillen",
+    "ogonblick": "Momente",
+    "loading": "Bilder werden geladen…",
+    "watch_film": "Film ansehen",
+    "download_pdf": "Herunterladen (PDF)",
+    "read_more": "Mehr lesen"
   },
   "footer": {
     "rights": "Alle Rechte vorbehalten.",

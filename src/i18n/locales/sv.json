@@ -6,7 +6,13 @@
     "biography": "Biografi",
     "contact": "Kontakt",
     "admin": "Admin",
-    "references": "Referensmaterial"
+    "references": "Referensmaterial",
+    "references_skulptur": "Skulptur",
+    "references_fotografier": "Fotografier – inspiration",
+    "references_film": "Film och TV",
+    "references_publicerat": "Publicerat",
+    "references_utmarkelser": "Utmärkelser, priser och medaljer",
+    "references_ogonblick": "Ögonblick"
   },
   "common": {
     "year": "År",
@@ -28,7 +34,11 @@
     "open_menu": "Öppna meny",
     "close_menu": "Stäng meny",
     "play_slideshow": "Starta bildspel",
-    "pause_slideshow": "Pausa bildspel"
+    "pause_slideshow": "Pausa bildspel",
+    "update_available": "Ny version tillgänglig",
+    "update_btn": "↺ Uppdatera",
+    "photo_credit": "Foto:",
+    "image_nr": "bild"
   },
   "home": {
     "sculptor": "Skulptör · Stockholm",
@@ -83,7 +93,14 @@
     "map_view": "Visa karta",
     "type_theater": "Teaterscenografi",
     "type_choreography": "Koreografi",
-    "view_location": "Visa platsen"
+    "view_location": "Visa platsen",
+    "map_title_full": "Karta — offentliga verk",
+    "map_locations": "Platser",
+    "map_cities": "Städer",
+    "map_all_locations": "Alla platser",
+    "map_type_metro": "Metro",
+    "temporary": "Tillfällig",
+    "temporary_placement": "Tillfällig placering"
   },
   "watercolors": {
     "title": "Akvareller 1975–2012",
@@ -106,7 +123,8 @@
     "own_writing": "Egna texter",
     "translated": "Översatta texter",
     "original_language": "Originalspråk",
-    "others_texts": "Andras texter"
+    "others_texts": "Andras texter",
+    "watch_film": "SE FILMEN"
   },
   "biography": {
     "title": "Sivert Lindblom",
@@ -132,7 +150,16 @@
     "timeline_10": "Stenpriset, Sveriges Stenindustrifförbund",
     "timeline_11": "Ledamot, Vägverkets skönhetsråd",
     "timeline_12": "Professor i skulptur, Kungliga Konsthögskolan",
-    "timeline_13": "Sergelpriset, Stockholm"
+    "timeline_13": "Sergelpriset, Stockholm",
+    "bibliography": "Litteraturförteckning i urval",
+    "tab_biography": "Biografi",
+    "tab_public": "Offentliga uppdrag",
+    "tab_group_exhibitions": "Grupputställningar",
+    "tab_bibliography": "Litteraturförteckning",
+    "tab_photographs": "Fotografier",
+    "priser_title": "Priser & utmärkelser",
+    "las": "läs →",
+    "source_more": "Källa / mer"
   },
   "contact": {
     "title": "Ta kontakt",
@@ -165,7 +192,17 @@
     "fotografier_intro": "I detta galleri finns bilder som på ett eller annat sätt berört och inspirerat Sivert Lindblom i sitt arbete. Hans verk, hur historielösa de än kan verka, är emanerade ur en lång tradition av sinnebilder som konstnärer i alla tider och kulturer har sökt för att manifestera människans närvaro.",
     "publicerat": "Publicerat",
     "publicerat_intro": "Ett urval av kataloger, tidskriftsartiklar och böcker med och om Sivert Lindbloms konstnärsskap.",
-    "watch": "Se filmen"
+    "watch": "Se filmen",
+    "grafik": "Grafik",
+    "utmarkelser": "Utmärkelser",
+    "utmarkelser_title": "Utmärkelser, priser och medaljer",
+    "priser_received": "Mottagna priser",
+    "medaljer_designed": "Medaljer formgivna av Sivert Lindblom",
+    "ogonblick": "Ögonblick",
+    "loading": "Bilder laddas in…",
+    "watch_film": "Se film",
+    "download_pdf": "Ladda ner (PDF)",
+    "read_more": "Läs mer"
   },
   "footer": {
     "rights": "Alla rättigheter förbehållna.",

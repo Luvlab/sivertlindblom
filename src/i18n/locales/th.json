@@ -6,7 +6,13 @@
     "biography": "ประวัติ",
     "contact": "ติดต่อ",
     "admin": "ผู้ดูแล",
-    "references": "อ้างอิง"
+    "references": "อ้างอิง",
+    "references_skulptur": "ประติมากรรม",
+    "references_fotografier": "ภาพถ่าย – แรงบันดาลใจ",
+    "references_film": "ภาพยนตร์และทีวี",
+    "references_publicerat": "สิ่งพิมพ์",
+    "references_utmarkelser": "รางวัลและเหรียญ",
+    "references_ogonblick": "ช่วงเวลา"
   },
   "common": {
     "year": "ปี",
@@ -28,7 +34,11 @@
     "open_menu": "เปิดเมนู",
     "close_menu": "ปิดเมนู",
     "play_slideshow": "เล่นสไลด์โชว์",
-    "pause_slideshow": "หยุดสไลด์โชว์ชั่วคราว"
+    "pause_slideshow": "หยุดสไลด์โชว์ชั่วคราว",
+    "update_available": "มีเวอร์ชันใหม่",
+    "update_btn": "↺ อัปเดต",
+    "photo_credit": "ภาพ:",
+    "image_nr": "ภาพ"
   },
   "home": {
     "sculptor": "ประติมากร · สตอกโฮล์ม",
@@ -83,7 +93,14 @@
     "map_view": "ดูแผนที่",
     "type_theater": "ฉากละครเวที",
     "type_choreography": "ออกแบบท่าเต้น",
-    "view_location": "ดูสถานที่"
+    "view_location": "ดูสถานที่",
+    "map_title_full": "แผนที่ — งานสาธารณะ",
+    "map_locations": "สถานที่",
+    "map_cities": "เมือง",
+    "map_all_locations": "ทุกสถานที่",
+    "map_type_metro": "รถไฟใต้ดิน",
+    "temporary": "ชั่วคราว",
+    "temporary_placement": "ตำแหน่งชั่วคราว"
   },
   "watercolors": {
     "title": "ภาพสีน้ำ 1975–2012",
@@ -106,7 +123,8 @@
     "own_writing": "งานเขียนของตนเอง",
     "translated": "แปลแล้ว",
     "original_language": "ภาษาต้นฉบับ",
-    "others_texts": "ข้อความของผู้อื่น"
+    "others_texts": "ข้อความของผู้อื่น",
+    "watch_film": "ชมภาพยนตร์"
   },
   "biography": {
     "title": "ซีเวิร์ต ลินด์บลอม",
@@ -132,7 +150,16 @@
     "timeline_10": "รางวัลหิน สหพันธ์อุตสาหกรรมหินสวีเดน",
     "timeline_11": "สมาชิก คณะกรรมการความงามของการบริหารทางหลวงแห่งชาติ",
     "timeline_12": "ศาสตราจารย์ด้านประติมากรรม Kungliga Konsthögskolan",
-    "timeline_13": "Sergelpriset Stockholm"
+    "timeline_13": "Sergelpriset Stockholm",
+    "bibliography": "บรรณานุกรม (คัดเลือก)",
+    "tab_biography": "ประวัติ",
+    "tab_public": "งานสาธารณะ",
+    "tab_group_exhibitions": "นิทรรศการกลุ่ม",
+    "tab_bibliography": "บรรณานุกรม",
+    "tab_photographs": "ภาพถ่าย",
+    "priser_title": "รางวัลและเกียรติยศ",
+    "las": "อ่าน →",
+    "source_more": "แหล่งที่มา / เพิ่มเติม"
   },
   "contact": {
     "title": "ติดต่อเรา",
@@ -165,7 +192,17 @@
     "fotografier_intro": "แกลเลอรีนี้มีภาพที่สัมผัสและสร้างแรงบันดาลใจให้ซีเวิร์ต ลินด์บลอมในงานของเขาไม่ทางใดก็ทางหนึ่ง ผลงานของเขา ไม่ว่าจะดูไร้ประวัติศาสตร์เพียงใด ล้วนมาจากประเพณีอันยาวนานของภาพสัญลักษณ์ที่ศิลปินในทุกยุคและทุกวัฒนธรรมแสวงหาเพื่อแสดงถึงการดำรงอยู่ของมนุษย์",
     "publicerat": "สิ่งพิมพ์",
     "publicerat_intro": "แคตตาล็อก บทความในวารสาร และหนังสือที่มีข้อความเกี่ยวข้องกับการปฏิบัติงานศิลปะของซีเวิร์ต",
-    "watch": "ดูภาพยนตร์"
+    "watch": "ดูภาพยนตร์",
+    "grafik": "ภาพพิมพ์",
+    "utmarkelser": "รางวัล",
+    "utmarkelser_title": "รางวัล เกียรติยศ และเหรียญ",
+    "priser_received": "รางวัลที่ได้รับ",
+    "medaljer_designed": "เหรียญที่ออกแบบโดย Sivert Lindblom",
+    "ogonblick": "ช่วงเวลา",
+    "loading": "กำลังโหลดรูปภาพ…",
+    "watch_film": "ชมภาพยนตร์",
+    "download_pdf": "ดาวน์โหลด (PDF)",
+    "read_more": "อ่านเพิ่มเติม"
   },
   "footer": {
     "rights": "สงวนลิขสิทธิ์",

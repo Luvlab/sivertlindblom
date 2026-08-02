@@ -6,7 +6,13 @@
     "biography": "略歴",
     "contact": "お問い合わせ",
     "admin": "Admin",
-    "references": "参考資料"
+    "references": "参考資料",
+    "references_skulptur": "彫刻",
+    "references_fotografier": "写真 – インスピレーション",
+    "references_film": "映像・テレビ",
+    "references_publicerat": "出版物",
+    "references_utmarkelser": "受賞とメダル",
+    "references_ogonblick": "瞬間"
   },
   "common": {
     "year": "年",
@@ -28,7 +34,11 @@
     "open_menu": "メニューを開く",
     "close_menu": "メニューを閉じる",
     "play_slideshow": "スライドショーを再生",
-    "pause_slideshow": "スライドショーを一時停止"
+    "pause_slideshow": "スライドショーを一時停止",
+    "update_available": "新バージョンが利用可能",
+    "update_btn": "↺ 更新",
+    "photo_credit": "写真：",
+    "image_nr": "画像"
   },
   "home": {
     "sculptor": "彫刻家 · ストックホルム",
@@ -83,7 +93,14 @@
     "map_view": "地図を表示",
     "type_theater": "演劇舞台美術",
     "type_choreography": "振付",
-    "view_location": "場所を見る"
+    "view_location": "場所を見る",
+    "map_title_full": "マップ — パブリックアート",
+    "map_locations": "場所",
+    "map_cities": "都市",
+    "map_all_locations": "すべての場所",
+    "map_type_metro": "地下鉄",
+    "temporary": "臨時",
+    "temporary_placement": "一時的な配置"
   },
   "watercolors": {
     "title": "水彩画 1975–2012",
@@ -106,7 +123,8 @@
     "own_writing": "自著",
     "translated": "翻訳",
     "original_language": "原語",
-    "others_texts": "他者のテキスト"
+    "others_texts": "他者のテキスト",
+    "watch_film": "映像を見る"
   },
   "biography": {
     "title": "シヴェルト・リンドブロム",
@@ -132,7 +150,16 @@
     "timeline_10": "石材賞、スウェーデン石材産業連盟",
     "timeline_11": "会員、国家道路庁美観委員会",
     "timeline_12": "彫刻教授、Kungliga Konsthögskolan",
-    "timeline_13": "Sergelpriset、Stockholm"
+    "timeline_13": "Sergelpriset、Stockholm",
+    "bibliography": "文献目録（抜粋）",
+    "tab_biography": "経歴",
+    "tab_public": "パブリックコミッション",
+    "tab_group_exhibitions": "グループ展",
+    "tab_bibliography": "文献目録",
+    "tab_photographs": "写真",
+    "priser_title": "賞と受賞",
+    "las": "読む →",
+    "source_more": "出典 / 詳細"
   },
   "contact": {
     "title": "お問い合わせ",
@@ -165,7 +192,17 @@
     "fotografier_intro": "このギャラリーには、シヴェルト・リンドブロムの制作活動において何らかの形で触れ、インスピレーションを与えた画像が収録されています。彼の作品は、一見歴史性を持たないように見えても、あらゆる時代・文化の芸術家が人類の存在を示すために求めてきた象徴の長い伝統から生まれています。",
     "publicerat": "出版物",
     "publicerat_intro": "シヴェルトの芸術実践に関連するテキストを収録したカタログ、雑誌記事、書籍。",
-    "watch": "映像を見る"
+    "watch": "映像を見る",
+    "grafik": "版画",
+    "utmarkelser": "受賞歴",
+    "utmarkelser_title": "受賞・賞・メダル",
+    "priser_received": "受賞歴",
+    "medaljer_designed": "シヴェルト・リンドブロムがデザインしたメダル",
+    "ogonblick": "瞬間",
+    "loading": "画像を読み込んでいます…",
+    "watch_film": "映像を見る",
+    "download_pdf": "ダウンロード (PDF)",
+    "read_more": "続きを読む"
   },
   "footer": {
     "rights": "全著作権所有。",

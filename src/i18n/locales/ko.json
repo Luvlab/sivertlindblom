@@ -6,7 +6,13 @@
     "biography": "약력",
     "contact": "연락처",
     "admin": "Admin",
-    "references": "참고자료"
+    "references": "참고자료",
+    "references_skulptur": "조각",
+    "references_fotografier": "사진 – 영감",
+    "references_film": "영상 및 TV",
+    "references_publicerat": "출판물",
+    "references_utmarkelser": "수상 및 메달",
+    "references_ogonblick": "순간들"
   },
   "common": {
     "year": "연도",
@@ -28,7 +34,11 @@
     "open_menu": "메뉴 열기",
     "close_menu": "메뉴 닫기",
     "play_slideshow": "슬라이드쇼 재생",
-    "pause_slideshow": "슬라이드쇼 일시정지"
+    "pause_slideshow": "슬라이드쇼 일시정지",
+    "update_available": "새 버전 사용 가능",
+    "update_btn": "↺ 업데이트",
+    "photo_credit": "사진:",
+    "image_nr": "이미지"
   },
   "home": {
     "sculptor": "조각가 · 스톡홀름",
@@ -83,7 +93,14 @@
     "map_view": "지도 보기",
     "type_theater": "연극 무대미술",
     "type_choreography": "안무",
-    "view_location": "위치 보기"
+    "view_location": "위치 보기",
+    "map_title_full": "지도 — 공공 작품",
+    "map_locations": "위치",
+    "map_cities": "도시",
+    "map_all_locations": "모든 위치",
+    "map_type_metro": "지하철",
+    "temporary": "임시",
+    "temporary_placement": "임시 배치"
   },
   "watercolors": {
     "title": "수채화 1975–2012",
@@ -106,7 +123,8 @@
     "own_writing": "자작 글",
     "translated": "번역",
     "original_language": "원본 언어",
-    "others_texts": "다른 이들의 글"
+    "others_texts": "다른 이들의 글",
+    "watch_film": "영상 보기"
   },
   "biography": {
     "title": "시베르트 린드블롬",
@@ -132,7 +150,16 @@
     "timeline_10": "석재상, 스웨덴 석재산업연합회",
     "timeline_11": "회원, 국가도로청 미관위원회",
     "timeline_12": "조각 교수, Kungliga Konsthögskolan",
-    "timeline_13": "Sergelpriset, Stockholm"
+    "timeline_13": "Sergelpriset, Stockholm",
+    "bibliography": "참고문헌 (선별)",
+    "tab_biography": "약력",
+    "tab_public": "공공 커미션",
+    "tab_group_exhibitions": "단체전",
+    "tab_bibliography": "참고문헌",
+    "tab_photographs": "사진",
+    "priser_title": "수상 및 상패",
+    "las": "읽기 →",
+    "source_more": "출처 / 더보기"
   },
   "contact": {
     "title": "연락하기",
@@ -165,7 +192,17 @@
     "fotografier_intro": "이 갤러리에는 시베르트 린드블롬의 작업에 어떤 식으로든 감동을 주고 영감을 불어넣은 이미지들이 수록되어 있습니다. 그의 작품들은 아무리 역사성이 없어 보여도, 모든 시대와 문화의 예술가들이 인간의 존재를 드러내기 위해 추구해 온 오랜 상징의 전통에서 비롯되었습니다.",
     "publicerat": "출판물",
     "publicerat_intro": "시베르트의 예술 실천과 관련된 텍스트가 담긴 도록, 잡지 기사, 서적.",
-    "watch": "영화 보기"
+    "watch": "영화 보기",
+    "grafik": "판화",
+    "utmarkelser": "수상",
+    "utmarkelser_title": "수상, 상금 및 메달",
+    "priser_received": "수상 이력",
+    "medaljer_designed": "Sivert Lindblom이 디자인한 메달",
+    "ogonblick": "순간들",
+    "loading": "이미지 로딩 중…",
+    "watch_film": "영상 보기",
+    "download_pdf": "다운로드 (PDF)",
+    "read_more": "더 읽기"
   },
   "footer": {
     "rights": "모든 권리 보유.",

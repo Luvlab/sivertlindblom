@@ -1,6 +1,26 @@
 'use client'
 
 import { useEffect, useState, useCallback } from 'react'
+import { usePathname } from 'next/navigation'
+
+const T: Record<string, { msg: string; btn: string }> = {
+  sv: { msg: 'Ny version tillgänglig', btn: '↺ Uppdatera' },
+  en: { msg: 'New version available', btn: '↺ Update' },
+  de: { msg: 'Neue Version verfügbar', btn: '↺ Aktualisieren' },
+  fr: { msg: 'Nouvelle version disponible', btn: '↺ Mettre à jour' },
+  es: { msg: 'Nueva versión disponible', btn: '↺ Actualizar' },
+  it: { msg: 'Nuova versione disponibile', btn: '↺ Aggiorna' },
+  zh: { msg: '有新版本', btn: '↺ 更新' },
+  ja: { msg: '新バージョンが利用可能', btn: '↺ 更新' },
+  ar: { msg: 'إصدار جديد متاح', btn: '↺ تحديث' },
+  pt: { msg: 'Nova versão disponível', btn: '↺ Atualizar' },
+  ru: { msg: 'Доступна новая версия', btn: '↺ Обновить' },
+  nl: { msg: 'Nieuwe versie beschikbaar', btn: '↺ Bijwerken' },
+  pl: { msg: 'Nowa wersja dostępna', btn: '↺ Aktualizuj' },
+  ko: { msg: '새 버전 사용 가능', btn: '↺ 업데이트' },
+  th: { msg: 'มีเวอร์ชันใหม่', btn: '↺ อัปเดต' },
+  hu: { msg: 'Új verzió érhető el', btn: '↺ Frissítés' },
+}
 
 /**
  * PwaProvider
@@ -16,6 +36,9 @@ export default function PwaProvider() {
   const [updateReady, setUpdateReady] = useState(false)
   const [reg, setReg] = useState<ServiceWorkerRegistration | null>(null)
   const [dismissed, setDismissed] = useState(false)
+  const pathname = usePathname()
+  const locale = pathname?.split('/')[1] ?? 'sv'
+  const t = T[locale] ?? T.sv
 
   // Register SW
   useEffect(() => {
@@ -118,7 +141,7 @@ export default function PwaProvider() {
         color: 'var(--color-muted, #888)',
         whiteSpace: 'nowrap',
       }}>
-        Ny version tillgänglig
+        {t.msg}
       </span>
 
       <button
@@ -137,7 +160,7 @@ export default function PwaProvider() {
           flexShrink: 0,
         }}
       >
-        ↺ Uppdatera
+        {t.btn}
       </button>
 
       <button

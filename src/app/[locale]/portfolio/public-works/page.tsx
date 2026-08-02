@@ -18,10 +18,12 @@ function WorkCard({
   work,
   locale,
   idx,
+  temporaryLabel,
 }: {
   work: PublicWork
   locale: string
   idx: number
+  temporaryLabel?: string
 }) {
   const images = work.images.slice(0, 8).map((i) => i.url)
   const hasImages = images.length > 0
@@ -58,7 +60,7 @@ function WorkCard({
         {work.temporary && (
           <div style={{ marginTop: '0.5rem' }}>
             <span style={{ fontSize: '0.65rem', color: 'var(--color-muted)', border: '1px solid var(--color-border)', borderRadius: 1, padding: '0.1rem 0.45rem', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
-              Tillfällig
+              {temporaryLabel ?? 'Tillfällig'}
             </span>
           </div>
         )}
@@ -144,7 +146,7 @@ export default async function PublicWorksPage({
           paddingBottom: '1.5rem',
         }}>
           {exteriors.map((w, i) => (
-            <WorkCard key={w.slug} work={w} locale={locale} idx={i} />
+            <WorkCard key={w.slug} work={w} locale={locale} idx={i} temporaryLabel={dict.portfolio?.temporary ?? 'Tillfällig'} />
           ))}
         </div>
       </div>
@@ -171,7 +173,7 @@ export default async function PublicWorksPage({
           paddingBottom: '1.5rem',
         }}>
           {interiors.map((w, i) => (
-            <WorkCard key={w.slug} work={w} locale={locale} idx={i} />
+            <WorkCard key={w.slug} work={w} locale={locale} idx={i} temporaryLabel={dict.portfolio?.temporary ?? 'Tillfällig'} />
           ))}
         </div>
       </div>

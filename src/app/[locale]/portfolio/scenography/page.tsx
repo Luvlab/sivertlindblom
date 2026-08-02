@@ -12,12 +12,6 @@ export function generateStaticParams() {
   return locales.map((locale) => ({ locale }))
 }
 
-const FILTERS = [
-  { key: 'alla', label: 'Alla' },
-  { key: 'Teaterscenografi', label: 'Teaterscenografi' },
-  { key: 'Koreografi', label: 'Koreografi' },
-] as const
-
 export default async function ScenographyPage({
   params,
 }: {
@@ -28,6 +22,12 @@ export default async function ScenographyPage({
     getDictionary(locale as Locale),
     getWorks(),
   ])
+
+  const FILTERS = [
+    { key: 'alla', label: dict.common?.all ?? 'Alla' },
+    { key: 'Teaterscenografi', label: dict.portfolio?.type_theater ?? 'Teaterscenografi' },
+    { key: 'Koreografi', label: dict.portfolio?.type_choreography ?? 'Koreografi' },
+  ]
 
   // Pool all scenography images for the hero slideshow
   const heroImages = WORKS.flatMap(w => w.images).filter(Boolean)

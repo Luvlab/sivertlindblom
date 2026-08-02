@@ -102,7 +102,7 @@ export default async function PublicWorkDetailPage({
             </h1>
             {work.temporary && (
               <span style={{ display: 'inline-block', marginTop: '0.75rem', fontSize: 'var(--fs-xs)', color: 'rgba(255,255,255,0.55)', border: '1px solid rgba(255,255,255,0.2)', borderRadius: 1, padding: '0.15rem 0.55rem', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
-                {locale === 'sv' ? 'Tillfällig placering' : 'Temporary placement'}
+                {dict.portfolio?.temporary_placement ?? 'Tillfällig placering'}
               </span>
             )}
           </div>
@@ -124,7 +124,7 @@ export default async function PublicWorkDetailPage({
           </h1>
           {work.temporary && (
             <span style={{ display: 'inline-block', marginTop: '0.5rem', fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', border: '1px solid var(--color-border)', borderRadius: 1, padding: '0.15rem 0.55rem', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
-              {locale === 'sv' ? 'Tillfällig placering' : 'Temporary placement'}
+              {dict.portfolio?.temporary_placement ?? 'Tillfällig placering'}
             </span>
           )}
         </div>

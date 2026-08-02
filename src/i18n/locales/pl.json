@@ -6,7 +6,13 @@
     "biography": "Biografia",
     "contact": "Kontakt",
     "admin": "Admin",
-    "references": "Referencje"
+    "references": "Referencje",
+    "references_skulptur": "Rzeźba",
+    "references_fotografier": "Fotografie – inspiracja",
+    "references_film": "Film i TV",
+    "references_publicerat": "Publikacje",
+    "references_utmarkelser": "Nagrody i medale",
+    "references_ogonblick": "Chwile"
   },
   "common": {
     "year": "Rok",
@@ -28,7 +34,11 @@
     "open_menu": "Otwórz menu",
     "close_menu": "Zamknij menu",
     "play_slideshow": "Uruchom pokaz slajdów",
-    "pause_slideshow": "Wstrzymaj pokaz slajdów"
+    "pause_slideshow": "Wstrzymaj pokaz slajdów",
+    "update_available": "Nowa wersja dostępna",
+    "update_btn": "↺ Aktualizuj",
+    "photo_credit": "Zdjęcie:",
+    "image_nr": "obraz"
   },
   "home": {
     "sculptor": "Rzeźbiarz · Sztokholm",
@@ -83,7 +93,14 @@
     "map_view": "Zobacz mapę",
     "type_theater": "Scenografia teatralna",
     "type_choreography": "Choreografia",
-    "view_location": "Zobacz lokalizację"
+    "view_location": "Zobacz lokalizację",
+    "map_title_full": "Mapa — prace publiczne",
+    "map_locations": "Lokalizacje",
+    "map_cities": "Miasta",
+    "map_all_locations": "Wszystkie lokalizacje",
+    "map_type_metro": "Metro",
+    "temporary": "Tymczasowy",
+    "temporary_placement": "Tymczasowe umiejscowienie"
   },
   "watercolors": {
     "title": "Akwarele 1975–2012",
@@ -106,7 +123,8 @@
     "own_writing": "Własny tekst",
     "translated": "Przetłumaczony",
     "original_language": "Język oryginału",
-    "others_texts": "Teksty innych"
+    "others_texts": "Teksty innych",
+    "watch_film": "OBEJRZYJ FILM"
   },
   "biography": {
     "title": "Sivert Lindblom",
@@ -132,7 +150,16 @@
     "timeline_10": "Nagroda Kamienia, Szwedzka Federacja Przemysłu Kamieniarskiego",
     "timeline_11": "Członek, Rada Estetyczna Krajowej Administracji Dróg",
     "timeline_12": "Profesor rzeźby, Kungliga Konsthögskolan",
-    "timeline_13": "Sergelpriset, Stockholm"
+    "timeline_13": "Sergelpriset, Stockholm",
+    "bibliography": "Bibliografia (wybór)",
+    "tab_biography": "Biografia",
+    "tab_public": "Zamówienia publiczne",
+    "tab_group_exhibitions": "Wystawy zbiorowe",
+    "tab_bibliography": "Bibliografia",
+    "tab_photographs": "Fotografie",
+    "priser_title": "Nagrody i wyróżnienia",
+    "las": "czytaj →",
+    "source_more": "Źródło / więcej"
   },
   "contact": {
     "title": "Skontaktuj się",
@@ -165,7 +192,17 @@
     "fotografier_intro": "W tej galerii znajdują się obrazy, które w taki czy inny sposób poruszyły i zainspirowały Siverta Lindbloma w jego pracy. Jego dzieła, choćby wydawały się pozbawione historii, emanują z długiej tradycji symboli, których artyści wszystkich epok i kultur szukali, aby zamanifestować obecność człowieka.",
     "publicerat": "Opublikowano",
     "publicerat_intro": "Katalogi, artykuły w czasopismach i książki z tekstami związanymi z twórczością Siverta.",
-    "watch": "Obejrzyj film"
+    "watch": "Obejrzyj film",
+    "grafik": "Grafika",
+    "utmarkelser": "Nagrody",
+    "utmarkelser_title": "Odznaczenia, nagrody i medale",
+    "priser_received": "Otrzymane nagrody",
+    "medaljer_designed": "Medale zaprojektowane przez Siverta Lindbloma",
+    "ogonblick": "Chwile",
+    "loading": "Ładowanie zdjęć…",
+    "watch_film": "Obejrzyj film",
+    "download_pdf": "Pobierz (PDF)",
+    "read_more": "Czytaj więcej"
   },
   "footer": {
     "rights": "Wszelkie prawa zastrzeżone.",

@@ -140,14 +140,6 @@ const GROUP_EXHIBITIONS: Array<{ year: string; title: string; location: string; 
 ]
 
 
-const TABS = [
-  { id: 'biografi',           label: 'Biografi' },
-  { id: 'offentliga-uppdrag', label: 'Offentliga uppdrag' },
-  { id: 'grupputstallningar', label: 'Grupputställningar' },
-  { id: 'litteratur',         label: 'Litteraturförteckning' },
-  { id: 'fotografier',        label: 'Fotografier' },
-]
-
 export default async function BiographyPage({
   params,
 }: {
@@ -162,6 +154,14 @@ export default async function BiographyPage({
   ])
   const { intro: bioIntro, portrait: PORTRAIT_URL, portraitCredit: PORTRAIT_CREDIT, photos: bioPhotos } = bioSettings
   const awards = utmarkelser.prizes
+
+  const TABS = [
+    { id: 'biografi',           label: dict.biography?.tab_biography ?? 'Biografi' },
+    { id: 'offentliga-uppdrag', label: dict.biography?.tab_public ?? 'Offentliga uppdrag' },
+    { id: 'grupputstallningar', label: dict.biography?.tab_group_exhibitions ?? 'Grupputställningar' },
+    { id: 'litteratur',         label: dict.biography?.tab_bibliography ?? 'Litteraturförteckning' },
+    { id: 'fotografier',        label: dict.biography?.tab_photographs ?? 'Fotografier' },
+  ]
 
   return (
     <div style={{ paddingBottom: '5rem', marginTop: 'calc(-1 * var(--header-h))' }}>
@@ -240,7 +240,7 @@ export default async function BiographyPage({
 
           {/* ── Priser & utmärkelser ── */}
           <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-2xl)', marginTop: '3rem', marginBottom: '2rem' }}>
-            Priser &amp; utmärkelser
+            {dict.biography?.priser_title ?? 'Priser & utmärkelser'}
           </h2>
           {awards.map((a, i) => (
             <div key={i} style={{ display: 'grid', gridTemplateColumns: '7rem 1fr', gap: '1rem', padding: '0.9rem 0', borderBottom: '1px solid var(--color-border)', alignItems: 'start' }}>
@@ -337,7 +337,7 @@ export default async function BiographyPage({
                 {entry.slug ? (
                   <Link href={`/${locale}/texts/${entry.slug}`} style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-text)', lineHeight: 1.6, textDecoration: 'none' }}>
                     <span style={{ borderBottom: '1px solid var(--color-accent-dim)' }}>{entry.text}</span>
-                    <span style={{ color: 'var(--color-accent)', marginLeft: '0.4rem', whiteSpace: 'nowrap' }}>läs →</span>
+                    <span style={{ color: 'var(--color-accent)', marginLeft: '0.4rem', whiteSpace: 'nowrap' }}>{dict.biography?.las ?? 'läs →'}</span>
                   </Link>
                 ) : (
                   <span style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-text)', lineHeight: 1.6 }}>{entry.text}</span>
@@ -345,7 +345,7 @@ export default async function BiographyPage({
                 {entry.note && (
                   <details style={{ marginTop: '0.4rem' }}>
                     <summary style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-accent)', cursor: 'pointer', letterSpacing: '0.04em' }}>
-                      Källa / mer
+                      {dict.biography?.source_more ?? 'Källa / mer'}
                     </summary>
                     <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', lineHeight: 1.7, marginTop: '0.5rem', whiteSpace: 'pre-wrap' }}>
                       {entry.note}

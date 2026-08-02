@@ -4,7 +4,6 @@ import { getDictionary } from '@/i18n/getDictionary'
 import { locales } from '@/i18n/config'
 import type { Locale } from '@/i18n/config'
 import PortfolioSlideshow from '@/components/portfolio/PortfolioSlideshow'
-import SafeImg from '@/components/SafeImg'
 import GalleryGrid from '@/components/gallery/GalleryGrid'
 import type { LightboxImage } from '@/components/gallery/Lightbox'
 import TabsLayout from '@/components/TabsLayout'
@@ -60,12 +59,12 @@ export default async function ReferencesPage({
 
   const TABS = [
     { id: 'skulptur',    label: dict.references?.sculpture_series ?? 'Skulptur',   count: sculptureSeries.length },
-    { id: 'grafik',      label: 'Grafik',                                           count: grafikImages.length },
+    { id: 'grafik',      label: dict.references?.grafik ?? 'Grafik',                count: grafikImages.length },
     { id: 'film-tv',     label: dict.references?.film_tv ?? 'Film & TV',            count: films.length },
     { id: 'publicerat',  label: dict.references?.publicerat ?? 'Publicerat' },
     { id: 'fotografi',   label: dict.references?.fotografier ?? 'Fotografier' },
-    { id: 'utmarkelser', label: 'Utmärkelser' },
-    { id: 'ogonblick',   label: 'Ögonblick' },
+    { id: 'utmarkelser', label: dict.references?.utmarkelser ?? 'Utmärkelser' },
+    { id: 'ogonblick',   label: dict.references?.ogonblick ?? 'Ögonblick' },
   ]
 
   return (
@@ -121,13 +120,13 @@ export default async function ReferencesPage({
               <GalleryGrid images={grafikLightboxImages} aspectRatio="1/1" columns="sm" />
               {grafik.photographer && (
                 <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', marginTop: '1rem', fontStyle: 'italic' }}>
-                  Foto: {grafik.photographer}
+                  {dict.common?.photo_credit ?? 'Foto:'} {grafik.photographer}
                 </p>
               )}
             </>
           ) : (
             <p style={{ color: 'var(--color-muted)', fontStyle: 'italic', fontSize: 'var(--fs-sm)' }}>
-              Bilder laddas in…
+              {dict.references?.loading ?? 'Bilder laddas in…'}
             </p>
           )}
         </section>
@@ -168,7 +167,7 @@ export default async function ReferencesPage({
           <GalleryGrid images={fotoLightboxImages} aspectRatio="3/2" columns="sm" />
           {fotografi.photographer && (
             <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', marginTop: '1rem', fontStyle: 'italic' }}>
-              Foto: {fotografi.photographer}
+              {dict.common?.photo_credit ?? 'Foto:'} {fotografi.photographer}
             </p>
           )}
         </section>
@@ -176,25 +175,26 @@ export default async function ReferencesPage({
         {/* ── 6. Utmärkelser ────────────────────────────────── */}
         <section className="page-pad" style={{ paddingTop: '3rem', paddingBottom: '3rem' }}>
           <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-2xl)', marginBottom: '0.75rem' }}>
-            Utmärkelser, priser och medaljer
+            {dict.references?.utmarkelser_title ?? 'Utmärkelser, priser och medaljer'}
           </h2>
           <p style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-sm)', marginBottom: '3rem', maxWidth: '60ch', whiteSpace: 'pre-wrap' }}>
             {utmarkelser.intro || 'Priser mottagna av Sivert Lindblom samt medaljer och minnesmärken formgivna av honom.'}
           </p>
 
           {/* Medal collage */}
-          <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginBottom: '3rem' }}>
-            {[
-              { src: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/05/Medaljer-Front.jpg',       alt: 'Medaljer åtsida' },
-              { src: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/05/20180316_172048_001.jpg',  alt: 'Medaljer' },
-            ].map((img) => (
-              <SafeImg key={img.src} src={img.src} alt={img.alt} loading="lazy"
-                style={{ height: 160, width: 'auto', objectFit: 'cover', border: '1px solid var(--color-border)' }} />
-            ))}
+          <div style={{ marginBottom: '3rem' }}>
+            <GalleryGrid
+              images={[
+                { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/05/Medaljer-Front.jpg',      alt: dict.references?.utmarkelser_title ?? 'Medaljer åtsida' },
+                { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/05/20180316_172048_001.jpg', alt: dict.references?.utmarkelser ?? 'Medaljer' },
+              ]}
+              aspectRatio="1/1"
+              columns="sm"
+            />
           </div>
 
           <h3 style={{ fontWeight: 400, color: 'var(--color-muted)', marginBottom: '1.25rem', textTransform: 'uppercase', letterSpacing: '0.08em', fontSize: 'var(--fs-xs)' }}>
-            Mottagna priser
+            {dict.references?.priser_received ?? 'Mottagna priser'}
           </h3>
 
           {utmarkelser.prizes.map((p, pi) => (
@@ -207,11 +207,12 @@ export default async function ReferencesPage({
                   {p.desc && <p style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-muted)', lineHeight: 1.7, marginTop: '0.5rem', maxWidth: '55ch' }}>{p.desc}</p>}
                   {p.quote && <p style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-muted)', fontStyle: 'italic', lineHeight: 1.7, marginTop: '0.5rem', maxWidth: '55ch' }}>{p.quote}</p>}
                   {p.images.length > 0 && (
-                    <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', marginTop: '0.85rem' }}>
-                      {p.images.map((src) => (
-                        <SafeImg key={src} src={src} alt={p.title} loading="lazy"
-                          style={{ height: 120, width: 'auto', objectFit: 'cover', border: '1px solid var(--color-border)' }} />
-                      ))}
+                    <div style={{ marginTop: '0.85rem' }}>
+                      <GalleryGrid
+                        images={p.images.map((src) => ({ url: src, alt: p.title }))}
+                        aspectRatio="4/3"
+                        columns="sm"
+                      />
                     </div>
                   )}
                   {p.links && p.links.length > 0 && (
@@ -230,7 +231,7 @@ export default async function ReferencesPage({
           ))}
 
           <h3 style={{ fontWeight: 400, color: 'var(--color-muted)', marginBottom: '1.25rem', marginTop: '3rem', textTransform: 'uppercase', letterSpacing: '0.08em', fontSize: 'var(--fs-xs)' }}>
-            Medaljer formgivna av Sivert Lindblom
+            {dict.references?.medaljer_designed ?? 'Medaljer formgivna av Sivert Lindblom'}
           </h3>
 
           {/* IVA */}
@@ -242,20 +243,21 @@ export default async function ReferencesPage({
                 <p style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-muted)', lineHeight: 1.7, marginBottom: '1rem', maxWidth: '60ch' }}>
                   Åtsida: Profil av arkitekten Gunnar Asplund. Frånsida: Symbol för Stockholmsutställningen 1930 med kompassnål N och upphöjd sfär, inspirerad av den egyptiska gudinnan Isis.
                 </p>
-                <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', marginBottom: '1rem' }}>
-                  {[
-                    { src: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/05/Asplund-medalj-1.jpg', alt: 'IVA medalj åtsida — Gunnar Asplund' },
-                    { src: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/05/Asplund-medalj-2.jpg', alt: 'IVA medalj frånsida' },
-                    { src: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/05/Isis-gudinna.jpg',      alt: 'Isis gudinna — inspiration' },
-                    { src: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/05/Balusterdockor-1-1.jpg', alt: 'Balusterdockor' },
-                  ].map(img => (
-                    <SafeImg key={img.src} src={img.src} alt={img.alt} loading="lazy"
-                      style={{ height: 120, width: 'auto', border: '1px solid var(--color-border)' }} />
-                  ))}
+                <div style={{ marginBottom: '1rem' }}>
+                  <GalleryGrid
+                    images={[
+                      { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/05/Asplund-medalj-1.jpg', alt: 'IVA medalj åtsida — Gunnar Asplund' },
+                      { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/05/Asplund-medalj-2.jpg', alt: 'IVA medalj frånsida' },
+                      { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/05/Isis-gudinna.jpg',      alt: 'Isis gudinna — inspiration' },
+                      { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/05/Balusterdockor-1-1.jpg', alt: 'Balusterdockor' },
+                    ]}
+                    aspectRatio="1/1"
+                    columns="sm"
+                  />
                 </div>
                 <a href="https://youtu.be/uKDKR1KDdvQ" target="_blank" rel="noopener noreferrer"
                   style={{ display: 'inline-block', fontSize: 'var(--fs-xs)', color: 'var(--color-accent)', letterSpacing: '0.06em', textTransform: 'uppercase', textDecoration: 'none', borderBottom: '1px solid var(--color-accent-dim)' }}>
-                  ▶ Se film →
+                  ▶ {dict.references?.watch_film ?? 'Se film'} →
                 </a>
               </div>
             </div>
@@ -270,17 +272,16 @@ export default async function ReferencesPage({
                 <p style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-muted)', lineHeight: 1.7, marginBottom: '1rem', maxWidth: '60ch' }}>
                   Åtsida: latinskt motto <em>SEMPER VIRIDES</em> med tre lagerkransar. Frånsida: fasaden av Rettigska huset vid Villagatan 3, Stockholm. Utfördes i 2 exemplar i guld (till Kungen och Drottningen) samt 400 i silver till jubileumsbanketten den 20 mars 2003.
                 </p>
-                <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
-                  {[
-                    { src: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/05/Akademien-Viridis-1.jpg', alt: 'Jubileumsmedalj åtsida — SEMPER VIRIDES' },
-                    { src: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/05/Akademien-Viridis-2.jpg', alt: 'Jubileumsmedalj frånsida' },
-                    { src: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/05/Jubileumsmedalj-1.jpeg',  alt: 'Jubileumsmedalj' },
-                    { src: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/05/Jubileumsmedalj-2.jpeg',  alt: 'Jubileumsmedalj detalj' },
-                  ].map(img => (
-                    <SafeImg key={img.src} src={img.src} alt={img.alt} loading="lazy"
-                      style={{ height: 120, width: 'auto', border: '1px solid var(--color-border)' }} />
-                  ))}
-                </div>
+                <GalleryGrid
+                  images={[
+                    { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/05/Akademien-Viridis-1.jpg', alt: 'Jubileumsmedalj åtsida — SEMPER VIRIDES' },
+                    { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/05/Akademien-Viridis-2.jpg', alt: 'Jubileumsmedalj frånsida' },
+                    { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/05/Jubileumsmedalj-1.jpeg',  alt: 'Jubileumsmedalj' },
+                    { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2018/05/Jubileumsmedalj-2.jpeg',  alt: 'Jubileumsmedalj detalj' },
+                  ]}
+                  aspectRatio="1/1"
+                  columns="sm"
+                />
               </div>
             </div>
           </div>
@@ -289,7 +290,7 @@ export default async function ReferencesPage({
         {/* ── 7. Ögonblick ──────────────────────────────────── */}
         <section className="page-pad" style={{ paddingTop: '3rem', paddingBottom: '3rem' }}>
           <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-2xl)', fontWeight: 400, marginBottom: '0.75rem' }}>
-            Ögonblick
+            {dict.references?.ogonblick ?? 'Ögonblick'}
           </h2>
           {ogonblick.intro && (
             <p style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-base)', maxWidth: '60ch', lineHeight: 1.7, marginBottom: '2rem', whiteSpace: 'pre-wrap' }}>

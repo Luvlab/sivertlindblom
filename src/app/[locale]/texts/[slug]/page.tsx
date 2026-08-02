@@ -172,7 +172,7 @@ export default async function TextDetailPage({
                   }}
                 >
                   <span style={{ fontSize: '1.1em' }}>▶</span>
-                  SE FILMEN →
+                  {dict.texts?.watch_film ?? 'SE FILMEN'} →
                 </a>
               )}
             </div>

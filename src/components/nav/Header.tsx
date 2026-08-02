@@ -44,7 +44,7 @@ export default function Header({ locale, dict }: HeaderProps) {
       href: p('/references'),
       children: [
         {
-          label: 'Skulptur',
+          label: dict?.nav?.references_skulptur ?? 'Skulptur',
           href: p('/references#skulptur'),
           children: [
             { label: 'Profiler', href: p('/references/profiler') },
@@ -59,12 +59,12 @@ export default function Header({ locale, dict }: HeaderProps) {
             { label: 'Arbetsmodeller och förslag', href: p('/references/arbetsmodeller') },
           ],
         },
-        { label: 'Grafik', href: p('/references/grafik') },
-        { label: 'Fotografier – inspiration', href: p('/references#fotografi') },
-        { label: 'Film och TV', href: p('/references#film-tv') },
-        { label: 'Publicerat', href: p('/references/publicerat') },
-        { label: 'Utmärkelser, priser och medaljer', href: p('/references#utmarkelser') },
-        { label: 'Ögonblick', href: p('/references#ogonblick') },
+        { label: dict?.references?.grafik ?? 'Grafik', href: p('/references/grafik') },
+        { label: dict?.nav?.references_fotografier ?? 'Fotografier – inspiration', href: p('/references#fotografi') },
+        { label: dict?.nav?.references_film ?? 'Film och TV', href: p('/references#film-tv') },
+        { label: dict?.nav?.references_publicerat ?? 'Publicerat', href: p('/references/publicerat') },
+        { label: dict?.nav?.references_utmarkelser ?? 'Utmärkelser, priser och medaljer', href: p('/references#utmarkelser') },
+        { label: dict?.nav?.references_ogonblick ?? 'Ögonblick', href: p('/references#ogonblick') },
       ],
     },
     { label: dict?.nav?.texts ?? 'Texter', href: p('/texts') },
@@ -141,7 +141,7 @@ export default function Header({ locale, dict }: HeaderProps) {
           <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
             <Link
               href={`/${locale}/search`}
-              aria-label="Sök"
+              aria-label={dict?.common?.search ?? 'Sök'}
               style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--color-muted)', transition: 'color 0.15s', padding: '0.25rem' }}
               className="search-icon-btn"
             >
