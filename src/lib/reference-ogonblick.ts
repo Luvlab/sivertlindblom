@@ -7,7 +7,7 @@ const WP = 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/im
 
 export const OGONBLICK_SETTINGS_KEY = 'reference_ogonblick'
 
-export interface OgonblickImage { url: string; caption?: string }
+export interface OgonblickImage { url: string; caption?: string; credit?: string }
 
 export interface OgonblickSection {
   intro: string
@@ -38,7 +38,7 @@ export function parseOgonblick(raw: string | null | undefined): OgonblickSection
     const v = JSON.parse(raw) as Partial<OgonblickSection>
     const images = Array.isArray(v.images)
       ? v.images.filter((i) => i && typeof i.url === 'string' && i.url.trim())
-          .map((i) => ({ url: i.url, caption: i.caption || undefined }))
+          .map((i) => ({ url: i.url, caption: i.caption || undefined, credit: i.credit || undefined }))
       : []
     return {
       intro: typeof v.intro === 'string' ? v.intro : DEFAULT_OGONBLICK.intro,

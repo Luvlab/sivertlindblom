@@ -10,6 +10,7 @@ import TabsLayout from '@/components/TabsLayout'
 import { getFotografi, getGrafik, getFilms, getUtmarkelser, getOgonblick, getSculptureProjects } from '@/lib/data-server'
 import { PUBLICATIONS } from '@/lib/publications-data'
 import FilmGrid from '@/components/references/FilmGrid'
+import { renderParagraphs } from '@/lib/render-text'
 
 export const metadata: Metadata = { title: 'Sculpture & Graphics' }
 
@@ -55,7 +56,7 @@ export default async function ReferencesPage({
     caption: img.caption,
     credit: img.photographer || fotografi.photographer || undefined,
   }))
-  const ogonblickLightboxImages: LightboxImage[] = ogonblick.images.map((img) => ({ url: img.url, alt: img.caption ?? 'Ögonblick', caption: img.caption }))
+  const ogonblickLightboxImages: LightboxImage[] = ogonblick.images.map((img) => ({ url: img.url, alt: img.caption ?? 'Ögonblick', caption: img.caption, credit: img.credit }))
 
   const TABS = [
     { id: 'skulptur',    label: dict.references?.sculpture_series ?? 'Skulptur',   count: sculptureSeries.length },
@@ -159,9 +160,7 @@ export default async function ReferencesPage({
           </h2>
           <div style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-sm)', marginBottom: '2rem', maxWidth: '60ch', lineHeight: 1.7 }}>
             {fotografi.intro
-              ? fotografi.intro.split('\n\n').filter(Boolean).map((para, i) => (
-                  <p key={i} style={{ marginBottom: '0.75rem' }}>{para}</p>
-                ))
+              ? renderParagraphs(fotografi.intro, { marginBottom: '0.75rem' })
               : <p>{dict.references?.fotografier_desc ?? 'Bilder som på ett eller annat sätt berört och inspirerat Sivert Lindblom i sitt arbete.'}</p>}
           </div>
           <GalleryGrid images={fotoLightboxImages} aspectRatio="3/2" columns="sm" />
@@ -204,8 +203,8 @@ export default async function ReferencesPage({
                 <div>
                   <div style={{ fontSize: 'var(--fs-base)', marginBottom: '0.25rem' }}>{p.title}</div>
                   {p.sub && <div style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)' }}>{p.sub}</div>}
-                  {p.desc && <p style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-muted)', lineHeight: 1.7, marginTop: '0.5rem', maxWidth: '55ch' }}>{p.desc}</p>}
-                  {p.quote && <p style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-muted)', fontStyle: 'italic', lineHeight: 1.7, marginTop: '0.5rem', maxWidth: '55ch' }}>{p.quote}</p>}
+                  {p.desc && <p style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-muted)', lineHeight: 1.7, marginTop: '0.5rem', maxWidth: '55ch', whiteSpace: 'pre-wrap' }}>{p.desc}</p>}
+                  {p.quote && <p style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-muted)', fontStyle: 'italic', lineHeight: 1.7, marginTop: '0.5rem', maxWidth: '55ch', whiteSpace: 'pre-wrap' }}>{p.quote}</p>}
                   {p.images.length > 0 && (
                     <div style={{ marginTop: '0.85rem' }}>
                       <GalleryGrid

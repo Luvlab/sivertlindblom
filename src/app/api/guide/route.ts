@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getExhibitions, getPublicWorks, getTexts, getSculptureProjects } from '@/lib/data-server'
+import { getExhibitions, getPublicWorks, getTexts, getSculptureProjects, getFilms } from '@/lib/data-server'
 import { createAdminClient } from '@/lib/supabase/admin'
 
 // Gemini text model — fast + cheap, reuses the GEMINI_API_KEY already in the env.
@@ -7,67 +7,110 @@ const GEMINI_URL =
   'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent'
 
 interface ChatMessage { role: 'user' | 'assistant'; content: string }
-interface Doc { title: string; meta: string; text: string; href: string }
+interface Doc {
+  title: string
+  meta: string
+  text: string      // truncated — sent to Gemini to keep prompt size reasonable
+  fullText: string  // untruncated — used only for keyword scoring
+  href: string
+}
 
 function truncate(s: string | undefined | null, n: number): string {
   const v = (s ?? '').trim()
   return v.length > n ? v.slice(0, n) + '…' : v
 }
 
-/** Build a compact, grounded corpus from the site's own content. Each doc carries
- *  the page URL (locale-prefixed) so the guide can link to it. */
+function full(s: string | undefined | null): string {
+  return (s ?? '').trim()
+}
+
+/** Build a grounded corpus from the site's own content. Each doc carries the page URL
+ *  (locale-prefixed) so the guide can link to it.
+ *
+ *  Two text fields:
+ *   - `fullText`  — complete untruncated text, used ONLY for keyword scoring so names
+ *                   buried deep in a description are still findable (e.g. "Ulf Ferrius").
+ *   - `text`      — truncated version sent inside the Gemini prompt to control token use.
+ */
 async function buildCorpus(locale: string): Promise<Doc[]> {
-  const [exhibitions, publicWorks, texts, sculptures] = await Promise.all([
+  const [exhibitions, publicWorks, texts, sculptures, films] = await Promise.all([
     getExhibitions().catch(() => []),
     getPublicWorks().catch(() => []),
     getTexts().catch(() => []),
     getSculptureProjects().catch(() => []),
+    getFilms().catch(() => []),
   ])
   const docs: Doc[] = []
   const L = `/${locale}`
 
   for (const e of exhibitions) {
+    const raw = [full(e.description), full(e.body)].filter(Boolean).join(' ')
     docs.push({
       title: e.title,
       meta: `Utställning${e.year ? ' ' + e.year : ''}${e.location ? ', ' + e.location : ''}`,
-      text: `${truncate(e.description, 400)} ${truncate(e.body, 600)}`.trim(),
+      text: `${truncate(e.description, 600)} ${truncate(e.body, 900)}`.trim(),
+      fullText: raw,
       href: `${L}/portfolio/exhibitions/${e.slug}`,
     })
   }
+
   for (const w of publicWorks) {
+    // Include photographerCredit in full text — collaborators like Ulf Ferrius (metal casting)
+    // are stored there and must be searchable even if absent from description/body.
+    const raw = [full(w.description), full(w.body), full(w.photographerCredit)].filter(Boolean).join(' ')
     docs.push({
       title: w.title,
-      meta: `Offentligt verk${w.year ? ' ' + w.year : ''}${w.location ? ', ' + w.location : ''}`,
-      text: `${truncate(w.description, 400)} ${truncate(w.body, 600)}`.trim(),
+      meta: `Offentligt verk${w.year ? ' ' + w.year : ''}${w.location ? ', ' + w.location : ''}${w.photographerCredit ? ' — ' + w.photographerCredit : ''}`,
+      text: `${truncate(w.description, 600)} ${truncate(w.body, 900)}`.trim(),
+      fullText: raw,
       href: w.hrefBase ? `${L}${w.hrefBase}/${w.slug}` : `${L}/portfolio/public-works/${w.slug}`,
     })
   }
+
   for (const s of sculptures) {
+    const raw = [full(s.description), full(s.body)].filter(Boolean).join(' ')
     docs.push({
       title: s.title,
       meta: `Skulpturserie${s.years ? ' ' + s.years : ''}`,
-      text: `${truncate(s.description, 400)} ${truncate(s.body, 600)}`.trim(),
+      text: `${truncate(s.description, 600)} ${truncate(s.body, 900)}`.trim(),
+      fullText: raw,
       href: `${L}/references/${s.slug}`,
     })
   }
+
   for (const t of texts) {
+    const raw = [full(t.title), full(t.author), full(t.body)].filter(Boolean).join(' ')
     docs.push({
       title: t.title,
       meta: `Text${t.author ? ' av ' + t.author : ''}${t.year ? ' (' + t.year + ')' : ''}`,
-      text: truncate(t.body, 700),
+      text: truncate(t.body, 900),
+      fullText: raw,
       href: `${L}/texts/${t.slug}`,
     })
   }
-  return docs.filter((d) => d.title && d.text)
+
+  for (const f of films) {
+    const raw = [full(f.title), full(f.director), full(f.venue), full(f.desc)].filter(Boolean).join(' ')
+    docs.push({
+      title: f.title,
+      meta: `Film${f.year ? ' ' + f.year : ''}${f.director ? ', regi: ' + f.director : ''}${f.venue ? ', ' + f.venue : ''}`,
+      text: truncate(f.desc, 900),
+      fullText: raw,
+      href: `${L}/references/film-tv/${f.slug}`,
+    })
+  }
+
+  return docs.filter((d) => d.title)
 }
 
-/** Keyword-score the corpus against the question and return the top matches. */
-function retrieve(docs: Doc[], question: string, k = 8): Doc[] {
+/** Keyword-score the corpus against the question and return the top matches.
+ *  Scoring uses fullText (untruncated) so names anywhere in a description are found. */
+function retrieve(docs: Doc[], question: string, k = 14): Doc[] {
   const terms = (question.toLowerCase().match(/\p{L}{3,}/gu) ?? [])
   if (terms.length === 0) return docs.slice(0, k)
   const scored = docs.map((d) => {
     const title = d.title.toLowerCase()
-    const hay = (d.title + ' ' + d.meta + ' ' + d.text).toLowerCase()
+    const hay = (d.title + ' ' + d.meta + ' ' + d.fullText).toLowerCase()
     let score = 0
     for (const term of terms) {
       if (title.includes(term)) score += 4
@@ -76,7 +119,11 @@ function retrieve(docs: Doc[], question: string, k = 8): Doc[] {
     }
     return { d, score }
   })
-  return scored.sort((a, b) => b.score - a.score).slice(0, k).filter((s) => s.score > 0).map((s) => s.d)
+  return scored
+    .sort((a, b) => b.score - a.score)
+    .slice(0, k)
+    .filter((s) => s.score > 0)
+    .map((s) => s.d)
 }
 
 const SYSTEM = `Du är museiguiden för skulptören Sivert Lindbloms konstarkiv och webbplats — en varm, kunnig och nyfiken konstciceron.
@@ -122,6 +169,14 @@ export async function POST(req: NextRequest) {
     }
   } catch { /* optional */ }
 
+  const navSection = `=== SAJTENS HUVUDSIDOR (använd dessa URL:er — hitta INTE på egna) ===
+Startsida / Hem: /${locale}
+Portfolio (utställningar, offentliga verk, akvareller, scenografi): /${locale}/portfolio
+Skulptur & grafik (skulpturserier, film & TV, fotografier, publicerat, utmärkelser): /${locale}/references
+Texter (kritik, essays, intervjuer): /${locale}/texts
+Biografi: /${locale}/biography
+Kontakt: /${locale}/contact`
+
   const contents = messages.map((m) => ({
     role: m.role === 'assistant' ? 'model' : 'user',
     parts: [{ text: m.content }],
@@ -132,7 +187,7 @@ export async function POST(req: NextRequest) {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        system_instruction: { parts: [{ text: `${SYSTEM}\n\n${knowledge ? `=== EXTRA MATERIAL (bakgrund, t.ex. om curatorn Jan Öqvist) ===\n${knowledge}\n\n` : ''}=== MATERIAL FRÅN SAJTEN ===\n${context || '(inget relevant material hittades)'}` }] },
+        system_instruction: { parts: [{ text: `${SYSTEM}\n\n${navSection}\n\n${knowledge ? `=== EXTRA MATERIAL (bakgrund, t.ex. om curatorn Jan Öqvist) ===\n${knowledge}\n\n` : ''}=== MATERIAL FRÅN SAJTEN ===\n${context || '(inget relevant material hittades)'}` }] },
         contents,
         generationConfig: { temperature: 0.4, maxOutputTokens: 700, topP: 0.9 },
       }),

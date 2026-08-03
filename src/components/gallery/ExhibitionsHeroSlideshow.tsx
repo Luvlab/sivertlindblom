@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useCallback, useState } from 'react'
 
 const FADE_MS   = 3000   // crossfade duration
 const HOLD_MS   = 12000  // interval between transition starts
@@ -16,30 +16,63 @@ function shuffle<T>(arr: T[]): T[] {
 
 export default function ExhibitionsHeroSlideshow({ images }: { images: string[] }) {
   const [deck,   setDeck]   = useState(images)
-  const [idx,    setIdx]    = useState(0)      // bottom layer index
-  const [fading, setFading] = useState(false)  // true while top is fading in
+  const [idx,    setIdx]    = useState(0)
+  const [fading, setFading] = useState(false)
+
+  const deckLenRef  = useRef(deck.length)
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
+  const fadeTimer   = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const touchStartX = useRef<number | null>(null)
+  const touchStartY = useRef<number | null>(null)
+
+  useEffect(() => { deckLenRef.current = deck.length }, [deck.length])
 
   // Client-side shuffle to avoid hydration mismatch
   useEffect(() => {
     if (images.length > 1) setDeck(shuffle(images))
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
-  useEffect(() => {
-    if (deck.length <= 1) return
-
-    const timer = setInterval(() => {
-      setFading(true)                                 // top layer fades in
-
-      const swap = setTimeout(() => {
-        setIdx(i => (i + 1) % deck.length)           // promote top → bottom
-        setFading(false)                              // instantly hide top (no anim)
+  const startInterval = useCallback(() => {
+    if (intervalRef.current) clearInterval(intervalRef.current)
+    if (deckLenRef.current <= 1) return
+    intervalRef.current = setInterval(() => {
+      setFading(true)
+      fadeTimer.current = setTimeout(() => {
+        setIdx(i => (i + 1) % deckLenRef.current)
+        setFading(false)
       }, FADE_MS + 50)
-
-      return () => clearTimeout(swap)
     }, HOLD_MS)
+  }, [])
 
-    return () => clearInterval(timer)
-  }, [deck])
+  useEffect(() => {
+    startInterval()
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current)
+      if (fadeTimer.current)   clearTimeout(fadeTimer.current)
+    }
+  }, [deck, startInterval])
+
+  function jump(direction: 1 | -1) {
+    if (fadeTimer.current)   clearTimeout(fadeTimer.current)
+    setFading(false)
+    setIdx(i => (i + direction + deckLenRef.current) % deckLenRef.current)
+    startInterval()
+  }
+
+  function handleTouchStart(e: React.TouchEvent) {
+    touchStartX.current = e.touches[0].clientX
+    touchStartY.current = e.touches[0].clientY
+  }
+
+  function handleTouchEnd(e: React.TouchEvent) {
+    if (touchStartX.current === null || touchStartY.current === null) return
+    const dx = e.changedTouches[0].clientX - touchStartX.current
+    const dy = e.changedTouches[0].clientY - touchStartY.current
+    touchStartX.current = null
+    touchStartY.current = null
+    if (Math.abs(dx) < 40 || Math.abs(dx) < Math.abs(dy)) return
+    jump(dx < 0 ? 1 : -1)
+  }
 
   const base: React.CSSProperties = {
     position: 'absolute',
@@ -51,7 +84,11 @@ export default function ExhibitionsHeroSlideshow({ images }: { images: string[] 
   }
 
   return (
-    <>
+    <div
+      style={{ position: 'absolute', inset: 0 }}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
+    >
       {/* Bottom — always opaque; provides the solid base */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
@@ -71,6 +108,6 @@ export default function ExhibitionsHeroSlideshow({ images }: { images: string[] 
           transition: fading ? `opacity ${FADE_MS}ms ease-in-out` : 'none',
         }}
       />
-    </>
+    </div>
   )
 }

@@ -360,12 +360,12 @@ export default function Lightbox({ images, startIndex, onClose }: Props) {
           }}
         >
           {current.caption && (
-            <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: 'var(--fs-sm)', margin: 0, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+            <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: 'var(--fs-sm)', margin: 0, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', textShadow: '0 1px 6px rgba(0,0,0,0.9)' }}>
               {current.caption}
             </p>
           )}
           {current.credit && (
-            <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: 'var(--fs-xs)', margin: '0.2rem 0 0', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+            <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: 'var(--fs-xs)', margin: '0.2rem 0 0', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', textShadow: '0 1px 6px rgba(0,0,0,0.9)' }}>
               Foto: {current.credit}
             </p>
           )}

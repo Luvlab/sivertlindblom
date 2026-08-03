@@ -931,12 +931,14 @@ export async function getHeroSlides(): Promise<Array<{ url: string; alt: string 
 }
 
 /**
- * Returns both the curated hero slides and the random-order setting.
+ * Returns the curated hero slides, random-order setting, and hero tagline.
  * Falls back to FALLBACK_HERO_SLIDES + random=true when no DB data exists.
+ * tagline is undefined when not set in DB — callers fall back to locale or FALLBACK_SETTINGS.
  */
 export async function getHeroConfig(): Promise<{
   slides: Array<{ url: string; alt: string; focal?: string }>
   random: boolean
+  tagline: string | undefined
 }> {
   'use cache'
   cacheTag('hero')
@@ -944,12 +946,13 @@ export async function getHeroConfig(): Promise<{
   const supabase = createAdminClient()
   let slides: Array<{ url: string; alt: string; focal?: string }> = []
   let random = true
+  let tagline: string | undefined
 
   if (supabase) {
     const { data } = await supabase
       .from('settings')
       .select('key, value')
-      .in('key', ['hero_slides', 'hero_random'])
+      .in('key', ['hero_slides', 'hero_random', 'hero_tagline'])
 
     for (const row of data ?? []) {
       if (row.key === 'hero_slides') {
@@ -961,10 +964,13 @@ export async function getHeroConfig(): Promise<{
       if (row.key === 'hero_random') {
         random = row.value !== '0'
       }
+      if (row.key === 'hero_tagline' && row.value) {
+        tagline = row.value
+      }
     }
   }
 
-  return { slides: slides.length > 0 ? slides : FALLBACK_HERO_SLIDES, random }
+  return { slides: slides.length > 0 ? slides : FALLBACK_HERO_SLIDES, random, tagline }
 }
 
 // ─── All media images (hero slideshow) ──────────────────────────────────────

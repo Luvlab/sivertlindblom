@@ -103,7 +103,7 @@ export default async function ExhibitionDetailPage({
         {/* Description */}
         {ex.description && ex.description !== 'TEXT kommer' && (
           <div className="prose-cols" style={{
-            color: 'var(--color-muted)',
+            color: 'var(--color-text)',
             fontSize: 'var(--fs-base)',
             lineHeight: 1.85,
             marginBottom: ex.body || (ex.links && ex.links.length > 0) ? '1.5rem' : '3.5rem',
@@ -115,7 +115,7 @@ export default async function ExhibitionDetailPage({
         {/* Body text */}
         {ex.body && (
           <div className="prose-cols" style={{
-            color: 'var(--color-muted)',
+            color: 'var(--color-text)',
             fontSize: 'var(--fs-base)',
             lineHeight: 1.85,
             marginBottom: (ex.links && ex.links.length > 0) ? '1.5rem' : '3.5rem',

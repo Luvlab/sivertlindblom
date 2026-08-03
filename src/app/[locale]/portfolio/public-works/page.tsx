@@ -4,6 +4,7 @@ import { getDictionary } from '@/i18n/getDictionary'
 import { locales } from '@/i18n/config'
 import type { Locale } from '@/i18n/config'
 import PortfolioSlideshow from '@/components/portfolio/PortfolioSlideshow'
+import ExhibitionsHeroSlideshow from '@/components/gallery/ExhibitionsHeroSlideshow'
 import SculptureMap from '@/components/SculptureMap'
 import { getMapPins, getPublicWorks } from '@/lib/data-server'
 import type { PublicWork } from '@/lib/public-works'
@@ -106,21 +107,45 @@ export default async function PublicWorksPage({
     countries: new Set(locations.map((l) => l.country)).size,
   }
 
+  const heroImages = allWorks
+    .flatMap((w) => w.images.map((img) => img.url))
+    .filter(Boolean)
+
   return (
-    <div>
-      {/* ── Page header ── */}
-      <div className="page-pad" style={{ paddingTop: 'calc(var(--subnav-h) + 1.5rem)', paddingBottom: '1.5rem', borderBottom: '1px solid var(--color-border)' }}>
-        <Link href={`/${locale}/portfolio`} className="back-link" style={{ marginBottom: '0.75rem', display: 'inline-flex' }}>
-          <span className="back-link-arrow">←</span>
-          <span className="back-link-label">{dict.nav?.portfolio ?? 'Portfolio'}</span>
-        </Link>
-        <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.5rem' }}>
-          <h1 style={{ fontFamily: 'Georgia, serif', fontWeight: 400, fontSize: 'clamp(1.4rem,2.5vw,2rem)', margin: 0 }}>
+    <div style={{ marginTop: 'calc(-1 * var(--header-h))' }}>
+      {/* Hero — full viewport, bleeds under the fixed header */}
+      <div style={{ position: 'relative', height: '85vh', minHeight: 480, overflow: 'hidden', marginBottom: '4rem' }}>
+        <ExhibitionsHeroSlideshow images={heroImages} />
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.45) 55%, rgba(0,0,0,0.88) 100%)' }} />
+
+        {/* Title block */}
+        <div className="page-pad" style={{ position: 'absolute', bottom: '3rem', left: 0, right: 0 }}>
+          <Link href={`/${locale}/portfolio`} className="back-link" style={{ color: 'rgba(255,255,255,0.85)' }}>
+            <span className="back-link-arrow">←</span>
+            <span className="back-link-label">{dict.nav?.portfolio ?? 'Portfolio'}</span>
+          </Link>
+          <h1 style={{ fontFamily: 'Georgia, serif', fontWeight: 400, fontSize: 'clamp(1.8rem,3vw,3rem)', marginTop: '0.5rem', marginBottom: '0.25rem' }}>
             {dict.portfolio?.cat_public ?? 'Offentliga arbeten'}
           </h1>
-          <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', margin: 0 }}>
+          <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: 'var(--fs-sm)', margin: 0 }}>
             {counts.total} {dict.portfolio?.map_works ?? 'verk'} · {counts.countries} {dict.portfolio?.map_countries ?? 'länder'}
           </p>
+
+          {/* Scroll-down arrow */}
+          <div style={{
+            marginTop: '1.5rem',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'flex-start',
+            opacity: 0.7,
+            animation: 'scrollDrop 2.4s ease-in-out infinite',
+            pointerEvents: 'none',
+          }}>
+            <svg width="20" height="28" viewBox="0 0 20 28" fill="none" style={{ display: 'block' }}>
+              <line x1="10" y1="0" x2="10" y2="20" stroke="white" strokeWidth="1.5" strokeLinecap="round"/>
+              <polyline points="4,14 10,21 16,14" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
+            </svg>
+          </div>
         </div>
       </div>
 

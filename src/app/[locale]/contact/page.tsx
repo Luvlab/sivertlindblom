@@ -87,24 +87,26 @@ export default async function ContactPage({
             {dict.contact?.title ?? 'Ta kontakt'}
           </h1>
 
-          {/* Scroll-down arrow — left-aligned under titles */}
-          <div style={{
+          {/* Scroll-down arrow — left-aligned under titles; clicks scroll to the form */}
+          <a href="#contact-form" aria-label={dict.contact?.scroll_down ?? 'Scrolla till kontaktformulär'} style={{
             marginTop: '1.5rem',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'flex-start',
             opacity: 0.7,
             animation: 'scrollDrop 2.4s ease-in-out infinite',
+            cursor: 'pointer',
+            textDecoration: 'none',
           }}>
             <svg width="20" height="28" viewBox="0 0 20 28" fill="none" style={{ display: 'block' }}>
               <line x1="10" y1="0" x2="10" y2="20" stroke="white" strokeWidth="1.5" strokeLinecap="round"/>
               <polyline points="4,14 10,21 16,14" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
             </svg>
-          </div>
+          </a>
         </div>
       </div>
 
-      <div className="section-gap" style={{ paddingTop: 0 }}>
+      <div id="contact-form" className="section-gap" style={{ paddingTop: 0 }}>
       <hr className="divider" />
 
       <div className="page-pad" style={{ paddingTop: '3rem', paddingBottom: '5rem' }}>

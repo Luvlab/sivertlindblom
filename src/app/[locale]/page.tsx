@@ -18,7 +18,7 @@ export default async function HomePage({
   const { locale } = await params
   const dict = await getDictionary(locale as Locale)
   const settings = FALLBACK_SETTINGS
-  const { slides: heroSlides, random: heroRandom } = await getHeroConfig()
+  const { slides: heroSlides, random: heroRandom, tagline: heroTagline } = await getHeroConfig()
 
   const sections = [
     {
@@ -83,7 +83,7 @@ export default async function HomePage({
             marginBottom: '2.5rem',
             whiteSpace: 'pre-wrap',
           }}>
-            {dict.home?.tagline ?? settings.hero_tagline}
+            {dict.home?.tagline ?? heroTagline ?? settings.hero_tagline}
           </p>
           <style>{`
             @media (max-width: 640px) {

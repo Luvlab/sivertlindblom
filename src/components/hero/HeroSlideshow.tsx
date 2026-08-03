@@ -106,6 +106,8 @@ export default function HeroSlideshow({ children, slides, random = true }: Props
   const nextRef     = useRef(2)
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
   const fadeTimer   = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const touchStartX = useRef<number | null>(null)
+  const touchStartY = useRef<number | null>(null)
 
   // ── Preload images so the BACK layer is always ready before the fade ──────
   // Fires once on mount: warm up the first 4 images immediately.
@@ -159,6 +161,22 @@ export default function HeroSlideshow({ children, slides, random = true }: Props
     }
   }, [paused, restartInterval])
 
+  function handleTouchStart(e: React.TouchEvent) {
+    touchStartX.current = e.touches[0].clientX
+    touchStartY.current = e.touches[0].clientY
+  }
+
+  function handleTouchEnd(e: React.TouchEvent) {
+    if (touchStartX.current === null || touchStartY.current === null) return
+    const dx = e.changedTouches[0].clientX - touchStartX.current
+    const dy = e.changedTouches[0].clientY - touchStartY.current
+    touchStartX.current = null
+    touchStartY.current = null
+    if (Math.abs(dx) < 40 || Math.abs(dx) < Math.abs(dy)) return
+    const n = images.length
+    jumpTo(dx < 0 ? (activeIdx + 1) % n : (activeIdx - 1 + n) % n)
+  }
+
   // Jump to a specific image immediately
   function jumpTo(i: number) {
     if (fadeTimer.current) clearTimeout(fadeTimer.current)
@@ -179,6 +197,8 @@ export default function HeroSlideshow({ children, slides, random = true }: Props
       aria-label="Sivert Lindblom — hero slideshow"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
     >
       {/* ── BACK layer — always opaque, new image sits here ── */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
