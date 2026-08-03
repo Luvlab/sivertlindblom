@@ -13,7 +13,7 @@ import { getUtmarkelser, getBibliography } from '@/lib/data-server'
 
 const DEFAULT_PORTRAIT = 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Portratt-SivertMattias.jpg'
 
-const DEFAULT_PHOTOS: Array<{ url: string; caption: string }> = [
+const DEFAULT_PHOTOS: Array<{ url: string; caption: string; credit?: string }> = [
   { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2012/12/Sivert-skulptor.jpg',        caption: 'Sivert Lindblom, skulptör' },
   { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Portratt-SivertMattias.jpg', caption: 'Porträtt. Foto: Mathias Johansson' },
   { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/20121028_135427.jpg',         caption: 'Konstakademien 2012. Foto: Jan Öqvist' },
@@ -38,7 +38,7 @@ async function getBiographySettings(): Promise<{
   intro: string
   portrait: string
   portraitCredit: string
-  photos: Array<{ url: string; caption: string }>
+  photos: Array<{ url: string; caption: string; credit?: string }>
 }> {
   'use cache'
   cacheTag('biography')

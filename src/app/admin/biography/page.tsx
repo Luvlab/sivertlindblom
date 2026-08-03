@@ -7,7 +7,7 @@ import { uploadImageFile } from '@/lib/upload-image'
 
 const DEFAULT_PORTRAIT = 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Portratt-SivertMattias.jpg'
 
-interface BioPhoto { url: string; caption: string }
+interface BioPhoto { url: string; caption: string; credit?: string }
 
 const DEFAULT_PHOTOS: BioPhoto[] = [
   { url: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2012/12/Sivert-skulptor.jpg',        caption: 'Sivert Lindblom, skulptör' },
@@ -66,9 +66,8 @@ export default function AdminBiography() {
   const [photosSaved, setPhotosSaved] = useState(false)
   const [photoUploading, setPhotoUploading] = useState(false)
   const [newPhotoCaption, setNewPhotoCaption] = useState('')
+  const [newPhotoCredit, setNewPhotoCredit] = useState('')
   const photoInputRef = useRef<HTMLInputElement>(null)
-  const [editingCapIdx, setEditingCapIdx] = useState<number | null>(null)
-  const [editingCapVal, setEditingCapVal] = useState('')
 
   useEffect(() => {
     fetch('/api/admin/biography')
@@ -133,9 +132,10 @@ export default function AdminBiography() {
     try {
       const data = await uploadImageFile(file, newPhotoCaption || file.name)
       if (data.url) {
-        const updated = [...photos, { url: data.url, caption: newPhotoCaption }]
+        const updated = [...photos, { url: data.url, caption: newPhotoCaption, credit: newPhotoCredit || undefined }]
         setPhotos(updated)
         setNewPhotoCaption('')
+        setNewPhotoCredit('')
         await savePhotos(updated)
       }
     } catch { /* ignore */ }
@@ -150,10 +150,8 @@ export default function AdminBiography() {
     setPhotos(updated)
   }
 
-  function commitCaption(idx: number) {
-    const updated = photos.map((p, i) => i === idx ? { ...p, caption: editingCapVal } : p)
-    setPhotos(updated)
-    setEditingCapIdx(null)
+  function updatePhotoField(idx: number, field: 'caption' | 'credit', val: string) {
+    setPhotos(photos.map((p, i) => i === idx ? { ...p, [field]: val || undefined } : p))
   }
 
   async function handlePortraitUpload(e: React.ChangeEvent<HTMLInputElement>) {
@@ -307,28 +305,23 @@ export default function AdminBiography() {
                   style={{ position: 'absolute', top: 4, right: 4, background: 'rgba(160,30,30,0.85)', border: 'none', color: '#fff', cursor: 'pointer', fontSize: '0.65rem', padding: '0.15rem 0.35rem', lineHeight: 1 }}
                   title="Ta bort"
                 >✕</button>
-                {/* Caption edit */}
-                {editingCapIdx === i ? (
-                  <div style={{ padding: '0.35rem' }}>
-                    <input
-                      className="input"
-                      autoFocus
-                      value={editingCapVal}
-                      onChange={e => setEditingCapVal(e.target.value)}
-                      onKeyDown={e => { if (e.key === 'Enter') commitCaption(i); if (e.key === 'Escape') setEditingCapIdx(null) }}
-                      style={{ width: '100%', fontSize: '0.65rem', padding: '0.2em 0.4em' }}
-                    />
-                    <button type="button" onClick={() => commitCaption(i)} style={{ marginTop: 3, fontSize: '0.6rem', background: 'var(--color-accent)', color: '#0a0a0a', border: 'none', cursor: 'pointer', padding: '0.15em 0.5em', width: '100%' }}>✓</button>
-                  </div>
-                ) : (
-                  <div
-                    onClick={() => { setEditingCapIdx(i); setEditingCapVal(p.caption) }}
-                    style={{ padding: '0.3rem 0.4rem', fontSize: '0.65rem', color: 'var(--color-muted)', cursor: 'text', minHeight: '1.5rem', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}
-                    title="Klicka för att redigera bildtext"
-                  >
-                    {p.caption || <em style={{ opacity: 0.45 }}>Bildtext…</em>}
-                  </div>
-                )}
+                {/* Caption + Credit inputs */}
+                <div style={{ padding: '0.3rem 0.35rem 0.35rem', display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+                  <input
+                    className="input"
+                    value={p.caption}
+                    onChange={e => updatePhotoField(i, 'caption', e.target.value)}
+                    placeholder="Bildtext (ämne)…"
+                    style={{ width: '100%', fontSize: '0.62rem', padding: '0.2em 0.35em' }}
+                  />
+                  <input
+                    className="input"
+                    value={p.credit ?? ''}
+                    onChange={e => updatePhotoField(i, 'credit', e.target.value)}
+                    placeholder="Fotograf…"
+                    style={{ width: '100%', fontSize: '0.62rem', padding: '0.2em 0.35em', color: 'var(--color-accent)' }}
+                  />
+                </div>
               </div>
             ))}
           </div>
@@ -345,10 +338,18 @@ export default function AdminBiography() {
             <input
               type="text"
               className="input"
-              placeholder="Bildtext (valfri)…"
+              placeholder="Bildtext (ämne)…"
               value={newPhotoCaption}
               onChange={e => setNewPhotoCaption(e.target.value)}
-              style={{ flex: 1, minWidth: 160, fontSize: 'var(--fs-sm)' }}
+              style={{ flex: 1, minWidth: 120, fontSize: 'var(--fs-sm)' }}
+            />
+            <input
+              type="text"
+              className="input"
+              placeholder="Fotograf…"
+              value={newPhotoCredit}
+              onChange={e => setNewPhotoCredit(e.target.value)}
+              style={{ flex: 1, minWidth: 100, fontSize: 'var(--fs-sm)' }}
             />
             <button
               type="button"

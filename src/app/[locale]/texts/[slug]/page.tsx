@@ -112,7 +112,7 @@ export default async function TextDetailPage({
         <div style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-sm)', marginBottom: '2.5rem' }}>
           <span>{text.author}</span>
           {text.authorBio && (
-            <span style={{ color: 'var(--color-muted)', opacity: 0.5, marginLeft: '0.4rem' }}>
+            <span style={{ color: 'var(--color-muted)', marginLeft: '0.4rem' }}>
               — {text.authorBio}
             </span>
           )}
