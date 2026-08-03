@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import AdminForm, { FieldLabel } from '@/components/admin/AdminForm'
 import ImageListEditor from '@/components/admin/ImageListEditor'
 import type { OgonblickSection } from '@/lib/reference-ogonblick'
@@ -8,8 +8,8 @@ import type { OgonblickSection } from '@/lib/reference-ogonblick'
 export default function AdminOgonblick() {
   const [intro, setIntro] = useState('')
   const [urls, setUrls] = useState<string[]>([])
-  // Preserve captions by URL across edits (ImageListEditor only handles URLs).
-  const captionsRef = useRef<Record<string, string>>({})
+  const [captions, setCaptions] = useState<Record<string, string>>({})
+  const [credits, setCredits] = useState<Record<string, string>>({})
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [saved, setSaved] = useState(false)
@@ -23,9 +23,14 @@ export default function AdminOgonblick() {
         if ('error' in d) { setError(String(d.error)); return }
         setIntro(d.intro ?? '')
         setUrls(d.images.map(i => i.url))
-        const map: Record<string, string> = {}
-        for (const i of d.images) if (i.caption) map[i.url] = i.caption
-        captionsRef.current = map
+        const captionMap: Record<string, string> = {}
+        const creditMap: Record<string, string> = {}
+        for (const i of d.images) {
+          if (i.caption) captionMap[i.url] = i.caption
+          if (i.credit) creditMap[i.url] = i.credit
+        }
+        setCaptions(captionMap)
+        setCredits(creditMap)
       })
       .catch(e => setError(String(e)))
       .finally(() => setLoading(false))
@@ -36,7 +41,11 @@ export default function AdminOgonblick() {
     setSaving(true)
     setError(null)
     try {
-      const images = urls.map(url => ({ url, caption: captionsRef.current[url] || undefined }))
+      const images = urls.map(url => ({
+        url,
+        caption: captions[url] || undefined,
+        credit: credits[url] || undefined,
+      }))
       const res = await fetch('/api/admin/reference-ogonblick', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
@@ -89,6 +98,10 @@ export default function AdminOgonblick() {
           images={urls}
           onChange={(next) => { setUrls(next); setDirty(true) }}
           label="Ögonblick"
+          captions={captions}
+          onCaptionsChange={(next) => { setCaptions(next); setDirty(true) }}
+          credits={credits}
+          onCreditsChange={(next) => { setCredits(next); setDirty(true) }}
         />
       </div>
     </AdminForm>

@@ -28,7 +28,7 @@ export default async function PortfolioPage({
     {
       key: 'exhibitions',
       label: dict.portfolio?.cat_exhibitions ?? 'Utställningar',
-      sub: dict.portfolio?.sub_exhibitions ?? '1961 – 2016',
+      sub: dict.portfolio?.sub_exhibitions ?? '1957 – 2016',
       desc: dict.portfolio?.desc_exhibitions ?? '',
       count: 28,
     },
@@ -62,7 +62,7 @@ export default async function PortfolioPage({
           {dict.nav?.portfolio ?? 'Portfolio'}
         </p>
         <h1 style={{ fontFamily: 'Georgia, serif', fontWeight: 400, fontSize: 'clamp(2rem,4vw,3.5rem)', marginBottom: '1rem' }}>
-          {dict.portfolio?.title ?? 'Konstnärskap 1961–2016'}
+          {dict.portfolio?.title ?? 'Konstnärskap 1957–2016'}
         </h1>
         <p style={{ color: 'var(--color-muted)', maxWidth: '60ch', fontSize: 'var(--fs-base)' }}>
           {dict.portfolio?.intro ?? ''}

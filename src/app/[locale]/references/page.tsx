@@ -163,7 +163,7 @@ export default async function ReferencesPage({
               ? renderParagraphs(fotografi.intro, { marginBottom: '0.75rem' })
               : <p>{dict.references?.fotografier_desc ?? 'Bilder som på ett eller annat sätt berört och inspirerat Sivert Lindblom i sitt arbete.'}</p>}
           </div>
-          <GalleryGrid images={fotoLightboxImages} aspectRatio="3/2" columns="sm" />
+          <GalleryGrid images={fotoLightboxImages} aspectRatio="3/2" columns="sm" showCaptions />
           {fotografi.photographer && (
             <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', marginTop: '1rem', fontStyle: 'italic' }}>
               {dict.common?.photo_credit ?? 'Foto:'} {fotografi.photographer}
@@ -297,7 +297,7 @@ export default async function ReferencesPage({
             </p>
           )}
           {ogonblickLightboxImages.length > 0 && (
-            <GalleryGrid images={ogonblickLightboxImages} aspectRatio="4/3" columns="sm" />
+            <GalleryGrid images={ogonblickLightboxImages} aspectRatio="4/3" columns="sm" showCaptions />
           )}
         </section>
 

@@ -6,6 +6,7 @@ import Lightbox, { type LightboxImage } from './Lightbox'
 interface MasonryImage {
   url: string
   caption?: string
+  credit?: string
 }
 
 interface Props {
@@ -23,6 +24,7 @@ export default function MasonryGallery({ images, columns = '4', className }: Pro
     url: img.url,
     alt: img.caption ?? '',
     caption: img.caption,
+    credit: img.credit,
   }))
 
   return (
@@ -35,39 +37,57 @@ export default function MasonryGallery({ images, columns = '4', className }: Pro
         }}
       >
         {images.map((img, i) => (
-          <button
+          <div
             key={i}
-            onClick={() => setLightboxIndex(i)}
-            aria-label={img.caption ?? `Image ${i + 1}`}
             style={{
-              display: 'block',
-              width: '100%',
-              padding: 0,
-              margin: '0 0 6px',
-              background: 'none',
-              border: 'none',
-              cursor: 'zoom-in',
               breakInside: 'avoid',
-              lineHeight: 0,
-              textAlign: 'left',
+              marginBottom: 6,
             }}
           >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={img.url}
-              alt={img.caption ?? ''}
-              loading={i < 12 ? 'eager' : 'lazy'}
-              title={img.caption}
+            <button
+              onClick={() => setLightboxIndex(i)}
+              aria-label={img.caption ?? `Image ${i + 1}`}
               style={{
-                width: '100%',
-                height: 'auto',
                 display: 'block',
-                transition: 'opacity 0.15s',
+                width: '100%',
+                padding: 0,
+                background: 'none',
+                border: 'none',
+                cursor: 'zoom-in',
+                lineHeight: 0,
+                textAlign: 'left',
               }}
-              onMouseEnter={(e) => { (e.currentTarget as HTMLImageElement).style.opacity = '0.82' }}
-              onMouseLeave={(e) => { (e.currentTarget as HTMLImageElement).style.opacity = '1' }}
-            />
-          </button>
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={img.url}
+                alt={img.caption ?? ''}
+                loading={i < 12 ? 'eager' : 'lazy'}
+                style={{
+                  width: '100%',
+                  height: 'auto',
+                  display: 'block',
+                  transition: 'opacity 0.15s',
+                }}
+                onMouseEnter={(e) => { (e.currentTarget as HTMLImageElement).style.opacity = '0.82' }}
+                onMouseLeave={(e) => { (e.currentTarget as HTMLImageElement).style.opacity = '1' }}
+              />
+            </button>
+            {(img.caption || img.credit) && (
+              <div style={{ lineHeight: 1.4, paddingTop: '0.3rem' }}>
+                {img.caption && (
+                  <p style={{ margin: 0, fontSize: '0.72rem', color: 'var(--color-text)', fontStyle: 'italic', letterSpacing: '0.02em' }}>
+                    {img.caption}
+                  </p>
+                )}
+                {img.credit && (
+                  <p style={{ margin: 0, fontSize: '0.66rem', color: 'var(--color-accent)', letterSpacing: '0.04em', marginTop: '0.1rem' }}>
+                    {img.credit}
+                  </p>
+                )}
+              </div>
+            )}
+          </div>
         ))}
       </div>
 

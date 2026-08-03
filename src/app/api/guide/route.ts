@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getExhibitions, getPublicWorks, getTexts, getSculptureProjects, getFilms } from '@/lib/data-server'
+import { getExhibitions, getPublicWorks, getTexts, getSculptureProjects, getFilms, getUtmarkelser, getBibliography, getGrafik } from '@/lib/data-server'
+import { getWorks as getScenographyWorks } from '@/lib/scenography-data'
 import { createAdminClient } from '@/lib/supabase/admin'
 
 // Gemini text model — fast + cheap, reuses the GEMINI_API_KEY already in the env.
@@ -33,13 +34,27 @@ function full(s: string | undefined | null): string {
  *   - `text`      — truncated version sent inside the Gemini prompt to control token use.
  */
 async function buildCorpus(locale: string): Promise<Doc[]> {
-  const [exhibitions, publicWorks, texts, sculptures, films] = await Promise.all([
+  const [exhibitions, publicWorks, texts, sculptures, films, scenography, utmarkelser, bibliography, grafik] = await Promise.all([
     getExhibitions().catch(() => []),
     getPublicWorks().catch(() => []),
     getTexts().catch(() => []),
     getSculptureProjects().catch(() => []),
     getFilms().catch(() => []),
+    getScenographyWorks().catch(() => []),
+    getUtmarkelser().catch(() => ({ intro: '', prizes: [] })),
+    getBibliography().catch(() => []),
+    getGrafik().catch(() => ({ title: '', intro: '', years: '' })),
   ])
+
+  // Biography entries from DB (dynamic — Jan edits these in admin)
+  let biographyEntries: Array<{ id: string; title: string; description: string; year_start: number | null; year_end: number | null; location: string | null; entry_type: string }> = []
+  try {
+    const supa = createAdminClient()
+    if (supa) {
+      const { data } = await supa.from('biography_entries').select('id, title, description, year_start, year_end, location, entry_type').order('sort_order', { ascending: true })
+      biographyEntries = (data ?? []) as typeof biographyEntries
+    }
+  } catch { /* optional */ }
   const docs: Doc[] = []
   const L = `/${locale}`
 
@@ -97,6 +112,66 @@ async function buildCorpus(locale: string): Promise<Doc[]> {
       text: truncate(f.desc, 900),
       fullText: raw,
       href: `${L}/references/film-tv/${f.slug}`,
+    })
+  }
+
+  for (const s of scenography) {
+    const raw = [full(s.title), full(s.venue), full(s.description), full(s.photographerCredit)].filter(Boolean).join(' ')
+    docs.push({
+      title: s.title,
+      meta: `Scenografi${s.year ? ' ' + s.year : ''}${s.venue ? ', ' + s.venue : ''}`,
+      text: truncate(s.description, 900),
+      fullText: raw,
+      href: `${L}/portfolio/scenography/${s.slug}`,
+    })
+  }
+
+  for (const prize of utmarkelser.prizes) {
+    const raw = [full(prize.title), full(prize.sub), full(prize.desc), full(prize.quote)].filter(Boolean).join(' ')
+    docs.push({
+      title: prize.title,
+      meta: `Utmärkelse${prize.year ? ' ' + prize.year : ''}${prize.sub ? ' — ' + prize.sub : ''}`,
+      text: truncate([prize.desc, prize.quote].filter(Boolean).join(' '), 600),
+      fullText: raw,
+      href: `${L}/references#utmarkelser`,
+    })
+  }
+
+  for (const entry of bibliography) {
+    if (!entry.text) continue
+    const raw = [full(entry.text), full(entry.note)].filter(Boolean).join(' ')
+    docs.push({
+      title: entry.text.length > 100 ? entry.text.slice(0, 100) + '…' : entry.text,
+      meta: `Publicerat${entry.year ? ' ' + entry.year : ''}`,
+      text: truncate(entry.text, 600),
+      fullText: raw,
+      href: `${L}/references/publicerat`,
+    })
+  }
+
+  if (grafik.title) {
+    const raw = [full(grafik.title), full(grafik.intro), full(grafik.years)].filter(Boolean).join(' ')
+    docs.push({
+      title: grafik.title,
+      meta: `Grafik${grafik.years ? ' ' + grafik.years : ''}`,
+      text: truncate(grafik.intro, 600),
+      fullText: raw,
+      href: `${L}/references/grafik`,
+    })
+  }
+
+  for (const entry of biographyEntries) {
+    if (!entry.title) continue
+    const year = entry.year_start
+      ? (entry.year_end ? `${entry.year_start}–${entry.year_end}` : `${entry.year_start}`)
+      : ''
+    const raw = [full(entry.title), full(entry.description), entry.location ?? ''].filter(Boolean).join(' ')
+    docs.push({
+      title: entry.title,
+      meta: `Biografi${year ? ' ' + year : ''}${entry.location ? ', ' + entry.location : ''}`,
+      text: truncate(entry.description, 600),
+      fullText: raw,
+      href: `${L}/biography`,
     })
   }
 

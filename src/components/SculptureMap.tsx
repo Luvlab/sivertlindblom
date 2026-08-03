@@ -110,8 +110,10 @@ export default function SculptureMap({ locations, locale, mapHeight = 480, compa
     mapInstance.current = map
     clusterRef.current = clusterGroup
 
-    // Force Leaflet to recalculate container dimensions (needed inside flex/sticky panels)
+    // Force Leaflet to recalculate container dimensions.
+    // Two passes: rAF for fast renders, setTimeout for slow/mobile layouts.
     requestAnimationFrame(() => map.invalidateSize())
+    const sizeTimer = setTimeout(() => map.invalidateSize(), 300)
 
     // Helper to create a marker
     const addMarker = (loc: SculptureLocation) => {
@@ -198,6 +200,7 @@ export default function SculptureMap({ locations, locale, mapHeight = 480, compa
     }
 
     return () => {
+      clearTimeout(sizeTimer)
       map.remove()
       mapInstance.current = null
       clusterRef.current = null
