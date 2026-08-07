@@ -728,12 +728,6 @@ a:hover { opacity: 0.7; }
   text-decoration: none;
 }
 
-/* Multi-column prose — long description text on wide screens */
-.prose-cols > * { break-inside: avoid; }
-@media (min-width: 900px) {
-  .prose-cols { column-count: 2; column-gap: 2.5rem; }
-}
-@media (min-width: 1400px) {
-  .prose-cols { column-count: 3; column-gap: 3rem; }
-}
+/* Single-column prose — Jan wants one column throughout */
+.prose-cols { max-width: 72ch; }
 

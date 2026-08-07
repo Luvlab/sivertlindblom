@@ -192,7 +192,7 @@ export default async function LocaleLayout({
           <span style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', flexWrap: 'wrap', justifyContent: 'flex-end' }}>
             <span>{dict.footer?.editor}: Jan Öqvist</span>
             <span style={{ opacity: 0.55 }}>
-              web app by{' '}
+              Web dev:{' '}
               <a
                 href="https://luvlab.io"
                 target="_blank"

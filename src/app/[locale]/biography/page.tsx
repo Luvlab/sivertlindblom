@@ -251,10 +251,10 @@ export default async function BiographyPage({
                   <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', display: 'block', marginTop: '0.15rem' }}>{a.sub}</span>
                 )}
                 {a.quote && (
-                  <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', fontStyle: 'italic', lineHeight: 1.7, marginTop: '0.5rem', marginBottom: '0.25rem' }}>{a.quote}</p>
+                  <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', fontStyle: 'italic', lineHeight: 1.7, marginTop: '0.5rem', marginBottom: '0.25rem', whiteSpace: 'pre-wrap' }}>{a.quote}</p>
                 )}
                 {a.desc && (
-                  <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', lineHeight: 1.7, marginTop: '0.5rem', marginBottom: '0.25rem' }}>{a.desc}</p>
+                  <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', lineHeight: 1.7, marginTop: '0.5rem', marginBottom: '0.25rem', whiteSpace: 'pre-wrap' }}>{a.desc}</p>
                 )}
                 {a.images && a.images.length > 0 && (
                   <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginTop: '0.75rem', marginBottom: '0.25rem' }}>
