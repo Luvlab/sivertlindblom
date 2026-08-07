@@ -2,9 +2,8 @@ import Link from 'next/link'
 import { getDictionary } from '@/i18n/getDictionary'
 import { locales } from '@/i18n/config'
 import type { Locale } from '@/i18n/config'
-import { FALLBACK_SETTINGS } from '@/lib/db'
 import HeroSlideshow from '@/components/hero/HeroSlideshow'
-import { getHeroConfig } from '@/lib/data-server'
+import { getHeroConfig, getHomeContent } from '@/lib/data-server'
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }))
@@ -16,40 +15,14 @@ export default async function HomePage({
   params: Promise<{ locale: string }>
 }) {
   const { locale } = await params
-  const dict = await getDictionary(locale as Locale)
-  const settings = FALLBACK_SETTINGS
-  const { slides: heroSlides, random: heroRandom, tagline: heroTagline } = await getHeroConfig()
+  const [dict, { slides: heroSlides, random: heroRandom }, home] = await Promise.all([
+    getDictionary(locale as Locale),
+    getHeroConfig(),
+    getHomeContent(),
+  ])
 
-  const sections = [
-    {
-      href: `/${locale}/portfolio`,
-      label: dict.nav?.portfolio ?? 'Portfolio',
-      sub: `${dict.portfolio?.cat_exhibitions} · ${dict.portfolio?.cat_public} · ${dict.portfolio?.cat_scenography} · ${dict.portfolio?.cat_watercolors}`,
-      count: '350+',
-      desc: dict.portfolio?.desc_exhibitions ?? '',
-    },
-    {
-      href: `/${locale}/references`,
-      label: dict.nav?.sculpture ?? 'Skulptur',
-      sub: 'Profiler · Monoliter · Tidiga verk · Grafik',
-      count: '12',
-      desc: dict.references?.intro ?? '',
-    },
-    {
-      href: `/${locale}/texts`,
-      label: dict.nav?.texts ?? 'Texter',
-      sub: `${dict.texts?.essay} · ${dict.texts?.review} · ${dict.texts?.interview} · ${dict.texts?.own_writing}`,
-      count: '80+',
-      desc: dict.texts?.intro ?? '',
-    },
-    {
-      href: `/${locale}/biography`,
-      label: dict.nav?.biography ?? 'Biografi',
-      sub: `${dict.biography?.education} · ${dict.biography?.public_commissions} · ${dict.biography?.award}`,
-      count: '',
-      desc: dict.biography?.intro ?? '',
-    },
-  ]
+  // About text: DB value wins (Jan edits it from admin); i18n is fallback only
+  const aboutText = home.aboutText || (dict.home?.about_text as string | undefined) || ''
 
   return (
     <>
@@ -74,7 +47,7 @@ export default async function HomePage({
             margin: '0 0 1.5rem',
             maxWidth: '14ch',
           }}>
-            {settings.site_title}
+            {home.siteTitle}
           </h1>
           <p style={{
             fontSize: 'var(--fs-lg)',
@@ -83,7 +56,7 @@ export default async function HomePage({
             marginBottom: '2.5rem',
             whiteSpace: 'pre-wrap',
           }}>
-            {dict.home?.tagline ?? heroTagline ?? settings.hero_tagline}
+            {home.tagline}
           </p>
           <style>{`
             @media (max-width: 640px) {
@@ -103,7 +76,7 @@ export default async function HomePage({
       </HeroSlideshow>
       </div>
 
-      {/* PRESS QUOTE + AUDIO — Karsten Thurfjell, Kulturnytt P1 2016 */}
+      {/* PRESS QUOTE + AUDIO */}
       <section style={{
         background: 'var(--color-bg-surface)',
         borderBottom: '1px solid var(--color-border)',
@@ -131,14 +104,14 @@ export default async function HomePage({
           padding: 0,
           border: 'none',
         }}>
-          {dict.home?.press_quote ?? '»Någonting pågår, exakt vad kommer vi aldrig att få svar på, annat än av vår egen fantasi.«'}
+          {home.pressQuote}
         </blockquote>
         <p style={{
           fontSize: 'var(--fs-sm)',
           color: 'var(--color-text)',
           marginBottom: '0.25rem',
         }}>
-          {dict.home?.press_attribution ?? 'Karsten Thurfjell'}
+          {home.pressAttribution}
         </p>
         <p style={{
           fontSize: 'var(--fs-xs)',
@@ -146,10 +119,9 @@ export default async function HomePage({
           color: 'var(--color-muted)',
           marginBottom: '2rem',
         }}>
-          {dict.home?.press_source ?? 'Kulturnytt, Sveriges Radio P1 · 4 aug 2016'} · {dict.home?.press_duration ?? '3:20 min'}
+          {home.pressSource} · {home.pressDuration}
         </p>
 
-        {/* Native audio player */}
         {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
         <audio
           controls
@@ -165,11 +137,11 @@ export default async function HomePage({
             marginRight: 'auto',
           }}
         >
-          <source src="https://www.sverigesradio.se/topsy/ljudfil/5783965?publicationId=6483716" type="audio/mpeg" />
+          <source src={home.audioUrl} type="audio/mpeg" />
         </audio>
 
         <a
-          href="https://sverigesradio.se/artikel/6483716"
+          href={home.audioLink}
           target="_blank"
           rel="noopener noreferrer"
           style={{
@@ -198,7 +170,6 @@ export default async function HomePage({
           gap: '2.5rem',
           maxWidth: '1200px',
         }}>
-          {/* Top row: eyebrow + heading */}
           <div>
             <p style={{
               fontSize: 'var(--fs-xs)',
@@ -217,7 +188,6 @@ export default async function HomePage({
             </h2>
           </div>
 
-          {/* Bottom row: bio text left, stats right */}
           <div className="about-bio-grid">
             <p style={{
               color: 'var(--color-muted)',
@@ -226,7 +196,7 @@ export default async function HomePage({
               margin: 0,
               whiteSpace: 'pre-wrap',
             }}>
-              {dict.home?.about_text ?? settings.about_short}
+              {aboutText}
             </p>
 
             <div style={{
@@ -235,10 +205,10 @@ export default async function HomePage({
               gap: '2rem 1.5rem',
             }}>
               {[
-                { n: '60+',  l: dict.home?.stat_active    ?? 'År aktiv' },
-                { n: '50+',  l: dict.home?.stat_public    ?? 'Offentliga verk' },
-                { n: '30+',  l: dict.home?.stat_countries ?? 'Länder' },
-                { n: '1931', l: dict.home?.stat_born      ?? 'Födelseår' },
+                { n: home.statNActive,    l: dict.home?.stat_active    ?? 'År aktiv' },
+                { n: home.statNPublic,    l: dict.home?.stat_public    ?? 'Offentliga verk' },
+                { n: home.statNCountries, l: dict.home?.stat_countries ?? 'Länder' },
+                { n: home.statNBorn,      l: dict.home?.stat_born      ?? 'Födelseår' },
               ].map((s) => (
                 <div key={s.l}>
                   <div style={{ fontSize: 'var(--fs-3xl)', fontFamily: 'Georgia, serif', color: 'var(--color-accent)', lineHeight: 1 }}>{s.n}</div>
@@ -262,10 +232,9 @@ export default async function HomePage({
         alignItems: 'center',
         minHeight: '280px',
       }}>
-        {/* Background — Alps photo from contact page */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src="https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/contact/siverts-alper.jpg"
+          src={home.contactImage}
           alt=""
           aria-hidden="true"
           style={{
@@ -277,14 +246,12 @@ export default async function HomePage({
             objectPosition: 'center 40%',
           }}
         />
-        {/* Gradient overlay — darker on left so text stays legible */}
         <div style={{
           position: 'absolute',
           inset: 0,
           background: 'linear-gradient(100deg, rgba(10,10,10,0.78) 0%, rgba(10,10,10,0.48) 60%, rgba(10,10,10,0.32) 100%)',
         }} />
 
-        {/* Content */}
         <div style={{ position: 'relative', zIndex: 1 }}>
           <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-2xl)', marginBottom: '0.5rem', color: 'var(--color-text)' }}>
             {dict.home?.contact_title ?? 'Kontakt'}

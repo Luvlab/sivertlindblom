@@ -1002,3 +1002,74 @@ export async function getAllMediaImages(): Promise<Array<{ url: string; alt: str
   // Fall back to the curated hero slides if nothing came back from the DB
   return out.length > 0 ? out : FALLBACK_HERO_SLIDES
 }
+
+// ─── Homepage editable content ───────────────────────────────────────────────
+
+export interface HomeContent {
+  siteTitle: string
+  tagline: string
+  pressQuote: string
+  pressAttribution: string
+  pressSource: string
+  pressDuration: string
+  audioUrl: string
+  audioLink: string
+  aboutText: string
+  statNActive: string
+  statNPublic: string
+  statNCountries: string
+  statNBorn: string
+  contactImage: string
+}
+
+export const HOME_CONTENT_DEFAULTS: HomeContent = {
+  siteTitle: 'Sivert Lindblom',
+  tagline: 'Skulptur, offentlig konst, akvareller och scenografi sedan 1957',
+  pressQuote: '»Någonting pågår, exakt vad kommer vi aldrig att få svar på, annat än av vår egen fantasi.«',
+  pressAttribution: 'Karsten Thurfjell',
+  pressSource: 'Kulturnytt, Sveriges Radio P1 · 4 aug 2016',
+  pressDuration: '3:20 min',
+  audioUrl: 'https://www.sverigesradio.se/topsy/ljudfil/5783965?publicationId=6483716',
+  audioLink: 'https://sverigesradio.se/artikel/6483716',
+  aboutText: '',
+  statNActive: '60+',
+  statNPublic: '50+',
+  statNCountries: '30+',
+  statNBorn: '1931',
+  contactImage: 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/contact/siverts-alper.jpg',
+}
+
+const HOME_CONTENT_KEYS = [
+  'site_title', 'hero_tagline', 'about_short',
+  'home_press_quote', 'home_press_attribution', 'home_press_source', 'home_press_duration',
+  'home_audio_url', 'home_audio_link',
+  'home_stat_n_active', 'home_stat_n_public', 'home_stat_n_countries', 'home_stat_n_born',
+  'home_contact_image',
+] as const
+
+export async function getHomeContent(): Promise<HomeContent> {
+  'use cache'
+  cacheTag('home-content')
+  cacheLife('hours')
+  const supabase = createAdminClient()
+  if (!supabase) return HOME_CONTENT_DEFAULTS
+  const { data } = await supabase.from('settings').select('key, value').in('key', [...HOME_CONTENT_KEYS])
+  const map: Record<string, string> = {}
+  for (const row of data ?? []) if (row.value) map[row.key] = row.value
+  return {
+    siteTitle: map['site_title'] || HOME_CONTENT_DEFAULTS.siteTitle,
+    tagline: map['hero_tagline'] || HOME_CONTENT_DEFAULTS.tagline,
+    pressQuote: map['home_press_quote'] || HOME_CONTENT_DEFAULTS.pressQuote,
+    pressAttribution: map['home_press_attribution'] || HOME_CONTENT_DEFAULTS.pressAttribution,
+    pressSource: map['home_press_source'] || HOME_CONTENT_DEFAULTS.pressSource,
+    pressDuration: map['home_press_duration'] || HOME_CONTENT_DEFAULTS.pressDuration,
+    audioUrl: map['home_audio_url'] || HOME_CONTENT_DEFAULTS.audioUrl,
+    audioLink: map['home_audio_link'] || HOME_CONTENT_DEFAULTS.audioLink,
+    aboutText: map['about_short'] || HOME_CONTENT_DEFAULTS.aboutText,
+    statNActive: map['home_stat_n_active'] || HOME_CONTENT_DEFAULTS.statNActive,
+    statNPublic: map['home_stat_n_public'] || HOME_CONTENT_DEFAULTS.statNPublic,
+    statNCountries: map['home_stat_n_countries'] || HOME_CONTENT_DEFAULTS.statNCountries,
+    statNBorn: map['home_stat_n_born'] || HOME_CONTENT_DEFAULTS.statNBorn,
+    contactImage: map['home_contact_image'] || HOME_CONTENT_DEFAULTS.contactImage,
+  }
+}
