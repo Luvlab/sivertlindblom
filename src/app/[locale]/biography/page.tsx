@@ -9,7 +9,8 @@ import TabsLayout from '@/components/TabsLayout'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { cacheTag, cacheLife } from 'next/cache'
 import { FALLBACK_SETTINGS } from '@/lib/db'
-import { getUtmarkelser, getBibliography } from '@/lib/data-server'
+import { getUtmarkelser, getBibliography, getBiographyEntries } from '@/lib/data-server'
+import type { BiographyEntry } from '@/lib/data-server'
 
 const DEFAULT_PORTRAIT = 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Portratt-SivertMattias.jpg'
 
@@ -97,47 +98,30 @@ const TIMELINE = [
   { year: '1995',      label: 'Sergelpriset, Stockholm' },
 ]
 
-const PUBLIC_COMMISSIONS: Array<{ year: string; title: string; location: string; slug?: string }> = [
-  { year: '2013', title: 'Bältesspännarparken', location: 'Göteborg',  slug: 'baltesspannarparken-goteborg-2013' },
-  { year: '2004', title: 'Roslagens Sparbank', location: 'Norrtälje' },
-  { year: '2003', title: 'Nobelmonument', location: 'New York',          slug: 'nobelmonument-new-york-2003' },
-  { year: '2002', title: 'Eskilstuna rondellen — Profilen', location: 'Eskilstuna' },
-  { year: '2002', title: 'Gustav Adolfs torg, fontäner', location: 'Malmö', slug: 'gustav-adolfs-torg-malmo-2002' },
-  { year: '2001', title: 'Potatisåkern — Profilen', location: 'Malmö' },
-  { year: '1998', title: 'Kungliga Biblioteket', location: 'Stockholm' },
-  { year: '1998', title: 'Sergels torg — Sergel monumentet', location: 'Stockholm' },
-  { year: '1998', title: 'Synagoga förintelsenmonumentet', location: 'Stockholm' },
-  { year: '1997–98', title: 'Kungsträdgården, norra delen', location: 'Stockholm' },
-  { year: '1995–96', title: 'Cavallobrunnen, Resecentrum', location: 'Skövde' },
-  { year: '1993', title: 'Haga Norra gångbro', location: 'Stockholm' },
-  { year: '1993', title: 'Nobel Forum', location: 'Solna' },
-  { year: '1992', title: 'SEB Banken Huvudkontor', location: 'Rissne' },
-  { year: '1991', title: 'Berns Ljusgård', location: 'Stockholm' },
-  { year: '1990–91', title: 'Sveriges ambassad, entré', location: 'Tokyo' },
-  { year: '1989', title: 'Blasieholmstorg — Hästar i brons', location: 'Stockholm', slug: 'blasieholmstorg-stockholm-1989' },
-  { year: '1988', title: 'SAS Huvudkontor, Frösundavik', location: 'Stockholm' },
-  { year: '1988', title: 'Skissernas Museum, fasad', location: 'Lund' },
-  { year: '1987–91', title: 'Stockholms Universitet Campus', location: 'Stockholm', slug: 'stockholms-universitet-campus-1987-91' },
-  { year: '1986', title: 'Uppsala Stadsbibliotek', location: 'Uppsala' },
-  { year: '1985', title: 'Göteborgs Universitetsbibliotek', location: 'Göteborg' },
-  { year: '1984–85', title: 'Tetra Pak', location: 'Lausanne' },
-  { year: '1984–85', title: 'Pharmacia entréplats', location: 'Uppsala' },
-  { year: '1982', title: 'Riksbyggen/Göta Ark, Medborgarplatsen', location: 'Stockholm' },
-  { year: '1975–85', title: 'Västra skogen T-banestation', location: 'Stockholm', slug: 'vastra-skogen-t-banestation-1975-1985' },
-  { year: '1975', title: 'Fersenska palatset, Handelsbanken', location: 'Stockholm' },
-  { year: '1972', title: 'Garnisonen', location: 'Stockholm' },
-  { year: '1966–67', title: 'Vällingby backe', location: 'Stockholm' },
-  { year: '1965', title: 'Bronsgaller, Dagens Nyheter', location: 'Stockholm' },
-]
+const COMMISSION_SLUG_MAP: Record<string, string> = {
+  'Bältesspännarparken':              'baltesspannarparken-goteborg-2013',
+  'Nobelmonument':                    'nobelmonument-new-york-2003',
+  'Gustav Adolfs torg, fontäner':     'gustav-adolfs-torg-malmo-2002',
+  'Blasieholmstorg — Hästar i brons': 'blasieholmstorg-stockholm-1989',
+  'Stockholms Universitet Campus':    'stockholms-universitet-campus-1987-91',
+  'Västra skogen T-banestation':      'vastra-skogen-t-banestation-1975-1985',
+}
 
-const GROUP_EXHIBITIONS: Array<{ year: string; title: string; location: string; slug?: string }> = [
-  { year: '1968', title: '34:e Biennalen i Venedig', location: 'Venedig',      slug: 'biennale-venezia-1968' },
-  { year: '1972', title: 'Swedish Art 1972', location: 'Tokyo & Kyoto',         slug: 'swedish-art-1972' },
-  { year: '1973', title: 'Images du Nord, Art Suédois, Musée Dynamique', location: 'Dakar', slug: 'musee-dynamique-1973' },
-  { year: '1975', title: '12 Svenska skulptörer, Malmö Konsthall', location: 'Malmö', slug: 'skulptorer-1975' },
-  { year: '1977', title: 'Kunstmuseum Luzern, Live Show II', location: 'Schweiz', slug: 'kunstmuseum-luzern-1977' },
-  { year: '1979', title: 'Biennale Middelheim', location: 'Antwerpen',          slug: 'biennale-middelheim-1979' },
-]
+const EXHIBITION_SLUG_MAP: Record<string, string> = {
+  '34:e Biennalen i Venedig':                        'biennale-venezia-1968',
+  'Swedish Art 1972':                                'swedish-art-1972',
+  'Images du Nord, Art Suédois, Musée Dynamique':   'musee-dynamique-1973',
+  '12 Svenska skulptörer, Malmö Konsthall':          'skulptorer-1975',
+  'Kunstmuseum Luzern, Live Show II':                'kunstmuseum-luzern-1977',
+  'Biennale Middelheim':                             'biennale-middelheim-1979',
+}
+
+function fmtBioYear(e: BiographyEntry): string {
+  if (!e.year_end) return String(e.year_start)
+  const s = String(e.year_start)
+  const en = String(e.year_end)
+  return s.slice(0, 2) === en.slice(0, 2) ? `${s}–${en.slice(2)}` : `${s}–${en}`
+}
 
 
 export default async function BiographyPage({
@@ -146,12 +130,15 @@ export default async function BiographyPage({
   params: Promise<{ locale: string }>
 }) {
   const { locale } = await params
-  const [dict, bioSettings, utmarkelser, bibliography] = await Promise.all([
+  const [dict, bioSettings, utmarkelser, bibliography, bioEntries] = await Promise.all([
     getDictionary(locale as Locale),
     getBiographySettings(),
     getUtmarkelser(),
     getBibliography(),
+    getBiographyEntries(),
   ])
+  const publicCommissions = bioEntries.filter(e => e.entry_type === 'public_commission')
+  const groupExhibitions  = bioEntries.filter(e => e.entry_type === 'group_exhibition').sort((a, b) => a.year_start - b.year_start)
   const { intro: bioIntro, portrait: PORTRAIT_URL, portraitCredit: PORTRAIT_CREDIT, photos: bioPhotos } = bioSettings
   const awards = utmarkelser.prizes
 
@@ -290,17 +277,18 @@ export default async function BiographyPage({
           <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-2xl)', marginBottom: '2rem' }}>
             {dict.biography?.public_commissions ?? 'Offentliga uppdrag i urval'}
           </h2>
-          {PUBLIC_COMMISSIONS.map((c, i) => {
+          {publicCommissions.map((c, i) => {
+            const slug = COMMISSION_SLUG_MAP[c.title]
             const rowStyle = { display: 'grid', gridTemplateColumns: '7rem 1fr auto', gap: '1rem', padding: '0.85rem 0', borderBottom: '1px solid var(--color-border)', textDecoration: 'none', color: 'inherit' } as const
             const inner = (
               <>
-                <span style={{ color: 'var(--color-accent)', fontFamily: 'Georgia, serif', fontSize: 'var(--fs-sm)' }}>{c.year}</span>
+                <span style={{ color: 'var(--color-accent)', fontFamily: 'Georgia, serif', fontSize: 'var(--fs-sm)' }}>{fmtBioYear(c)}</span>
                 <span style={{ fontSize: 'var(--fs-sm)' }}>{c.title}</span>
                 <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', textAlign: 'right' }}>{c.location}</span>
               </>
             )
-            return c.slug
-              ? <Link key={i} href={`/${locale}/portfolio/public-works/${c.slug}`} className="row-hover" style={rowStyle}>{inner}</Link>
+            return slug
+              ? <Link key={i} href={`/${locale}/portfolio/public-works/${slug}`} className="row-hover" style={rowStyle}>{inner}</Link>
               : <div key={i} style={rowStyle}>{inner}</div>
           })}
         </section>
@@ -310,17 +298,18 @@ export default async function BiographyPage({
           <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-2xl)', marginBottom: '2rem' }}>
             {dict.biography?.group_exhibitions ?? 'Grupputställningar i urval'}
           </h2>
-          {GROUP_EXHIBITIONS.map((e, i) => {
+          {groupExhibitions.map((e, i) => {
+            const slug = EXHIBITION_SLUG_MAP[e.title]
             const rowStyle = { display: 'grid', gridTemplateColumns: '5rem 1fr auto', gap: '1rem', padding: '0.9rem 0', borderBottom: '1px solid var(--color-border)', textDecoration: 'none', color: 'inherit' } as const
             const inner = (
               <>
-                <span style={{ color: 'var(--color-accent)', fontFamily: 'Georgia, serif', fontSize: 'var(--fs-sm)' }}>{e.year}</span>
+                <span style={{ color: 'var(--color-accent)', fontFamily: 'Georgia, serif', fontSize: 'var(--fs-sm)' }}>{fmtBioYear(e)}</span>
                 <span style={{ fontSize: 'var(--fs-sm)' }}>{e.title}</span>
                 <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', textAlign: 'right' }}>{e.location}</span>
               </>
             )
-            return e.slug
-              ? <Link key={i} href={`/${locale}/portfolio/exhibitions#${e.slug}`} className="row-hover" style={rowStyle}>{inner}</Link>
+            return slug
+              ? <Link key={i} href={`/${locale}/portfolio/exhibitions#${slug}`} className="row-hover" style={rowStyle}>{inner}</Link>
               : <div key={i} style={rowStyle}>{inner}</div>
           })}
         </section>

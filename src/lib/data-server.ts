@@ -1073,3 +1073,27 @@ export async function getHomeContent(): Promise<HomeContent> {
     contactImage: map['home_contact_image'] || HOME_CONTENT_DEFAULTS.contactImage,
   }
 }
+
+export interface BiographyEntry {
+  id: string
+  entry_type: string
+  year_start: number
+  year_end: number | null
+  title: string
+  description: string | null
+  location: string | null
+  sort_order: number | null
+}
+
+export async function getBiographyEntries(): Promise<BiographyEntry[]> {
+  'use cache'
+  cacheTag('biography')
+  cacheLife('hours')
+  const supabase = createAdminClient()
+  if (!supabase) return []
+  const { data } = await supabase
+    .from('biography_entries')
+    .select('id, entry_type, year_start, year_end, title, description, location, sort_order')
+    .order('year_start', { ascending: false })
+  return data ?? []
+}
