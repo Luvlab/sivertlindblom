@@ -3,8 +3,8 @@
 import { useState, useEffect, useMemo, useRef } from 'react'
 import type { PublicWork } from '@/lib/public-works'
 import { uploadImageFile } from '@/lib/upload-image'
-import type { HomeContent } from '@/lib/data-server'
-import { HOME_CONTENT_DEFAULTS } from '@/lib/data-server'
+import type { HomeContent } from '@/lib/home-content-types'
+import { HOME_CONTENT_DEFAULTS } from '@/lib/home-content-types'
 
 interface Slide {
   url: string

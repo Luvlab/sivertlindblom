@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { cookies } from 'next/headers'
+import { revalidateTag } from 'next/cache'
 import { loadCmsData, saveCmsData } from '@/lib/cms-data'
 import { createAdminClient } from '@/lib/supabase/admin'
 import type { BioCmsEntry } from '../route'
@@ -77,7 +78,10 @@ export async function PUT(
         .eq('id', id)
         .select()
         .single()
-      if (!error && data) return NextResponse.json(dbToBio(data as Record<string, unknown>))
+      if (!error && data) {
+        revalidateTag('biography', 'max')
+        return NextResponse.json(dbToBio(data as Record<string, unknown>))
+      }
     }
 
     const current = loadCmsData<BioCmsEntry>('biography', STATIC_BIO)
@@ -86,6 +90,7 @@ export async function PUT(
     const updated = [...current]; updated[idx] = { ...body, id }
     const result = saveCmsData('biography', updated)
     if (!result.ok) return NextResponse.json({ error: result.message }, { status: 500 })
+    revalidateTag('biography', 'max')
     return NextResponse.json(updated[idx])
   } catch (e) {
     return NextResponse.json({ error: String(e) }, { status: 500 })
@@ -103,7 +108,10 @@ export async function DELETE(
     const supabase = createAdminClient()
     if (supabase) {
       const { error } = await supabase.from('biography_entries').delete().eq('id', id)
-      if (!error) return NextResponse.json({ ok: true })
+      if (!error) {
+        revalidateTag('biography', 'max')
+        return NextResponse.json({ ok: true })
+      }
     }
 
     const current = loadCmsData<BioCmsEntry>('biography', STATIC_BIO)
@@ -111,6 +119,7 @@ export async function DELETE(
     if (updated.length === current.length) return NextResponse.json({ error: 'Not found' }, { status: 404 })
     const result = saveCmsData('biography', updated)
     if (!result.ok) return NextResponse.json({ error: result.message }, { status: 500 })
+    revalidateTag('biography', 'max')
     return NextResponse.json({ ok: true })
   } catch (e) {
     return NextResponse.json({ error: String(e) }, { status: 500 })

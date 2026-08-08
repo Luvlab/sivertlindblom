@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { cookies } from 'next/headers'
+import { revalidateTag } from 'next/cache'
 import type { BiographyEntryType } from '@/types'
 import { loadCmsData, saveCmsData } from '@/lib/cms-data'
 import { createAdminClient } from '@/lib/supabase/admin'
@@ -85,7 +86,10 @@ export async function POST(request: Request) {
         })
         .select()
         .single()
-      if (!error && data) return NextResponse.json(dbToBio(data as Record<string, unknown>), { status: 201 })
+      if (!error && data) {
+        revalidateTag('biography', 'max')
+        return NextResponse.json(dbToBio(data as Record<string, unknown>), { status: 201 })
+      }
     }
 
     const current = loadCmsData<BioCmsEntry>('biography', STATIC_BIO)
@@ -93,6 +97,7 @@ export async function POST(request: Request) {
     const updated = [...current, newItem]
     const result = saveCmsData('biography', updated)
     if (!result.ok) return NextResponse.json({ error: result.message }, { status: 500 })
+    revalidateTag('biography', 'max')
     return NextResponse.json(newItem, { status: 201 })
   } catch (e) {
     return NextResponse.json({ error: String(e) }, { status: 500 })
