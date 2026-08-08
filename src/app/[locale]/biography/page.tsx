@@ -137,8 +137,15 @@ export default async function BiographyPage({
     getBibliography(),
     getBiographyEntries(),
   ])
-  const publicCommissions = bioEntries.filter(e => e.entry_type === 'public_commission')
-  const groupExhibitions  = bioEntries.filter(e => e.entry_type === 'group_exhibition').sort((a, b) => a.year_start - b.year_start)
+  const publicCommissions  = bioEntries.filter(e => e.entry_type === 'public_commission')
+  const groupExhibitions   = bioEntries.filter(e => e.entry_type === 'group_exhibition').sort((a, b) => a.year_start - b.year_start)
+  // Timeline entries (personal, education, position) — replace static TIMELINE when present
+  const timelineEntries    = bioEntries
+    .filter(e => ['personal', 'education', 'position'].includes(e.entry_type))
+    .sort((a, b) => a.year_start - b.year_start)
+  // Award + publication entries from biography_entries DB
+  const awardEntries       = bioEntries.filter(e => e.entry_type === 'award').sort((a, b) => a.year_start - b.year_start)
+  const publicationEntries = bioEntries.filter(e => e.entry_type === 'publication').sort((a, b) => b.year_start - a.year_start)
   const { intro: bioIntro, portrait: PORTRAIT_URL, portraitCredit: PORTRAIT_CREDIT, photos: bioPhotos } = bioSettings
   const awards = utmarkelser.prizes
 
@@ -217,7 +224,17 @@ export default async function BiographyPage({
           <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-2xl)', marginBottom: '2rem' }}>
             {dict.biography?.timeline ?? 'Kronologi'}
           </h2>
-          {TIMELINE.map((t, i) => (
+          {/* DB entries (personal / education / position) take priority over static TIMELINE */}
+          {timelineEntries.length > 0 ? timelineEntries.map((t, i) => (
+            <div key={i} style={{ display: 'grid', gridTemplateColumns: '7rem 1fr', gap: '1rem', padding: '0.9rem 0', borderBottom: '1px solid var(--color-border)' }}>
+              <span style={{ color: 'var(--color-accent)', fontFamily: 'Georgia, serif', fontSize: 'var(--fs-sm)', flexShrink: 0 }}>{fmtBioYear(t)}</span>
+              <div>
+                <span style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-text)' }}>{t.title}</span>
+                {t.description && <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', marginTop: '0.2rem', lineHeight: 1.6 }}>{t.description}</p>}
+                {t.location && <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', fontStyle: 'italic' }}>{t.location}</span>}
+              </div>
+            </div>
+          )) : TIMELINE.map((t, i) => (
             <div key={i} style={{ display: 'grid', gridTemplateColumns: '7rem 1fr', gap: '1rem', padding: '0.9rem 0', borderBottom: '1px solid var(--color-border)' }}>
               <span style={{ color: 'var(--color-accent)', fontFamily: 'Georgia, serif', fontSize: 'var(--fs-sm)', flexShrink: 0 }}>{t.year}</span>
               {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
@@ -226,9 +243,22 @@ export default async function BiographyPage({
           ))}
 
           {/* ── Priser & utmärkelser ── */}
+          {(awards.length > 0 || awardEntries.length > 0) && (
           <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-2xl)', marginTop: '3rem', marginBottom: '2rem' }}>
             {dict.biography?.priser_title ?? 'Priser & utmärkelser'}
-          </h2>
+          </h2>)}
+          {/* Awards from biography_entries DB (Jan edits these) */}
+          {awardEntries.map((a, i) => (
+            <div key={`db-award-${i}`} style={{ display: 'grid', gridTemplateColumns: '7rem 1fr', gap: '1rem', padding: '0.9rem 0', borderBottom: '1px solid var(--color-border)', alignItems: 'start' }}>
+              <span style={{ color: 'var(--color-accent)', fontFamily: 'Georgia, serif', fontSize: 'var(--fs-sm)', flexShrink: 0, paddingTop: '0.1rem' }}>{fmtBioYear(a)}</span>
+              <div>
+                <span style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-text)', display: 'block' }}>{a.title}</span>
+                {a.description && <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', marginTop: '0.25rem', lineHeight: 1.6, whiteSpace: 'pre-wrap' }}>{a.description}</p>}
+                {a.location && <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', fontStyle: 'italic' }}>{a.location}</span>}
+              </div>
+            </div>
+          ))}
+          {/* Rich awards from utmarkelser table (with images, links, quotes) */}
           {awards.map((a, i) => (
             <div key={i} style={{ display: 'grid', gridTemplateColumns: '7rem 1fr', gap: '1rem', padding: '0.9rem 0', borderBottom: '1px solid var(--color-border)', alignItems: 'start' }}>
               <span style={{ color: 'var(--color-accent)', fontFamily: 'Georgia, serif', fontSize: 'var(--fs-sm)', flexShrink: 0, paddingTop: '0.1rem' }}>{a.year}</span>
@@ -319,6 +349,17 @@ export default async function BiographyPage({
           <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-2xl)', marginBottom: '2rem' }}>
             {dict.biography?.bibliography ?? 'Litteraturförteckning i urval'}
           </h2>
+          {/* Publication entries added by Jan in admin/biography */}
+          {publicationEntries.map((p, i) => (
+            <div key={`pub-${i}`} style={{ display: 'grid', gridTemplateColumns: '5rem 1fr', gap: '1rem', padding: '0.75rem 0', borderBottom: '1px solid var(--color-border)', alignItems: 'start' }}>
+              <span style={{ color: 'var(--color-accent)', fontFamily: 'Georgia, serif', fontSize: 'var(--fs-sm)', flexShrink: 0, paddingTop: '0.1rem' }}>{fmtBioYear(p)}</span>
+              <div>
+                <span style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-text)', display: 'block', lineHeight: 1.6 }}>{p.title}</span>
+                {p.description && <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', marginTop: '0.25rem', lineHeight: 1.6, whiteSpace: 'pre-wrap' }}>{p.description}</p>}
+                {p.location && <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', fontStyle: 'italic' }}>{p.location}</span>}
+              </div>
+            </div>
+          ))}
           {bibliography.map((entry, i) => (
             <div key={i} style={{ display: 'grid', gridTemplateColumns: '5rem 1fr', gap: '1rem', padding: '0.75rem 0', borderBottom: '1px solid var(--color-border)' }}>
               <span style={{ color: 'var(--color-accent)', fontFamily: 'Georgia, serif', fontSize: 'var(--fs-sm)', flexShrink: 0 }}>{entry.year}</span>

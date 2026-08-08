@@ -180,7 +180,7 @@ async function buildCorpus(locale: string): Promise<Doc[]> {
 
 /** Keyword-score the corpus against the question and return the top matches.
  *  Scoring uses fullText (untruncated) so names anywhere in a description are found. */
-function retrieve(docs: Doc[], question: string, k = 14): Doc[] {
+function retrieve(docs: Doc[], question: string, k = 25): Doc[] {
   const terms = (question.toLowerCase().match(/\p{L}{3,}/gu) ?? [])
   if (terms.length === 0) return docs.slice(0, k)
   const scored = docs.map((d) => {
@@ -205,11 +205,12 @@ const SYSTEM = `Du är museiguiden för skulptören Sivert Lindbloms konstarkiv 
 
 Regler:
 - Svara ENDAST utifrån materialet nedan. Hitta aldrig på verk, årtal, platser eller citat.
-- Om svaret inte finns i materialet: säg ärligt att just det inte framgår här, och föreslå vänligt att besökaren utforskar Portfolio, Referenser eller Texter på sajten.
+- Om svaret inte finns i materialet: säg ärligt att just det inte framgår här, och tipsa om att besökaren kan söka på hela sajten via söksidan.
 - Svara på SAMMA språk som besökaren skriver.
-- Håll det kortfattat, levande och personligt — som en engagerad guide, inte en uppslagsbok. 2–5 meningar räcker oftast.
+- För enkla faktafrågor: håll svaret kortfattat och levande — som en engagerad guide, inte en uppslagsbok.
+- För listfrågor (t.ex. "visa allt om X", "var nämns Y", "lista alla"): räkna upp ALLA relevanta poster i materialet med länk till var och en. Hoppa inte över träffar och förkorta inte listan.
 - Sivert Lindblom är född 1931, svensk skulptör känd för offentlig konst, skulptur, akvareller och scenografi.
-- När du nämner ett specifikt verk, en utställning, en skulpturserie eller en text som finns i materialet, LÄNKA till dess sida i formatet [titeln](URL). Kopiera exakt den URL som står på raden "URL:" för den posten — den börjar med "/" (t.ex. /sv/references/kofeser). Lägg ALDRIG till någon domän eller "https://" framför; skriv URL:en precis som den står. Hitta aldrig på länkar och länka bara till sidor som finns i materialet. Väv gärna in 1–3 relevanta länkar så besökaren kan läsa vidare.`
+- När du nämner ett specifikt verk, en utställning, en skulpturserie eller en text som finns i materialet, LÄNKA till dess sida i formatet [titeln](URL). Kopiera exakt den URL som står på raden "URL:" för den posten — den börjar med "/" (t.ex. /sv/references/kofeser). Lägg ALDRIG till någon domän eller "https://" framför; skriv URL:en precis som den står. Hitta aldrig på länkar och länka bara till sidor som finns i materialet.`
 
 export async function POST(req: NextRequest) {
   const apiKey = process.env.GEMINI_API_KEY
@@ -250,7 +251,8 @@ Portfolio (utställningar, offentliga verk, akvareller, scenografi): /${locale}/
 Skulptur & grafik (skulpturserier, film & TV, fotografier, publicerat, utmärkelser): /${locale}/references
 Texter (kritik, essays, intervjuer): /${locale}/texts
 Biografi: /${locale}/biography
-Kontakt: /${locale}/contact`
+Kontakt: /${locale}/contact
+Sök hela sajten: /${locale}/search`
 
   const contents = messages.map((m) => ({
     role: m.role === 'assistant' ? 'model' : 'user',
@@ -264,7 +266,7 @@ Kontakt: /${locale}/contact`
       body: JSON.stringify({
         system_instruction: { parts: [{ text: `${SYSTEM}\n\n${navSection}\n\n${knowledge ? `=== EXTRA MATERIAL (bakgrund, t.ex. om curatorn Jan Öqvist) ===\n${knowledge}\n\n` : ''}=== MATERIAL FRÅN SAJTEN ===\n${context || '(inget relevant material hittades)'}` }] },
         contents,
-        generationConfig: { temperature: 0.4, maxOutputTokens: 700, topP: 0.9 },
+        generationConfig: { temperature: 0.4, maxOutputTokens: 2000, topP: 0.9 },
       }),
     })
     if (!res.ok) {
@@ -289,7 +291,7 @@ Kontakt: /${locale}/contact`
       }
     } catch { /* logging is non-critical */ }
 
-    return NextResponse.json({ reply, sources: relevant.map((d) => d.title).slice(0, 4) })
+    return NextResponse.json({ reply, sources: relevant.map((d) => d.title).slice(0, 10) })
   } catch (e) {
     return NextResponse.json({ error: `Nätverksfel mot guiden: ${String(e)}` }, { status: 502 })
   }

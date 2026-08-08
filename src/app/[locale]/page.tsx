@@ -21,8 +21,12 @@ export default async function HomePage({
     getHomeContent(),
   ])
 
-  // About text: DB value wins (Jan edits it from admin); i18n is fallback only
-  const aboutText = home.aboutText || (dict.home?.about_text as string | undefined) || ''
+  // About text: DB value applies to Swedish only (Jan edits in sv).
+  // Other locales always use their own locale file so no language gets Swedish text.
+  const localeAbout = (dict.home?.about_text as string | undefined) || ''
+  const aboutText = locale === 'sv'
+    ? (home.aboutText || localeAbout)
+    : localeAbout
 
   return (
     <>
