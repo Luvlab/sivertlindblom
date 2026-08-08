@@ -50,6 +50,8 @@ export default function AdminBiography() {
   const [typeFilter, setTypeFilter] = useState('')
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [cacheBusting, setCacheBusting] = useState(false)
+  const [cacheBusted, setCacheBusted] = useState(false)
 
   // Intro text + portrait (stored in settings)
   const [intro, setIntro] = useState('')
@@ -178,6 +180,21 @@ export default function AdminBiography() {
     }
   }
 
+  async function handleCacheBust() {
+    setCacheBusting(true)
+    setCacheBusted(false)
+    try {
+      await fetch('/api/admin/revalidate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ tags: ['biography', 'bibliography'] }),
+      })
+      setCacheBusted(true)
+      setTimeout(() => setCacheBusted(false), 3000)
+    } catch { /* ignore */ }
+    finally { setCacheBusting(false) }
+  }
+
   const filtered = items
     .filter(b => !filter || b.title.toLowerCase().includes(filter.toLowerCase()))
     .filter(b => !typeFilter || b.entry_type === typeFilter)
@@ -192,7 +209,15 @@ export default function AdminBiography() {
             {loading ? 'Laddar...' : `${items.length} poster`}
           </p>
         </div>
-        <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+        <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', alignItems: 'center' }}>
+          <button
+            className="btn"
+            onClick={handleCacheBust}
+            disabled={cacheBusting}
+            style={{ fontSize: 'var(--fs-xs)' }}
+          >
+            {cacheBusting ? 'Rensar…' : cacheBusted ? '✓ Cachad rensad' : '↺ Rensa cache'}
+          </button>
           <Link href="/admin/biography/bibliography">
             <button className="btn">Litteraturförteckning →</button>
           </Link>

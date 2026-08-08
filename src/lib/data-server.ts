@@ -1059,7 +1059,7 @@ export interface BiographyEntry {
 export async function getBiographyEntries(): Promise<BiographyEntry[]> {
   'use cache'
   cacheTag('biography')
-  cacheLife('hours')
+  cacheLife('minutes')
   const supabase = createAdminClient()
   if (!supabase) return []
   const { data } = await supabase
