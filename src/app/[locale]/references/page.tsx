@@ -254,10 +254,15 @@ export default async function ReferencesPage({
                     columns="sm"
                   />
                 </div>
-                <a href="https://youtu.be/uKDKR1KDdvQ" target="_blank" rel="noopener noreferrer"
-                  style={{ display: 'inline-block', fontSize: 'var(--fs-xs)', color: 'var(--color-accent)', letterSpacing: '0.06em', textTransform: 'uppercase', textDecoration: 'none', borderBottom: '1px solid var(--color-accent-dim)' }}>
-                  ▶ {dict.references?.watch_film ?? 'Se film'} →
-                </a>
+                <div style={{ position: 'relative', paddingBottom: '56.25%', height: 0, overflow: 'hidden', borderRadius: 4, background: 'var(--color-bg-surface)', maxWidth: '720px', marginTop: '1rem' }}>
+                  <iframe
+                    src="https://www.youtube.com/embed/uKDKR1KDdvQ?rel=0"
+                    title="IVA Minnesmedalj — film"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                    style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', border: 0 }}
+                  />
+                </div>
               </div>
             </div>
           </div>

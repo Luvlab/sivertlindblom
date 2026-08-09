@@ -140,15 +140,16 @@ export default async function TextDetailPage({
           </p>
         )}
 
-        {/* Video embed — YouTube iframe or external link */}
+        {/* Video embed — YouTube iframe (any URL format) or external link */}
         {text.videoUrl && (() => {
-          const isYouTubeEmbed = text.videoUrl!.includes('youtube.com/embed/')
+          const ytMatch = text.videoUrl!.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([A-Za-z0-9_-]{11})/)
+          const ytId = ytMatch?.[1]
           return (
             <div style={{ marginBottom: '2.5rem' }}>
-              {isYouTubeEmbed ? (
+              {ytId ? (
                 <div style={{ position: 'relative', paddingBottom: '56.25%', height: 0, overflow: 'hidden', borderRadius: 4, background: 'var(--color-bg-surface)' }}>
                   <iframe
-                    src={`${text.videoUrl}?rel=0`}
+                    src={`https://www.youtube.com/embed/${ytId}?rel=0`}
                     title={text.title}
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowFullScreen
