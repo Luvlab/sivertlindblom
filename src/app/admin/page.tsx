@@ -64,6 +64,7 @@ export default function AdminDashboard() {
     { label: 'Mediavalv',           value: counts.uploads,         href: '/admin/watercolors',  desc: 'Uppladdade bilder i Supabase' },
     { label: 'Texter',              value: counts.texts,           href: '/admin/texts',        desc: 'Essays, recensioner, intervjuer, egna texter' },
     { label: 'Biografi',            value: counts.biography,       href: '/admin/biography',    desc: 'Kronologiposter och offentliga uppdrag' },
+    { label: 'Översättningar',      value: '∞',                    href: '/admin/translations', desc: 'Maskinöversättning + granskning på 8 språk' },
   ]
 
   const tabStyle = (t: Tab): React.CSSProperties => ({

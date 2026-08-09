@@ -1211,6 +1211,23 @@ Président du Comité National pour les Expositions d'Art Suédois Contemporain 
       "1962 hade Sivert Lindblom sin första utställning, tillsammans med konstnärskollegan och senare samarbetspartnern Ulrik Samuelson. På utställningen ställde han bl.a. ut bronsfigurerna 'Utan titel' (100 cm) och 'Venus' (98 cm) skulpterade tre år tidigare (1959). August Rodin: 'Jag använder folkets språk, ord från det dagliga talet, ty tankarna skall vara klara och lättfattliga.'",
   },
   {
+    slug: "ararat-1976",
+    title: "ARARAT — Alternative, Research in Architecture, Resources, Art and Technology",
+    year: 1976,
+    location: "Moderna Museet, Stockholm",
+    url: "",
+    images: [],
+    description: "ARARAT var ett tvärkonstnärligt projekt initierat av Jan Öqvist 1976, i samarbete med bl.a. Sivert Lindblom. Utställningen visades på Moderna Museet i Stockholm och utforskade gränssnittet mellan arkitektur, resurshantering, konst och teknologi.",
+    body: "ARARAT — Alternative, Research in Architecture, Resources, Art and Technology — var ett pionerärt miljö- och konceptprojekt som visades på Moderna Museet, Stockholm, 1976. Projektet initierades av Jan Öqvist och samlade konstnärer, arkitekter och forskare i ett gemensamt undersökande av hur konst kan agera miljö och medium.",
+    videoUrl: "https://youtu.be/zapY_2bSD0Y",
+    group: true,
+    links: [
+      { label: "LÄS JAN ÖQVISTS beskrivning av ARARAT-projektet", url: "/sv/portfolio/exhibitions/ararat-1976", external: false, prefix: "" },
+      { label: "READ IN SEARCH OF ARARAT — Ulrika Jansson", url: "https://insearchforararat.wordpress.com/inspiration-to-ararat/", external: true },
+      { label: "READ about ARARAT 1976: The Exhibition as Environing Medium — KTH", url: "https://kth.diva-portal.org/smash/record.jsf?pid=diva2%3A1953342&dswidF1", external: true },
+    ],
+  },
+  {
     slug: "skara-konstforening-1961",
     title: "Skara konstförening 1961 med Ulrik Samuelson och Mårten Hultenberg",
     year: 1961,

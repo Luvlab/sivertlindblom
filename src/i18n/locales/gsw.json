@@ -105,6 +105,7 @@
     "own_writing": "Eigener Text",
     "translated": "Übersetzt",
     "original_language": "Originalsprache",
+    "machine_translated": "Maskinöversatt — ännu ej granskad.",
     "others_texts": "Fremde Texte",
     "all": "Alle Texte"
   },

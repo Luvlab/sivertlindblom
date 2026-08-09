@@ -8,6 +8,7 @@ import type { Locale } from '@/i18n/config'
 import { getDictionary } from '@/i18n/getDictionary'
 import { TEXTS_DATA } from '@/lib/texts-data'
 import { getTextSlugs, getText, getTexts } from '@/lib/data-server'
+import { getTranslation } from '@/lib/translations'
 import TextImageSlideshow from '@/components/TextImageSlideshow'
 import { renderInlineLinks } from '@/lib/render-text'
 
@@ -41,9 +42,11 @@ export default async function TextDetailPage({
   params: Promise<{ locale: string; slug: string }>
 }) {
   const { locale, slug } = await params
-  const [dict, allTexts] = await Promise.all([
+  const isSwedish = locale === 'sv'
+  const [dict, allTexts, dbTranslation] = await Promise.all([
     getDictionary(locale as Locale),
     getTexts(),
+    isSwedish ? Promise.resolve(null) : getTranslation('text', slug, locale),
   ])
 
   // DB is authoritative (that's where Jan edits images/body). The legacy
@@ -71,20 +74,69 @@ export default async function TextDetailPage({
   const prev = idx > 0 ? sameType[idx - 1] : null
   const next = idx < sameType.length - 1 ? sameType[idx + 1] : null
 
-  // Admin/DB content is authoritative: show the text Jan edits in admin, not a
-  // hardcoded translation that silently overrides it (Jan, Undring 14). Fall
-  // back to a legacy translation only when there is no admin body at all.
+  // Translation priority:
+  // 1. DB translation (machine or human) for non-Swedish locales
+  // 2. Admin-edited body (Swedish source)
+  // 3. Legacy static translations in TEXTS_DATA.bodies
   const hasAdminBody = !!(text.body && text.body.trim())
-  const body = hasAdminBody ? text.body : (text.bodies?.[locale] ?? '')
-  const isTranslated = !hasAdminBody && text.bodies?.[locale] !== undefined && locale !== text.lang
+  const translatedBody = dbTranslation?.content ?? null
+  const translatedTitle = dbTranslation?.title ?? null
+  const body = translatedBody ?? (hasAdminBody ? text.body : (text.bodies?.[locale] ?? ''))
+  const displayTitle = translatedTitle ?? text.title
+  const isMachineTranslated = !!(dbTranslation?.machine_translated)
+  const isTranslated = !!translatedBody || (!hasAdminBody && text.bodies?.[locale] !== undefined && locale !== text.lang)
 
   const typeLabel = (dict.texts as Record<string, string> | undefined)?.[text.type] ?? text.type
   const langLabel = LANG_LABELS[text.lang] || text.lang.toUpperCase()
   const showOcr = text.showOcr === true
 
+  const hasImages = !!(text.images && text.images.length > 0)
+  const useRightColLayout = hasImages && !showOcr
+
+  function renderBody(fontSize = 'var(--fs-base)') {
+    if (!body) return null
+    return body.split('\n\n').map((para, i) => {
+      const lines = para.split('\n')
+      return (
+        <p key={i} style={{ fontSize, lineHeight: 1.8, marginBottom: '1.5em', color: 'var(--color-text)' }}>
+          {lines.map((line, j) => (
+            <span key={j}>{j > 0 && <br />}{renderInlineLinks(line)}</span>
+          ))}
+        </p>
+      )
+    })
+  }
+
+  function renderVideo() {
+    if (!text.videoUrl) return null
+    const ytMatch = text.videoUrl!.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([A-Za-z0-9_-]{11})/)
+    const ytId = ytMatch?.[1]
+    return (
+      <div style={{ marginBottom: '2.5rem' }}>
+        {ytId ? (
+          <div style={{ position: 'relative', paddingBottom: '56.25%', height: 0, overflow: 'hidden', borderRadius: 4, background: 'var(--color-bg-surface)' }}>
+            <iframe
+              src={`https://www.youtube.com/embed/${ytId}?rel=0`}
+              title={text.title}
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', border: 0 }}
+            />
+          </div>
+        ) : (
+          <a href={text.videoUrl} target="_blank" rel="noopener noreferrer"
+            style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', fontSize: 'var(--fs-sm)', color: 'var(--color-accent)', textDecoration: 'none', borderBottom: '1px solid var(--color-accent-dim)', paddingBottom: '0.1em' }}>
+            <span style={{ fontSize: '1.1em' }}>▶</span>
+            {dict.texts?.watch_film ?? 'SE FILMEN'} →
+          </a>
+        )}
+      </div>
+    )
+  }
+
   return (
     <div className="section-gap">
-      <div className="page-pad" style={{ maxWidth: '80ch' }}>
+      <div className="page-pad" style={{ maxWidth: useRightColLayout ? '1160px' : '80ch' }}>
         {/* Back button */}
         <Link href={`/${locale}/texts`} className="back-link" style={{ marginBottom: '2rem', display: 'inline-flex' }}>
           <span className="back-link-arrow">←</span>
@@ -105,7 +157,7 @@ export default async function TextDetailPage({
 
         {/* Title */}
         <h1 style={{ fontFamily: 'Georgia, serif', fontWeight: 400, fontSize: 'clamp(1.5rem,3.5vw,2.5rem)', marginBottom: '0.75rem' }}>
-          {text.title}
+          {displayTitle}
         </h1>
 
         {/* Author + publication */}
@@ -125,174 +177,79 @@ export default async function TextDetailPage({
 
         <hr className="divider" style={{ marginBottom: '2.5rem' }} />
 
+        {/* Machine-translated badge */}
+        {isMachineTranslated && (
+          <p style={{ fontSize: 'var(--fs-xs)', letterSpacing: '0.08em', color: '#c07820', background: '#2a1800', border: '1px solid #5a3000', padding: '0.5rem 1rem', marginBottom: '2rem' }}>
+            {(dict.texts as Record<string,string> | undefined)?.machine_translated ?? 'Maskinöversatt — ännu ej granskad av mänsklig översättare.'}
+          </p>
+        )}
+
         {/* Original-language notice when no translation available */}
         {!isTranslated && locale !== text.lang && (
-          <p style={{
-            fontSize: 'var(--fs-xs)',
-            letterSpacing: '0.08em',
-            color: 'var(--color-muted)',
-            background: 'var(--color-bg-surface)',
-            border: '1px solid var(--color-border)',
-            padding: '0.6rem 1rem',
-            marginBottom: '2rem',
-          }}>
+          <p style={{ fontSize: 'var(--fs-xs)', letterSpacing: '0.08em', color: 'var(--color-muted)', background: 'var(--color-bg-surface)', border: '1px solid var(--color-border)', padding: '0.6rem 1rem', marginBottom: '2rem' }}>
             {langLabel} — {(dict.texts as Record<string,string> | undefined)?.original_language ?? 'Originalspråk'}
           </p>
         )}
 
-        {/* Video embed — YouTube iframe (any URL format) or external link */}
-        {text.videoUrl && (() => {
-          const ytMatch = text.videoUrl!.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([A-Za-z0-9_-]{11})/)
-          const ytId = ytMatch?.[1]
-          return (
-            <div style={{ marginBottom: '2.5rem' }}>
-              {ytId ? (
-                <div style={{ position: 'relative', paddingBottom: '56.25%', height: 0, overflow: 'hidden', borderRadius: 4, background: 'var(--color-bg-surface)' }}>
-                  <iframe
-                    src={`https://www.youtube.com/embed/${ytId}?rel=0`}
-                    title={text.title}
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                    style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', border: 0 }}
-                  />
-                </div>
-              ) : (
-                <a
-                  href={text.videoUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '0.5rem',
-                    fontSize: 'var(--fs-sm)',
-                    color: 'var(--color-accent)',
-                    textDecoration: 'none',
-                    borderBottom: '1px solid var(--color-accent-dim)',
-                    paddingBottom: '0.1em',
-                  }}
-                >
-                  <span style={{ fontSize: '1.1em' }}>▶</span>
-                  {dict.texts?.watch_film ?? 'SE FILMEN'} →
-                </a>
-              )}
-            </div>
-          )
-        })()}
-
-        {/* Article images + OCR text — side-by-side on desktop, stacked on mobile.
-            When OCR is toggled off, the scan images are shown full-width with no text column. */}
-        {text.images && text.images.length > 0 ? (
-          showOcr ? (
-            <div className="article-scan-layout">
-              {/* Images column — slideshow when multiple images */}
-              <div className="article-scan-images">
-                <TextImageSlideshow images={text.images} title={text.title} />
+        {/* ── Main content ── */}
+        {useRightColLayout ? (
+          /* Desktop two-column: text left, images right */
+          <>
+            <style>{`
+              .text-detail-grid {
+                display: grid;
+                grid-template-columns: minmax(0, 1fr) 300px;
+                gap: 3rem;
+                align-items: start;
+              }
+              @media (max-width: 860px) {
+                .text-detail-grid {
+                  grid-template-columns: 1fr;
+                }
+                .text-detail-images {
+                  order: -1;
+                }
+              }
+            `}</style>
+            <div className="text-detail-grid">
+              {/* Left column: video + body */}
+              <div>
+                {renderVideo()}
+                {showOcr ? (
+                  <>
+                    <p style={{ fontSize: 'var(--fs-xs)', letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--color-accent)', marginBottom: '1rem' }}>OCR</p>
+                    {renderBody('var(--fs-sm)')}
+                    {!body && <p style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-sm)', fontStyle: 'italic' }}>OCR-text saknas ännu</p>}
+                  </>
+                ) : (
+                  renderBody()
+                )}
               </div>
 
-              {/* OCR / body text column */}
-              {body ? (
-                <div className="article-scan-text">
-                  <p style={{
-                    fontSize: 'var(--fs-xs)',
-                    letterSpacing: '0.1em',
-                    textTransform: 'uppercase',
-                    color: 'var(--color-accent)',
-                    marginBottom: '1rem',
-                  }}>
-                    OCR
-                  </p>
-                  {body.split('\n\n').map((para, i) => {
-                    const lines = para.split('\n')
-                    return (
-                      <p key={i} style={{ fontSize: 'var(--fs-sm)', lineHeight: 1.75, marginBottom: '1.2em', color: 'var(--color-muted)' }}>
-                        {lines.map((line, j) => (
-                          <span key={j}>{j > 0 && <br />}{renderInlineLinks(line)}</span>
-                        ))}
-                      </p>
-                    )
-                  })}
-                </div>
-              ) : (
-                <div className="article-scan-text" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <p style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-sm)', fontStyle: 'italic' }}>
-                    OCR-text saknas ännu
-                  </p>
-                </div>
+              {/* Right column: images — sticky on desktop */}
+              <div className="text-detail-images" style={{ position: 'sticky', top: '5rem' }}>
+                <TextImageSlideshow images={text.images ?? []} title={text.title} />
+              </div>
+            </div>
+          </>
+        ) : showOcr && hasImages ? (
+          /* OCR mode without right-col (shouldn't happen but safe fallback) */
+          <div className="article-scan-layout">
+            <div className="article-scan-images">
+              <TextImageSlideshow images={text.images ?? []} title={text.title} />
+            </div>
+            <div className="article-scan-text">
+              <p style={{ fontSize: 'var(--fs-xs)', letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--color-accent)', marginBottom: '1rem' }}>OCR</p>
+              {body ? renderBody('var(--fs-sm)') : (
+                <p style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-sm)', fontStyle: 'italic' }}>OCR-text saknas ännu</p>
               )}
             </div>
-          ) : (text.type === 'review' || text.images.length > 1) ? (
-            /* Scanned article (review, or any text with multiple scan pages) —
-               images full width, body below. A single image is treated as an
-               author portrait in the branch below. */
-            <>
-              <div className="article-scan-images-full">
-                <TextImageSlideshow images={text.images} title={text.title} />
-              </div>
-              {body && (
-                <div style={{ marginTop: '2.5rem' }}>
-                  {body.split('\n\n').map((para, i) => {
-                    const lines = para.split('\n')
-                    return (
-                      <p key={i} style={{ fontSize: 'var(--fs-base)', lineHeight: 1.8, marginBottom: '1.5em', color: 'var(--color-text)' }}>
-                        {lines.map((line, j) => (
-                          <span key={j}>{j > 0 && <br />}{renderInlineLinks(line)}</span>
-                        ))}
-                      </p>
-                    )
-                  })}
-                </div>
-              )}
-            </>
-          ) : (
-            /* Author texts (essay/preface/own/translated/interview): show the
-               portrait at portrait size, then the text — Jan, Undring 13. */
-            <>
-              <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginBottom: '2rem' }}>
-                {text.images.map((img, i) => (
-                  <a key={i} href={img} target="_blank" rel="noopener noreferrer" title="Öppna bilden i ny flik" style={{ display: 'block' }}>
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={img}
-                      alt={text.author || text.title}
-                      loading="lazy"
-                      style={{ width: 200, maxWidth: '100%', height: 'auto', display: 'block', border: '1px solid var(--color-border)', background: 'var(--color-bg-card)' }}
-                    />
-                  </a>
-                ))}
-              </div>
-              {body && (
-                <div>
-                  {body.split('\n\n').map((para, i) => {
-                    const lines = para.split('\n')
-                    return (
-                      <p key={i} style={{ fontSize: 'var(--fs-base)', lineHeight: 1.8, marginBottom: '1.5em', color: 'var(--color-text)' }}>
-                        {lines.map((line, j) => (
-                          <span key={j}>{j > 0 && <br />}{renderInlineLinks(line)}</span>
-                        ))}
-                      </p>
-                    )
-                  })}
-                </div>
-              )}
-            </>
-          )
+          </div>
         ) : (
-          /* Plain text body for essays/prefaces/etc. */
+          /* No images: single column text */
           <div>
-            {body.split('\n\n').map((para, i) => {
-              const lines = para.split('\n')
-              return (
-                <p key={i} style={{ fontSize: 'var(--fs-base)', lineHeight: 1.8, marginBottom: '1.5em', color: 'var(--color-text)' }}>
-                  {lines.map((line, j) => (
-                    <span key={j}>
-                      {j > 0 && <br />}
-                      {renderInlineLinks(line)}
-                    </span>
-                  ))}
-                </p>
-              )
-            })}
+            {renderVideo()}
+            {renderBody()}
           </div>
         )}
 

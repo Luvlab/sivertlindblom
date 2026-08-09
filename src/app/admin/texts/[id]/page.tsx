@@ -217,6 +217,21 @@ function EditTextPageInner() {
               <MediaListEditor media={form.media ?? []} onChange={media => set('media', media)} />
             </div>
 
+            <div>
+              {label('Extern ljud-URL (t.ex. Sveriges Radio)')}
+              <input
+                className="input"
+                style={inp}
+                type="url"
+                placeholder="https://www.sverigesradio.se/…"
+                value={form.audioUrl ?? ''}
+                onChange={e => set('audioUrl', e.target.value || undefined)}
+              />
+              <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', marginTop: '0.35rem' }}>
+                Visas som ljudspelare under texten. Används när filen inte är uppladdad ovan.
+              </p>
+            </div>
+
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', border: '1px solid var(--color-border)', padding: '0.85rem 1rem', borderRadius: 2 }}>
               <input
                 id="showOcr"

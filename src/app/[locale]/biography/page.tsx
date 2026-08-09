@@ -114,6 +114,7 @@ const EXHIBITION_SLUG_MAP: Record<string, string> = {
   '12 Svenska skulptörer, Malmö Konsthall':          'skulptorer-1975',
   'Kunstmuseum Luzern, Live Show II':                'kunstmuseum-luzern-1977',
   'Biennale Middelheim':                             'biennale-middelheim-1979',
+  'ARARAT – Alternative, Research in Architecture, Resources, Art and Technology': 'ararat-1976',
 }
 
 function fmtBioYear(e: BiographyEntry): string {
@@ -139,12 +140,10 @@ export default async function BiographyPage({
   ])
   const publicCommissions  = bioEntries.filter(e => e.entry_type === 'public_commission')
   const groupExhibitions   = bioEntries.filter(e => e.entry_type === 'group_exhibition').sort((a, b) => a.year_start - b.year_start)
-  // Timeline entries (personal, education, position) — replace static TIMELINE when present
+  // Timeline entries — personal, education, position, and award milestones, sorted chronologically
   const timelineEntries    = bioEntries
-    .filter(e => ['personal', 'education', 'position'].includes(e.entry_type))
+    .filter(e => ['personal', 'education', 'position', 'award'].includes(e.entry_type))
     .sort((a, b) => a.year_start - b.year_start)
-  // Award + publication entries from biography_entries DB
-  const awardEntries       = bioEntries.filter(e => e.entry_type === 'award').sort((a, b) => a.year_start - b.year_start)
   const publicationEntries = bioEntries.filter(e => e.entry_type === 'publication').sort((a, b) => b.year_start - a.year_start)
   const { intro: bioIntro, portrait: PORTRAIT_URL, portraitCredit: PORTRAIT_CREDIT, photos: bioPhotos } = bioSettings
   const awards = utmarkelser.prizes
@@ -259,30 +258,7 @@ export default async function BiographyPage({
           <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-2xl)', marginTop: '3rem', marginBottom: '2rem' }}>
             {dict.biography?.priser_title ?? 'Priser & utmärkelser'}
           </h2>)}
-          {/* Awards from biography_entries DB (Jan edits these) */}
-          {awardEntries.map((a, i) => (
-            <div key={`db-award-${i}`} style={{ display: 'grid', gridTemplateColumns: '7rem 1fr', gap: '1rem', padding: '0.9rem 0', borderBottom: '1px solid var(--color-border)', alignItems: 'start' }}>
-              <span style={{ color: 'var(--color-accent)', fontFamily: 'Georgia, serif', fontSize: 'var(--fs-sm)', flexShrink: 0, paddingTop: '0.1rem' }}>{fmtBioYear(a)}</span>
-              <div>
-                {a.description ? (
-                  <details>
-                    <summary style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-text)', cursor: 'pointer', listStyle: 'none', display: 'flex', alignItems: 'baseline', gap: '0.4rem' }}>
-                      <span>{a.title}</span>
-                      <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-accent)', letterSpacing: '0.05em' }}>+</span>
-                    </summary>
-                    <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', marginTop: '0.5rem', lineHeight: 1.7, whiteSpace: 'pre-wrap' }}>{a.description}</p>
-                    {a.location && <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', fontStyle: 'italic' }}>{a.location}</span>}
-                  </details>
-                ) : (
-                  <>
-                    <span style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-text)', display: 'block' }}>{a.title}</span>
-                    {a.location && <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', fontStyle: 'italic' }}>{a.location}</span>}
-                  </>
-                )}
-              </div>
-            </div>
-          ))}
-          {/* Rich awards from utmarkelser table (with images, links, quotes) */}
+          {/* Rich awards from utmarkelser table (with images, links, quotes) — single source for /references and /biography */}
           {awards.map((a, i) => (
             <div key={i} style={{ display: 'grid', gridTemplateColumns: '7rem 1fr', gap: '1rem', padding: '0.9rem 0', borderBottom: '1px solid var(--color-border)', alignItems: 'start' }}>
               <span style={{ color: 'var(--color-accent)', fontFamily: 'Georgia, serif', fontSize: 'var(--fs-sm)', flexShrink: 0, paddingTop: '0.1rem' }}>{a.year}</span>
