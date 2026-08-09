@@ -77,23 +77,23 @@ export default async function ReferencesPage({
 
         {/* ── 1. Skulptur ───────────────────────────────────── */}
         <section className="page-pad" style={{ paddingTop: '3rem', paddingBottom: '3rem' }}>
-          <div className="auto-grid-wide">
+          <div style={{ display: 'grid', gap: '1rem', gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 160px), 1fr))' }}>
             {sculptureSeries.map((s, i) => {
               const images = slideshowImages[s.slug] ?? []
               return (
                 <Link key={s.slug} href={`/${locale}/references/${s.slug}`} className="card card-hover" style={{ display: 'block', overflow: 'hidden', textDecoration: 'none' }}>
                   {images.length > 0 ? (
-                    <div style={{ aspectRatio: '4/3', position: 'relative', overflow: 'hidden' }}>
+                    <div style={{ aspectRatio: '3/2', position: 'relative', overflow: 'hidden' }}>
                       <PortfolioSlideshow images={images} alt={s.title} objectFit="cover" interval={3200 + i * 300} />
                     </div>
                   ) : (
-                    <div style={{ aspectRatio: '4/3', background: 'var(--color-bg-surface)', display: 'flex', alignItems: 'center', justifyContent: 'center', borderBottom: '1px solid var(--color-border)' }}>
+                    <div style={{ aspectRatio: '3/2', background: 'var(--color-bg-surface)', display: 'flex', alignItems: 'center', justifyContent: 'center', borderBottom: '1px solid var(--color-border)' }}>
                       <span style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-xs)', fontStyle: 'italic' }}>{s.title}</span>
                     </div>
                   )}
-                  <div style={{ padding: '1.25rem 1.5rem 1.5rem' }}>
-                    <h3 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-lg)', marginBottom: '0.4rem' }}>{s.title}</h3>
-                    <p style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-sm)', margin: 0 }}>{s.shortDesc}</p>
+                  <div style={{ padding: '0.6rem 0.75rem 0.85rem' }}>
+                    <h3 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-sm)', marginBottom: '0.2rem', lineHeight: 1.3 }}>{s.title}</h3>
+                    <p style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-xs)', margin: 0, lineHeight: 1.4 }}>{s.shortDesc}</p>
                   </div>
                 </Link>
               )
