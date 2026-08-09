@@ -229,9 +229,21 @@ export default async function BiographyPage({
             <div key={i} style={{ display: 'grid', gridTemplateColumns: '7rem 1fr', gap: '1rem', padding: '0.9rem 0', borderBottom: '1px solid var(--color-border)' }}>
               <span style={{ color: 'var(--color-accent)', fontFamily: 'Georgia, serif', fontSize: 'var(--fs-sm)', flexShrink: 0 }}>{fmtBioYear(t)}</span>
               <div>
-                <span style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-text)' }}>{t.title}</span>
-                {t.description && <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', marginTop: '0.2rem', lineHeight: 1.6 }}>{t.description}</p>}
-                {t.location && <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', fontStyle: 'italic' }}>{t.location}</span>}
+                {t.description ? (
+                  <details>
+                    <summary style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-text)', cursor: 'pointer', listStyle: 'none', display: 'flex', alignItems: 'baseline', gap: '0.4rem' }}>
+                      <span>{t.title}</span>
+                      <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-accent)', letterSpacing: '0.05em' }}>+</span>
+                    </summary>
+                    <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', marginTop: '0.5rem', lineHeight: 1.7, whiteSpace: 'pre-wrap' }}>{t.description}</p>
+                    {t.location && <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', fontStyle: 'italic' }}>{t.location}</span>}
+                  </details>
+                ) : (
+                  <>
+                    <span style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-text)' }}>{t.title}</span>
+                    {t.location && <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', fontStyle: 'italic', display: 'block', marginTop: '0.15rem' }}>{t.location}</span>}
+                  </>
+                )}
               </div>
             </div>
           )) : TIMELINE.map((t, i) => (
@@ -252,9 +264,21 @@ export default async function BiographyPage({
             <div key={`db-award-${i}`} style={{ display: 'grid', gridTemplateColumns: '7rem 1fr', gap: '1rem', padding: '0.9rem 0', borderBottom: '1px solid var(--color-border)', alignItems: 'start' }}>
               <span style={{ color: 'var(--color-accent)', fontFamily: 'Georgia, serif', fontSize: 'var(--fs-sm)', flexShrink: 0, paddingTop: '0.1rem' }}>{fmtBioYear(a)}</span>
               <div>
-                <span style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-text)', display: 'block' }}>{a.title}</span>
-                {a.description && <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', marginTop: '0.25rem', lineHeight: 1.6, whiteSpace: 'pre-wrap' }}>{a.description}</p>}
-                {a.location && <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', fontStyle: 'italic' }}>{a.location}</span>}
+                {a.description ? (
+                  <details>
+                    <summary style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-text)', cursor: 'pointer', listStyle: 'none', display: 'flex', alignItems: 'baseline', gap: '0.4rem' }}>
+                      <span>{a.title}</span>
+                      <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-accent)', letterSpacing: '0.05em' }}>+</span>
+                    </summary>
+                    <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', marginTop: '0.5rem', lineHeight: 1.7, whiteSpace: 'pre-wrap' }}>{a.description}</p>
+                    {a.location && <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', fontStyle: 'italic' }}>{a.location}</span>}
+                  </details>
+                ) : (
+                  <>
+                    <span style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-text)', display: 'block' }}>{a.title}</span>
+                    {a.location && <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', fontStyle: 'italic' }}>{a.location}</span>}
+                  </>
+                )}
               </div>
             </div>
           ))}
@@ -310,16 +334,37 @@ export default async function BiographyPage({
           {publicCommissions.map((c, i) => {
             const slug = COMMISSION_SLUG_MAP[c.title]
             const rowStyle = { display: 'grid', gridTemplateColumns: '7rem 1fr auto', gap: '1rem', padding: '0.85rem 0', borderBottom: '1px solid var(--color-border)', textDecoration: 'none', color: 'inherit' } as const
-            const inner = (
-              <>
-                <span style={{ color: 'var(--color-accent)', fontFamily: 'Georgia, serif', fontSize: 'var(--fs-sm)' }}>{fmtBioYear(c)}</span>
-                <span style={{ fontSize: 'var(--fs-sm)' }}>{c.title}</span>
-                <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', textAlign: 'right' }}>{c.location}</span>
-              </>
+            if (slug) {
+              return (
+                <Link key={i} href={`/${locale}/portfolio/public-works/${slug}`} className="row-hover" style={rowStyle}>
+                  <span style={{ color: 'var(--color-accent)', fontFamily: 'Georgia, serif', fontSize: 'var(--fs-sm)' }}>{fmtBioYear(c)}</span>
+                  <span style={{ fontSize: 'var(--fs-sm)' }}>{c.title}</span>
+                  <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', textAlign: 'right' }}>{c.location}</span>
+                </Link>
+              )
+            }
+            return (
+              <div key={i} style={{ display: 'grid', gridTemplateColumns: '7rem 1fr', gap: '1rem', padding: '0.85rem 0', borderBottom: '1px solid var(--color-border)' }}>
+                <span style={{ color: 'var(--color-accent)', fontFamily: 'Georgia, serif', fontSize: 'var(--fs-sm)', flexShrink: 0 }}>{fmtBioYear(c)}</span>
+                <div>
+                  {c.description ? (
+                    <details>
+                      <summary style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-text)', cursor: 'pointer', listStyle: 'none', display: 'flex', alignItems: 'baseline', gap: '0.4rem' }}>
+                        <span>{c.title}</span>
+                        {c.location && <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', fontStyle: 'italic' }}>{c.location}</span>}
+                        <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-accent)', letterSpacing: '0.05em' }}>+</span>
+                      </summary>
+                      <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', marginTop: '0.5rem', lineHeight: 1.7, whiteSpace: 'pre-wrap' }}>{c.description}</p>
+                    </details>
+                  ) : (
+                    <>
+                      <span style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-text)' }}>{c.title}</span>
+                      {c.location && <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', fontStyle: 'italic', marginLeft: '0.75rem' }}>{c.location}</span>}
+                    </>
+                  )}
+                </div>
+              </div>
             )
-            return slug
-              ? <Link key={i} href={`/${locale}/portfolio/public-works/${slug}`} className="row-hover" style={rowStyle}>{inner}</Link>
-              : <div key={i} style={rowStyle}>{inner}</div>
           })}
         </section>
 
@@ -330,17 +375,37 @@ export default async function BiographyPage({
           </h2>
           {groupExhibitions.map((e, i) => {
             const slug = EXHIBITION_SLUG_MAP[e.title]
-            const rowStyle = { display: 'grid', gridTemplateColumns: '5rem 1fr auto', gap: '1rem', padding: '0.9rem 0', borderBottom: '1px solid var(--color-border)', textDecoration: 'none', color: 'inherit' } as const
-            const inner = (
-              <>
-                <span style={{ color: 'var(--color-accent)', fontFamily: 'Georgia, serif', fontSize: 'var(--fs-sm)' }}>{fmtBioYear(e)}</span>
-                <span style={{ fontSize: 'var(--fs-sm)' }}>{e.title}</span>
-                <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', textAlign: 'right' }}>{e.location}</span>
-              </>
+            if (slug) {
+              return (
+                <Link key={i} href={`/${locale}/portfolio/exhibitions#${slug}`} className="row-hover" style={{ display: 'grid', gridTemplateColumns: '5rem 1fr auto', gap: '1rem', padding: '0.9rem 0', borderBottom: '1px solid var(--color-border)', textDecoration: 'none', color: 'inherit' }}>
+                  <span style={{ color: 'var(--color-accent)', fontFamily: 'Georgia, serif', fontSize: 'var(--fs-sm)' }}>{fmtBioYear(e)}</span>
+                  <span style={{ fontSize: 'var(--fs-sm)' }}>{e.title}</span>
+                  <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', textAlign: 'right' }}>{e.location}</span>
+                </Link>
+              )
+            }
+            return (
+              <div key={i} style={{ display: 'grid', gridTemplateColumns: '5rem 1fr', gap: '1rem', padding: '0.9rem 0', borderBottom: '1px solid var(--color-border)' }}>
+                <span style={{ color: 'var(--color-accent)', fontFamily: 'Georgia, serif', fontSize: 'var(--fs-sm)', flexShrink: 0 }}>{fmtBioYear(e)}</span>
+                <div>
+                  {e.description ? (
+                    <details>
+                      <summary style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-text)', cursor: 'pointer', listStyle: 'none', display: 'flex', alignItems: 'baseline', gap: '0.4rem' }}>
+                        <span>{e.title}</span>
+                        {e.location && <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', fontStyle: 'italic' }}>{e.location}</span>}
+                        <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-accent)', letterSpacing: '0.05em' }}>+</span>
+                      </summary>
+                      <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', marginTop: '0.5rem', lineHeight: 1.7, whiteSpace: 'pre-wrap' }}>{e.description}</p>
+                    </details>
+                  ) : (
+                    <>
+                      <span style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-text)' }}>{e.title}</span>
+                      {e.location && <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', fontStyle: 'italic', marginLeft: '0.75rem' }}>{e.location}</span>}
+                    </>
+                  )}
+                </div>
+              </div>
             )
-            return slug
-              ? <Link key={i} href={`/${locale}/portfolio/exhibitions#${slug}`} className="row-hover" style={rowStyle}>{inner}</Link>
-              : <div key={i} style={rowStyle}>{inner}</div>
           })}
         </section>
 
