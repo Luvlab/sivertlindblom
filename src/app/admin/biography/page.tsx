@@ -44,6 +44,13 @@ const TYPE_LABELS: Record<string, string> = {
   group_exhibition: 'Grupputställning', publication: 'Publikation',
 }
 
+const TYPE_TAB_HASH: Record<string, string> = {
+  personal: 'biografi', education: 'biografi', position: 'biografi', award: 'biografi',
+  public_commission: 'offentliga-uppdrag',
+  group_exhibition: 'grupputstallningar',
+  publication: 'litteratur',
+}
+
 export default function AdminBiography() {
   const [items, setItems] = useState<BioCmsEntry[]>([])
   const [filter, setFilter] = useState('')
@@ -418,7 +425,7 @@ export default function AdminBiography() {
           {filtered.map(b => (
             <div
               key={b.id}
-              style={{ display: 'grid', gridTemplateColumns: '5rem 1fr auto auto', gap: '1rem', alignItems: 'center', padding: '1rem 0', borderBottom: '1px solid var(--color-border)', transition: 'background 0.1s' }}
+              style={{ display: 'grid', gridTemplateColumns: '5rem 1fr auto auto auto', gap: '1rem', alignItems: 'center', padding: '1rem 0', borderBottom: '1px solid var(--color-border)', transition: 'background 0.1s' }}
               onMouseEnter={e => (e.currentTarget.style.background = 'var(--color-bg-card)')}
               onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
             >
@@ -432,6 +439,9 @@ export default function AdminBiography() {
                 )}
               </div>
               <span className="badge">{TYPE_LABELS[b.entry_type] ?? b.entry_type}</span>
+              <Link href={`/sv/biography#${TYPE_TAB_HASH[b.entry_type] ?? 'biografi'}`} target="_blank">
+                <button className="btn" style={{ fontSize: 'var(--fs-xs)', padding: '0.3em 0.8em' }}>↗ Visa</button>
+              </Link>
               <Link href={`/admin/biography/${b.id}`}>
                 <button className="btn" style={{ fontSize: 'var(--fs-xs)', padding: '0.3em 0.8em' }}>Redigera</button>
               </Link>

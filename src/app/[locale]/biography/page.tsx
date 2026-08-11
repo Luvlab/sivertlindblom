@@ -230,9 +230,9 @@ export default async function BiographyPage({
               <div>
                 {t.description ? (
                   <details>
-                    <summary style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-text)', cursor: 'pointer', listStyle: 'none', display: 'flex', alignItems: 'baseline', gap: '0.4rem' }}>
+                    <summary style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-text)', cursor: 'pointer', listStyle: 'none', display: 'flex', alignItems: 'baseline', gap: '0.5rem' }}>
                       <span>{t.title}</span>
-                      <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-accent)', letterSpacing: '0.05em' }}>+</span>
+                      <span style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--color-accent)', lineHeight: 1, verticalAlign: 'middle' }}>+</span>
                     </summary>
                     <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', marginTop: '0.5rem', lineHeight: 1.7, whiteSpace: 'pre-wrap' }}>{t.description}</p>
                     {t.location && <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', fontStyle: 'italic' }}>{t.location}</span>}
@@ -254,7 +254,7 @@ export default async function BiographyPage({
           ))}
 
           {/* ── Priser & utmärkelser ── */}
-          {(awards.length > 0 || awardEntries.length > 0) && (
+          {awards.length > 0 && (
           <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-2xl)', marginTop: '3rem', marginBottom: '2rem' }}>
             {dict.biography?.priser_title ?? 'Priser & utmärkelser'}
           </h2>)}
@@ -307,6 +307,21 @@ export default async function BiographyPage({
           <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-2xl)', marginBottom: '2rem' }}>
             {dict.biography?.public_commissions ?? 'Offentliga uppdrag i urval'}
           </h2>
+          {/* Featured slideshow video */}
+          <div style={{ marginBottom: '2.5rem' }}>
+            <div style={{ position: 'relative', paddingBottom: '56.25%', height: 0, overflow: 'hidden', borderRadius: '4px' }}>
+              <iframe
+                src="https://www.youtube.com/embed/HPagE41rQYI?t=156"
+                title="SLIDE SHOW: THE WORKS of SIVERT LINDBLOM – a selection (52 min)"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', border: 0 }}
+              />
+            </div>
+            <p style={{ marginTop: '0.75rem', fontSize: 'var(--fs-sm)', color: 'var(--color-muted)', fontStyle: 'italic' }}>
+              SLIDE SHOW: THE WORKS of SIVERT LINDBLOM – a selection (52 min)
+            </p>
+          </div>
           {publicCommissions.map((c, i) => {
             const slug = COMMISSION_SLUG_MAP[c.title]
             const rowStyle = { display: 'grid', gridTemplateColumns: '7rem 1fr auto', gap: '1rem', padding: '0.85rem 0', borderBottom: '1px solid var(--color-border)', textDecoration: 'none', color: 'inherit' } as const
