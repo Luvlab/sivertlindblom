@@ -1,3 +1,4 @@
+import { cacheTag, cacheLife } from 'next/cache'
 import { createAdminClient } from './supabase/admin'
 
 export interface Translation {
@@ -20,6 +21,9 @@ export async function getTranslation(
   entityId: string,
   locale: string
 ): Promise<Translation | null> {
+  'use cache'
+  cacheTag('translations', `translation-${entityType}-${entityId}-${locale}`)
+  cacheLife('hours')
   const supabase = createAdminClient()
   if (!supabase) return null
   const { data } = await supabase
@@ -36,6 +40,9 @@ export async function getTranslationsForEntity(
   entityType: 'text' | 'biography_entry',
   entityId: string
 ): Promise<Translation[]> {
+  'use cache'
+  cacheTag('translations', `translations-${entityType}-${entityId}`)
+  cacheLife('hours')
   const supabase = createAdminClient()
   if (!supabase) return []
   const { data } = await supabase
@@ -47,6 +54,9 @@ export async function getTranslationsForEntity(
 }
 
 export async function getAllTranslations(): Promise<Translation[]> {
+  'use cache'
+  cacheTag('translations')
+  cacheLife('hours')
   const supabase = createAdminClient()
   if (!supabase) return []
   const { data } = await supabase
