@@ -447,19 +447,21 @@ export async function getAllSubpageParams(): Promise<{ slug: string; subpage: st
   cacheTag('exhibitions')
   cacheLife('days')
   const supabase = createAdminClient()
-  if (!supabase) return []
+  if (!supabase) return [{ slug: '_', subpage: '_' }]
   const { data, error } = await supabase
     .from('work_subpages')
     .select('slug, published, works!inner(slug)')
     .eq('published', true)
-  if (error || !data) return []
-  return data
+  if (error || !data) return [{ slug: '_', subpage: '_' }]
+  const results = data
     .map((r) => {
       const works = (r as Record<string, unknown>).works as { slug: string } | { slug: string }[] | null
       const parentSlug = Array.isArray(works) ? works[0]?.slug : works?.slug
       return parentSlug ? { slug: parentSlug, subpage: (r as Record<string, unknown>).slug as string } : null
     })
     .filter((x): x is { slug: string; subpage: string } => x !== null)
+  // Next.js 16 with 'use cache' requires at least one result from generateStaticParams
+  return results.length > 0 ? results : [{ slug: '_', subpage: '_' }]
 }
 
 export async function getExhibitionSlugs(): Promise<string[]> {
@@ -642,19 +644,20 @@ export async function getAllPublicWorkSubpageParams(): Promise<{ slug: string; s
   cacheTag('public-works')
   cacheLife('days')
   const supabase = createAdminClient()
-  if (!supabase) return []
+  if (!supabase) return [{ slug: '_', subpage: '_' }]
   const { data, error } = await supabase
     .from('public_work_subpages')
     .select('slug, published, public_works!inner(slug)')
     .eq('published', true)
-  if (error || !data) return []
-  return data
+  if (error || !data) return [{ slug: '_', subpage: '_' }]
+  const results = data
     .map((r) => {
       const pw = (r as Record<string, unknown>).public_works as { slug: string } | { slug: string }[] | null
       const parentSlug = Array.isArray(pw) ? pw[0]?.slug : pw?.slug
       return parentSlug ? { slug: parentSlug, subpage: (r as Record<string, unknown>).slug as string } : null
     })
     .filter((x): x is { slug: string; subpage: string } => x !== null)
+  return results.length > 0 ? results : [{ slug: '_', subpage: '_' }]
 }
 
 // ─── Map Pins ────────────────────────────────────────────────────────────────
