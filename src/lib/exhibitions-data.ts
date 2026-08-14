@@ -52,6 +52,8 @@ export interface Exhibition {
   publicSubcategory?: 'exterior' | 'interior';
   /** When cross-listed, true = temporary placement (default: permanent). */
   publicTemporary?: boolean;
+  /** YouTube or direct video URL embedded on the exhibition page. */
+  videoUrl?: string;
 }
 
 export const exhibitions: Exhibition[] = [
