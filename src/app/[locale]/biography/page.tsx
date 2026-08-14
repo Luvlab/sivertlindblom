@@ -221,7 +221,7 @@ export default async function BiographyPage({
             </div>
           </div>
           <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-2xl)', marginBottom: '2rem' }}>
-            {dict.biography?.timeline ?? 'Kronologi'}
+            {dict.biography?.timeline ?? 'Biografi'}
           </h2>
           {/* DB entries (personal / education / position) take priority over static TIMELINE */}
           {timelineEntries.length > 0 ? timelineEntries.map((t, i) => (
@@ -259,47 +259,64 @@ export default async function BiographyPage({
             {dict.biography?.priser_title ?? 'Priser & utmärkelser'}
           </h2>)}
           {/* Rich awards from utmarkelser table (with images, links, quotes) — single source for /references and /biography */}
-          {awards.map((a, i) => (
+          {awards.map((a, i) => {
+            const hasDetail = !!(a.desc || a.quote || (a.images && a.images.length > 0) || (a.links && a.links.length > 0))
+            return (
             <div key={i} style={{ display: 'grid', gridTemplateColumns: '7rem 1fr', gap: '1rem', padding: '0.9rem 0', borderBottom: '1px solid var(--color-border)', alignItems: 'start' }}>
               <span style={{ color: 'var(--color-accent)', fontFamily: 'Georgia, serif', fontSize: 'var(--fs-sm)', flexShrink: 0, paddingTop: '0.1rem' }}>{a.year}</span>
               <div>
-                <span style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-text)', display: 'block' }}>{a.title}</span>
-                {a.sub && (
-                  <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', display: 'block', marginTop: '0.15rem' }}>{a.sub}</span>
-                )}
-                {a.quote && (
-                  <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', fontStyle: 'italic', lineHeight: 1.7, marginTop: '0.5rem', marginBottom: '0.25rem', whiteSpace: 'pre-wrap' }}>{a.quote}</p>
-                )}
-                {a.desc && (
-                  <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', lineHeight: 1.7, marginTop: '0.5rem', marginBottom: '0.25rem', whiteSpace: 'pre-wrap' }}>{a.desc}</p>
-                )}
-                {a.images && a.images.length > 0 && (
-                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginTop: '0.75rem', marginBottom: '0.25rem' }}>
-                    {a.images.map((src, k) => (
-                      <a key={k} href={src} target="_blank" rel="noopener noreferrer" style={{ position: 'relative', width: '9rem', height: '6.5rem', borderRadius: 2, overflow: 'hidden', background: 'var(--color-bg-surface)', flexShrink: 0, display: 'block' }}>
-                        <Image src={src} alt={a.title} fill sizes="9rem" style={{ objectFit: 'cover' }} />
-                      </a>
-                    ))}
-                  </div>
-                )}
-                {a.links && a.links.length > 0 && (
-                  <div style={{ marginTop: '0.5rem', display: 'flex', flexWrap: 'wrap', gap: '0.5rem 1.5rem' }}>
-                    {a.links.map((lnk, j) => (
-                      <a
-                        key={j}
-                        href={lnk.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-accent)', textDecoration: 'none', letterSpacing: '0.06em' }}
-                      >
-                        {lnk.label} →
-                      </a>
-                    ))}
-                  </div>
+                {hasDetail ? (
+                  <details>
+                    <summary style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-text)', cursor: 'pointer', listStyle: 'none', display: 'flex', alignItems: 'baseline', gap: '0.5rem' }}>
+                      <span>{a.title}</span>
+                      <span style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--color-accent)', lineHeight: 1, verticalAlign: 'middle' }}>+</span>
+                    </summary>
+                    {a.sub && (
+                      <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', display: 'block', marginTop: '0.15rem' }}>{a.sub}</span>
+                    )}
+                    {a.quote && (
+                      <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', fontStyle: 'italic', lineHeight: 1.7, marginTop: '0.5rem', marginBottom: '0.25rem', whiteSpace: 'pre-wrap' }}>{a.quote}</p>
+                    )}
+                    {a.desc && (
+                      <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', lineHeight: 1.7, marginTop: '0.5rem', marginBottom: '0.25rem', whiteSpace: 'pre-wrap' }}>{a.desc}</p>
+                    )}
+                    {a.images && a.images.length > 0 && (
+                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginTop: '0.75rem', marginBottom: '0.25rem' }}>
+                        {a.images.map((src, k) => (
+                          <a key={k} href={src} target="_blank" rel="noopener noreferrer" style={{ position: 'relative', width: '9rem', height: '6.5rem', borderRadius: 2, overflow: 'hidden', background: 'var(--color-bg-surface)', flexShrink: 0, display: 'block' }}>
+                            <Image src={src} alt={a.title} fill sizes="9rem" style={{ objectFit: 'cover' }} />
+                          </a>
+                        ))}
+                      </div>
+                    )}
+                    {a.links && a.links.length > 0 && (
+                      <div style={{ marginTop: '0.5rem', display: 'flex', flexWrap: 'wrap', gap: '0.5rem 1.5rem' }}>
+                        {a.links.map((lnk, j) => (
+                          <a
+                            key={j}
+                            href={lnk.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-accent)', textDecoration: 'none', letterSpacing: '0.06em' }}
+                          >
+                            {lnk.label} →
+                          </a>
+                        ))}
+                      </div>
+                    )}
+                  </details>
+                ) : (
+                  <>
+                    <span style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-text)', display: 'block' }}>{a.title}</span>
+                    {a.sub && (
+                      <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', display: 'block', marginTop: '0.15rem' }}>{a.sub}</span>
+                    )}
+                  </>
                 )}
               </div>
             </div>
-          ))}
+            )
+          })}
         </section>
 
         {/* ── Tab 2: Offentliga uppdrag ── */}

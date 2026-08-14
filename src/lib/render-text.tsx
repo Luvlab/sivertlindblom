@@ -47,17 +47,9 @@ interface RichParaProps {
  * Inline [text](url) links are rendered as <a> tags.
  */
 export function renderParagraphs(body: string, paraStyle?: React.CSSProperties): React.ReactNode {
-  return body.split('\n\n').filter(Boolean).map((para, i) => {
-    const lines = para.split('\n')
-    return (
-      <p key={i} style={paraStyle}>
-        {lines.map((line, j) => (
-          <React.Fragment key={j}>
-            {j > 0 && <br />}
-            {renderInlineLinks(line)}
-          </React.Fragment>
-        ))}
-      </p>
-    )
-  })
+  return body.split('\n\n').filter(Boolean).map((para, i) => (
+    <p key={i} style={{ whiteSpace: 'pre-wrap', ...paraStyle }}>
+      {renderInlineLinks(para)}
+    </p>
+  ))
 }

@@ -95,16 +95,11 @@ export default async function TextDetailPage({
 
   function renderBody(fontSize = 'var(--fs-base)') {
     if (!body) return null
-    return body.split('\n\n').map((para, i) => {
-      const lines = para.split('\n')
-      return (
-        <p key={i} style={{ fontSize, lineHeight: 1.8, marginBottom: '1.5em', color: 'var(--color-text)' }}>
-          {lines.map((line, j) => (
-            <span key={j}>{j > 0 && <br />}{renderInlineLinks(line)}</span>
-          ))}
-        </p>
-      )
-    })
+    return body.split('\n\n').map((para, i) => (
+      <p key={i} style={{ fontSize, lineHeight: 1.8, marginBottom: '1.5em', color: 'var(--color-text)', whiteSpace: 'pre-wrap' }}>
+        {renderInlineLinks(para)}
+      </p>
+    ))
   }
 
   function renderVideo() {

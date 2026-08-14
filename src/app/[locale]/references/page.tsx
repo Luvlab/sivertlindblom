@@ -196,38 +196,53 @@ export default async function ReferencesPage({
             {dict.references?.priser_received ?? 'Mottagna priser'}
           </h3>
 
-          {utmarkelser.prizes.map((p, pi) => (
+          {utmarkelser.prizes.map((p, pi) => {
+            const hasDetail = !!(p.desc || p.quote || p.images.length > 0 || (p.links && p.links.length > 0))
+            return (
             <div key={pi} style={{ padding: '1.5rem 0', borderBottom: '1px solid var(--color-border)' }}>
               <div style={{ display: 'grid', gridTemplateColumns: '5rem 1fr', gap: '1rem' }}>
                 <span style={{ color: 'var(--color-accent)', fontFamily: 'Georgia, serif', fontSize: 'var(--fs-sm)' }}>{p.year}</span>
                 <div>
-                  <div style={{ fontSize: 'var(--fs-base)', marginBottom: '0.25rem' }}>{p.title}</div>
-                  {p.sub && <div style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)' }}>{p.sub}</div>}
-                  {p.desc && <p style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-muted)', lineHeight: 1.7, marginTop: '0.5rem', maxWidth: '55ch', whiteSpace: 'pre-wrap' }}>{p.desc}</p>}
-                  {p.quote && <p style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-muted)', fontStyle: 'italic', lineHeight: 1.7, marginTop: '0.5rem', maxWidth: '55ch', whiteSpace: 'pre-wrap' }}>{p.quote}</p>}
-                  {p.images.length > 0 && (
-                    <div style={{ marginTop: '0.85rem' }}>
-                      <GalleryGrid
-                        images={p.images.map((src) => ({ url: src, alt: p.title }))}
-                        aspectRatio="4/3"
-                        columns="sm"
-                      />
-                    </div>
-                  )}
-                  {p.links && p.links.length > 0 && (
-                    <div style={{ marginTop: '0.75rem', display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
-                      {p.links.map((link) => (
-                        <a key={link.url} href={link.url} target="_blank" rel="noopener noreferrer"
-                          style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-accent)', textDecoration: 'none', borderBottom: '1px solid var(--color-accent-dim)', paddingBottom: '0.1em', alignSelf: 'flex-start' }}>
-                          {link.label} →
-                        </a>
-                      ))}
-                    </div>
+                  {hasDetail ? (
+                    <details>
+                      <summary style={{ fontSize: 'var(--fs-base)', cursor: 'pointer', listStyle: 'none', display: 'flex', alignItems: 'baseline', gap: '0.5rem', marginBottom: '0.15rem' }}>
+                        <span>{p.title}</span>
+                        <span style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--color-accent)', lineHeight: 1 }}>+</span>
+                      </summary>
+                      {p.sub && <div style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', marginBottom: '0.4rem' }}>{p.sub}</div>}
+                      {p.desc && <p style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-muted)', lineHeight: 1.7, marginTop: '0.5rem', maxWidth: '55ch', whiteSpace: 'pre-wrap' }}>{p.desc}</p>}
+                      {p.quote && <p style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-muted)', fontStyle: 'italic', lineHeight: 1.7, marginTop: '0.5rem', maxWidth: '55ch', whiteSpace: 'pre-wrap' }}>{p.quote}</p>}
+                      {p.images.length > 0 && (
+                        <div style={{ marginTop: '0.85rem' }}>
+                          <GalleryGrid
+                            images={p.images.map((src) => ({ url: src, alt: p.title }))}
+                            aspectRatio="4/3"
+                            columns="sm"
+                          />
+                        </div>
+                      )}
+                      {p.links && p.links.length > 0 && (
+                        <div style={{ marginTop: '0.75rem', display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
+                          {p.links.map((link) => (
+                            <a key={link.url} href={link.url} target="_blank" rel="noopener noreferrer"
+                              style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-accent)', textDecoration: 'none', borderBottom: '1px solid var(--color-accent-dim)', paddingBottom: '0.1em', alignSelf: 'flex-start' }}>
+                              {link.label} →
+                            </a>
+                          ))}
+                        </div>
+                      )}
+                    </details>
+                  ) : (
+                    <>
+                      <div style={{ fontSize: 'var(--fs-base)', marginBottom: '0.15rem' }}>{p.title}</div>
+                      {p.sub && <div style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)' }}>{p.sub}</div>}
+                    </>
                   )}
                 </div>
               </div>
             </div>
-          ))}
+            )
+          })}
 
           <h3 style={{ fontWeight: 400, color: 'var(--color-muted)', marginBottom: '1.25rem', marginTop: '3rem', textTransform: 'uppercase', letterSpacing: '0.08em', fontSize: 'var(--fs-xs)' }}>
             {dict.references?.medaljer_designed ?? 'Medaljer formgivna av Sivert Lindblom'}
