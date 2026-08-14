@@ -108,8 +108,8 @@ export default async function TextDetailPage({
   }
 
   function renderVideo() {
-    if (!text.videoUrl) return null
-    const ytMatch = text.videoUrl!.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([A-Za-z0-9_-]{11})/)
+    if (!text?.videoUrl) return null
+    const ytMatch = text.videoUrl.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([A-Za-z0-9_-]{11})/)
     const ytId = ytMatch?.[1]
     return (
       <div style={{ marginBottom: '2.5rem' }}>
