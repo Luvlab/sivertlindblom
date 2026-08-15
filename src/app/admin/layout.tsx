@@ -4,6 +4,8 @@ import AdminSidebar from '@/components/admin/AdminSidebar'
 import AdminMain from '@/components/admin/AdminMain'
 import '../globals.css'
 
+export const dynamic = 'force-dynamic'
+
 export const metadata: Metadata = {
   title: { default: 'CMS Admin', template: '%s | Admin' },
 }
