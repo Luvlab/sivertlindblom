@@ -19,7 +19,8 @@
   --color-bg-card:    #1a1a1a;
   --color-border:     #2a2a2a;
   --color-text:       #f5f5f0;
-  --color-muted:      #a0a098;
+  --color-heading:    #9a9890;
+  --color-muted:      #cccbc3;
   --color-accent:     #c8a97e;
   --color-accent-dim: #8c6e4a;
   --header-h:         3rem;
@@ -30,7 +31,7 @@
 *, *::before, *::after { box-sizing: border-box; }
 
 html {
-  font-size: 16px;
+  font-size: 17px;
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
 }
@@ -54,6 +55,7 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 400;
   letter-spacing: -0.01em;
   line-height: 1.2;
+  color: var(--color-heading);
 }
 h1 { font-size: var(--fs-5xl); }
 h2 { font-size: var(--fs-3xl); }

@@ -32,6 +32,8 @@ function dbToBio(row: Record<string, unknown>): BioCmsEntry {
     title: row.title as string,
     description: (row.description as string) ?? undefined,
     location: (row.location as string) ?? undefined,
+    images: Array.isArray(row.images) ? (row.images as string[]) : [],
+    video_url: (row.video_url as string) ?? undefined,
   }
 }
 
@@ -74,6 +76,8 @@ export async function PUT(
           title: body.title,
           description: body.description ?? null,
           location: body.location ?? null,
+          images: body.images ?? [],
+          video_url: body.video_url ?? null,
         })
         .eq('id', id)
         .select()

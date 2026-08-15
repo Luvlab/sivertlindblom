@@ -164,33 +164,39 @@ export default async function BiographyPage({
         {/* ── Tab 1: Biografi ── */}
         <section className="page-pad" style={{ paddingTop: '2.5rem', paddingBottom: '3rem' }}>
           <style>{`
-            .bio-hero {
+            .bio-layout {
               display: grid;
-              grid-template-columns: 1fr 1fr;
-              gap: clamp(1.5rem, 3vw, 3rem);
-              margin-bottom: 2.5rem;
+              grid-template-columns: 1fr 320px;
+              gap: clamp(2rem, 4vw, 4rem);
               align-items: start;
+            }
+            .bio-portrait-col {
+              position: sticky;
+              top: calc(var(--header-h) + var(--subnav-h) + 1.5rem);
             }
             .bio-portrait {
               position: relative;
-              height: calc(100dvh - var(--header-h) - var(--subnav-h));
-              max-height: 90vh;
+              aspect-ratio: 3/4;
+              max-height: 72vh;
               border-radius: 2px;
               overflow: hidden;
               background: var(--color-bg-surface);
             }
-            @media (max-width: 700px) {
-              .bio-hero { grid-template-columns: 1fr; }
-              .bio-portrait {
-                height: auto;
-                aspect-ratio: 4/3;
+            @media (max-width: 760px) {
+              .bio-layout { grid-template-columns: 1fr; }
+              .bio-portrait-col {
+                position: static;
                 order: -1;
+              }
+              .bio-portrait {
+                aspect-ratio: 4/3;
+                max-height: none;
               }
             }
           `}</style>
 
-          {/* Intro header with portrait — 50/50 desktop, stacked mobile */}
-          <div className="bio-hero">
+          <div className="bio-layout">
+            {/* ── Left column: intro + timeline + awards ── */}
             <div>
               <p style={{ fontSize: 'var(--fs-xs)', letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--color-accent)', marginBottom: '0.75rem' }}>
                 {dict.nav?.biography ?? 'Biografi'}
@@ -199,124 +205,130 @@ export default async function BiographyPage({
                 {dict.biography?.title ?? 'Sivert Lindblom'}
               </h1>
               {(bioIntro || dict.biography?.intro) && (
-                <p style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-base)', lineHeight: 1.8, whiteSpace: 'pre-wrap' }}>
+                <p style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-base)', lineHeight: 1.8, whiteSpace: 'pre-wrap', marginBottom: '2.5rem' }}>
                   {bioIntro || dict.biography?.intro}
                 </p>
               )}
-            </div>
-            <div className="bio-portrait">
-              <Image
-                src={PORTRAIT_URL}
-                alt={PORTRAIT_CREDIT ? `Sivert Lindblom. ${PORTRAIT_CREDIT}` : 'Sivert Lindblom'}
-                fill
-                sizes="(max-width: 700px) 100vw, 50vw"
-                style={{ objectFit: 'cover', objectPosition: 'top center' }}
-                priority
-              />
-              {PORTRAIT_CREDIT && (
-                <span style={{ position: 'absolute', bottom: 0, right: 0, background: 'rgba(0,0,0,0.55)', color: 'rgba(255,255,255,0.9)', fontSize: '0.62rem', padding: '0.2rem 0.5rem', letterSpacing: '0.03em' }}>
-                  {PORTRAIT_CREDIT}
-                </span>
+
+              <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-2xl)', marginBottom: '2rem' }}>
+                {dict.biography?.timeline ?? 'Biografi'}
+              </h2>
+              {/* DB entries (personal / education / position) take priority over static TIMELINE */}
+              {timelineEntries.length > 0 ? timelineEntries.map((t, i) => (
+                <div key={i} style={{ display: 'grid', gridTemplateColumns: '7rem 1fr', gap: '1rem', padding: '0.9rem 0', borderBottom: '1px solid var(--color-border)' }}>
+                  <span style={{ color: 'var(--color-accent)', fontFamily: 'Georgia, serif', fontSize: 'var(--fs-sm)', flexShrink: 0 }}>{fmtBioYear(t)}</span>
+                  <div>
+                    {t.description ? (
+                      <details>
+                        <summary style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-text)', cursor: 'pointer', listStyle: 'none', display: 'flex', alignItems: 'baseline', gap: '0.5rem' }}>
+                          <span>{t.title}</span>
+                          <span style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--color-accent)', lineHeight: 1, verticalAlign: 'middle' }}>+</span>
+                        </summary>
+                        <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', marginTop: '0.5rem', lineHeight: 1.7, whiteSpace: 'pre-wrap' }}>{t.description}</p>
+                        {t.location && <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', fontStyle: 'italic' }}>{t.location}</span>}
+                      </details>
+                    ) : (
+                      <>
+                        <span style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-text)' }}>{t.title}</span>
+                        {t.location && <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', fontStyle: 'italic', display: 'block', marginTop: '0.15rem' }}>{t.location}</span>}
+                      </>
+                    )}
+                  </div>
+                </div>
+              )) : TIMELINE.map((t, i) => (
+                <div key={i} style={{ display: 'grid', gridTemplateColumns: '7rem 1fr', gap: '1rem', padding: '0.9rem 0', borderBottom: '1px solid var(--color-border)' }}>
+                  <span style={{ color: 'var(--color-accent)', fontFamily: 'Georgia, serif', fontSize: 'var(--fs-sm)', flexShrink: 0 }}>{t.year}</span>
+                  {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+                  <span style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-text)' }}>{(dict.biography as any)?.[`timeline_${i}`] ?? t.label}</span>
+                </div>
+              ))}
+
+              {/* ── Priser & utmärkelser ── */}
+              {awards.length > 0 && (
+                <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-2xl)', marginTop: '3rem', marginBottom: '2rem' }}>
+                  {dict.biography?.priser_title ?? 'Priser & utmärkelser'}
+                </h2>
               )}
+              {/* Rich awards from utmarkelser table — single source for /references and /biography */}
+              {awards.map((a, i) => {
+                const hasDetail = !!(a.desc || a.quote || (a.images && a.images.length > 0) || (a.links && a.links.length > 0))
+                return (
+                  <div key={i} style={{ display: 'grid', gridTemplateColumns: '7rem 1fr', gap: '1rem', padding: '0.9rem 0', borderBottom: '1px solid var(--color-border)', alignItems: 'start' }}>
+                    <span style={{ color: 'var(--color-accent)', fontFamily: 'Georgia, serif', fontSize: 'var(--fs-sm)', flexShrink: 0, paddingTop: '0.1rem' }}>{a.year}</span>
+                    <div>
+                      {hasDetail ? (
+                        <details>
+                          <summary style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-text)', cursor: 'pointer', listStyle: 'none', display: 'flex', alignItems: 'baseline', gap: '0.5rem' }}>
+                            <span>{a.title}</span>
+                            <span style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--color-accent)', lineHeight: 1, verticalAlign: 'middle' }}>+</span>
+                          </summary>
+                          {a.sub && (
+                            <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', display: 'block', marginTop: '0.15rem' }}>{a.sub}</span>
+                          )}
+                          {a.quote && (
+                            <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', fontStyle: 'italic', lineHeight: 1.7, marginTop: '0.5rem', marginBottom: '0.25rem', whiteSpace: 'pre-wrap' }}>{a.quote}</p>
+                          )}
+                          {a.desc && (
+                            <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', lineHeight: 1.7, marginTop: '0.5rem', marginBottom: '0.25rem', whiteSpace: 'pre-wrap' }}>{a.desc}</p>
+                          )}
+                          {a.images && a.images.length > 0 && (
+                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginTop: '0.75rem', marginBottom: '0.25rem' }}>
+                              {a.images.map((src, k) => (
+                                <a key={k} href={src} target="_blank" rel="noopener noreferrer" style={{ position: 'relative', width: '9rem', height: '6.5rem', borderRadius: 2, overflow: 'hidden', background: 'var(--color-bg-surface)', flexShrink: 0, display: 'block' }}>
+                                  <Image src={src} alt={a.title} fill sizes="9rem" style={{ objectFit: 'cover' }} />
+                                </a>
+                              ))}
+                            </div>
+                          )}
+                          {a.links && a.links.length > 0 && (
+                            <div style={{ marginTop: '0.5rem', display: 'flex', flexWrap: 'wrap', gap: '0.5rem 1.5rem' }}>
+                              {a.links.map((lnk, j) => (
+                                <a
+                                  key={j}
+                                  href={lnk.url}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-accent)', textDecoration: 'none', letterSpacing: '0.06em' }}
+                                >
+                                  {lnk.label} →
+                                </a>
+                              ))}
+                            </div>
+                          )}
+                        </details>
+                      ) : (
+                        <>
+                          <span style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-text)', display: 'block' }}>{a.title}</span>
+                          {a.sub && (
+                            <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', display: 'block', marginTop: '0.15rem' }}>{a.sub}</span>
+                          )}
+                        </>
+                      )}
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+
+            {/* ── Right column: portrait (sticky) ── */}
+            <div className="bio-portrait-col">
+              <div className="bio-portrait">
+                <Image
+                  src={PORTRAIT_URL}
+                  alt={PORTRAIT_CREDIT ? `Sivert Lindblom. ${PORTRAIT_CREDIT}` : 'Sivert Lindblom'}
+                  fill
+                  sizes="(max-width: 760px) 100vw, 320px"
+                  style={{ objectFit: 'cover', objectPosition: 'top center' }}
+                  priority
+                />
+                {PORTRAIT_CREDIT && (
+                  <span style={{ position: 'absolute', bottom: 0, right: 0, background: 'rgba(0,0,0,0.55)', color: 'rgba(255,255,255,0.9)', fontSize: '0.62rem', padding: '0.2rem 0.5rem', letterSpacing: '0.03em' }}>
+                    {PORTRAIT_CREDIT}
+                  </span>
+                )}
+              </div>
             </div>
           </div>
-          <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-2xl)', marginBottom: '2rem' }}>
-            {dict.biography?.timeline ?? 'Biografi'}
-          </h2>
-          {/* DB entries (personal / education / position) take priority over static TIMELINE */}
-          {timelineEntries.length > 0 ? timelineEntries.map((t, i) => (
-            <div key={i} style={{ display: 'grid', gridTemplateColumns: '7rem 1fr', gap: '1rem', padding: '0.9rem 0', borderBottom: '1px solid var(--color-border)' }}>
-              <span style={{ color: 'var(--color-accent)', fontFamily: 'Georgia, serif', fontSize: 'var(--fs-sm)', flexShrink: 0 }}>{fmtBioYear(t)}</span>
-              <div>
-                {t.description ? (
-                  <details>
-                    <summary style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-text)', cursor: 'pointer', listStyle: 'none', display: 'flex', alignItems: 'baseline', gap: '0.5rem' }}>
-                      <span>{t.title}</span>
-                      <span style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--color-accent)', lineHeight: 1, verticalAlign: 'middle' }}>+</span>
-                    </summary>
-                    <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', marginTop: '0.5rem', lineHeight: 1.7, whiteSpace: 'pre-wrap' }}>{t.description}</p>
-                    {t.location && <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', fontStyle: 'italic' }}>{t.location}</span>}
-                  </details>
-                ) : (
-                  <>
-                    <span style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-text)' }}>{t.title}</span>
-                    {t.location && <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', fontStyle: 'italic', display: 'block', marginTop: '0.15rem' }}>{t.location}</span>}
-                  </>
-                )}
-              </div>
-            </div>
-          )) : TIMELINE.map((t, i) => (
-            <div key={i} style={{ display: 'grid', gridTemplateColumns: '7rem 1fr', gap: '1rem', padding: '0.9rem 0', borderBottom: '1px solid var(--color-border)' }}>
-              <span style={{ color: 'var(--color-accent)', fontFamily: 'Georgia, serif', fontSize: 'var(--fs-sm)', flexShrink: 0 }}>{t.year}</span>
-              {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-              <span style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-text)' }}>{(dict.biography as any)?.[`timeline_${i}`] ?? t.label}</span>
-            </div>
-          ))}
-
-          {/* ── Priser & utmärkelser ── */}
-          {awards.length > 0 && (
-          <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-2xl)', marginTop: '3rem', marginBottom: '2rem' }}>
-            {dict.biography?.priser_title ?? 'Priser & utmärkelser'}
-          </h2>)}
-          {/* Rich awards from utmarkelser table (with images, links, quotes) — single source for /references and /biography */}
-          {awards.map((a, i) => {
-            const hasDetail = !!(a.desc || a.quote || (a.images && a.images.length > 0) || (a.links && a.links.length > 0))
-            return (
-            <div key={i} style={{ display: 'grid', gridTemplateColumns: '7rem 1fr', gap: '1rem', padding: '0.9rem 0', borderBottom: '1px solid var(--color-border)', alignItems: 'start' }}>
-              <span style={{ color: 'var(--color-accent)', fontFamily: 'Georgia, serif', fontSize: 'var(--fs-sm)', flexShrink: 0, paddingTop: '0.1rem' }}>{a.year}</span>
-              <div>
-                {hasDetail ? (
-                  <details>
-                    <summary style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-text)', cursor: 'pointer', listStyle: 'none', display: 'flex', alignItems: 'baseline', gap: '0.5rem' }}>
-                      <span>{a.title}</span>
-                      <span style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--color-accent)', lineHeight: 1, verticalAlign: 'middle' }}>+</span>
-                    </summary>
-                    {a.sub && (
-                      <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', display: 'block', marginTop: '0.15rem' }}>{a.sub}</span>
-                    )}
-                    {a.quote && (
-                      <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', fontStyle: 'italic', lineHeight: 1.7, marginTop: '0.5rem', marginBottom: '0.25rem', whiteSpace: 'pre-wrap' }}>{a.quote}</p>
-                    )}
-                    {a.desc && (
-                      <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', lineHeight: 1.7, marginTop: '0.5rem', marginBottom: '0.25rem', whiteSpace: 'pre-wrap' }}>{a.desc}</p>
-                    )}
-                    {a.images && a.images.length > 0 && (
-                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginTop: '0.75rem', marginBottom: '0.25rem' }}>
-                        {a.images.map((src, k) => (
-                          <a key={k} href={src} target="_blank" rel="noopener noreferrer" style={{ position: 'relative', width: '9rem', height: '6.5rem', borderRadius: 2, overflow: 'hidden', background: 'var(--color-bg-surface)', flexShrink: 0, display: 'block' }}>
-                            <Image src={src} alt={a.title} fill sizes="9rem" style={{ objectFit: 'cover' }} />
-                          </a>
-                        ))}
-                      </div>
-                    )}
-                    {a.links && a.links.length > 0 && (
-                      <div style={{ marginTop: '0.5rem', display: 'flex', flexWrap: 'wrap', gap: '0.5rem 1.5rem' }}>
-                        {a.links.map((lnk, j) => (
-                          <a
-                            key={j}
-                            href={lnk.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-accent)', textDecoration: 'none', letterSpacing: '0.06em' }}
-                          >
-                            {lnk.label} →
-                          </a>
-                        ))}
-                      </div>
-                    )}
-                  </details>
-                ) : (
-                  <>
-                    <span style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-text)', display: 'block' }}>{a.title}</span>
-                    {a.sub && (
-                      <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', display: 'block', marginTop: '0.15rem' }}>{a.sub}</span>
-                    )}
-                  </>
-                )}
-              </div>
-            </div>
-            )
-          })}
         </section>
 
         {/* ── Tab 2: Offentliga uppdrag ── */}
