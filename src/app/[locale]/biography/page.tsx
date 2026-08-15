@@ -166,7 +166,7 @@ export default async function BiographyPage({
           <style>{`
             .bio-layout {
               display: grid;
-              grid-template-columns: 1fr 320px;
+              grid-template-columns: 1fr min(420px, 38vw);
               gap: clamp(2rem, 4vw, 4rem);
               align-items: start;
             }
@@ -177,7 +177,7 @@ export default async function BiographyPage({
             .bio-portrait {
               position: relative;
               aspect-ratio: 3/4;
-              max-height: 72vh;
+              max-height: 80vh;
               border-radius: 2px;
               overflow: hidden;
               background: var(--color-bg-surface);
