@@ -224,7 +224,7 @@ export default async function BiographyPage({
                           <span>{t.title}</span>
                           <span style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--color-accent)', lineHeight: 1, verticalAlign: 'middle' }}>+</span>
                         </summary>
-                        <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', marginTop: '0.5rem', lineHeight: 1.7, whiteSpace: 'pre-wrap' }}>{t.description}</p>
+                        <p style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-text)', marginTop: '0.5rem', lineHeight: 1.7, whiteSpace: 'pre-wrap', opacity: 0.82 }}>{t.description}</p>
                         {t.location && <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', fontStyle: 'italic' }}>{t.location}</span>}
                       </details>
                     ) : (
@@ -266,10 +266,10 @@ export default async function BiographyPage({
                             <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', display: 'block', marginTop: '0.15rem' }}>{a.sub}</span>
                           )}
                           {a.quote && (
-                            <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', fontStyle: 'italic', lineHeight: 1.7, marginTop: '0.5rem', marginBottom: '0.25rem', whiteSpace: 'pre-wrap' }}>{a.quote}</p>
+                            <p style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-text)', fontStyle: 'italic', lineHeight: 1.7, marginTop: '0.5rem', marginBottom: '0.25rem', whiteSpace: 'pre-wrap', opacity: 0.82 }}>{a.quote}</p>
                           )}
                           {a.desc && (
-                            <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', lineHeight: 1.7, marginTop: '0.5rem', marginBottom: '0.25rem', whiteSpace: 'pre-wrap' }}>{a.desc}</p>
+                            <p style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-text)', lineHeight: 1.7, marginTop: '0.5rem', marginBottom: '0.25rem', whiteSpace: 'pre-wrap', opacity: 0.82 }}>{a.desc}</p>
                           )}
                           {a.images && a.images.length > 0 && (
                             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginTop: '0.75rem', marginBottom: '0.25rem' }}>
