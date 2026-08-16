@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import AdminForm, { FieldLabel } from '@/components/admin/AdminForm'
 import ImageListEditor from '@/components/admin/ImageListEditor'
+import PdfListEditor from '@/components/admin/PdfListEditor'
 import type { UtmarkelserSection, PrizeEntry } from '@/lib/reference-utmarkelser'
 
 const lbl: React.CSSProperties = { display: 'block', fontSize: '0.65rem', color: 'var(--color-muted)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.25rem' }
@@ -115,6 +116,13 @@ export default function AdminUtmarkelser() {
           <div>
             <label style={lbl}>Bilder på medaljen ({p.images.length})</label>
             <ImageListEditor images={p.images} onChange={imgs => setPrize(i, { images: imgs })} label={`Bilder — ${p.title || 'utmärkelse'}`} />
+          </div>
+          <div>
+            <PdfListEditor
+              pdfs={(p.links ?? []).map(l => ({ label: l.label, url: l.url }))}
+              onChange={items => setPrize(i, { links: items.map(it => ({ label: it.label, url: it.url })) })}
+              label="PDF-filer (motivation, diplom m.m.)"
+            />
           </div>
           <div style={{ display: 'flex', gap: '0.4rem', justifyContent: 'flex-end' }}>
             <button type="button" onClick={() => move(i, -1)} disabled={i === 0} className="btn" style={{ fontSize: 'var(--fs-xs)', padding: '0.25em 0.6em' }}>↑</button>
