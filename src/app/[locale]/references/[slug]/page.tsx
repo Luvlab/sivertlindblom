@@ -72,70 +72,48 @@ export default async function SculptureSeriesPage({
           {project.title}
         </h1>
 
-        {/* Two-column on desktop/landscape: text left, images right */}
-        <style>{`
-          .refs-detail-grid {
-            display: grid;
-            grid-template-columns: minmax(0, 1fr) minmax(280px, 420px);
-            gap: 3.5rem;
-            align-items: start;
-          }
-          @media (max-width: 740px) {
-            .refs-detail-grid {
-              grid-template-columns: 1fr;
-            }
-            .refs-detail-images {
-              order: 1;
-            }
-          }
-        `}</style>
-
-        <div className={lightboxImages.length > 0 ? 'refs-detail-grid' : ''}>
-          {/* Left column: description + body + links */}
-          <div>
-            <div className="prose-cols" style={{ color: 'var(--color-text)', fontSize: 'var(--fs-base)', marginBottom: '1.5rem' }}>
-              {renderParagraphs(project.description, { margin: 0, lineHeight: 1.75, marginBottom: '1.1em' })}
-            </div>
-
-            <hr className="divider" style={{ marginBottom: '1.5rem' }} />
-
-            <div>
-              {project.body.split('\n\n').filter(Boolean).map((para, i) => (
-                <p key={i} style={{ fontSize: 'var(--fs-base)', lineHeight: 1.75, marginBottom: '1.25em', color: 'var(--color-text)' }}>
-                  {para.split('\n').map((line, j) => (
-                    <span key={j}>{j > 0 && <br />}{renderInlineLinks(line)}</span>
-                  ))}
-                </p>
-              ))}
-              {project.links && project.links.length > 0 && (
-                <div style={{ marginTop: '2rem', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                  {project.links.map((link, i) => {
-                    const isInternal = link.url.startsWith('/')
-                    const href = isInternal ? `/${locale}${link.url}` : link.url
-                    return (
-                      <a key={i} href={href}
-                        target={isInternal ? undefined : '_blank'}
-                        rel={isInternal ? undefined : 'noopener noreferrer'}
-                        style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', fontSize: 'var(--fs-sm)', color: 'var(--color-accent)', textDecoration: 'none', borderBottom: '1px solid var(--color-accent-dim)', paddingBottom: '0.2rem', width: 'fit-content' }}>
-                        <span style={{ color: 'var(--color-accent)' }}>{link.label || (dict.references?.read_here ?? 'Läs mer')}</span>
-                        <span>→</span>
-                      </a>
-                    )
-                  })}
-                </div>
-              )}
-            </div>
+        {/* Text: description + body + links (full width) */}
+        <div style={{ maxWidth: '72ch' }}>
+          <div className="prose-cols" style={{ color: 'var(--color-text)', fontSize: 'var(--fs-base)', marginBottom: '1.5rem' }}>
+            {renderParagraphs(project.description, { margin: 0, lineHeight: 1.75, marginBottom: '1.1em' })}
           </div>
 
-          {/* Right column: images */}
-          {lightboxImages.length > 0 && (
-            <div className="refs-detail-images">
-              <GalleryGrid images={lightboxImages} aspectRatio="4/3" columns="sm" />
-            </div>
-          )}
+          <hr className="divider" style={{ marginBottom: '1.5rem' }} />
+
+          <div>
+            {project.body.split('\n\n').filter(Boolean).map((para, i) => (
+              <p key={i} style={{ fontSize: 'var(--fs-base)', lineHeight: 1.75, marginBottom: '1.25em', color: 'var(--color-text)' }}>
+                {para.split('\n').map((line, j) => (
+                  <span key={j}>{j > 0 && <br />}{renderInlineLinks(line)}</span>
+                ))}
+              </p>
+            ))}
+            {project.links && project.links.length > 0 && (
+              <div style={{ marginTop: '2rem', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                {project.links.map((link, i) => {
+                  const isInternal = link.url.startsWith('/')
+                  const href = isInternal ? `/${locale}${link.url}` : link.url
+                  return (
+                    <a key={i} href={href}
+                      target={isInternal ? undefined : '_blank'}
+                      rel={isInternal ? undefined : 'noopener noreferrer'}
+                      style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', fontSize: 'var(--fs-sm)', color: 'var(--color-accent)', textDecoration: 'none', borderBottom: '1px solid var(--color-accent-dim)', paddingBottom: '0.2rem', width: 'fit-content' }}>
+                      <span style={{ color: 'var(--color-accent)' }}>{link.label || (dict.references?.read_here ?? 'Läs mer')}</span>
+                      <span>→</span>
+                    </a>
+                  )
+                })}
+              </div>
+            )}
+          </div>
         </div>
 
-        {lightboxImages.length === 0 && (
+        {/* Images below text in a grid */}
+        {lightboxImages.length > 0 ? (
+          <div style={{ marginTop: '3rem' }}>
+            <GalleryGrid images={lightboxImages} aspectRatio="4/3" columns="md" />
+          </div>
+        ) : (
           <p style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-sm)', fontStyle: 'italic', marginTop: '2rem' }}>
             {dict.references?.no_images ?? 'Inga bilder tillgängliga för tillfället.'}
           </p>
