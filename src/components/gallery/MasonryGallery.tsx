@@ -76,7 +76,7 @@ export default function MasonryGallery({ images, columns = '4', className }: Pro
             {(img.caption || img.credit) && (
               <div style={{ lineHeight: 1.4, paddingTop: '0.3rem' }}>
                 {img.caption && (
-                  <p style={{ margin: 0, fontSize: '0.72rem', color: 'var(--color-text)', fontStyle: 'italic', letterSpacing: '0.02em' }}>
+                  <p style={{ margin: 0, fontSize: '0.72rem', color: 'var(--color-text)', letterSpacing: '0.02em' }}>
                     {img.caption}
                   </p>
                 )}

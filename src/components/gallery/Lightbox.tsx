@@ -346,8 +346,8 @@ export default function Lightbox({ images, startIndex, onClose }: Props) {
         }}
       />
 
-      {/* Caption + photographer credit */}
-      {(current.caption || current.credit) && (
+      {/* Caption — centred below the image */}
+      {current.caption && (
         <div
           style={{
             position: 'absolute',
@@ -359,17 +359,29 @@ export default function Lightbox({ images, startIndex, onClose }: Props) {
             maxWidth: '80vw',
           }}
         >
-          {current.caption && (
-            <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: 'var(--fs-sm)', margin: 0, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', textShadow: '0 1px 6px rgba(0,0,0,0.9)' }}>
-              {current.caption}
-            </p>
-          )}
-          {current.credit && (
-            <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: 'var(--fs-xs)', margin: '0.2rem 0 0', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', textShadow: '0 1px 6px rgba(0,0,0,0.9)' }}>
-              Foto: {current.credit}
-            </p>
-          )}
+          <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: 'var(--fs-sm)', margin: 0, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', textShadow: '0 1px 6px rgba(0,0,0,0.9)' }}>
+            {current.caption}
+          </p>
         </div>
+      )}
+
+      {/* Photographer credit — far right */}
+      {current.credit && (
+        <p
+          style={{
+            position: 'absolute',
+            bottom: '1.5rem',
+            right: '1.5rem',
+            color: 'rgba(255,255,255,0.45)',
+            fontSize: 'var(--fs-xs)',
+            margin: 0,
+            whiteSpace: 'nowrap',
+            textShadow: '0 1px 6px rgba(0,0,0,0.9)',
+            pointerEvents: 'none',
+          }}
+        >
+          Foto: {current.credit}
+        </p>
       )}
 
       {/* Progress bar keyframe animation */}

@@ -746,6 +746,7 @@ function dbRowToText(row: Record<string, unknown>): TextItem {
     pdfs: (row.pdfs as TextItem['pdfs']) ?? undefined,
     audioUrl: (row.audio_url as string) || undefined,
     media: (row.media as TextItem['media']) ?? undefined,
+    videoUrl: (row.video_url as string) || undefined,
   }
 }
 
@@ -761,6 +762,7 @@ export async function getTexts(): Promise<TextItem[]> {
       .eq('published', true)
       .order('year', { ascending: false })
       .order('month', { ascending: false, nullsFirst: false })
+      .order('created_at', { ascending: true })
     if (!error && data) return data.map((r) => dbRowToText(r as Record<string, unknown>))
   }
   return STATIC_TEXTS
