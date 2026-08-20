@@ -18,6 +18,7 @@ function UploadZone({ onUploaded }: { onUploaded: (url: string, alt: string) => 
   const [uploadErr, setUploadErr] = useState<string | null>(null)
   const [uploadAlt, setUploadAlt] = useState('')
   const [dragOver, setDragOver] = useState(false)
+  const [done, setDone] = useState(false)
   const fileRef = useRef<HTMLInputElement>(null)
 
   async function upload(file: File) {
@@ -26,7 +27,7 @@ function UploadZone({ onUploaded }: { onUploaded: (url: string, alt: string) => 
     setUploadErr(null)
     try {
       const d = await uploadImageFile(file, uploadAlt)
-      if (d.url) { onUploaded(d.url, uploadAlt); setUploadAlt('') }
+      if (d.url) { onUploaded(d.url, uploadAlt); setUploadAlt(''); setDone(true) }
       else setUploadErr(d.error ?? 'Uppladdning misslyckades')
     } catch (e) {
       setUploadErr(String(e))
@@ -34,6 +35,15 @@ function UploadZone({ onUploaded }: { onUploaded: (url: string, alt: string) => 
       setUploading(false)
       if (fileRef.current) fileRef.current.value = ''
     }
+  }
+
+  if (done) {
+    return (
+      <div style={{ border: '1px solid var(--color-border)', marginBottom: '1rem', background: 'var(--color-bg-surface)', padding: '0.9rem 1.25rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <span style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-accent)' }}>✓ Bild uppladdad</span>
+        <button className="btn" style={{ fontSize: 'var(--fs-xs)' }} onClick={() => setDone(false)}>+ Ladda upp en till</button>
+      </div>
+    )
   }
 
   return (
