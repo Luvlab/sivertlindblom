@@ -312,7 +312,7 @@ export default function AdminHome() {
   function cancelEdit() { setEditingIdx(null); setEditingUrl('') }
 
   const overlayBtn = (extra?: React.CSSProperties): React.CSSProperties => ({
-    position: 'absolute', padding: '0.2rem 0.4rem', fontSize: '0.65rem', lineHeight: 1,
+    position: 'absolute', padding: '0.3rem 0.55rem', fontSize: '0.8rem', lineHeight: 1,
     border: 'none', borderRadius: 2, cursor: 'pointer', backdropFilter: 'blur(4px)', transition: 'opacity 0.12s', ...extra,
   })
 
@@ -451,7 +451,7 @@ export default function AdminHome() {
               {slides.length === 0 ? (
                 <p style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-sm)', padding: '0.5rem 0', marginBottom: '1.5rem' }}>Inga bilder ännu. Lägg till nedan.</p>
               ) : (
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))', gap: '0.5rem', marginBottom: '1.5rem' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: '0.75rem', marginBottom: '1.5rem' }}>
                   {slides.map((slide, i) => (
                     <div key={i} draggable
                       onDragStart={() => handleDragStart(i)} onDragOver={e => handleDragOver(e, i)} onDrop={e => handleDrop(e, i)} onDragEnd={handleDragEnd}
@@ -475,7 +475,7 @@ export default function AdminHome() {
                         <span style={{ color: 'var(--color-muted)', whiteSpace: 'nowrap' }}>{dims[slide.url] ? `${dims[slide.url].w}×${dims[slide.url].h}` : '…'}</span>
                       </div>
                       <div style={{ position: 'absolute', top: 4, left: 4, background: 'rgba(0,0,0,0.72)', color: '#fff', fontSize: '0.6rem', padding: '0.1rem 0.38rem', fontFamily: 'Georgia,serif', lineHeight: 1.4, pointerEvents: 'none' }}>{i + 1}</div>
-                      <button type="button" onClick={() => removeSlide(i)} style={overlayBtn({ top: 4, right: 4, background: 'rgba(160,30,30,0.82)', color: '#fff' })} title="Ta bort">✕</button>
+                      <button type="button" onClick={() => removeSlide(i)} style={overlayBtn({ top: 6, right: 6, background: 'rgba(180,30,30,0.92)', color: '#fff', fontSize: '0.75rem', padding: '0.35rem 0.6rem', fontWeight: 600, letterSpacing: '0.04em' })} title="Ta bort">✕ Ta bort</button>
                       <button type="button" onClick={() => editingIdx === i ? cancelEdit() : startEdit(i)} style={overlayBtn({ top: editingIdx === i ? 4 : 28, right: editingIdx === i ? 24 : 4, background: editingIdx === i ? 'rgba(201,169,76,0.9)' : 'rgba(40,40,40,0.82)', color: editingIdx === i ? '#0a0a0a' : 'var(--color-muted)' })}>
                         {editingIdx === i ? '✕' : '✎'}
                       </button>
