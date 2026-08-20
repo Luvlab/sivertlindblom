@@ -264,7 +264,7 @@ export default function AdminHome() {
     try {
       const collected: Slide[] = []
       const [worksRes, textsRes, uploadsRes] = await Promise.all([fetch('/api/admin/public-works'), fetch('/api/admin/texts'), fetch('/api/admin/upload')])
-      const worksData = await worksRes.json() as PublicWork[] | { error: string }
+      const worksData = await worksRes.json() as Array<{ images?: Array<{ url: string; alt?: string | null }> }> | { error: string }
       if (!('error' in worksData)) for (const work of worksData) for (const img of work.images ?? []) collected.push({ url: img.url, alt: img.alt ?? '' })
       const textsData = await textsRes.json() as Array<{ title: string; images?: string[] }> | { error: string }
       if (!('error' in textsData)) for (const text of textsData) for (const url of text.images ?? []) if (typeof url === 'string' && url) collected.push({ url, alt: '' })
