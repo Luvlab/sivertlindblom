@@ -333,7 +333,7 @@ a:hover { opacity: 0.7; }
   border-color: var(--color-accent);
   color: #000;
 }
-.btn-primary:hover { background: var(--color-accent-dim); border-color: var(--color-accent-dim); }
+.btn-primary:hover { background: var(--color-accent-dim); border-color: var(--color-accent-dim); color: #fff; }
 
 /* ─── Admin layout (responsive sidebar + main) ───────────── */
 .admin-layout {

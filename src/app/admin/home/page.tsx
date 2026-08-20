@@ -1,7 +1,6 @@
 'use client'
 
-import { useState, useEffect, useMemo, useRef } from 'react'
-import type { PublicWork } from '@/lib/public-works'
+import { useState, useEffect, useRef } from 'react'
 import { uploadImageFile } from '@/lib/upload-image'
 import type { HomeContent } from '@/lib/home-content-types'
 import { HOME_CONTENT_DEFAULTS } from '@/lib/home-content-types'
@@ -10,141 +9,6 @@ interface Slide {
   url: string
   alt: string
   focal?: string
-}
-
-interface MediaImage {
-  url: string
-  alt: string
-  work: string
-}
-
-// ── Media Picker ────────────────────────────────────────────────────────────
-
-function MediaPicker({ onPick }: { onPick: (img: MediaImage) => void }) {
-  const [open, setOpen] = useState(false)
-  const [mediaImages, setMediaImages] = useState<MediaImage[]>([])
-  const [loadingMedia, setLoadingMedia] = useState(false)
-  const [mediaFilter, setMediaFilter] = useState('')
-
-  async function loadMedia() {
-    if (mediaImages.length > 0) return
-    setLoadingMedia(true)
-    try {
-      const collected: MediaImage[] = []
-      const [worksRes, textsRes, uploadsRes] = await Promise.all([
-        fetch('/api/admin/public-works'),
-        fetch('/api/admin/texts'),
-        fetch('/api/admin/upload'),
-      ])
-      const worksData = await worksRes.json() as PublicWork[] | { error: string }
-      if (!('error' in worksData)) {
-        for (const work of worksData) {
-          for (const img of work.images ?? []) {
-            collected.push({ url: img.url, alt: img.alt ?? '', work: work.title })
-          }
-        }
-      }
-      const textsData = await textsRes.json() as Array<{ title: string; images?: string[] }> | { error: string }
-      if (!('error' in textsData)) {
-        for (const text of textsData) {
-          for (const url of text.images ?? []) {
-            if (typeof url === 'string' && url) collected.push({ url, alt: '', work: text.title })
-          }
-        }
-      }
-      const uploadsData = await uploadsRes.json() as { files?: Array<{ url: string; alt: string }> } | { error: string }
-      if (!('error' in uploadsData) && uploadsData.files) {
-        for (const f of uploadsData.files) collected.push({ url: f.url, alt: f.alt ?? '', work: 'Uppladdningar' })
-      }
-      setMediaImages(collected)
-    } finally {
-      setLoadingMedia(false)
-    }
-  }
-
-  function toggle() {
-    if (!open) loadMedia()
-    setOpen(o => !o)
-  }
-
-  const filtered = useMemo(() => {
-    if (!mediaFilter) return mediaImages
-    const q = mediaFilter.toLowerCase()
-    return mediaImages.filter(m =>
-      m.work.toLowerCase().includes(q) || m.alt.toLowerCase().includes(q) || m.url.toLowerCase().includes(q)
-    )
-  }, [mediaImages, mediaFilter])
-
-  return (
-    <div style={{ border: '1px solid var(--color-border)', marginBottom: '1rem' }}>
-      <button
-        onClick={toggle}
-        style={{
-          width: '100%', padding: '0.9rem 1.25rem', textAlign: 'left',
-          background: open ? 'var(--color-bg-card)' : 'var(--color-bg-surface)',
-          border: 'none', cursor: 'pointer', color: 'var(--color-text)',
-          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-          fontSize: 'var(--fs-sm)', fontFamily: 'Georgia, serif',
-        }}
-      >
-        <span>🖼 Välj från Media ({mediaImages.length > 0 ? mediaImages.length : '…'})</span>
-        <span style={{ fontSize: '0.75rem', color: 'var(--color-muted)' }}>{open ? '▲ Dölj' : '▼ Visa'}</span>
-      </button>
-      {open && (
-        <div style={{ padding: '1rem', background: 'var(--color-bg-surface)', borderTop: '1px solid var(--color-border)' }}>
-          <input
-            type="search"
-            className="input"
-            placeholder="Sök verk, alt-text, URL…"
-            value={mediaFilter}
-            onChange={e => setMediaFilter(e.target.value)}
-            style={{ maxWidth: 320, marginBottom: '0.75rem' }}
-            autoFocus
-          />
-          {loadingMedia ? (
-            <p style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-sm)' }}>Laddar…</p>
-          ) : (
-            <>
-              <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', marginBottom: '0.75rem' }}>
-                {filtered.length} bilder — klicka för att lägga till i slideshow
-              </p>
-              <div style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fill, minmax(100px, 1fr))',
-                gap: '0.5rem',
-                maxHeight: 400,
-                overflowY: 'auto',
-              }}>
-                {filtered.map((img, i) => (
-                  <button
-                    key={`${img.url}-${i}`}
-                    onClick={() => { onPick(img); setOpen(false) }}
-                    title={`${img.alt || img.work}\n${img.url}`}
-                    style={{
-                      padding: 0, border: '1px solid var(--color-border)',
-                      background: 'var(--color-bg-card)', cursor: 'pointer',
-                      overflow: 'hidden', textAlign: 'left',
-                    }}
-                  >
-                    <div style={{ aspectRatio: '4/3', background: '#111', overflow: 'hidden' }}>
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={img.url} alt={img.alt} loading="lazy"
-                        style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
-                        onError={e => { (e.currentTarget as HTMLImageElement).style.display = 'none' }}
-                      />
-                    </div>
-                    <div style={{ fontSize: '0.6rem', color: 'var(--color-muted)', padding: '0.25rem 0.3rem', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                      {img.alt || img.work}
-                    </div>
-                  </button>
-                ))}
-              </div>
-            </>
-          )}
-        </div>
-      )}
-    </div>
-  )
 }
 
 // ── Upload Zone ─────────────────────────────────────────────────────────────
@@ -379,10 +243,6 @@ export default function AdminHome() {
   function removeSlide(i: number) { if (editingIdx === i) setEditingIdx(null); setSlides(prev => prev.filter((_, idx) => idx !== i)) }
   function updateSlide(i: number, field: 'url' | 'alt', value: string) { setSlides(prev => prev.map((s, idx) => idx === i ? { ...s, [field]: value } : s)) }
   function addSlide() { if (!newUrl.trim()) return; setSlides(prev => [...prev, { url: newUrl.trim(), alt: newAlt.trim() }]); setNewUrl(''); setNewAlt('') }
-  function addFromMedia(img: MediaImage) {
-    setSlides(prev => { if (prev.some(s => s.url === img.url)) return prev; return [...prev, { url: img.url, alt: img.alt }] })
-    setMessage({ type: 'ok', text: `Lade till: ${img.alt || img.work}` }); setTimeout(() => setMessage(null), 2500)
-  }
   function onUploaded(url: string, alt: string) {
     setSlides(prev => [...prev, { url, alt }])
     setMessage({ type: 'ok', text: 'Bild uppladdad och tillagd i slideshow!' }); setTimeout(() => setMessage(null), 3000)
@@ -633,9 +493,8 @@ export default function AdminHome() {
 
               {/* Add slide */}
               <h3 style={{ fontFamily: 'Georgia, serif', fontWeight: 400, fontSize: 'var(--fs-base)', marginBottom: '1rem', color: 'var(--color-muted)' }}>Lägg till bild</h3>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 380px), 1fr))', gap: '1rem', marginBottom: '1rem' }}>
-                <div><MediaPicker onPick={addFromMedia} /></div>
-                <div><UploadZone onUploaded={onUploaded} /></div>
+              <div style={{ marginBottom: '1rem' }}>
+                <UploadZone onUploaded={onUploaded} />
               </div>
               <div style={{ border: '1px solid var(--color-border)', background: 'var(--color-bg-surface)' }}>
                 <div style={{ padding: '0.9rem 1.25rem', borderBottom: '1px solid var(--color-border)', fontFamily: 'Georgia, serif', fontSize: 'var(--fs-sm)' }}>🔗 Klistra in URL</div>
