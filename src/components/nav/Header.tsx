@@ -7,8 +7,6 @@ import FontSizeSlider from '../FontSizeSlider'
 import LanguageSwitcher from './LanguageSwitcher'
 import type { Locale } from '@/i18n/config'
 
-interface NavNode { label: string; href: string; children?: NavNode[] }
-
 interface HeaderProps {
   locale: Locale
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -17,8 +15,6 @@ interface HeaderProps {
 
 export default function Header({ locale, dict }: HeaderProps) {
   const [open, setOpen] = useState(false)
-  const [openMenu, setOpenMenu] = useState<string | null>(null)
-  const [mobileExpanded, setMobileExpanded] = useState<string | null>(null)
   const pathname = usePathname()
 
   const isAdmin = pathname?.startsWith('/admin')
@@ -26,50 +22,12 @@ export default function Header({ locale, dict }: HeaderProps) {
 
   const p = (path: string) => `/${locale}${path}`
 
-  // Navigation tree — mirrors the original site's dropdown hierarchy.
-  // Every leaf href points to a page that already exists (no dead links).
-  const NAV: NavNode[] = [
-    {
-      label: dict?.nav?.portfolio ?? 'Portfolio',
-      href: p('/portfolio'),
-      children: [
-        { label: dict?.portfolio?.cat_exhibitions ?? 'Utställningar', href: p('/portfolio/exhibitions') },
-        { label: dict?.portfolio?.cat_public ?? 'Offentliga arbeten', href: p('/portfolio/public-works') },
-        { label: dict?.portfolio?.cat_scenography ?? 'Scenografier', href: p('/portfolio/scenography') },
-        { label: dict?.portfolio?.cat_watercolors ?? 'Akvareller', href: p('/portfolio/watercolors') },
-      ],
-    },
-    {
-      label: dict?.nav?.references ?? 'Referenser',
-      href: p('/references'),
-      children: [
-        {
-          label: dict?.nav?.references_skulptur ?? 'Skulptur',
-          href: p('/references#skulptur'),
-          children: [
-            { label: 'Profiler', href: p('/references/profiler') },
-            { label: 'Metamorfoser – sittare', href: p('/references/metamorfoser') },
-            { label: 'Monoliter, blystoder och azteker', href: p('/references/monoliter') },
-            { label: 'Azteker', href: p('/references/azteker') },
-            { label: 'Tidiga skulpturer', href: p('/references/tidiga-skulpturer') },
-            { label: 'Kofeser', href: p('/references/kofeser') },
-            { label: 'Blyplattor', href: p('/references/blyplattor') },
-            { label: 'Trädkonstruktioner', href: p('/references/tradkonstruktioner') },
-            { label: 'Tornmodeller', href: p('/references/tornmodeller') },
-            { label: 'Arbetsmodeller och förslag', href: p('/references/arbetsmodeller') },
-          ],
-        },
-        { label: dict?.references?.grafik ?? 'Grafik', href: p('/references/grafik') },
-        { label: dict?.nav?.references_fotografier ?? 'Fotografier – inspiration', href: p('/references#fotografi') },
-        { label: dict?.nav?.references_film ?? 'Film och TV', href: p('/references#film-tv') },
-        { label: dict?.nav?.references_publicerat ?? 'Publicerat', href: p('/references/publicerat') },
-        { label: dict?.nav?.references_utmarkelser ?? 'Utmärkelser, priser och medaljer', href: p('/references#utmarkelser') },
-        { label: dict?.nav?.references_ogonblick ?? 'Ögonblick', href: p('/references#ogonblick') },
-      ],
-    },
-    { label: dict?.nav?.texts ?? 'Texter', href: p('/texts') },
-    { label: dict?.nav?.biography ?? 'Biografi', href: p('/biography') },
-    { label: dict?.nav?.contact ?? 'Kontakt', href: p('/contact') },
+  const NAV = [
+    { label: dict?.nav?.portfolio ?? 'Portfolio',     href: p('/portfolio') },
+    { label: dict?.nav?.references ?? 'Referensmaterial', href: p('/references') },
+    { label: dict?.nav?.texts ?? 'Texter',            href: p('/texts') },
+    { label: dict?.nav?.biography ?? 'Biografi',      href: p('/biography') },
+    { label: dict?.nav?.contact ?? 'Kontakt',         href: p('/contact') },
   ]
 
   return (
@@ -98,42 +56,13 @@ export default function Header({ locale, dict }: HeaderProps) {
             className="hidden-mobile"
           >
             {NAV.map((item) => (
-              <div
+              <Link
                 key={item.href}
-                style={{ position: 'relative', display: 'flex', alignItems: 'center' }}
-                onMouseEnter={() => setOpenMenu(item.label)}
-                onMouseLeave={() => setOpenMenu(null)}
+                href={item.href}
+                className={`nav-link${pathname?.startsWith(item.href.split('#')[0]) ? ' active' : ''}`}
               >
-                <Link
-                  href={item.href}
-                  className={`nav-link${pathname?.startsWith(item.href.split('#')[0]) ? ' active' : ''}`}
-                >
-                  {item.label}
-                  {item.children && <span aria-hidden style={{ marginLeft: '0.35em', fontSize: '0.7em', opacity: 0.7 }}>▾</span>}
-                </Link>
-
-                {/* Dropdown */}
-                {item.children && openMenu === item.label && (
-                  <div
-                    style={{
-                      position: 'absolute',
-                      top: '100%',
-                      left: 0,
-                      minWidth: 240,
-                      background: '#0d0d0d',
-                      border: '1px solid var(--color-border)',
-                      borderRadius: 2,
-                      padding: '0.4rem 0',
-                      boxShadow: '0 10px 30px rgba(0,0,0,.55)',
-                      zIndex: 100,
-                    }}
-                  >
-                    {item.children.map((child) => (
-                      <DropdownRow key={child.href} node={child} locale={locale} />
-                    ))}
-                  </div>
-                )}
-              </div>
+                {item.label}
+              </Link>
             ))}
           </nav>
 
@@ -179,53 +108,13 @@ export default function Header({ locale, dict }: HeaderProps) {
         <div className="page-pad" style={{ paddingTop: '2rem', paddingBottom: '2rem' }}>
           {NAV.map((item) => (
             <div key={item.href} style={{ borderBottom: '1px solid var(--color-border)' }}>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <Link
-                  href={item.href}
-                  onClick={() => setOpen(false)}
-                  style={{ display: 'block', padding: '1rem 0', fontSize: 'var(--fs-2xl)', fontFamily: 'Georgia, serif', color: pathname?.startsWith(item.href.split('#')[0]) ? 'var(--color-accent)' : 'var(--color-text)' }}
-                >
-                  {item.label}
-                </Link>
-                {item.children && (
-                  <button
-                    aria-label={`Visa undermeny för ${item.label}`}
-                    onClick={() => setMobileExpanded(mobileExpanded === item.label ? null : item.label)}
-                    style={{ background: 'none', border: 'none', color: 'var(--color-muted)', cursor: 'pointer', fontSize: '1.2rem', padding: '0.5rem' }}
-                  >
-                    {mobileExpanded === item.label ? '−' : '+'}
-                  </button>
-                )}
-              </div>
-              {item.children && mobileExpanded === item.label && (
-                <div style={{ paddingBottom: '0.75rem' }}>
-                  {item.children.map((child) => (
-                    <div key={child.href}>
-                      <Link
-                        href={child.href}
-                        onClick={() => setOpen(false)}
-                        style={{ display: 'block', padding: '0.5rem 0 0.5rem 1rem', fontSize: 'var(--fs-base)', color: 'var(--color-text)' }}
-                      >
-                        {child.label}
-                      </Link>
-                      {child.children && (
-                        <div>
-                          {child.children.map((gc) => (
-                            <Link
-                              key={gc.href}
-                              href={gc.href}
-                              onClick={() => setOpen(false)}
-                              style={{ display: 'block', padding: '0.35rem 0 0.35rem 2rem', fontSize: 'var(--fs-sm)', color: 'var(--color-muted)' }}
-                            >
-                              {gc.label}
-                            </Link>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              )}
+              <Link
+                href={item.href}
+                onClick={() => setOpen(false)}
+                style={{ display: 'block', padding: '1rem 0', fontSize: 'var(--fs-2xl)', fontFamily: 'Georgia, serif', color: pathname?.startsWith(item.href.split('#')[0]) ? 'var(--color-accent)' : 'var(--color-text)' }}
+              >
+                {item.label}
+              </Link>
             </div>
           ))}
 
@@ -244,62 +133,5 @@ export default function Header({ locale, dict }: HeaderProps) {
         </div>
       </nav>
     </>
-  )
-}
-
-/** A single row in a desktop dropdown; if it has children, they flyout to the right. */
-function DropdownRow({ node, locale }: { node: NavNode; locale: Locale }) {
-  const [hover, setHover] = useState(false)
-  return (
-    <div
-      style={{ position: 'relative' }}
-      onMouseEnter={() => setHover(true)}
-      onMouseLeave={() => setHover(false)}
-    >
-      <Link
-        href={node.href}
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          gap: '1.5rem',
-          padding: '0.5rem 1.1rem',
-          fontSize: 'var(--fs-sm)',
-          color: hover ? 'var(--color-accent)' : 'var(--color-text)',
-          whiteSpace: 'nowrap',
-          transition: 'color 0.12s',
-        }}
-      >
-        {node.label}
-        {node.children && <span aria-hidden style={{ fontSize: '0.7em', opacity: 0.6 }}>▸</span>}
-      </Link>
-      {node.children && hover && (
-        <div
-          style={{
-            position: 'absolute',
-            top: -5,
-            left: '100%',
-            minWidth: 230,
-            background: '#0d0d0d',
-            border: '1px solid var(--color-border)',
-            borderRadius: 2,
-            padding: '0.4rem 0',
-            boxShadow: '0 10px 30px rgba(0,0,0,.55)',
-            zIndex: 110,
-          }}
-        >
-          {node.children.map((gc) => (
-            <Link
-              key={gc.href}
-              href={gc.href}
-              style={{ display: 'block', padding: '0.45rem 1.1rem', fontSize: 'var(--fs-sm)', color: 'var(--color-text)', whiteSpace: 'nowrap' }}
-              className="dropdown-flyout-link"
-            >
-              {gc.label}
-            </Link>
-          ))}
-        </div>
-      )}
-    </div>
   )
 }
