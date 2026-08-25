@@ -331,58 +331,54 @@ export default function Lightbox({ images, startIndex, onClose }: Props) {
         </button>
       )}
 
-      {/* Image */}
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src={current.url}
-        alt={current.alt}
+      {/* Image + caption block — column layout so text sits BELOW the image */}
+      <div
         onClick={(e) => e.stopPropagation()}
         style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
           maxWidth: '95vw',
-          maxHeight: '90vh',
-          objectFit: 'contain',
-          display: 'block',
-          userSelect: 'none',
+          maxHeight: '95vh',
         }}
-      />
-
-      {/* Caption — centred below the image */}
-      {current.caption && (
-        <div
+      >
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={current.url}
+          alt={current.alt}
           style={{
-            position: 'absolute',
-            bottom: '1.5rem',
-            left: '50%',
-            transform: 'translateX(-50%)',
-            textAlign: 'center',
-            pointerEvents: 'none',
-            maxWidth: '80vw',
+            maxWidth: '95vw',
+            maxHeight: current.caption || current.credit ? '82vh' : '90vh',
+            objectFit: 'contain',
+            display: 'block',
+            userSelect: 'none',
           }}
-        >
-          <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: 'var(--fs-sm)', margin: 0, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', textShadow: '0 1px 6px rgba(0,0,0,0.9)' }}>
-            {current.caption}
-          </p>
-        </div>
-      )}
+        />
 
-      {/* Photographer credit — far right */}
-      {current.credit && (
-        <p
-          style={{
-            position: 'absolute',
-            bottom: '1.5rem',
-            right: '1.5rem',
-            color: 'rgba(255,255,255,0.45)',
-            fontSize: 'var(--fs-xs)',
-            margin: 0,
-            whiteSpace: 'nowrap',
-            textShadow: '0 1px 6px rgba(0,0,0,0.9)',
+        {/* Caption row — caption left, credit right, both below the image */}
+        {(current.caption || current.credit) && (
+          <div style={{
+            width: '100%',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'baseline',
+            gap: '1.5rem',
+            paddingTop: '0.6rem',
             pointerEvents: 'none',
-          }}
-        >
-          Foto: {current.credit}
-        </p>
-      )}
+          }}>
+            {current.caption && (
+              <p style={{ margin: 0, color: 'rgba(255,255,255,0.65)', fontSize: 'var(--fs-sm)', textShadow: '0 1px 6px rgba(0,0,0,0.9)', flex: '1 1 auto' }}>
+                {current.caption}
+              </p>
+            )}
+            {current.credit && (
+              <p style={{ margin: 0, color: 'rgba(255,255,255,0.4)', fontSize: 'var(--fs-xs)', whiteSpace: 'nowrap', textShadow: '0 1px 6px rgba(0,0,0,0.9)', flexShrink: 0 }}>
+                Foto: {current.credit}
+              </p>
+            )}
+          </div>
+        )}
+      </div>
 
       {/* Progress bar keyframe animation */}
       <style>{`
