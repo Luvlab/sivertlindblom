@@ -64,15 +64,15 @@ export default function GalleryGrid({
               />
             </button>
             {showCaptions && (img.caption || img.credit) && (
-              <div style={{ paddingTop: '0.3rem', lineHeight: 1.4 }}>
+              <div style={{ paddingTop: '0.35rem', display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: '0.75rem' }}>
                 {img.caption && (
-                  <p style={{ margin: 0, fontSize: '0.72rem', color: 'var(--color-text)', fontStyle: 'italic', letterSpacing: '0.02em' }}>
+                  <p style={{ margin: 0, fontSize: '0.78rem', color: 'var(--color-text)', letterSpacing: '0.02em', textShadow: '0 1px 3px rgba(0,0,0,0.5)', flex: '1 1 auto' }}>
                     {img.caption}
                   </p>
                 )}
                 {img.credit && (
-                  <p style={{ margin: 0, fontSize: '0.66rem', color: 'var(--color-accent)', letterSpacing: '0.04em', marginTop: '0.1rem' }}>
-                    {img.credit}
+                  <p style={{ margin: 0, fontSize: '0.72rem', color: 'var(--color-muted)', letterSpacing: '0.03em', textShadow: '0 1px 3px rgba(0,0,0,0.5)', flexShrink: 0, textAlign: 'right' }}>
+                    Foto: {img.credit}
                   </p>
                 )}
               </div>
