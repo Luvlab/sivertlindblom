@@ -106,6 +106,7 @@ export default async function TextsPage({
       <TabsLayout
         tabs={TABS}
         defaultTab={grouped[0]?.type ?? 'andras_texter'}
+        label={dict.nav?.texts ?? 'Texter'}
       >
         {grouped.map((group) => (
           <section key={group.type} className="page-pad" style={{ paddingTop: '2.5rem', paddingBottom: '3rem' }}>

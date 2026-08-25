@@ -73,6 +73,7 @@ export default async function ReferencesPage({
       <TabsLayout
         tabs={TABS}
         defaultTab="skulptur"
+        label={dict.nav?.references ?? 'Referensmaterial'}
       >
 
         {/* ── 1. Skulptur ───────────────────────────────────── */}
