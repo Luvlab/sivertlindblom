@@ -66,6 +66,7 @@ export default function TabsLayout({ tabs, defaultTab, label, description, child
           zIndex: 299,
           display: 'flex',
           alignItems: 'center',
+          justifyContent: 'flex-start',
           height: 'var(--subnav-h)',
           gap: 0,
           overflowX: 'auto',
@@ -103,7 +104,7 @@ export default function TabsLayout({ tabs, defaultTab, label, description, child
           }} />
         )}
 
-        <div role="tablist" aria-label="Sektioner" style={{ display: 'flex', gap: 0, flex: 1 }}>
+        <div role="tablist" aria-label="Sektioner" style={{ display: 'flex', gap: 0, justifyContent: 'flex-start' }}>
           {tabs.map((tab) => {
             const isActive = tab.id === active
             return (

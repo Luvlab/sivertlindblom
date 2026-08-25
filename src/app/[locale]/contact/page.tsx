@@ -68,7 +68,6 @@ export default async function ContactPage({
         position: 'relative',
         height: `${heroHeightVh}dvh`,
         overflow: 'hidden',
-        marginBottom: '4rem',
         marginTop: 'calc(-1 * var(--header-h))',
       }}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -87,7 +86,7 @@ export default async function ContactPage({
             {dict.contact?.title ?? 'Ta kontakt'}
           </h1>
 
-          {/* Scroll-down arrow — left-aligned under titles; clicks scroll to the form */}
+          {/* Scroll-down arrow */}
           <a href="#contact-form" aria-label={dict.contact?.scroll_down ?? 'Scrolla till kontaktformulär'} style={{
             marginTop: '1.5rem',
             display: 'flex',
@@ -106,81 +105,79 @@ export default async function ContactPage({
         </div>
       </div>
 
-      <div id="contact-form" className="section-gap" style={{ paddingTop: 0 }}>
-      <hr className="divider" />
+      {/* Two-column split — Info + Errata left, Form right — independent scroll on desktop */}
+      <hr className="divider" id="contact-form" />
+      <div className="contact-two-col">
 
-      <div className="page-pad" style={{ paddingTop: '3rem', paddingBottom: '5rem' }}>
-        {dict.contact?.intro && (
-          <p style={{ fontSize: 'var(--fs-base)', color: 'var(--color-muted)', maxWidth: '65ch', marginBottom: '3rem', lineHeight: 1.75 }}>
-            {dict.contact.intro}
-          </p>
-        )}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 400px), 1fr))', gap: '4rem', alignItems: 'start' }}>
+        {/* Left column: Information + Errata */}
+        <div className="contact-col">
+          {dict.contact?.intro && (
+            <p style={{ fontSize: 'var(--fs-base)', color: 'var(--color-muted)', maxWidth: '65ch', marginBottom: '3rem', lineHeight: 1.75 }}>
+              {dict.contact.intro}
+            </p>
+          )}
 
-          {/* Contact info */}
-          <div>
-            <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-xl)', marginBottom: '2rem' }}>
-              {dict.contact?.info_title ?? 'Information'}
+          {/* Information */}
+          <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-xl)', marginBottom: '2rem' }}>
+            {dict.contact?.info_title ?? 'Information'}
+          </h2>
+          {[
+            { label: dict.contact?.email ?? 'E-post', value: 'info@sivertlindblom.se', href: 'mailto:info@sivertlindblom.se' },
+            { label: dict.contact?.editor ?? 'Redaktör', value: 'Jan Öqvist', href: null },
+          ].map((item) => (
+            <div key={item.label} style={{ marginBottom: '1.5rem' }}>
+              <div style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-accent)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '0.25rem' }}>{item.label}</div>
+              {item.href
+                ? <a href={item.href} style={{ fontSize: 'var(--fs-base)', color: 'var(--color-text)' }}>{item.value}</a>
+                : <div style={{ fontSize: 'var(--fs-base)' }}>{item.value}</div>
+              }
+            </div>
+          ))}
+
+          {/* Errata och kommentarer */}
+          <section style={{ marginTop: '4rem' }}>
+            <h2 style={{ fontFamily: 'Georgia, serif', fontWeight: 400, fontSize: 'var(--fs-2xl)', marginBottom: '0.5rem' }}>
+              Errata och kommentarer till hemsidan
             </h2>
-            {[
-              { label: dict.contact?.email ?? 'E-post', value: 'info@sivertlindblom.se', href: 'mailto:info@sivertlindblom.se' },
-              { label: dict.contact?.editor ?? 'Redaktör', value: 'Jan Öqvist', href: null },
-            ].map((item) => (
-              <div key={item.label} style={{ marginBottom: '1.5rem' }}>
-                <div style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-accent)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '0.25rem' }}>{item.label}</div>
-                {item.href
-                  ? <a href={item.href} style={{ fontSize: 'var(--fs-base)', color: 'var(--color-text)' }}>{item.value}</a>
-                  : <div style={{ fontSize: 'var(--fs-base)' }}>{item.value}</div>
-                }
-              </div>
-            ))}
-          </div>
+            <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-accent)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '2rem' }}>
+              Funderingar
+            </p>
 
-          {/* Form (client component) */}
+            <p style={{ fontSize: 'var(--fs-base)', color: 'var(--color-text)', lineHeight: 1.8, marginBottom: '1.5rem' }}>
+              Till den som kommit in på Siverts hemsida och har några frågor, råd eller funderingar till hur den kan förbättras eller justeras kan kontakta mig:
+            </p>
+
+            <p style={{ fontSize: 'var(--fs-base)', fontFamily: 'Georgia, serif', color: 'var(--color-accent)', marginBottom: '2rem' }}>
+              Jan Öqvist
+            </p>
+
+            <h3 style={{ fontFamily: 'Georgia, serif', fontWeight: 400, fontSize: 'var(--fs-lg)', marginBottom: '1.25rem' }}>
+              Allmänna kommentarer
+            </h3>
+
+            {[
+              'Beskrivande texter ska tillkomma och komplettera en del av de offentliga arbeten som Sivert har utfört.',
+              'Fotografers namn ska, i den mån de är kända, skrivas in. Svårigheter med vilka de enskilda fotograferna är har naturliga orsaker. Mest beroende på att en del bilderna är gåvor, gamla och tagna av okända fotografer och skickade till Sivert under årens lopp.',
+              'Dock är merparten av bilddokumentationen tagna ur Siverts eget bildarkiv. I de fall där inget står nämnt ska de ses som tagna av Sivert själv.',
+              'Känner någon fotograf igen sin bild och meddelar mig så kommer namnet att infogas i bildgalleriet.',
+            ].map((p, i) => (
+              <p key={i} style={{ fontSize: 'var(--fs-base)', color: 'var(--color-muted)', lineHeight: 1.8, marginBottom: '1rem' }}>
+                {p}
+              </p>
+            ))}
+
+            <p style={{ fontSize: 'var(--fs-base)', color: 'var(--color-text)', lineHeight: 1.8, marginTop: '2rem' }}>
+              Med vänliga hälsningar<br />
+              <span style={{ fontFamily: 'Georgia, serif', color: 'var(--color-accent)' }}>Jan Öqvist</span>{' '}
+              <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)' }}>(web-ansvarig)</span>
+            </p>
+          </section>
+        </div>
+
+        {/* Right column: Form */}
+        <div className="contact-col">
           <ContactForm dict={dict.contact} />
         </div>
-      </div>
-
-      <hr className="divider" />
-
-      {/* Errata och kommentarer — from sivertlindblom.se/biografi/errata-och-kommentarer-till-hemsida/ */}
-      <section className="page-pad" style={{ paddingTop: '3rem', paddingBottom: '5rem', maxWidth: '72ch' }}>
-        <h2 style={{ fontFamily: 'Georgia, serif', fontWeight: 400, fontSize: 'var(--fs-2xl)', marginBottom: '0.5rem' }}>
-          Errata och kommentarer till hemsidan
-        </h2>
-        <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-accent)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '2rem' }}>
-          Funderingar
-        </p>
-
-        <p style={{ fontSize: 'var(--fs-base)', color: 'var(--color-text)', lineHeight: 1.8, marginBottom: '1.5rem' }}>
-          Till den som kommit in på Siverts hemsida och har några frågor, råd eller funderingar till hur den kan förbättras eller justeras kan kontakta mig:
-        </p>
-
-        <p style={{ fontSize: 'var(--fs-base)', fontFamily: 'Georgia, serif', color: 'var(--color-accent)', marginBottom: '2rem' }}>
-          Jan Öqvist
-        </p>
-
-        <h3 style={{ fontFamily: 'Georgia, serif', fontWeight: 400, fontSize: 'var(--fs-lg)', marginBottom: '1.25rem' }}>
-          Allmänna kommentarer
-        </h3>
-
-        {[
-          'Beskrivande texter ska tillkomma och komplettera en del av de offentliga arbeten som Sivert har utfört.',
-          'Fotografers namn ska, i den mån de är kända, skrivas in. Svårigheter med vilka de enskilda fotograferna är har naturliga orsaker. Mest beroende på att en del bilderna är gåvor, gamla och tagna av okända fotografer och skickade till Sivert under årens lopp.',
-          'Dock är merparten av bilddokumentationen tagna ur Siverts eget bildarkiv. I de fall där inget står nämnt ska de ses som tagna av Sivert själv.',
-          'Känner någon fotograf igen sin bild och meddelar mig så kommer namnet att infogas i bildgalleriet.',
-        ].map((p, i) => (
-          <p key={i} style={{ fontSize: 'var(--fs-base)', color: 'var(--color-muted)', lineHeight: 1.8, marginBottom: '1rem' }}>
-            {p}
-          </p>
-        ))}
-
-        <p style={{ fontSize: 'var(--fs-base)', color: 'var(--color-text)', lineHeight: 1.8, marginTop: '2rem' }}>
-          Med vänliga hälsningar<br />
-          <span style={{ fontFamily: 'Georgia, serif', color: 'var(--color-accent)' }}>Jan Öqvist</span>{' '}
-          <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)' }}>(web-ansvarig)</span>
-        </p>
-      </section>
       </div>
     </div>
   )
