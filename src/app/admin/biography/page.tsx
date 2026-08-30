@@ -225,6 +225,9 @@ export default function AdminBiography() {
           >
             {cacheBusting ? 'Rensar…' : cacheBusted ? '✓ Cachad rensad' : '↺ Rensa cache'}
           </button>
+          <Link href="/admin/biography/pictogram">
+            <button className="btn">Piktogram →</button>
+          </Link>
           <Link href="/admin/biography/bibliography">
             <button className="btn">Litteraturförteckning →</button>
           </Link>
