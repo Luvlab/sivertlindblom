@@ -165,11 +165,6 @@ export default async function ReferencesPage({
               : <p>{dict.references?.fotografier_desc ?? 'Bilder som på ett eller annat sätt berört och inspirerat Sivert Lindblom i sitt arbete.'}</p>}
           </div>
           <GalleryGrid images={fotoLightboxImages} aspectRatio="3/2" columns="sm" showCaptions />
-          {fotografi.photographer && (
-            <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', marginTop: '1rem', fontStyle: 'italic' }}>
-              {dict.common?.photo_credit ?? 'Foto:'} {fotografi.photographer}
-            </p>
-          )}
         </section>
 
         {/* ── 6. Utmärkelser ────────────────────────────────── */}
