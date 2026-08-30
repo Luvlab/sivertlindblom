@@ -14,6 +14,7 @@ interface Doc {
   text: string      // truncated — sent to Gemini to keep prompt size reasonable
   fullText: string  // untruncated — used only for keyword scoring
   href: string
+  imageUrl?: string // first image — shown as thumbnail in the chat UI
 }
 
 function truncate(s: string | undefined | null, n: number): string {
@@ -66,6 +67,7 @@ async function buildCorpus(locale: string): Promise<Doc[]> {
       text: `${truncate(e.description, 600)} ${truncate(e.body, 900)}`.trim(),
       fullText: raw,
       href: `${L}/portfolio/exhibitions/${e.slug}`,
+      imageUrl: e.images?.[0] ?? undefined,
     })
   }
 
@@ -79,17 +81,20 @@ async function buildCorpus(locale: string): Promise<Doc[]> {
       text: `${truncate(w.description, 600)} ${truncate(w.body, 900)}`.trim(),
       fullText: raw,
       href: w.hrefBase ? `${L}${w.hrefBase}/${w.slug}` : `${L}/portfolio/public-works/${w.slug}`,
+      imageUrl: w.images?.[0]?.url ?? undefined,
     })
   }
 
   for (const s of sculptures) {
-    const raw = [full(s.description), full(s.body)].filter(Boolean).join(' ')
+    const altTexts = s.images?.map(img => img.alt).filter(Boolean).join(' ') ?? ''
+    const raw = [full(s.description), full(s.body), altTexts].filter(Boolean).join(' ')
     docs.push({
       title: s.title,
       meta: `Skulpturserie${s.years ? ' ' + s.years : ''}`,
       text: `${truncate(s.description, 600)} ${truncate(s.body, 900)}`.trim(),
       fullText: raw,
       href: `${L}/references/${s.slug}`,
+      imageUrl: s.images?.[0]?.url ?? undefined,
     })
   }
 
@@ -112,6 +117,7 @@ async function buildCorpus(locale: string): Promise<Doc[]> {
       text: truncate(f.desc, 900),
       fullText: raw,
       href: `${L}/references/film-tv/${f.slug}`,
+      imageUrl: f.poster ?? undefined,
     })
   }
 
@@ -123,6 +129,7 @@ async function buildCorpus(locale: string): Promise<Doc[]> {
       text: truncate(s.description, 900),
       fullText: raw,
       href: `${L}/portfolio/scenography/${s.slug}`,
+      imageUrl: s.images?.[0] ?? undefined,
     })
   }
 
@@ -291,7 +298,8 @@ Sök hela sajten: /${locale}/search`
       }
     } catch { /* logging is non-critical */ }
 
-    return NextResponse.json({ reply, sources: relevant.map((d) => d.title).slice(0, 10) })
+    const sources = relevant.slice(0, 8).map((d) => ({ title: d.title, href: d.href, imageUrl: d.imageUrl }))
+    return NextResponse.json({ reply, sources })
   } catch (e) {
     return NextResponse.json({ error: `Nätverksfel mot guiden: ${String(e)}` }, { status: 502 })
   }

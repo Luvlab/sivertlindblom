@@ -23,7 +23,8 @@ function renderRich(text: string, onNavigate: () => void): React.ReactNode {
   })
 }
 
-interface Msg { role: 'user' | 'assistant'; content: string }
+interface Source { title: string; href: string; imageUrl?: string }
+interface Msg { role: 'user' | 'assistant'; content: string; sources?: Source[] }
 
 interface GuideDict {
   open: string; title: string; subtitle: string; placeholder: string
@@ -112,8 +113,8 @@ export default function MuseumGuide({ locale, guideDict }: { locale: string; gui
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ messages: next, locale, sessionId: sessionId.current }),
       })
-      const data = await res.json() as { reply?: string; error?: string }
-      setMessages((m) => [...m, { role: 'assistant', content: data.reply || data.error || t.error }])
+      const data = await res.json() as { reply?: string; error?: string; sources?: Source[] }
+      setMessages((m) => [...m, { role: 'assistant', content: data.reply || data.error || t.error, sources: data.sources }])
     } catch {
       setMessages((m) => [...m, { role: 'assistant', content: t.error }])
     } finally {
@@ -188,9 +189,35 @@ export default function MuseumGuide({ locale, guideDict }: { locale: string; gui
               </>
             )}
             {messages.map((m, i) => (
-              <Bubble key={i} role={m.role}>
-                {m.role === 'assistant' ? renderRich(m.content, () => setOpen(false)) : m.content}
-              </Bubble>
+              <div key={i} style={{ display: 'flex', flexDirection: 'column', gap: '0.45rem', alignSelf: m.role === 'user' ? 'flex-end' : 'flex-start', maxWidth: '90%' }}>
+                <Bubble role={m.role}>
+                  {m.role === 'assistant' ? renderRich(m.content, () => setOpen(false)) : m.content}
+                </Bubble>
+                {m.role === 'assistant' && m.sources && m.sources.some(s => s.imageUrl) && (
+                  <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap', paddingLeft: '0.1rem' }}>
+                    {m.sources.filter(s => s.imageUrl).map((s, j) => (
+                      <Link key={j} href={s.href} onClick={() => setOpen(false)} title={s.title} style={{ display: 'block', flexShrink: 0 }}>
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src={s.imageUrl}
+                          alt={s.title}
+                          style={{
+                            width: 60,
+                            height: 60,
+                            objectFit: 'cover',
+                            borderRadius: 6,
+                            border: '1px solid var(--color-border)',
+                            display: 'block',
+                            transition: 'opacity 0.15s',
+                          }}
+                          onMouseEnter={(e) => { (e.currentTarget as HTMLImageElement).style.opacity = '0.75' }}
+                          onMouseLeave={(e) => { (e.currentTarget as HTMLImageElement).style.opacity = '1' }}
+                        />
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
             ))}
             {loading && <Bubble role="assistant"><span style={{ opacity: 0.6 }}>…</span></Bubble>}
           </div>
