@@ -20,12 +20,15 @@ interface Props {
 export default function MasonryGallery({ images, columns = '4', className }: Props) {
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null)
 
-  const lightboxImages: LightboxImage[] = images.map((img) => ({
-    url: img.url,
-    alt: img.caption ?? '',
-    caption: img.caption,
-    credit: img.credit,
-  }))
+  const lightboxImages: LightboxImage[] = images.map((img) => {
+    const captionIsCredit = img.caption && /^Foto:/i.test(img.caption) && !img.credit
+    return {
+      url: img.url,
+      alt: captionIsCredit ? '' : (img.caption ?? ''),
+      caption: captionIsCredit ? undefined : img.caption,
+      credit: captionIsCredit ? img.caption : img.credit,
+    }
+  })
 
   return (
     <>
