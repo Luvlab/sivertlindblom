@@ -183,6 +183,7 @@ export default function MuseumGuide({ locale, guideDict }: { locale: string; gui
                     <button key={s} onClick={() => send(s)} style={{
                       fontSize: 'var(--fs-xs)', padding: '0.35rem 0.6rem', borderRadius: 999,
                       background: 'transparent', border: '1px solid var(--color-border)', color: 'var(--color-accent)', cursor: 'pointer',
+                      textAlign: 'left',
                     }}>{s}</button>
                   ))}
                 </div>

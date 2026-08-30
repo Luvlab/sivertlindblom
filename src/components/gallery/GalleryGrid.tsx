@@ -78,12 +78,12 @@ export default function GalleryGrid({
               {showCaptions && (img.caption || img.credit) && (
                 <div style={{ paddingTop: '0.3rem', display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: '1rem' }}>
                   {img.caption && (
-                    <p style={{ margin: 0, fontSize: 'var(--fs-2xs)', color: 'var(--color-muted)', lineHeight: 1.4, flex: '1 1 auto' }}>
+                    <p style={{ margin: 0, fontSize: 'var(--fs-2xs)', color: 'var(--color-muted)', lineHeight: 1.4, flex: '1 1 auto', minWidth: 0, overflowWrap: 'break-word' }}>
                       {img.caption}
                     </p>
                   )}
                   {img.credit && (
-                    <p style={{ margin: 0, fontSize: 'var(--fs-2xs)', color: 'var(--color-muted)', opacity: 0.6, lineHeight: 1.4, whiteSpace: 'nowrap', marginLeft: 'auto' }}>
+                    <p style={{ margin: 0, fontSize: 'var(--fs-2xs)', color: 'var(--color-muted)', opacity: 0.6, lineHeight: 1.4, marginLeft: 'auto', flex: '0 1 auto', minWidth: 0, maxWidth: img.caption ? '55%' : '100%', textAlign: 'right', overflowWrap: 'break-word' }}>
                       {(() => { const c = img.credit.replace(/^ur: /i, 'ur '); return /^(ur |Foto:)/i.test(c) ? c : `Foto: ${c}` })()}
                     </p>
                   )}

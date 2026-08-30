@@ -375,7 +375,7 @@ export default function Lightbox({ images, startIndex, onClose }: Props) {
               </p>
             )}
             {displayCredit && (
-              <p style={{ margin: 0, color: 'rgba(255,255,255,0.5)', fontSize: 'var(--fs-2xs)', whiteSpace: 'nowrap', textShadow: '0 1px 6px rgba(0,0,0,0.9)', flexShrink: 0, marginLeft: 'auto' }}>
+              <p style={{ margin: 0, color: 'rgba(255,255,255,0.5)', fontSize: 'var(--fs-2xs)', textShadow: '0 1px 6px rgba(0,0,0,0.9)', flex: '0 1 auto', minWidth: 0, maxWidth: current.caption ? '55%' : '100%', textAlign: 'right', overflowWrap: 'break-word', marginLeft: 'auto' }}>
                 {displayCredit}
               </p>
             )}
