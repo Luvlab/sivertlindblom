@@ -206,12 +206,44 @@ function termVariants(term: string): string[] {
   return [...v]
 }
 
+/** Tokenize a question into per-word variant sets (shared by scoring and snippets). */
+function queryTermSets(question: string): string[][] {
+  const rawTerms = (question.toLowerCase().match(/\p{L}{3,}/gu) ?? [])
+  return rawTerms.map(termVariants)
+}
+
+/** Pull short excerpts around each term match out of the untruncated text — the
+ *  same idea as the site search's result snippets. This is what lets Gemini see
+ *  a passage that sits beyond the truncated `text` field (e.g. a foundry credit
+ *  late in a long body). */
+function extractSnippets(fullText: string, termSets: string[][], windowChars = 240, maxSnippets = 3): string[] {
+  if (!fullText) return []
+  const hay = fullText.toLowerCase()
+  const positions: number[] = []
+  for (const variants of termSets) {
+    for (const term of variants) {
+      let idx = hay.indexOf(term)
+      while (idx !== -1 && positions.length < 40) { positions.push(idx); idx = hay.indexOf(term, idx + term.length) }
+    }
+  }
+  if (positions.length === 0) return []
+  positions.sort((a, b) => a - b)
+  const ranges: Array<[number, number]> = []
+  for (const p of positions) {
+    const start = Math.max(0, p - Math.floor(windowChars / 3))
+    const end = Math.min(fullText.length, p + windowChars)
+    const last = ranges[ranges.length - 1]
+    if (last && start <= last[1]) last[1] = Math.max(last[1], end)
+    else ranges.push([start, end])
+  }
+  return ranges.slice(0, maxSnippets).map(([s, e]) =>
+    (s > 0 ? '…' : '') + fullText.slice(s, e).trim() + (e < fullText.length ? '…' : ''))
+}
+
 /** Keyword-score the corpus against the question and return the top matches.
  *  Scoring uses fullText (untruncated) so names anywhere in a description are found. */
-function retrieve(docs: Doc[], question: string, k = 25): Doc[] {
-  const rawTerms = (question.toLowerCase().match(/\p{L}{3,}/gu) ?? [])
-  if (rawTerms.length === 0) return docs.slice(0, k)
-  const termSets = rawTerms.map(termVariants)
+function retrieve(docs: Doc[], termSets: string[][], k = 25): Doc[] {
+  if (termSets.length === 0) return docs.slice(0, k)
   const scored = docs.map((d) => {
     const title = d.title.toLowerCase()
     const hay = (d.title + ' ' + d.meta + ' ' + d.fullText).toLowerCase()
@@ -227,6 +259,11 @@ function retrieve(docs: Doc[], question: string, k = 25): Doc[] {
         if (s > best) best = s
       }
       score += best
+    }
+    // Phrase bonus: adjacent query words appearing together (e.g. a full name
+    // like "ulf ferrius") rank far above scattered single-word matches.
+    for (let i = 0; i + 1 < termSets.length; i++) {
+      if (hay.includes(`${termSets[i][0]} ${termSets[i + 1][0]}`)) score += 8
     }
     return { d, score }
   })
@@ -270,8 +307,15 @@ export async function POST(req: NextRequest) {
 
   const locale = (body.locale ?? 'sv').replace(/[^a-z-]/gi, '').slice(0, 8) || 'sv'
   const corpus = await buildCorpus(locale)
-  const relevant = retrieve(corpus, lastUser.content)
-  const context = relevant.map((d) => `## ${d.title}\nURL: ${d.href}\n${d.meta}\n${d.text}`).join('\n\n')
+  const termSets = queryTermSets(lastUser.content)
+  const relevant = retrieve(corpus, termSets)
+  const context = relevant.map((d) => {
+    // Excerpts around the actual term matches (like the site search shows) — so a
+    // passage deep in a long text still reaches the model even when `text` is truncated.
+    const snippets = extractSnippets(d.fullText, termSets).filter((s) => !d.text.includes(s.replace(/^…|…$/g, '')))
+    const snippetBlock = snippets.length > 0 ? `\nRelevanta utdrag: ${snippets.join(' | ')}` : ''
+    return `## ${d.title}\nURL: ${d.href}\n${d.meta}\n${d.text}${snippetBlock}`
+  }).join('\n\n')
 
   // Extra curator-supplied knowledge (e.g. a CV about Jan Öqvist), always included.
   let knowledge = ''
