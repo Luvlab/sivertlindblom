@@ -66,12 +66,12 @@ export default function GalleryGrid({
             {showCaptions && (img.caption || img.credit) && (
               <div style={{ paddingTop: '0.3rem', display: 'flex', flexDirection: 'column', gap: '0.1rem' }}>
                 {img.caption && (
-                  <p style={{ margin: 0, fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', lineHeight: 1.4 }}>
+                  <p style={{ margin: 0, fontSize: 'var(--fs-2xs)', color: 'var(--color-muted)', lineHeight: 1.4 }}>
                     {img.caption}
                   </p>
                 )}
                 {img.credit && (
-                  <p style={{ margin: 0, fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', opacity: 0.6, lineHeight: 1.4 }}>
+                  <p style={{ margin: 0, fontSize: 'var(--fs-2xs)', color: 'var(--color-muted)', opacity: 0.6, lineHeight: 1.4 }}>
                     {/^(ur |Foto:)/i.test(img.credit) ? img.credit : `Foto: ${img.credit}`}
                   </p>
                 )}

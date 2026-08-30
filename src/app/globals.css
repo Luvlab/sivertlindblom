@@ -3,6 +3,7 @@
 /* ─── CSS Custom Properties ─────────────────────────────── */
 :root {
   --font-scale: 1;
+  --fs-2xs:  calc(0.65rem  * var(--font-scale));
   --fs-xs:   calc(0.75rem  * var(--font-scale));
   --fs-sm:   calc(0.875rem * var(--font-scale));
   --fs-base: calc(1rem     * var(--font-scale));

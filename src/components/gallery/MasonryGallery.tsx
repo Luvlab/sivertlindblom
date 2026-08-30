@@ -80,12 +80,12 @@ export default function MasonryGallery({ images, columns = '4', className }: Pro
               return (
                 <div style={{ lineHeight: 1.4, paddingTop: '0.3rem', display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: '0.5rem' }}>
                   {caption && (
-                    <p style={{ margin: 0, fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', flex: '1 1 auto' }}>
+                    <p style={{ margin: 0, fontSize: 'var(--fs-2xs)', color: 'var(--color-muted)', flex: '1 1 auto' }}>
                       {caption}
                     </p>
                   )}
                   {credit && (
-                    <p style={{ margin: 0, fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', opacity: 0.6, marginLeft: 'auto', whiteSpace: 'nowrap' }}>
+                    <p style={{ margin: 0, fontSize: 'var(--fs-2xs)', color: 'var(--color-muted)', opacity: 0.6, marginLeft: 'auto', whiteSpace: 'nowrap' }}>
                       {credit}
                     </p>
                   )}
