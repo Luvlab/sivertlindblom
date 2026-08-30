@@ -50,9 +50,24 @@ export async function PUT(request: Request) {
   if (!(await checkAuth())) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   const supabase = createAdminClient()
   if (!supabase) return NextResponse.json({ error: 'Supabase ej tillgänglig' }, { status: 500 })
-  let body: { text?: string; autosave?: boolean }
+  let body: { text?: string; autosave?: boolean; base?: string; force?: boolean }
   try { body = await request.json() } catch { return NextResponse.json({ error: 'Ogiltig förfrågan' }, { status: 400 }) }
   const text = (body.text ?? '').slice(0, 100000)
+
+  // Lost-update guard: if the client tells us which text its edit was based on
+  // and the DB has moved on (another tab/computer saved meanwhile), refuse the
+  // write — after snapshotting BOTH versions so neither can ever be lost.
+  if (typeof body.base === 'string' && !body.force) {
+    const { data: cur } = await supabase.from('settings').select('value').eq('key', KEY).maybeSingle()
+    const current = (cur?.value as string) ?? ''
+    if (current !== body.base) {
+      try {
+        if (current) await supabase.from('guide_knowledge_versions').insert({ value: current, source: 'conflict' })
+        if (text && text !== current) await supabase.from('guide_knowledge_versions').insert({ value: text, source: 'conflict' })
+      } catch { /* non-critical */ }
+      return NextResponse.json({ error: 'conflict', current }, { status: 409 })
+    }
+  }
 
   // Version the outgoing value first — nothing is ever lost on save.
   try { await snapshot(supabase, body.autosave ? 'autosave' : 'manual', text) } catch { /* non-critical */ }

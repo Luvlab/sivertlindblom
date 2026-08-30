@@ -9,15 +9,16 @@ interface KnowledgeVersion {
   id: string
   created_at: string
   chars: number
-  source: 'manual' | 'autosave' | 'contribution' | 'restore' | 'system'
+  source: 'manual' | 'autosave' | 'contribution' | 'restore' | 'system' | 'conflict'
 }
 
-const VERSION_SOURCE_LABEL: Record<KnowledgeVersion['source'], string> = {
+const VERSION_SOURCE_LABEL: Record<string, string> = {
   manual: 'Manuell sparning',
   autosave: 'Autosparning',
   contribution: 'Före besökarbidrag',
   restore: 'Före återställning',
   system: 'Systembackup',
+  conflict: 'Sparkonflikt (räddad kopia)',
 }
 
 interface Contribution {
@@ -89,6 +90,7 @@ export default function AdminGuide() {
   const [kSaving, setKSaving] = useState(false)
   const [kSaved, setKSaved] = useState(false)
   const [kAutoSavedAt, setKAutoSavedAt] = useState<string | null>(null)
+  const [kConflict, setKConflict] = useState<string | null>(null) // server text when a save conflicted
   const fileRef = useRef<HTMLInputElement>(null)
   const lastSavedRef = useRef('')
 
@@ -137,11 +139,20 @@ export default function AdminGuide() {
     setKnowledge(prev => (prev.trim() ? prev + '\n\n' : '') + text)
   }
 
-  async function saveKnowledge(autosave = false) {
+  async function saveKnowledge(autosave = false, force = false) {
     setKSaving(true)
     try {
-      await fetch('/api/admin/guide-knowledge', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text: knowledge, autosave }) })
+      const res = await fetch('/api/admin/guide-knowledge', {
+        method: 'PUT', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text: knowledge, autosave, base: lastSavedRef.current, force }),
+      })
+      if (res.status === 409) {
+        const d = await res.json() as { current?: string }
+        setKConflict(d.current ?? '')
+        return
+      }
       lastSavedRef.current = knowledge
+      setKConflict(null)
       if (autosave) {
         setKAutoSavedAt(new Date().toLocaleTimeString('sv-SE', { hour: '2-digit', minute: '2-digit' }))
       } else {
@@ -152,11 +163,11 @@ export default function AdminGuide() {
 
   // Autosave: 3 s after typing stops, if the text actually changed.
   useEffect(() => {
-    if (knowledge === lastSavedRef.current) return
+    if (knowledge === lastSavedRef.current || kConflict !== null) return
     const t = setTimeout(() => { saveKnowledge(true) }, 3000)
     return () => clearTimeout(t)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [knowledge])
+  }, [knowledge, kConflict])
 
   async function restoreVersion(id: string) {
     if (!confirm('Återställa denna version? Nuvarande text sparas i historiken först.')) return
@@ -229,6 +240,18 @@ export default function AdminGuide() {
         <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', margin: '0 0 0.9rem' }}>
           Extra bakgrund som guiden alltid får med sig — t.ex. en CV om Jan Öqvist. Klistra in text eller ladda upp en .txt-fil. Guiden svarar utifrån detta om en besökare frågar.
         </p>
+        {kConflict !== null && (
+          <div style={{ background: '#3a2a00', border: '1px solid #c90', borderRadius: 4, padding: '0.75rem 1rem', marginBottom: '0.75rem', fontSize: 'var(--fs-sm)', color: '#fc6' }}>
+            ⚠ Texten har ändrats någon annanstans (en annan flik eller dator) sedan du öppnade den.
+            Din version är <strong>inte</strong> sparad än — men båda versionerna finns säkrade i historiken.
+            <div style={{ display: 'flex', gap: '0.6rem', marginTop: '0.6rem' }}>
+              <button type="button" className="btn" onClick={() => {
+                setKnowledge(kConflict); lastSavedRef.current = kConflict; setKConflict(null)
+              }}>Använd den andra versionen</button>
+              <button type="button" className="btn btn-primary" onClick={() => saveKnowledge(false, true)}>Spara min version ändå</button>
+            </div>
+          </div>
+        )}
         <textarea
           className="input"
           rows={10}
