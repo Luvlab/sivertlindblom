@@ -248,7 +248,7 @@ export async function POST(req: NextRequest) {
     const supa = createAdminClient()
     if (supa) {
       const { data } = await supa.from('settings').select('value').eq('key', 'guide_knowledge').maybeSingle()
-      knowledge = ((data?.value as string) ?? '').slice(0, 12000)
+      knowledge = ((data?.value as string) ?? '').slice(0, 40000)
     }
   } catch { /* optional */ }
 
