@@ -74,14 +74,14 @@ export default function MasonryGallery({ images, columns = '4', className }: Pro
               />
             </button>
             {(img.caption || img.credit) && (
-              <div style={{ lineHeight: 1.4, paddingTop: '0.3rem', display: 'flex', flexDirection: 'column', gap: '0.1rem' }}>
+              <div style={{ lineHeight: 1.4, paddingTop: '0.3rem', display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: '0.5rem' }}>
                 {img.caption && (
-                  <p style={{ margin: 0, fontSize: 'var(--fs-xs)', color: 'var(--color-muted)' }}>
+                  <p style={{ margin: 0, fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', flex: '1 1 auto' }}>
                     {img.caption}
                   </p>
                 )}
                 {img.credit && (
-                  <p style={{ margin: 0, fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', opacity: 0.6 }}>
+                  <p style={{ margin: 0, fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', opacity: 0.6, marginLeft: 'auto', whiteSpace: 'nowrap' }}>
                     {/^(ur |Foto:)/i.test(img.credit) ? img.credit : `Foto: ${img.credit}`}
                   </p>
                 )}
