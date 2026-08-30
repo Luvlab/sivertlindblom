@@ -103,6 +103,7 @@ export default function Lightbox({ images, startIndex, onClose }: Props) {
   }, [index, images, total])
 
   const current = images[index]
+  const displayCredit = current?.credit && !/ur siverts bildarkiv/i.test(current.credit) ? current.credit : undefined
 
   function handleBackdropClick(e: React.MouseEvent<HTMLDivElement>) {
     if (e.target === e.currentTarget) onClose()
@@ -348,7 +349,7 @@ export default function Lightbox({ images, startIndex, onClose }: Props) {
           alt={current.alt}
           style={{
             maxWidth: '95vw',
-            maxHeight: current.caption || current.credit ? '82vh' : '90vh',
+            maxHeight: current.caption || displayCredit ? '82vh' : '90vh',
             objectFit: 'contain',
             display: 'block',
             userSelect: 'none',
@@ -356,7 +357,7 @@ export default function Lightbox({ images, startIndex, onClose }: Props) {
         />
 
         {/* Caption row — caption left, credit right, both below the image */}
-        {(current.caption || current.credit) && (
+        {(current.caption || displayCredit) && (
           <div style={{
             width: '100%',
             display: 'flex',
@@ -371,9 +372,9 @@ export default function Lightbox({ images, startIndex, onClose }: Props) {
                 {current.caption}
               </p>
             )}
-            {current.credit && (
+            {displayCredit && (
               <p style={{ margin: 0, color: 'rgba(255,255,255,0.5)', fontSize: 'var(--fs-sm)', whiteSpace: 'nowrap', textShadow: '0 1px 6px rgba(0,0,0,0.9)', flexShrink: 0 }}>
-                {current.credit}
+                {displayCredit}
               </p>
             )}
           </div>
