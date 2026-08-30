@@ -284,6 +284,8 @@ Sök hela sajten: /${locale}/search`
     const reply = json.candidates?.[0]?.content?.parts?.map((p) => p.text ?? '').join('').trim()
     if (!reply) return NextResponse.json({ error: 'Guiden gav inget svar. Försök igen.' }, { status: 502 })
 
+    const sources = relevant.map((d) => ({ title: d.title, href: d.href, imageUrl: d.imageUrl }))
+
     // Log the exchange (best-effort; never blocks or fails the reply).
     try {
       const supabase = createAdminClient()
@@ -294,11 +296,10 @@ Sök hela sajten: /${locale}/search`
           locale: (body.locale ?? '').slice(0, 8) || null,
           question: lastUser.content.slice(0, 2000),
           answer: reply.slice(0, 4000),
+          sources: sources.length > 0 ? sources : null,
         })
       }
     } catch { /* logging is non-critical */ }
-
-    const sources = relevant.map((d) => ({ title: d.title, href: d.href, imageUrl: d.imageUrl }))
     return NextResponse.json({ reply, sources })
   } catch (e) {
     return NextResponse.json({ error: `Nätverksfel mot guiden: ${String(e)}` }, { status: 502 })

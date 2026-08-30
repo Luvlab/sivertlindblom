@@ -1,6 +1,9 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
+import Link from 'next/link'
+
+interface Source { title: string; href: string; imageUrl?: string }
 
 interface Chat {
   id: string
@@ -13,6 +16,22 @@ interface Chat {
   locale: string | null
   question: string
   answer: string
+  sources?: Source[] | null
+}
+
+/** Render assistant text, turning [label](url) markdown into clickable links. */
+function renderRich(text: string): React.ReactNode {
+  const parts = text.split(/(\[[^\]]+\]\([^)]+\))/g)
+  const linkStyle: React.CSSProperties = { color: 'var(--color-accent)', textDecoration: 'underline', textUnderlineOffset: '2px' }
+  return parts.map((part, i) => {
+    const m = part.match(/^\[([^\]]+)\]\(([^)]+)\)$/)
+    if (!m) return <span key={i}>{part}</span>
+    const [, label, rawUrl] = m
+    const abs = rawUrl.match(/^https?:\/\/[^/]+(\/(?:sv|en)\/[^\s)]*)$/i)
+    const url = abs ? abs[1] : rawUrl
+    if (url.startsWith('/')) return <Link key={i} href={url} target="_blank" rel="noopener noreferrer" style={linkStyle}>{label}</Link>
+    return <a key={i} href={url} target="_blank" rel="noopener noreferrer" style={linkStyle}>{label}</a>
+  })
 }
 
 interface Conversation {
@@ -172,8 +191,46 @@ export default function AdminGuide() {
                       <span style={{ color: 'var(--color-accent)', marginRight: '0.4rem' }}>Fråga:</span>{c.question}
                     </div>
                     <div style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-muted)', marginTop: '0.25rem', whiteSpace: 'pre-wrap' }}>
-                      <span style={{ color: 'var(--color-accent)', marginRight: '0.4rem' }}>Guiden:</span>{c.answer}
+                      <span style={{ color: 'var(--color-accent)', marginRight: '0.4rem' }}>Guiden:</span>{renderRich(c.answer)}
                     </div>
+                    {c.sources && c.sources.length > 0 && (
+                      <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap', marginTop: '0.45rem' }}>
+                        {c.sources.slice(0, 12).map((s, j) => (
+                          <Link key={j} href={s.href} target="_blank" rel="noopener noreferrer" title={s.title} style={{ display: 'block', flexShrink: 0 }}>
+                            {s.imageUrl ? (
+                              /* eslint-disable-next-line @next/next/no-img-element */
+                              <img
+                                src={s.imageUrl}
+                                alt={s.title}
+                                style={{
+                                  width: 60, height: 60, objectFit: 'cover', borderRadius: 6,
+                                  border: '1px solid var(--color-border)', display: 'block',
+                                  transition: 'opacity 0.15s',
+                                }}
+                                onMouseEnter={(e) => { (e.currentTarget as HTMLImageElement).style.opacity = '0.75' }}
+                                onMouseLeave={(e) => { (e.currentTarget as HTMLImageElement).style.opacity = '1' }}
+                              />
+                            ) : (
+                              <span style={{
+                                display: 'inline-flex', alignItems: 'center',
+                                padding: '0.2rem 0.55rem', borderRadius: 6,
+                                border: '1px solid var(--color-border)',
+                                background: 'var(--color-bg-surface)',
+                                color: 'var(--color-accent)',
+                                fontSize: 'var(--fs-2xs)', lineHeight: 1.35,
+                                maxWidth: 130, overflow: 'hidden', textOverflow: 'ellipsis',
+                                whiteSpace: 'nowrap', transition: 'opacity 0.15s',
+                              }}
+                              onMouseEnter={(e) => { (e.currentTarget as HTMLSpanElement).style.opacity = '0.7' }}
+                              onMouseLeave={(e) => { (e.currentTarget as HTMLSpanElement).style.opacity = '1' }}
+                              >
+                                {s.title.length > 28 ? s.title.slice(0, 26) + '…' : s.title}
+                              </span>
+                            )}
+                          </Link>
+                        ))}
+                      </div>
+                    )}
                     <div style={{ fontSize: '0.6rem', color: 'var(--color-border)', marginTop: '0.2rem' }}>{fmt(c.created_at)}</div>
                   </div>
                 ))}
