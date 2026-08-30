@@ -15,9 +15,11 @@ interface Props {
   columns?: string
   /** Additional class on the grid wrapper */
   className?: string
+  /** Make the last image span full width */
+  fullWidthLast?: boolean
 }
 
-export default function MasonryGallery({ images, columns = '4', className }: Props) {
+export default function MasonryGallery({ images, columns = '4', className, fullWidthLast = false }: Props) {
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null)
 
   const lightboxImages: LightboxImage[] = images.map((img) => {
@@ -39,12 +41,15 @@ export default function MasonryGallery({ images, columns = '4', className }: Pro
           columnGap: '6px',
         }}
       >
-        {images.map((img, i) => (
+        {images.map((img, i) => {
+          const isLast = fullWidthLast && i === images.length - 1
+          return (
           <div
             key={i}
             style={{
               breakInside: 'avoid',
               marginBottom: 6,
+              ...(isLast ? { columnSpan: 'all' as const } : {}),
             }}
           >
             <button
@@ -79,7 +84,7 @@ export default function MasonryGallery({ images, columns = '4', className }: Pro
             {(img.caption || img.credit) && (() => {
               const captionIsCredit = img.caption && /^Foto:/i.test(img.caption) && !img.credit
               const caption = captionIsCredit ? undefined : img.caption
-              const credit = captionIsCredit ? img.caption : (img.credit ? (/^(ur |Foto:)/i.test(img.credit) ? img.credit : `Foto: ${img.credit}`) : undefined)
+              const credit = captionIsCredit ? img.caption : (img.credit ? ((() => { const c = img.credit.replace(/^ur: /i, 'ur '); return /^(ur |Foto:)/i.test(c) ? c : `Foto: ${c}` })()) : undefined)
               return (
                 <div style={{ lineHeight: 1.4, paddingTop: '0.3rem', display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: '0.5rem' }}>
                   {caption && (
@@ -96,7 +101,8 @@ export default function MasonryGallery({ images, columns = '4', className }: Pro
               )
             })()}
           </div>
-        ))}
+          )
+        })}
       </div>
 
       {lightboxIndex !== null && (

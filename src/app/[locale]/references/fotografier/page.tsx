@@ -41,7 +41,7 @@ export default async function FotografierPage({
       <hr className="divider" />
 
       <div className="page-pad" style={{ paddingTop: '2rem', paddingBottom: '2rem' }}>
-        <MasonryGallery images={FOTOGRAFIER_IMAGES} columns="4" />
+        <MasonryGallery images={FOTOGRAFIER_IMAGES} columns="4" fullWidthLast />
       </div>
 
       <div className="page-pad" style={{ paddingBottom: '4rem' }}>

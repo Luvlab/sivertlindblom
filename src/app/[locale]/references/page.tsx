@@ -318,7 +318,7 @@ export default async function ReferencesPage({
             </p>
           )}
           {ogonblickLightboxImages.length > 0 && (
-            <GalleryGrid images={ogonblickLightboxImages} aspectRatio="4/3" columns="sm" showCaptions />
+            <GalleryGrid images={ogonblickLightboxImages} aspectRatio="4/3" columns="sm" showCaptions fullWidthLast />
           )}
         </section>
 
