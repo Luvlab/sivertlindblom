@@ -298,7 +298,7 @@ Sök hela sajten: /${locale}/search`
       }
     } catch { /* logging is non-critical */ }
 
-    const sources = relevant.slice(0, 8).map((d) => ({ title: d.title, href: d.href, imageUrl: d.imageUrl }))
+    const sources = relevant.map((d) => ({ title: d.title, href: d.href, imageUrl: d.imageUrl }))
     return NextResponse.json({ reply, sources })
   } catch (e) {
     return NextResponse.json({ error: `Nätverksfel mot guiden: ${String(e)}` }, { status: 502 })

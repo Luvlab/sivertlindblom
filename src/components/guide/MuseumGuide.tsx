@@ -193,26 +193,40 @@ export default function MuseumGuide({ locale, guideDict }: { locale: string; gui
                 <Bubble role={m.role}>
                   {m.role === 'assistant' ? renderRich(m.content, () => setOpen(false)) : m.content}
                 </Bubble>
-                {m.role === 'assistant' && m.sources && m.sources.some(s => s.imageUrl) && (
+                {m.role === 'assistant' && m.sources && m.sources.length > 0 && (
                   <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap', paddingLeft: '0.1rem' }}>
-                    {m.sources.filter(s => s.imageUrl).map((s, j) => (
+                    {m.sources.slice(0, 12).map((s, j) => (
                       <Link key={j} href={s.href} onClick={() => setOpen(false)} title={s.title} style={{ display: 'block', flexShrink: 0 }}>
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img
-                          src={s.imageUrl}
-                          alt={s.title}
-                          style={{
-                            width: 60,
-                            height: 60,
-                            objectFit: 'cover',
-                            borderRadius: 6,
+                        {s.imageUrl ? (
+                          /* eslint-disable-next-line @next/next/no-img-element */
+                          <img
+                            src={s.imageUrl}
+                            alt={s.title}
+                            style={{
+                              width: 60, height: 60, objectFit: 'cover', borderRadius: 6,
+                              border: '1px solid var(--color-border)', display: 'block',
+                              transition: 'opacity 0.15s',
+                            }}
+                            onMouseEnter={(e) => { (e.currentTarget as HTMLImageElement).style.opacity = '0.75' }}
+                            onMouseLeave={(e) => { (e.currentTarget as HTMLImageElement).style.opacity = '1' }}
+                          />
+                        ) : (
+                          <span style={{
+                            display: 'inline-flex', alignItems: 'center',
+                            padding: '0.2rem 0.55rem', borderRadius: 6,
                             border: '1px solid var(--color-border)',
-                            display: 'block',
-                            transition: 'opacity 0.15s',
+                            background: 'var(--color-bg-surface)',
+                            color: 'var(--color-accent)',
+                            fontSize: 'var(--fs-2xs)', lineHeight: 1.35,
+                            maxWidth: 130, overflow: 'hidden', textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap', transition: 'opacity 0.15s',
                           }}
-                          onMouseEnter={(e) => { (e.currentTarget as HTMLImageElement).style.opacity = '0.75' }}
-                          onMouseLeave={(e) => { (e.currentTarget as HTMLImageElement).style.opacity = '1' }}
-                        />
+                          onMouseEnter={(e) => { (e.currentTarget as HTMLSpanElement).style.opacity = '0.7' }}
+                          onMouseLeave={(e) => { (e.currentTarget as HTMLSpanElement).style.opacity = '1' }}
+                          >
+                            {s.title.length > 28 ? s.title.slice(0, 26) + '…' : s.title}
+                          </span>
+                        )}
                       </Link>
                     ))}
                   </div>
