@@ -74,14 +74,14 @@ export default function MasonryGallery({ images, columns = '4', className }: Pro
               />
             </button>
             {(img.caption || img.credit) && (
-              <div style={{ lineHeight: 1.4, paddingTop: '0.3rem' }}>
+              <div style={{ lineHeight: 1.4, paddingTop: '0.3rem', display: 'flex', flexDirection: 'column', gap: '0.1rem' }}>
                 {img.caption && (
-                  <p style={{ margin: 0, fontSize: '0.72rem', color: 'var(--color-text)', letterSpacing: '0.02em' }}>
+                  <p style={{ margin: 0, fontSize: 'var(--fs-xs)', color: 'var(--color-muted)' }}>
                     {img.caption}
                   </p>
                 )}
                 {img.credit && (
-                  <p style={{ margin: 0, fontSize: '0.66rem', color: 'var(--color-accent)', letterSpacing: '0.04em', marginTop: '0.1rem' }}>
+                  <p style={{ margin: 0, fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', opacity: 0.6 }}>
                     {img.credit}
                   </p>
                 )}

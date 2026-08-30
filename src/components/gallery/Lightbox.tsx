@@ -367,13 +367,13 @@ export default function Lightbox({ images, startIndex, onClose }: Props) {
             pointerEvents: 'none',
           }}>
             {current.caption && (
-              <p style={{ margin: 0, color: 'rgba(255,255,255,0.65)', fontSize: 'var(--fs-sm)', textShadow: '0 1px 6px rgba(0,0,0,0.9)', flex: '1 1 auto' }}>
+              <p style={{ margin: 0, color: 'rgba(255,255,255,0.5)', fontSize: 'var(--fs-sm)', textShadow: '0 1px 6px rgba(0,0,0,0.9)', flex: '1 1 auto' }}>
                 {current.caption}
               </p>
             )}
             {current.credit && (
-              <p style={{ margin: 0, color: 'rgba(255,255,255,0.4)', fontSize: 'var(--fs-xs)', whiteSpace: 'nowrap', textShadow: '0 1px 6px rgba(0,0,0,0.9)', flexShrink: 0 }}>
-                Foto: {current.credit}
+              <p style={{ margin: 0, color: 'rgba(255,255,255,0.5)', fontSize: 'var(--fs-sm)', whiteSpace: 'nowrap', textShadow: '0 1px 6px rgba(0,0,0,0.9)', flexShrink: 0 }}>
+                {current.credit}
               </p>
             )}
           </div>
