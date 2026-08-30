@@ -185,19 +185,48 @@ async function buildCorpus(locale: string): Promise<Doc[]> {
   return docs.filter((d) => d.title)
 }
 
+/** Irregular Swedish verb/word forms → the stem actually used in the archive texts,
+ *  so a visitor's "vem gjöt?" finds "gjutet av gjuteriet …". */
+const IRREGULAR_STEMS: Record<string, string> = {
+  'gjöt': 'gjut', 'göt': 'gjut', 'gjöts': 'gjut', 'gjuten': 'gjut', 'gjutna': 'gjut',
+  'skrev': 'skriv', 'skrivit': 'skriv',
+  'byggde': 'bygg', 'byggt': 'bygg',
+  'ställde': 'ställ', 'stod': 'stå',
+}
+
+/** Expand a query term into match variants: the term itself, an irregular stem if
+ *  known, and a suffix-stripped stem so plural/definite forms ("skulpturer",
+ *  "monoliterna") match the singular in the texts. */
+function termVariants(term: string): string[] {
+  const v = new Set([term])
+  if (IRREGULAR_STEMS[term]) v.add(IRREGULAR_STEMS[term])
+  for (const suf of ['erna', 'arna', 'orna', 'er', 'ar', 'or', 'en', 'et', 'na', 's']) {
+    if (term.endsWith(suf) && term.length - suf.length >= 4) { v.add(term.slice(0, term.length - suf.length)); break }
+  }
+  return [...v]
+}
+
 /** Keyword-score the corpus against the question and return the top matches.
  *  Scoring uses fullText (untruncated) so names anywhere in a description are found. */
 function retrieve(docs: Doc[], question: string, k = 25): Doc[] {
-  const terms = (question.toLowerCase().match(/\p{L}{3,}/gu) ?? [])
-  if (terms.length === 0) return docs.slice(0, k)
+  const rawTerms = (question.toLowerCase().match(/\p{L}{3,}/gu) ?? [])
+  if (rawTerms.length === 0) return docs.slice(0, k)
+  const termSets = rawTerms.map(termVariants)
   const scored = docs.map((d) => {
     const title = d.title.toLowerCase()
     const hay = (d.title + ' ' + d.meta + ' ' + d.fullText).toLowerCase()
     let score = 0
-    for (const term of terms) {
-      if (title.includes(term)) score += 4
-      let idx = hay.indexOf(term)
-      while (idx !== -1) { score += 1; idx = hay.indexOf(term, idx + term.length) }
+    for (const variants of termSets) {
+      // Each query word scores once, via its best-matching variant.
+      let best = 0
+      for (const term of variants) {
+        let s = 0
+        if (title.includes(term)) s += 4
+        let idx = hay.indexOf(term)
+        while (idx !== -1) { s += 1; idx = hay.indexOf(term, idx + term.length) }
+        if (s > best) best = s
+      }
+      score += best
     }
     return { d, score }
   })
@@ -212,7 +241,9 @@ const SYSTEM = `Du är museiguiden för skulptören Sivert Lindbloms konstarkiv 
 
 Regler:
 - Svara ENDAST utifrån materialet nedan. Hitta aldrig på verk, årtal, platser eller citat.
-- Om svaret inte finns i materialet: säg ärligt att just det inte framgår här, och tipsa om att besökaren kan söka på hela sajten via söksidan.
+- Om svaret inte finns i materialet: säg ärligt att just det inte framgår här, och tipsa om att besökaren kan söka på hela sajten via söksidan. Fråga också gärna om besökaren själv känner till något om saken — berätta att redaktören granskar allt och kan lägga till det i arkivet. Avsluta i så fall svaret med taggen [[SAKNAS: kort beskrivning av vilken information som saknas]].
+- Om besökaren delar med sig av ny information som inte finns i materialet (en minnesbild, ett årtal, en person, en plats): tacka varmt, förklara att redaktören granskar bidraget innan det publiceras, och avsluta svaret med taggen [[BIDRAG: kort sammanfattning av det besökaren berättade]].
+- Taggarna [[SAKNAS: …]] och [[BIDRAG: …]] är osynliga för besökaren och läses bara av redaktionen — skriv dem exakt i det formatet, allra sist i svaret.
 - Svara på SAMMA språk som besökaren skriver.
 - För enkla faktafrågor: håll svaret kortfattat och levande — som en engagerad guide, inte en uppslagsbok.
 - För listfrågor (t.ex. "visa allt om X", "var nämns Y", "lista alla"): räkna upp ALLA relevanta poster i materialet med länk till var och en. Hoppa inte över träffar och förkorta inte listan.
@@ -248,7 +279,7 @@ export async function POST(req: NextRequest) {
     const supa = createAdminClient()
     if (supa) {
       const { data } = await supa.from('settings').select('value').eq('key', 'guide_knowledge').maybeSingle()
-      knowledge = ((data?.value as string) ?? '').slice(0, 40000)
+      knowledge = ((data?.value as string) ?? '').slice(0, 60000)
     }
   } catch { /* optional */ }
 
@@ -281,8 +312,35 @@ Sök hela sajten: /${locale}/search`
       return NextResponse.json({ error: `Guiden kunde inte svara just nu (${res.status}).`, detail: err.slice(0, 200) }, { status: 502 })
     }
     const json = await res.json() as { candidates?: Array<{ content?: { parts?: Array<{ text?: string }> } }> }
-    const reply = json.candidates?.[0]?.content?.parts?.map((p) => p.text ?? '').join('').trim()
-    if (!reply) return NextResponse.json({ error: 'Guiden gav inget svar. Försök igen.' }, { status: 502 })
+    const rawReply = json.candidates?.[0]?.content?.parts?.map((p) => p.text ?? '').join('').trim()
+    if (!rawReply) return NextResponse.json({ error: 'Guiden gav inget svar. Försök igen.' }, { status: 502 })
+
+    // Extract editorial tags ([[SAKNAS: …]] / [[BIDRAG: …]]) — never shown to the
+    // visitor; they become pending items Jan can screen in the admin and, if
+    // approved, add to the guide knowledge.
+    const tagRe = /\[\[\s*(SAKNAS|BIDRAG)\s*:\s*([\s\S]*?)\]\]/gi
+    const flagged: Array<{ kind: string; detail: string }> = []
+    for (const m of rawReply.matchAll(tagRe)) {
+      const detail = m[2].trim().slice(0, 1000)
+      if (detail) flagged.push({ kind: m[1].toUpperCase() === 'BIDRAG' ? 'contribution' : 'missing', detail })
+    }
+    const reply = rawReply.replace(tagRe, '').trim()
+    if (flagged.length > 0) {
+      try {
+        const supabase = createAdminClient()
+        if (supabase) {
+          await supabase.from('guide_contributions').insert(flagged.map((f) => ({
+            session_id: (body.sessionId ?? '').slice(0, 80) || null,
+            ip, country, city,
+            locale: (body.locale ?? '').slice(0, 8) || null,
+            kind: f.kind,
+            question: lastUser.content.slice(0, 2000),
+            detail: f.detail,
+            answer: reply.slice(0, 4000),
+          })))
+        }
+      } catch { /* non-critical */ }
+    }
 
     const sources = relevant.map((d) => ({ title: d.title, href: d.href, imageUrl: d.imageUrl }))
 

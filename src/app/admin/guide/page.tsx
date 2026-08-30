@@ -5,6 +5,33 @@ import Link from 'next/link'
 
 interface Source { title: string; href: string; imageUrl?: string }
 
+interface KnowledgeVersion {
+  id: string
+  created_at: string
+  chars: number
+  source: 'manual' | 'autosave' | 'contribution' | 'restore' | 'system'
+}
+
+const VERSION_SOURCE_LABEL: Record<KnowledgeVersion['source'], string> = {
+  manual: 'Manuell sparning',
+  autosave: 'Autosparning',
+  contribution: 'Före besökarbidrag',
+  restore: 'Före återställning',
+  system: 'Systembackup',
+}
+
+interface Contribution {
+  id: string
+  created_at: string
+  kind: 'missing' | 'contribution'
+  question: string | null
+  detail: string
+  answer: string | null
+  status: 'pending' | 'added' | 'dismissed'
+  country: string | null
+  city: string | null
+}
+
 interface Chat {
   id: string
   created_at: string
@@ -61,12 +88,48 @@ export default function AdminGuide() {
   const [knowledge, setKnowledge] = useState('')
   const [kSaving, setKSaving] = useState(false)
   const [kSaved, setKSaved] = useState(false)
+  const [kAutoSavedAt, setKAutoSavedAt] = useState<string | null>(null)
   const fileRef = useRef<HTMLInputElement>(null)
+  const lastSavedRef = useRef('')
 
-  useEffect(() => {
+  // Version history of the knowledge text (every save is backed up server-side).
+  const [versions, setVersions] = useState<KnowledgeVersion[]>([])
+  const [showVersions, setShowVersions] = useState(false)
+  const [restoring, setRestoring] = useState<string | null>(null)
+
+  // Visitor contributions / missing-info flags waiting for screening.
+  const [contribs, setContribs] = useState<Contribution[]>([])
+  const [contribBusy, setContribBusy] = useState<string | null>(null)
+
+  function loadKnowledge() {
     fetch('/api/admin/guide-knowledge', { cache: 'no-store' })
-      .then(r => r.json()).then((d: { text?: string }) => setKnowledge(d.text ?? '')).catch(() => {})
-  }, [])
+      .then(r => r.json()).then((d: { text?: string }) => {
+        const t = d.text ?? ''
+        setKnowledge(t)
+        lastSavedRef.current = t
+      }).catch(() => {})
+  }
+  function loadVersions() {
+    fetch('/api/admin/guide-knowledge?versions=1', { cache: 'no-store' })
+      .then(r => r.json()).then((d: { versions?: KnowledgeVersion[] }) => setVersions(d.versions ?? [])).catch(() => {})
+  }
+  function loadContribs() {
+    fetch('/api/admin/guide-contributions', { cache: 'no-store' })
+      .then(r => r.json()).then((d: { contributions?: Contribution[] }) => setContribs(d.contributions ?? [])).catch(() => {})
+  }
+  useEffect(() => { loadKnowledge(); loadContribs() }, [])
+
+  async function screenContrib(id: string, action: 'add' | 'dismiss') {
+    setContribBusy(id)
+    try {
+      await fetch('/api/admin/guide-contributions', {
+        method: 'PATCH', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id, action }),
+      })
+      loadContribs()
+      if (action === 'add') loadKnowledge() // textarea picks up the appended block
+    } finally { setContribBusy(null) }
+  }
 
   async function loadTxt(file: File | undefined) {
     if (!file) return
@@ -74,12 +137,39 @@ export default function AdminGuide() {
     setKnowledge(prev => (prev.trim() ? prev + '\n\n' : '') + text)
   }
 
-  async function saveKnowledge() {
+  async function saveKnowledge(autosave = false) {
     setKSaving(true)
     try {
-      await fetch('/api/admin/guide-knowledge', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text: knowledge }) })
-      setKSaved(true); setTimeout(() => setKSaved(false), 3000)
+      await fetch('/api/admin/guide-knowledge', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text: knowledge, autosave }) })
+      lastSavedRef.current = knowledge
+      if (autosave) {
+        setKAutoSavedAt(new Date().toLocaleTimeString('sv-SE', { hour: '2-digit', minute: '2-digit' }))
+      } else {
+        setKSaved(true); setTimeout(() => setKSaved(false), 3000)
+      }
     } finally { setKSaving(false) }
+  }
+
+  // Autosave: 3 s after typing stops, if the text actually changed.
+  useEffect(() => {
+    if (knowledge === lastSavedRef.current) return
+    const t = setTimeout(() => { saveKnowledge(true) }, 3000)
+    return () => clearTimeout(t)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [knowledge])
+
+  async function restoreVersion(id: string) {
+    if (!confirm('Återställa denna version? Nuvarande text sparas i historiken först.')) return
+    setRestoring(id)
+    try {
+      const res = await fetch('/api/admin/guide-knowledge', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ restoreId: id }) })
+      const d = await res.json() as { ok?: boolean; text?: string; error?: string }
+      if (d.ok && typeof d.text === 'string') {
+        setKnowledge(d.text)
+        lastSavedRef.current = d.text
+        loadVersions()
+      } else if (d.error) alert(d.error)
+    } finally { setRestoring(null) }
   }
 
   function load() {
@@ -150,11 +240,83 @@ export default function AdminGuide() {
         <div style={{ display: 'flex', gap: '0.6rem', alignItems: 'center', marginTop: '0.75rem', flexWrap: 'wrap' }}>
           <input ref={fileRef} type="file" accept=".txt,text/plain" style={{ display: 'none' }} onChange={e => { loadTxt(e.target.files?.[0]); e.target.value = '' }} />
           <button type="button" className="btn" onClick={() => fileRef.current?.click()}>⬆ Ladda upp .txt</button>
-          <button type="button" className="btn btn-primary" onClick={saveKnowledge} disabled={kSaving}>{kSaving ? 'Sparar…' : 'Spara kunskap'}</button>
+          <button type="button" className="btn btn-primary" onClick={() => saveKnowledge()} disabled={kSaving}>{kSaving ? 'Sparar…' : 'Spara kunskap'}</button>
+          <button type="button" className="btn" onClick={() => { if (!showVersions) loadVersions(); setShowVersions(!showVersions) }}>
+            {showVersions ? 'Dölj historik' : '🕐 Historik'}
+          </button>
           {kSaved && <span style={{ color: 'var(--color-accent)', fontSize: 'var(--fs-sm)' }}>✓ Sparad</span>}
+          {!kSaved && kAutoSavedAt && <span style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-xs)' }}>Autosparad {kAutoSavedAt}</span>}
           <span style={{ color: 'var(--color-border)', fontSize: 'var(--fs-xs)', marginLeft: 'auto' }}>{knowledge.length} tecken</span>
         </div>
+        {showVersions && (
+          <div style={{ marginTop: '1rem', borderTop: '1px solid var(--color-border)', paddingTop: '0.75rem' }}>
+            <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', margin: '0 0 0.6rem' }}>
+              Varje sparning säkerhetskopieras automatiskt (de {'≤'}100 senaste behålls). Återställ en tidigare version — den nuvarande texten sparas i historiken först, så inget går förlorat.
+            </p>
+            {versions.length === 0 ? (
+              <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', fontStyle: 'italic' }}>Ingen historik ännu.</p>
+            ) : (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.3rem', maxHeight: 220, overflowY: 'auto' }}>
+                {versions.map(v => (
+                  <div key={v.id} style={{ display: 'flex', gap: '0.8rem', alignItems: 'baseline', fontSize: 'var(--fs-xs)', padding: '0.25rem 0' }}>
+                    <span style={{ color: 'var(--color-text)', whiteSpace: 'nowrap' }}>{fmt(v.created_at)}</span>
+                    <span style={{ color: 'var(--color-muted)' }}>{VERSION_SOURCE_LABEL[v.source] ?? v.source}</span>
+                    <span style={{ color: 'var(--color-border)' }}>{v.chars.toLocaleString('sv-SE')} tecken</span>
+                    <button
+                      type="button" className="btn"
+                      style={{ marginLeft: 'auto', fontSize: 'var(--fs-2xs)', padding: '0.15rem 0.5rem' }}
+                      disabled={restoring === v.id}
+                      onClick={() => restoreVersion(v.id)}
+                    >
+                      {restoring === v.id ? 'Återställer…' : 'Återställ'}
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
       </div>
+
+      {/* Visitor contributions awaiting screening */}
+      {contribs.filter(c => c.status === 'pending').length > 0 && (
+        <div style={{ border: '1px solid var(--color-accent)', borderRadius: 6, padding: '1.25rem', marginBottom: '2.5rem' }}>
+          <h2 style={{ fontFamily: 'Georgia, serif', fontSize: 'var(--fs-lg)', margin: '0 0 0.25rem' }}>
+            Förslag från besökare <span style={{ color: 'var(--color-accent)' }}>({contribs.filter(c => c.status === 'pending').length})</span>
+          </h2>
+          <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', margin: '0 0 1rem' }}>
+            Guiden flaggar frågor den inte kunde svara på, och information besökare själva delar med sig av.
+            Granska varje post — <strong>Lägg till</strong> skriver in den i guidens kunskap ovan (du kan sedan redigera texten fritt), <strong>Avfärda</strong> tar bort den från listan.
+          </p>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.9rem' }}>
+            {contribs.filter(c => c.status === 'pending').map(c => (
+              <div key={c.id} style={{ border: '1px solid var(--color-border)', borderRadius: 6, padding: '0.8rem 1rem' }}>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem 1rem', alignItems: 'baseline', fontSize: 'var(--fs-xs)', marginBottom: '0.4rem' }}>
+                  <span style={{ color: c.kind === 'contribution' ? 'var(--color-accent)' : 'var(--color-muted)', fontWeight: 600 }}>
+                    {c.kind === 'contribution' ? '💡 Bidrag från besökare' : '❓ Info saknas'}
+                  </span>
+                  <span style={{ color: 'var(--color-muted)' }}>{fmt(c.created_at)}</span>
+                  {(c.city || c.country) && <span style={{ color: 'var(--color-muted)' }}>{[c.city, c.country].filter(Boolean).join(', ')}</span>}
+                </div>
+                {c.question && (
+                  <div style={{ fontSize: 'var(--fs-sm)', fontWeight: 600, marginBottom: '0.25rem' }}>
+                    <span style={{ color: 'var(--color-accent)', marginRight: '0.4rem' }}>Fråga:</span>{c.question}
+                  </div>
+                )}
+                <div style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-text)', whiteSpace: 'pre-wrap' }}>{c.detail}</div>
+                <div style={{ display: 'flex', gap: '0.6rem', marginTop: '0.7rem' }}>
+                  <button className="btn btn-primary" disabled={contribBusy === c.id} onClick={() => screenContrib(c.id, 'add')}>
+                    {contribBusy === c.id ? 'Sparar…' : '✓ Lägg till i kunskapen'}
+                  </button>
+                  <button className="btn" disabled={contribBusy === c.id} onClick={() => screenContrib(c.id, 'dismiss')}>
+                    Avfärda
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {error && <div style={{ background: '#3a0010', border: '1px solid #c00', padding: '1rem', marginBottom: '1.5rem', fontSize: 'var(--fs-sm)', color: '#f88', borderRadius: 4 }}>{error}</div>}
 
