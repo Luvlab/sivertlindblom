@@ -72,7 +72,7 @@ export default function GalleryGrid({
                 )}
                 {img.credit && (
                   <p style={{ margin: 0, fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', opacity: 0.6, lineHeight: 1.4 }}>
-                    {img.credit.startsWith('ur ') ? img.credit : `Foto: ${img.credit}`}
+                    {/^(ur |Foto:)/i.test(img.credit) ? img.credit : `Foto: ${img.credit}`}
                   </p>
                 )}
               </div>

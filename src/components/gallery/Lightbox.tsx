@@ -104,7 +104,7 @@ export default function Lightbox({ images, startIndex, onClose }: Props) {
 
   const current = images[index]
   const displayCredit = current?.credit
-    ? (current.credit.startsWith('ur ') ? current.credit : `Foto: ${current.credit}`)
+    ? (/^(ur |Foto:)/i.test(current.credit) ? current.credit : `Foto: ${current.credit}`)
     : undefined
 
   function handleBackdropClick(e: React.MouseEvent<HTMLDivElement>) {

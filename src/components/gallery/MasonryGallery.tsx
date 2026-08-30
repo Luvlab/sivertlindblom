@@ -82,7 +82,7 @@ export default function MasonryGallery({ images, columns = '4', className }: Pro
                 )}
                 {img.credit && (
                   <p style={{ margin: 0, fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', opacity: 0.6 }}>
-                    {img.credit.startsWith('ur ') ? img.credit : `Foto: ${img.credit}`}
+                    {/^(ur |Foto:)/i.test(img.credit) ? img.credit : `Foto: ${img.credit}`}
                   </p>
                 )}
               </div>
