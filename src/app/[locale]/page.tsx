@@ -50,6 +50,9 @@ export default async function HomePage({
             lineHeight: 1.05,
             margin: '0 0 1.5rem',
             maxWidth: '14ch',
+            // Optical alignment: at this size the serif S's side bearing pushes the
+            // visible ink a few px right of the header logo; pull it back flush.
+            marginLeft: '-0.05em',
           }}>
             {home.siteTitle}
           </h1>
