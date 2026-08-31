@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import Script from 'next/script'
 import type { SculptureLocation } from '@/lib/sculpture-locations'
 
 declare global {
@@ -46,22 +45,34 @@ export default function SculptureMap({ locations, locale, mapHeight = 480, compa
   const circlesRef = useRef<Map<number, any>>(new Map())
   const [leafletReady, setLeafletReady] = useState(false)
   const [selectedType, setSelectedType] = useState<string | null>(null)
-  const scriptsLoadedRef = useRef(0)
 
-  const handleScriptLoad = () => {
-    scriptsLoadedRef.current++
-    if (scriptsLoadedRef.current >= 2) setLeafletReady(true)
-  }
-
-  // If scripts are already cached from a previous visit, onLoad won't fire.
-  // Poll until window.L + markerClusterGroup are present.
+  // Load Leaflet then the cluster plugin STRICTLY in sequence. The plugin
+  // executes against window.L at load time, so parallel <Script> tags raced:
+  // when the plugin won, it threw, markerClusterGroup never existed, and the
+  // map stayed blank until a lucky (cached) reload.
   useEffect(() => {
-    if (typeof window === 'undefined') return
-    if (window.L?.markerClusterGroup) { setLeafletReady(true); return }
-    const id = setInterval(() => {
-      if (window.L?.markerClusterGroup) { setLeafletReady(true); clearInterval(id) }
-    }, 100)
-    return () => clearInterval(id)
+    let cancelled = false
+    const loadScript = (src: string) => new Promise<void>((resolve, reject) => {
+      const existing = document.querySelector(`script[src="${src}"]`) as HTMLScriptElement | null
+      if (existing) {
+        if (existing.dataset.loaded === 'true') return resolve()
+        existing.addEventListener('load', () => resolve())
+        existing.addEventListener('error', () => reject(new Error(`Failed to load ${src}`)))
+        return
+      }
+      const s = document.createElement('script')
+      s.src = src
+      s.crossOrigin = ''
+      s.addEventListener('load', () => { s.dataset.loaded = 'true'; resolve() })
+      s.addEventListener('error', () => reject(new Error(`Failed to load ${src}`)))
+      document.head.appendChild(s)
+    })
+    ;(async () => {
+      if (!window.L) await loadScript('https://unpkg.com/leaflet@1.9.4/dist/leaflet.js')
+      if (!window.L?.markerClusterGroup) await loadScript('https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js')
+      if (!cancelled && window.L?.markerClusterGroup) setLeafletReady(true)
+    })().catch(() => { /* network failure — map stays hidden */ })
+    return () => { cancelled = true }
   }, [])
 
   useEffect(() => {
@@ -291,22 +302,9 @@ export default function SculptureMap({ locations, locale, mapHeight = 480, compa
         href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css"
         crossOrigin=""
       />
-      <Script
-        src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-        crossOrigin=""
-        onLoad={handleScriptLoad}
-        strategy="afterInteractive"
-      />
-      <Script
-        src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"
-        crossOrigin=""
-        onLoad={handleScriptLoad}
-        strategy="afterInteractive"
-      />
-
       {/* Type filter */}
       {showFilter && (
-      <div style={{ padding: compact ? '0.75rem 1rem' : '0 3rem 1rem', display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
+      <div style={{ padding: compact ? '0.75rem 1rem' : '0 clamp(1rem, 4vw, 5rem) 1rem', display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
         <button
           onClick={() => setSelectedType(null)}
           style={{
@@ -357,7 +355,7 @@ export default function SculptureMap({ locations, locale, mapHeight = 480, compa
         style={{
           height: mapHeight,
           background: '#111',
-          margin: compact ? 0 : '0 clamp(1rem,3vw,3rem)',
+          margin: compact ? 0 : '0 clamp(1rem, 4vw, 5rem)', // match .page-pad gutters
           borderRadius: compact ? 0 : 2,
           overflow: 'hidden',
           border: compact ? 'none' : '1px solid var(--color-border)',
