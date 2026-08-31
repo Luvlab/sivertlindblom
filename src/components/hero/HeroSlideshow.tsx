@@ -150,7 +150,7 @@ export default function HeroSlideshow({ children, slides, random = true }: Props
   }, [startFade])
 
   useEffect(() => {
-    if (paused) {
+    if (paused || images.length < 2) {
       if (intervalRef.current) clearInterval(intervalRef.current)
       return
     }
@@ -187,16 +187,19 @@ export default function HeroSlideshow({ children, slides, random = true }: Props
     restartInterval()
   }
 
-  const frontImg  = images[frontIdx]
-  const backImg   = images[backIdx]
+  const frontImg  = images[frontIdx] ?? images[0]
+  const backImg   = images[backIdx] ?? images[0]
   const activeIdx = fading ? backIdx : frontIdx   // which image the user sees
 
   return (
     <section
       className="hero"
       aria-label="Sivert Lindblom — hero slideshow"
-      onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(false)}
+      // Pause on hover — but only for a real mouse. Touch devices fire an
+      // emulated mouseenter on tap with no mouseleave ever following, which
+      // froze autoplay permanently on mobile. pointerType lets us tell them apart.
+      onPointerEnter={(e) => { if (e.pointerType === 'mouse') setPaused(true) }}
+      onPointerLeave={(e) => { if (e.pointerType === 'mouse') setPaused(false) }}
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
     >
@@ -290,7 +293,7 @@ export default function HeroSlideshow({ children, slides, random = true }: Props
       >
         <span style={{ width: 1, height: 30, background: 'rgba(255,255,255,0.25)', display: 'block', flexShrink: 0 }} />
         <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '16ch' }}>
-          {images[activeIdx].alt}
+          {(images[activeIdx] ?? images[0]).alt}
         </span>
       </div>
     </section>
