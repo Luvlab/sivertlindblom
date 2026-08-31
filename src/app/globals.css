@@ -436,6 +436,12 @@ a:hover { opacity: 0.7; }
 .row-hover { transition: background 0.12s; }
 .row-hover:hover { background: var(--color-bg-card); }
 
+/* Map callout row — subtle hover: borders + CTA warm to accent, no boxy background */
+.map-callout { transition: border-color 0.2s; }
+.map-callout:hover { border-color: var(--color-accent-dim) !important; }
+.map-callout .map-callout-cta { transition: color 0.2s; }
+.map-callout:hover .map-callout-cta { color: var(--color-accent); }
+
 .card-hover { transition: border-color 0.2s; }
 .card-hover:hover { border-color: var(--color-accent-dim) !important; }
 

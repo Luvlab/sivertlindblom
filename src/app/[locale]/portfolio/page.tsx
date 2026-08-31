@@ -102,7 +102,7 @@ export default async function PortfolioPage({
         {/* Map callout */}
         <Link
           href={`/${locale}/portfolio/map`}
-          className="row-hover"
+          className="map-callout"
           style={{
             display: 'flex',
             alignItems: 'center',
@@ -124,7 +124,7 @@ export default async function PortfolioPage({
               {mapPins.length} {dict.portfolio?.map_works ?? 'offentliga verk'} · {new Set(mapPins.map(l => l.country)).size} {dict.portfolio?.map_countries ?? 'länder'}
             </span>
           </div>
-          <span style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-muted)', flexShrink: 0 }}>
+          <span className="map-callout-cta" style={{ fontSize: 'var(--fs-sm)', color: 'var(--color-muted)', flexShrink: 0 }}>
             {dict.portfolio?.map_label ?? 'Visa karta'} →
           </span>
         </Link>
