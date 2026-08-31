@@ -192,7 +192,11 @@ export default async function BiographyPage({
               grid-template-columns: 1fr min(420px, 38vw);
               gap: clamp(2rem, 4vw, 4rem);
               align-items: start;
+              /* Long unbreakable words (e.g. "Ingenjörsvetenskapsakademiens") in
+                 timeline/award rows must never widen the page on mobile. */
+              overflow-wrap: break-word;
             }
+            .bio-layout div, .bio-layout span, .bio-layout summary { min-width: 0; }
             .bio-portrait-col {
               position: sticky;
               top: calc(var(--header-h) + var(--subnav-h) + 1.5rem);
