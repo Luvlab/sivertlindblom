@@ -51,7 +51,7 @@ function shuffle<T>(arr: T[]): T[] {
   return a
 }
 
-const DISPLAY_MS = 9000  // hold time per slide
+const DISPLAY_MS = 6000  // hold time per slide
 const FADE_MS    = 6000  // crossfade duration
 
 /** A hero slide. `focal` is a CSS object-position ("50% 30%") that decides which
