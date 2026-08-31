@@ -327,7 +327,7 @@ export default function ImageListEditor({ images, onChange, label = 'Bilder', ca
                   type="text"
                   value={credits?.[url] ?? ''}
                   onChange={e => setCredit(url, e.target.value)}
-                  placeholder="Foto: (fotografens namn)"
+                  placeholder="Foto: Namn — eller ur Siverts bildarkiv (visas exakt så här)"
                   onMouseDown={e => e.stopPropagation()}
                   draggable={false}
                   style={{

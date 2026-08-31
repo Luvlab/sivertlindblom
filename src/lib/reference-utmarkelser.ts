@@ -101,6 +101,9 @@ export function cleanUtmarkelser(input: unknown): UtmarkelserSection {
             desc: p.desc?.trim() || undefined,
             quote: p.quote?.trim() || undefined,
             images: Array.isArray(p.images) ? p.images.filter((u) => typeof u === 'string' && u.trim()) : [],
+            links: Array.isArray(p.links)
+              ? p.links.filter((l) => l && typeof l.url === 'string' && l.url.trim() && typeof l.label === 'string' && l.label.trim())
+              : undefined,
           }))
       : [],
   }

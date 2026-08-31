@@ -25,7 +25,7 @@ export interface LightboxImage {
   url: string
   alt: string
   caption?: string
-  /** Photographer credit — rendered as "Foto: …" under the caption. */
+  /** Photographer credit — rendered exactly as entered, under the caption. */
   credit?: string
 }
 
@@ -103,9 +103,10 @@ export default function Lightbox({ images, startIndex, onClose }: Props) {
   }, [index, images, total])
 
   const current = images[index]
+  // Show the credit exactly as entered — no auto "Foto:" prefixing. The
+  // curator decides in admin whether it reads "Foto: Name" or "ur Siverts
+  // bildarkiv" or anything else.
   const displayCredit = current?.credit
-    ? ((() => { const c = current.credit.replace(/^ur: /i, 'ur '); return /^(ur |Foto:)/i.test(c) ? c : `Foto: ${c}` })())
-    : undefined
 
   function handleBackdropClick(e: React.MouseEvent<HTMLDivElement>) {
     if (e.target === e.currentTarget) onClose()

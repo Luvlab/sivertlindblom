@@ -97,7 +97,17 @@ export default function AdminExhibitions() {
                   )}
                 </td>
                 <td style={{ padding: '0.85rem 1rem 0.85rem 0', color: 'var(--color-accent)', fontFamily: 'Georgia, serif', width: '4rem' }}>{e.year}</td>
-                <td style={{ padding: '0.85rem 1rem', maxWidth: 340 }}>{e.title}</td>
+                <td style={{ padding: '0.85rem 1rem', maxWidth: 340 }}>
+                  {e.title}
+                  {e.published === false && (
+                    <span style={{
+                      marginLeft: '0.6rem', fontSize: 'var(--fs-2xs)', textTransform: 'uppercase', letterSpacing: '0.06em',
+                      color: '#e0a030', border: '1px solid #e0a03060', borderRadius: 2, padding: '0.1em 0.45em',
+                    }}>
+                      Dold
+                    </span>
+                  )}
+                </td>
                 <td style={{ padding: '0.85rem 1rem', color: 'var(--color-muted)' }}>{e.location}</td>
                 <td style={{ padding: '0.85rem 1rem', color: 'var(--color-muted)' }}>{e.images.length}</td>
                 <td style={{ padding: '0.85rem 0 0.85rem 1rem' }}>

@@ -82,18 +82,21 @@ export default function MasonryGallery({ images, columns = '4', className, fullW
               />
             </button>
             {(img.caption || img.credit) && (() => {
+              // Route a caption that's ALREADY written as a credit (starts with "Foto:")
+              // into the credit slot when no separate credit was entered — but never
+              // invent or rewrite the wording. Jan controls the exact text in admin.
               const captionIsCredit = img.caption && /^Foto:/i.test(img.caption) && !img.credit
               const caption = captionIsCredit ? undefined : img.caption
-              const credit = captionIsCredit ? img.caption : (img.credit ? ((() => { const c = img.credit.replace(/^ur: /i, 'ur '); return /^(ur |Foto:)/i.test(c) ? c : `Foto: ${c}` })()) : undefined)
+              const credit = captionIsCredit ? img.caption : img.credit
               return (
-                <div style={{ lineHeight: 1.4, paddingTop: '0.3rem', display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: '0.5rem' }}>
+                <div style={{ lineHeight: 1.4, paddingTop: '0.3rem', display: 'flex', flexDirection: 'column', gap: '0.15rem' }}>
                   {caption && (
-                    <p style={{ margin: 0, fontSize: 'var(--fs-2xs)', color: 'var(--color-muted)', flex: '1 1 auto', minWidth: 0, overflowWrap: 'break-word' }}>
+                    <p style={{ margin: 0, fontSize: 'var(--fs-2xs)', color: 'var(--color-muted)', textShadow: '0 1px 3px rgba(0,0,0,0.4)', overflowWrap: 'break-word' }}>
                       {caption}
                     </p>
                   )}
                   {credit && (
-                    <p style={{ margin: 0, fontSize: 'var(--fs-2xs)', color: 'var(--color-muted)', opacity: 0.6, marginLeft: 'auto', flex: '0 1 auto', minWidth: 0, maxWidth: caption ? '55%' : '100%', textAlign: 'right', overflowWrap: 'break-word' }}>
+                    <p style={{ margin: 0, fontSize: 'var(--fs-2xs)', color: 'var(--color-muted)', textShadow: '0 1px 3px rgba(0,0,0,0.4)', overflowWrap: 'break-word' }}>
                       {credit}
                     </p>
                   )}

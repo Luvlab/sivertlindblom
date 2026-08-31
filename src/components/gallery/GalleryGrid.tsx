@@ -76,15 +76,15 @@ export default function GalleryGrid({
                 />
               </button>
               {showCaptions && (img.caption || img.credit) && (
-                <div style={{ paddingTop: '0.3rem', display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: '1rem' }}>
+                <div style={{ paddingTop: '0.3rem', display: 'flex', flexDirection: 'column', gap: '0.15rem' }}>
                   {img.caption && (
-                    <p style={{ margin: 0, fontSize: 'var(--fs-2xs)', color: 'var(--color-muted)', lineHeight: 1.4, flex: '1 1 auto', minWidth: 0, overflowWrap: 'break-word' }}>
+                    <p style={{ margin: 0, fontSize: 'var(--fs-2xs)', color: 'var(--color-muted)', lineHeight: 1.4, textShadow: '0 1px 3px rgba(0,0,0,0.4)', overflowWrap: 'break-word' }}>
                       {img.caption}
                     </p>
                   )}
                   {img.credit && (
-                    <p style={{ margin: 0, fontSize: 'var(--fs-2xs)', color: 'var(--color-muted)', opacity: 0.6, lineHeight: 1.4, marginLeft: 'auto', flex: '0 1 auto', minWidth: 0, maxWidth: img.caption ? '55%' : '100%', textAlign: 'right', overflowWrap: 'break-word' }}>
-                      {(() => { const c = img.credit.replace(/^ur: /i, 'ur '); return /^(ur |Foto:)/i.test(c) ? c : `Foto: ${c}` })()}
+                    <p style={{ margin: 0, fontSize: 'var(--fs-2xs)', color: 'var(--color-muted)', lineHeight: 1.4, textShadow: '0 1px 3px rgba(0,0,0,0.4)', overflowWrap: 'break-word' }}>
+                      {img.credit}
                     </p>
                   )}
                 </div>

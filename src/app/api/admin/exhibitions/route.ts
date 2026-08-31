@@ -38,6 +38,7 @@ export async function GET() {
         body: w.body ?? undefined,
         links: (w.links as Exhibition['links']) ?? undefined,
         photographerCredit: (w.photographer_credit as string) ?? undefined,
+        published: (w.published as boolean) ?? true,
         images: ((w.images as { url: string; sort_order?: number }[]) ?? [])
           .sort((a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0))
           .map((img) => img.url),

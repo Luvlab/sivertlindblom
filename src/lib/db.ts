@@ -3,7 +3,7 @@ import type { Work, Text, BiographyEntry, SiteSettings } from '@/types'
 
 export const FALLBACK_SETTINGS: SiteSettings = {
   site_title:   'Sivert Lindblom',
-  site_subtitle:'Skulptör · Konstnär · Stockholm',
+  site_subtitle:'Skulptör/Bildkonstnär · Stockholm',
   hero_tagline: 'Skulptur, offentlig konst, akvareller och scenografi sedan 1957',
   contact_email:'info@sivertlindblom.se',
   about_short:  'Sivert Lindblom (f. 1931) är en av Sveriges mest betydande skulptörer. Han studerade vid Kungliga Konsthögskolan 1958–1963 och har sedan dess skapat ett omfattande verk av skulpturer, offentliga installationer, akvareller och scenografi.',

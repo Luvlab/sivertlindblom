@@ -54,6 +54,9 @@ export interface Exhibition {
   publicTemporary?: boolean;
   /** YouTube or direct video URL embedded on the exhibition page. */
   videoUrl?: string;
+  /** Whether this exhibition is visible on the live site. Admin-only field —
+   *  absent (undefined) for the static fallback list, which is always shown. */
+  published?: boolean;
 }
 
 export const exhibitions: Exhibition[] = [

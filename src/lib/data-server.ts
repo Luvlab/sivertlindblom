@@ -363,6 +363,7 @@ export async function getExhibitions(): Promise<Exhibition[]> {
     const { data, error } = await supabase
       .from('works')
       .select('*, images(url, sort_order)')
+      .eq('published', true)
       .order('year_start', { ascending: false })
     if (!error && data) return data.map((r) => dbRowToExhibition(r as Record<string, unknown>))
   }
@@ -409,6 +410,7 @@ export async function getExhibition(slug: string): Promise<Exhibition | null> {
       .from('works')
       .select('*, images(url, alt, sort_order)')
       .eq('slug', slug)
+      .eq('published', true)
       .single()
     if (!error && data) {
       const exhibition = dbRowToExhibition(data as Record<string, unknown>)
@@ -470,7 +472,7 @@ export async function getExhibitionSlugs(): Promise<string[]> {
   cacheLife('days')
   const supabase = createAdminClient()
   if (supabase) {
-    const { data, error } = await supabase.from('works').select('slug')
+    const { data, error } = await supabase.from('works').select('slug').eq('published', true)
     if (!error && data) return data.map((r) => r.slug as string)
   }
   return STATIC_EXHIBITIONS.map((e) => e.slug)
