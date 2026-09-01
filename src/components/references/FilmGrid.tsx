@@ -14,7 +14,12 @@ export default function FilmGrid({ locale, films }: Props) {
   return (
     <div style={{
       display: 'grid',
-      gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
+      // minmax(max(220px, 19%), 1fr): each column is never narrower than
+      // 220px, but also never less than ~1/5 of the row — capping it at
+      // 5 per row on wide screens while staying fluid on narrow ones.
+      // (19%, not 20%, so the 5-column row reliably fits once gaps are
+      // subtracted — at exactly 20% the 5th column never quite fit.)
+      gridTemplateColumns: 'repeat(auto-fill, minmax(max(220px, 19%), 1fr))',
       gap: '3px',
     }}>
       {list.map((f) => {

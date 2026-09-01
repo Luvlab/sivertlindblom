@@ -78,7 +78,12 @@ export default async function ReferencesPage({
 
         {/* ── 1. Skulptur ───────────────────────────────────── */}
         <section className="page-pad" style={{ paddingTop: '3rem', paddingBottom: '3rem' }}>
-          <div style={{ display: 'grid', gap: '1rem', gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 160px), 1fr))' }}>
+          <style>{`
+            .sculpture-series-grid { display: grid; gap: 1.25rem; grid-template-columns: repeat(5, 1fr); }
+            @media (max-width: 900px) { .sculpture-series-grid { grid-template-columns: repeat(3, 1fr); } }
+            @media (max-width: 600px) { .sculpture-series-grid { grid-template-columns: repeat(2, 1fr); } }
+          `}</style>
+          <div className="sculpture-series-grid">
             {sculptureSeries.map((s, i) => {
               const images = slideshowImages[s.slug] ?? []
               return (
@@ -119,7 +124,7 @@ export default async function ReferencesPage({
           )}
           {grafikLightboxImages.length > 0 ? (
             <>
-              <GalleryGrid images={grafikLightboxImages} aspectRatio="1/1" columns="sm" />
+              <GalleryGrid images={grafikLightboxImages} aspectRatio="1/1" columns={6} />
               {grafik.photographer && (
                 <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', marginTop: '1rem', fontStyle: 'italic' }}>
                   {dict.common?.photo_credit ?? 'Foto:'} {grafik.photographer}
@@ -164,7 +169,7 @@ export default async function ReferencesPage({
               ? renderParagraphs(fotografi.intro, { marginBottom: '0.75rem' })
               : <p>{dict.references?.fotografier_desc ?? 'Bilder som på ett eller annat sätt berört och inspirerat Sivert Lindblom i sitt arbete.'}</p>}
           </div>
-          <GalleryGrid images={fotoLightboxImages} aspectRatio="3/2" columns="sm" showCaptions />
+          <GalleryGrid images={fotoLightboxImages} aspectRatio="3/2" columns="sm" showCaptions fullWidthLast />
         </section>
 
         {/* ── 6. Utmärkelser ────────────────────────────────── */}

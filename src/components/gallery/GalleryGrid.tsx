@@ -6,14 +6,17 @@ import Lightbox, { type LightboxImage } from './Lightbox'
 interface Props {
   images: LightboxImage[]
   aspectRatio?: string
-  columns?: 'sm' | 'md' | 'lg'
+  /** Preset responsive columns (auto-fill), or a fixed column count for a
+   *  tidy grid of exact rows (e.g. 6 → 3 rows of 6 for 18 images). A fixed
+   *  count steps down to 3 columns ≤900px and 2 columns ≤600px. */
+  columns?: 'sm' | 'md' | 'lg' | number
   /** Show caption and credit text below each thumbnail */
   showCaptions?: boolean
   /** Make the last image span full width with caption left and credit right */
   fullWidthLast?: boolean
 }
 
-const GRID_CLASS: Record<NonNullable<Props['columns']>, string> = {
+const GRID_CLASS: Record<'sm' | 'md' | 'lg', string> = {
   sm: 'auto-grid-sm',
   md: 'auto-grid',
   lg: 'auto-grid-wide',
@@ -30,10 +33,19 @@ export default function GalleryGrid({
 
   if (!images.length) return null
 
-  const gridClass = GRID_CLASS[columns]
+  const isFixed = typeof columns === 'number'
+  const fixedClass = isFixed ? `grid-fixed-${columns}` : undefined
+  const gridClass = isFixed ? fixedClass : GRID_CLASS[columns]
 
   return (
     <>
+      {isFixed && (
+        <style>{`
+          .${fixedClass} { display: grid; gap: 1.5rem; grid-template-columns: repeat(${columns}, 1fr); }
+          @media (max-width: 900px) { .${fixedClass} { grid-template-columns: repeat(3, 1fr); } }
+          @media (max-width: 600px) { .${fixedClass} { grid-template-columns: repeat(2, 1fr); } }
+        `}</style>
+      )}
       <div className={gridClass}>
         {images.map((img, i) => {
           const isLast = fullWidthLast && i === images.length - 1
@@ -76,14 +88,23 @@ export default function GalleryGrid({
                 />
               </button>
               {showCaptions && (img.caption || img.credit) && (
-                <div style={{ paddingTop: '0.3rem', display: 'flex', flexDirection: 'column', gap: '0.15rem' }}>
+                // The full-width last image has room to spare, so caption and
+                // credit sit side by side (credit right-aligned) instead of
+                // the stacked layout used for the smaller grid thumbnails.
+                <div style={{
+                  paddingTop: '0.3rem',
+                  display: 'flex',
+                  flexDirection: isLast ? 'row' : 'column',
+                  justifyContent: isLast ? 'space-between' : undefined,
+                  gap: isLast ? '1rem' : '0.15rem',
+                }}>
                   {img.caption && (
-                    <p style={{ margin: 0, fontSize: 'var(--fs-2xs)', color: 'var(--color-muted)', lineHeight: 1.4, textShadow: '0 1px 3px rgba(0,0,0,0.4)', overflowWrap: 'break-word' }}>
+                    <p style={{ margin: 0, fontSize: 'var(--fs-2xs)', color: 'var(--color-muted)', lineHeight: 1.4, textShadow: '0 1px 3px rgba(0,0,0,0.4)', overflowWrap: 'break-word', flex: isLast ? '1 1 auto' : undefined, minWidth: 0 }}>
                       {img.caption}
                     </p>
                   )}
                   {img.credit && (
-                    <p style={{ margin: 0, fontSize: 'var(--fs-2xs)', color: 'var(--color-muted)', lineHeight: 1.4, textShadow: '0 1px 3px rgba(0,0,0,0.4)', overflowWrap: 'break-word' }}>
+                    <p style={{ margin: 0, fontSize: 'var(--fs-2xs)', color: 'var(--color-muted)', lineHeight: 1.4, textShadow: '0 1px 3px rgba(0,0,0,0.4)', overflowWrap: 'break-word', flex: isLast ? '0 1 auto' : undefined, minWidth: 0, textAlign: isLast ? 'right' : undefined, marginLeft: isLast ? 'auto' : undefined }}>
                       {img.credit}
                     </p>
                   )}

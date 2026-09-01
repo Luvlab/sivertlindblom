@@ -4,6 +4,10 @@ import { useState, useEffect, useRef } from 'react'
 import { uploadImageFile } from '@/lib/upload-image'
 import type { HomeContent } from '@/lib/home-content-types'
 import { HOME_CONTENT_DEFAULTS } from '@/lib/home-content-types'
+import type { FotografiSection } from '@/lib/reference-fotografi'
+import type { OgonblickSection } from '@/lib/reference-ogonblick'
+import type { GrafikSection } from '@/lib/reference-grafik'
+import type { SculptureProject } from '@/lib/sculpture-projects'
 
 interface Slide {
   url: string
@@ -263,13 +267,30 @@ export default function AdminHome() {
     setLoadingVault(true); setMessage(null)
     try {
       const collected: Slide[] = []
-      const [worksRes, textsRes, uploadsRes] = await Promise.all([fetch('/api/admin/public-works'), fetch('/api/admin/texts'), fetch('/api/admin/upload')])
+      const [worksRes, textsRes, uploadsRes, fotografiRes, ogonblickRes, grafikRes, sculptureRes] = await Promise.all([
+        fetch('/api/admin/public-works'), fetch('/api/admin/texts'), fetch('/api/admin/upload'),
+        fetch('/api/admin/reference-fotografi'), fetch('/api/admin/reference-ogonblick'),
+        fetch('/api/admin/reference-grafik'), fetch('/api/admin/reference-sculpture'),
+      ])
       const worksData = await worksRes.json() as Array<{ images?: Array<{ url: string; alt?: string | null }> }> | { error: string }
       if (!('error' in worksData)) for (const work of worksData) for (const img of work.images ?? []) collected.push({ url: img.url, alt: img.alt ?? '' })
       const textsData = await textsRes.json() as Array<{ title: string; images?: string[] }> | { error: string }
       if (!('error' in textsData)) for (const text of textsData) for (const url of text.images ?? []) if (typeof url === 'string' && url) collected.push({ url, alt: '' })
       const uploadsData = await uploadsRes.json() as { files?: Array<{ url: string; alt: string }> } | { error: string }
       if (!('error' in uploadsData) && uploadsData.files) for (const f of uploadsData.files) collected.push({ url: f.url, alt: f.alt ?? '' })
+
+      // Referensmaterial — Fotografier, Ögonblick, Grafik, Skulptur. Previously
+      // missing from the vault entirely, so their captions/credits were never
+      // available to pick from here (even though the public hero shows them fine).
+      const fotografiData = await fotografiRes.json() as FotografiSection | { error: string }
+      if (!('error' in fotografiData)) for (const img of fotografiData.images ?? []) collected.push({ url: img.url, alt: [img.caption, img.photographer].filter(Boolean).join(' — ') })
+      const ogonblickData = await ogonblickRes.json() as OgonblickSection | { error: string }
+      if (!('error' in ogonblickData)) for (const img of ogonblickData.images ?? []) collected.push({ url: img.url, alt: [img.caption, img.credit].filter(Boolean).join(' — ') })
+      const grafikData = await grafikRes.json() as GrafikSection | { error: string }
+      if (!('error' in grafikData)) for (const img of grafikData.images ?? []) collected.push({ url: img.url, alt: img.caption ?? '' })
+      const sculptureData = await sculptureRes.json() as SculptureProject[] | { error: string }
+      if (!('error' in sculptureData)) for (const proj of sculptureData) for (const img of proj.images ?? []) collected.push({ url: img.url, alt: img.alt ?? '' })
+
       const shuffled = [...collected]
       for (let i = shuffled.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]] }
       setSlides(shuffled); setRandom(true); setVaultMode(true)
