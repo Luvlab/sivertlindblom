@@ -3,6 +3,7 @@ import { getDictionary } from '@/i18n/getDictionary'
 import { locales } from '@/i18n/config'
 import type { Locale } from '@/i18n/config'
 import HeroSlideshow from '@/components/hero/HeroSlideshow'
+import AudioWaveformPlayer from '@/components/home/AudioWaveformPlayer'
 import { getHeroConfig, getHomeContent } from '@/lib/data-server'
 
 export function generateStaticParams() {
@@ -129,23 +130,13 @@ export default async function HomePage({
           {home.pressSource} · {home.pressDuration}
         </p>
 
-        {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
-        <audio
-          controls
-          preload="none"
-          style={{
-            width: '100%',
-            maxWidth: '480px',
-            height: '36px',
-            accentColor: 'var(--color-accent)',
-            marginBottom: '1.25rem',
-            display: 'block',
-            marginLeft: 'auto',
-            marginRight: 'auto',
-          }}
-        >
-          <source src={home.audioUrl} type="audio/mpeg" />
-        </audio>
+        <div style={{ maxWidth: 820, margin: '0 auto 1.25rem', textAlign: 'left' }}>
+          <AudioWaveformPlayer
+            src={home.audioUrl}
+            playLabel={dict.common?.play ?? 'Spela'}
+            pauseLabel={dict.common?.pause ?? 'Pausa'}
+          />
+        </div>
 
         <a
           href={home.audioLink}
