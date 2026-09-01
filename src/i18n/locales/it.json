@@ -38,7 +38,9 @@
     "update_available": "Nuova versione disponibile",
     "update_btn": "↺ Aggiorna",
     "photo_credit": "Foto:",
-    "image_nr": "immagine"
+    "image_nr": "immagine",
+    "play": "Riproduci",
+    "pause": "Pausa"
   },
   "home": {
     "sculptor": "Scultore · Stoccolma",

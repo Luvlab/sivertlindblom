@@ -38,7 +38,9 @@
     "update_available": "มีเวอร์ชันใหม่",
     "update_btn": "↺ อัปเดต",
     "photo_credit": "ภาพ:",
-    "image_nr": "ภาพ"
+    "image_nr": "ภาพ",
+    "play": "เล่น",
+    "pause": "หยุดชั่วคราว"
   },
   "home": {
     "sculptor": "ประติมากร · สตอกโฮล์ม",

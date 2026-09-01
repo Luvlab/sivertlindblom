@@ -38,7 +38,9 @@
     "update_available": "Nouvelle version disponible",
     "update_btn": "↺ Mettre à jour",
     "photo_credit": "Photo :",
-    "image_nr": "image"
+    "image_nr": "image",
+    "play": "Lire",
+    "pause": "Pause"
   },
   "home": {
     "sculptor": "Sculpteur · Stockholm",

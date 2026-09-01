@@ -38,7 +38,9 @@
     "update_available": "새 버전 사용 가능",
     "update_btn": "↺ 업데이트",
     "photo_credit": "사진:",
-    "image_nr": "이미지"
+    "image_nr": "이미지",
+    "play": "재생",
+    "pause": "일시정지"
   },
   "home": {
     "sculptor": "조각가 · 스톡홀름",

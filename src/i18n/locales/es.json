@@ -38,7 +38,9 @@
     "update_available": "Nueva versión disponible",
     "update_btn": "↺ Actualizar",
     "photo_credit": "Foto:",
-    "image_nr": "imagen"
+    "image_nr": "imagen",
+    "play": "Reproducir",
+    "pause": "Pausar"
   },
   "home": {
     "sculptor": "Escultor · Estocolmo",

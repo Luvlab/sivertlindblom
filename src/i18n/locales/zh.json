@@ -38,7 +38,9 @@
     "update_available": "有新版本",
     "update_btn": "↺ 更新",
     "photo_credit": "照片：",
-    "image_nr": "图片"
+    "image_nr": "图片",
+    "play": "播放",
+    "pause": "暂停"
   },
   "home": {
     "sculptor": "雕塑家 · 斯德哥尔摩",

@@ -38,7 +38,9 @@
     "update_available": "Nowa wersja dostępna",
     "update_btn": "↺ Aktualizuj",
     "photo_credit": "Zdjęcie:",
-    "image_nr": "obraz"
+    "image_nr": "obraz",
+    "play": "Odtwórz",
+    "pause": "Pauza"
   },
   "home": {
     "sculptor": "Rzeźbiarz · Sztokholm",

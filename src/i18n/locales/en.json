@@ -38,7 +38,9 @@
     "update_available": "New version available",
     "update_btn": "↺ Update",
     "photo_credit": "Photo:",
-    "image_nr": "image"
+    "image_nr": "image",
+    "play": "Play",
+    "pause": "Pause"
   },
   "home": {
     "sculptor": "Sculptor · Stockholm",

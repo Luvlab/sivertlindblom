@@ -38,7 +38,9 @@
     "update_available": "إصدار جديد متاح",
     "update_btn": "↺ تحديث",
     "photo_credit": "صورة:",
-    "image_nr": "صورة"
+    "image_nr": "صورة",
+    "play": "تشغيل",
+    "pause": "إيقاف مؤقت"
   },
   "home": {
     "sculptor": "نحّات · ستوكهولم",

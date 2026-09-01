@@ -38,7 +38,9 @@
     "update_available": "Új verzió érhető el",
     "update_btn": "↺ Frissítés",
     "photo_credit": "Fotó:",
-    "image_nr": "kép"
+    "image_nr": "kép",
+    "play": "Lejátszás",
+    "pause": "Szünet"
   },
   "home": {
     "sculptor": "Szobrász · Stockholm",

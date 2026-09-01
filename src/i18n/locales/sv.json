@@ -38,7 +38,9 @@
     "update_available": "Ny version tillgänglig",
     "update_btn": "↺ Uppdatera",
     "photo_credit": "Foto:",
-    "image_nr": "bild"
+    "image_nr": "bild",
+    "play": "Spela",
+    "pause": "Pausa"
   },
   "home": {
     "sculptor": "Skulptör · Stockholm",

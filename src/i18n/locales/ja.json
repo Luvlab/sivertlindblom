@@ -38,7 +38,9 @@
     "update_available": "新バージョンが利用可能",
     "update_btn": "↺ 更新",
     "photo_credit": "写真：",
-    "image_nr": "画像"
+    "image_nr": "画像",
+    "play": "再生",
+    "pause": "一時停止"
   },
   "home": {
     "sculptor": "彫刻家 · ストックホルム",

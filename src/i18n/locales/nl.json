@@ -38,7 +38,9 @@
     "update_available": "Nieuwe versie beschikbaar",
     "update_btn": "↺ Bijwerken",
     "photo_credit": "Foto:",
-    "image_nr": "afbeelding"
+    "image_nr": "afbeelding",
+    "play": "Afspelen",
+    "pause": "Pauzeren"
   },
   "home": {
     "sculptor": "Beeldhouwer · Stockholm",
