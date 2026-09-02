@@ -88,23 +88,16 @@ export default function GalleryGrid({
                 />
               </button>
               {showCaptions && (img.caption || img.credit) && (
-                // The full-width last image has room to spare, so caption and
-                // credit sit side by side (credit right-aligned) instead of
-                // the stacked layout used for the smaller grid thumbnails.
-                <div style={{
-                  paddingTop: '0.3rem',
-                  display: 'flex',
-                  flexDirection: isLast ? 'row' : 'column',
-                  justifyContent: isLast ? 'space-between' : undefined,
-                  gap: isLast ? '1rem' : '0.15rem',
-                }}>
+                // Jan's rule: his credit always sits on the right, in every
+                // gallery — caption left, credit right, one row.
+                <div style={{ paddingTop: '0.3rem', display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: isLast ? '1rem' : '0.5rem' }}>
                   {img.caption && (
-                    <p style={{ margin: 0, fontSize: 'var(--fs-2xs)', color: 'var(--color-muted)', lineHeight: 1.4, textShadow: '0 1px 3px rgba(0,0,0,0.4)', overflowWrap: 'break-word', flex: isLast ? '1 1 auto' : undefined, minWidth: 0 }}>
+                    <p style={{ margin: 0, fontSize: 'var(--fs-2xs)', color: 'var(--color-muted)', lineHeight: 1.4, textShadow: '0 1px 3px rgba(0,0,0,0.4)', overflowWrap: 'break-word', flex: '1 1 auto', minWidth: 0 }}>
                       {img.caption}
                     </p>
                   )}
                   {img.credit && (
-                    <p style={{ margin: 0, fontSize: 'var(--fs-2xs)', color: 'var(--color-muted)', lineHeight: 1.4, textShadow: '0 1px 3px rgba(0,0,0,0.4)', overflowWrap: 'break-word', flex: isLast ? '0 1 auto' : undefined, minWidth: 0, textAlign: isLast ? 'right' : undefined, marginLeft: isLast ? 'auto' : undefined }}>
+                    <p style={{ margin: 0, fontSize: 'var(--fs-2xs)', color: 'var(--color-muted)', lineHeight: 1.4, textShadow: '0 1px 3px rgba(0,0,0,0.4)', overflowWrap: 'break-word', flex: '0 1 auto', minWidth: 0, maxWidth: img.caption ? '55%' : '100%', textAlign: 'right', marginLeft: 'auto' }}>
                       {img.credit}
                     </p>
                   )}

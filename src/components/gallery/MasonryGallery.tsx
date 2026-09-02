@@ -89,14 +89,16 @@ export default function MasonryGallery({ images, columns = '4', className, fullW
               const caption = captionIsCredit ? undefined : img.caption
               const credit = captionIsCredit ? img.caption : img.credit
               return (
-                <div style={{ lineHeight: 1.4, paddingTop: '0.3rem', display: 'flex', flexDirection: 'column', gap: '0.15rem' }}>
+                // Jan's rule: his credit always sits on the right, in every
+                // gallery — caption left, credit right, one row.
+                <div style={{ lineHeight: 1.4, paddingTop: '0.3rem', display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: '0.5rem' }}>
                   {caption && (
-                    <p style={{ margin: 0, fontSize: 'var(--fs-2xs)', color: 'var(--color-muted)', textShadow: '0 1px 3px rgba(0,0,0,0.4)', overflowWrap: 'break-word' }}>
+                    <p style={{ margin: 0, fontSize: 'var(--fs-2xs)', color: 'var(--color-muted)', textShadow: '0 1px 3px rgba(0,0,0,0.4)', flex: '1 1 auto', minWidth: 0, overflowWrap: 'break-word' }}>
                       {caption}
                     </p>
                   )}
                   {credit && (
-                    <p style={{ margin: 0, fontSize: 'var(--fs-2xs)', color: 'var(--color-muted)', textShadow: '0 1px 3px rgba(0,0,0,0.4)', overflowWrap: 'break-word' }}>
+                    <p style={{ margin: 0, fontSize: 'var(--fs-2xs)', color: 'var(--color-muted)', textShadow: '0 1px 3px rgba(0,0,0,0.4)', flex: '0 1 auto', minWidth: 0, maxWidth: caption ? '55%' : '100%', textAlign: 'right', marginLeft: 'auto', overflowWrap: 'break-word' }}>
                       {credit}
                     </p>
                   )}

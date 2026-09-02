@@ -45,13 +45,20 @@ export default async function SculptureSeriesPage({
     ?? SCULPTURE_PROJECTS.find((p) => p.slug === slug)
   if (!project) notFound()
 
-  // The alt text on a sculpture image IS the work's title ("Azteker; bly 1978"),
-  // so it doubles as the slideshow caption shown under the image.
-  const lightboxImages: LightboxImage[] = project.images.map((img) => ({
-    url: img.url,
-    alt: img.alt,
-    caption: img.alt || undefined,
-  }))
+  // The alt text on a sculpture image is usually the work's title ("Azteker;
+  // bly 1978"), so it doubles as the caption shown under the image. But for
+  // documentation galleries (e.g. Bergmans konstgjuteri) it's written as a
+  // photo credit ("Foto: Jan Öqvist") — route those to the credit slot so
+  // they render right-aligned in the lightbox, not as a left-aligned caption.
+  const lightboxImages: LightboxImage[] = project.images.map((img) => {
+    const isCredit = img.alt && /^(Foto:|ur )/i.test(img.alt)
+    return {
+      url: img.url,
+      alt: img.alt,
+      caption: isCredit ? undefined : (img.alt || undefined),
+      credit: isCredit ? img.alt : undefined,
+    }
+  })
 
   return (
     <div className="section-gap">

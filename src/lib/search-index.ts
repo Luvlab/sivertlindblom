@@ -13,6 +13,7 @@ import { FILMS } from './films-data'
 import type { UtmarkelserSection } from './reference-utmarkelser'
 import type { BibEntry } from './bibliography'
 import type { GrafikSection } from './reference-grafik'
+import { PUBLICATIONS, type Publication } from './publications-data'
 
 export type SearchItem = {
   id: string
@@ -65,6 +66,7 @@ export interface SearchSources {
   utmarkelser?: UtmarkelserSection
   bibliography?: BibEntry[]
   grafik?: GrafikSection
+  publications?: Publication[]
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -224,6 +226,19 @@ export function buildSearchIndex(locale = 'sv', dict: any = {}, sources: SearchS
         href: '/references/publicerat',
       })
     }
+  }
+
+  // ── Publikationer (bokomslag Sivert citerats i/ur) ────────
+  const publicationsData = sources.publications ?? PUBLICATIONS
+  for (const [i, pub] of publicationsData.entries()) {
+    items.push({
+      id: `pub-${i}`,
+      type: 'reference',
+      title: pub.title,
+      subtitle: [pub.year, pub.publisher].filter(Boolean).join(' · '),
+      excerpt: pub.isbn ? `ISBN ${pub.isbn}` : '',
+      href: '/references/publicerat',
+    })
   }
 
   // ── Grafik ───────────────────────────────────────────────
