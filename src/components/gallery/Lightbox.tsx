@@ -35,7 +35,7 @@ interface Props {
   onClose: () => void
 }
 
-const INTERVAL_MS = 5000
+const INTERVAL_MS = 6000
 
 export default function Lightbox({ images, startIndex, onClose }: Props) {
   const [index, setIndex] = useState(startIndex)

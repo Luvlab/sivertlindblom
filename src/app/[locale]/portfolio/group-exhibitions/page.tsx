@@ -83,7 +83,7 @@ export default async function GroupExhibitionsPage({
           gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
           gap: '1rem',
         }}>
-          {groups.map((ex, i) => {
+          {groups.map((ex) => {
             const slides = slidesFor(ex)
             return (
               <Link
@@ -105,7 +105,6 @@ export default async function GroupExhibitionsPage({
                       images={slides}
                       alt={ex.title}
                       objectFit="cover"
-                      interval={4000 + i * 350}
                     />
                   </div>
                 ) : (

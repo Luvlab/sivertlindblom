@@ -15,7 +15,7 @@ const SLIDES = [
 ]
 
 const HOLD_MS = 6000
-const FADE_MS = 1200
+const FADE_MS = 6000
 
 /**
  * Two-layer crossfade — base always opaque, overlay fades in on top.

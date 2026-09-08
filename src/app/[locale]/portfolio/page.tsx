@@ -83,7 +83,6 @@ export default async function PortfolioPage({
                     objectFit={cat.key === 'watercolors' ? 'contain' : 'cover'}
                     background={cat.key === 'watercolors' ? '#ede9e2' : 'var(--color-bg-card)'}
                     padding={cat.key === 'watercolors' ? '1rem' : '0'}
-                    interval={3200 + Object.keys(SLIDESHOW_IMAGES).indexOf(cat.key) * 400}
                   />
                 </div>
                 <div style={{ padding: '1.5rem' }}>

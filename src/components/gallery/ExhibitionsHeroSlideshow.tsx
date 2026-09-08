@@ -2,8 +2,8 @@
 
 import { useEffect, useRef, useCallback, useState } from 'react'
 
-const FADE_MS   = 3000   // crossfade duration
-const HOLD_MS   = 12000  // interval between transition starts
+const FADE_MS   = 6000   // crossfade duration
+const HOLD_MS   = 6000   // interval between transition starts
 
 function shuffle<T>(arr: T[]): T[] {
   const a = [...arr]

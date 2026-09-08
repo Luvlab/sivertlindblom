@@ -225,7 +225,7 @@ export default function AdminHome() {
   }
   useEffect(() => {
     if (!previewing || previewOrder.length === 0) return
-    previewTimer.current = setInterval(() => setPreviewIdx(i => (i + 1) % previewOrder.length), 3000)
+    previewTimer.current = setInterval(() => setPreviewIdx(i => (i + 1) % previewOrder.length), 6000)
     return () => { if (previewTimer.current) clearInterval(previewTimer.current) }
   }, [previewing, previewOrder])
 
@@ -441,7 +441,7 @@ export default function AdminHome() {
                       <img key={i} src={slide.url} alt={slide.alt} style={{
                         position: 'absolute', inset: 0, width: '100%', height: '100%',
                         objectFit: 'cover', objectPosition: slide.focal || 'center',
-                        opacity: i === previewIdx ? 1 : 0, transition: 'opacity 0.8s ease-in-out', display: 'block',
+                        opacity: i === previewIdx ? 1 : 0, transition: 'opacity 6s ease-in-out', display: 'block',
                       }} />
                     ))}
                     <div style={{

@@ -147,7 +147,7 @@ export default function AdminMedia() {
   // Autoplay
   useEffect(() => {
     if (!autoplay || view !== 'slideshow' || filtered.length === 0) return
-    const id = setInterval(goNext, 3000)
+    const id = setInterval(goNext, 6000)
     return () => clearInterval(id)
   }, [autoplay, view, goNext, filtered.length])
 

@@ -84,13 +84,13 @@ export default async function ReferencesPage({
             @media (max-width: 600px) { .sculpture-series-grid { grid-template-columns: repeat(2, 1fr); } }
           `}</style>
           <div className="sculpture-series-grid">
-            {sculptureSeries.map((s, i) => {
+            {sculptureSeries.map((s) => {
               const images = slideshowImages[s.slug] ?? []
               return (
                 <Link key={s.slug} href={`/${locale}/references/${s.slug}`} className="card card-hover" style={{ display: 'block', overflow: 'hidden', textDecoration: 'none' }}>
                   {images.length > 0 ? (
                     <div style={{ aspectRatio: '3/2', position: 'relative', overflow: 'hidden' }}>
-                      <PortfolioSlideshow images={images} alt={s.title} objectFit="cover" interval={3200 + i * 300} />
+                      <PortfolioSlideshow images={images} alt={s.title} objectFit="cover" />
                     </div>
                   ) : (
                     <div style={{ aspectRatio: '3/2', background: 'var(--color-bg-surface)', display: 'flex', alignItems: 'center', justifyContent: 'center', borderBottom: '1px solid var(--color-border)' }}>

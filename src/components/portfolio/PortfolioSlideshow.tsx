@@ -12,7 +12,7 @@ interface Props {
   interval?: number
 }
 
-const FADE_MS = 900
+const FADE_MS = 6000
 
 export default function PortfolioSlideshow({
   images,

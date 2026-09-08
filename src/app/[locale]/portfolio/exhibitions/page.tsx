@@ -96,7 +96,7 @@ export default async function ExhibitionsPage({
           gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
           gap: '1rem',
         }}>
-          {sorted.map((ex, i) => {
+          {sorted.map((ex) => {
             const slides = slidesFor(ex)
             return (
               <Link
@@ -118,7 +118,6 @@ export default async function ExhibitionsPage({
                       images={slides}
                       alt={ex.title}
                       objectFit="cover"
-                      interval={4000 + i * 350}
                     />
                   </div>
                 ) : (

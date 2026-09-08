@@ -18,12 +18,10 @@ export function generateStaticParams() {
 function WorkCard({
   work,
   locale,
-  idx,
   temporaryLabel,
 }: {
   work: PublicWork
   locale: string
-  idx: number
   temporaryLabel?: string
 }) {
   const images = work.images.slice(0, 8).map((i) => i.url)
@@ -37,7 +35,6 @@ function WorkCard({
             images={images}
             alt={work.title}
             objectFit="cover"
-            interval={4000 + idx * 350}
           />
         </div>
       ) : (
@@ -170,8 +167,8 @@ export default async function PublicWorksPage({
           paddingTop: '1.5rem',
           paddingBottom: '1.5rem',
         }}>
-          {exteriors.map((w, i) => (
-            <WorkCard key={w.slug} work={w} locale={locale} idx={i} temporaryLabel={dict.portfolio?.temporary ?? 'Tillfällig'} />
+          {exteriors.map((w) => (
+            <WorkCard key={w.slug} work={w} locale={locale} temporaryLabel={dict.portfolio?.temporary ?? 'Tillfällig'} />
           ))}
         </div>
       </div>
@@ -197,8 +194,8 @@ export default async function PublicWorksPage({
           paddingTop: '1.5rem',
           paddingBottom: '1.5rem',
         }}>
-          {interiors.map((w, i) => (
-            <WorkCard key={w.slug} work={w} locale={locale} idx={i} temporaryLabel={dict.portfolio?.temporary ?? 'Tillfällig'} />
+          {interiors.map((w) => (
+            <WorkCard key={w.slug} work={w} locale={locale} temporaryLabel={dict.portfolio?.temporary ?? 'Tillfällig'} />
           ))}
         </div>
       </div>
