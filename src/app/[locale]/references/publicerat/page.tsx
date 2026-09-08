@@ -4,6 +4,8 @@ import { getDictionary } from '@/i18n/getDictionary'
 import { locales } from '@/i18n/config'
 import type { Locale } from '@/i18n/config'
 import { PUBLICATIONS } from '@/lib/publications-data'
+import { getFlipbooks } from '@/lib/data-server'
+import FlipbookCards from './FlipbookCards'
 
 export const metadata: Metadata = {
   title: 'Publicerat — Sivert Lindblom',
@@ -20,7 +22,10 @@ export default async function PubliceratPage({
   params: Promise<{ locale: string }>
 }) {
   const { locale } = await params
-  const dict = await getDictionary(locale as Locale)
+  const [dict, flipbooks] = await Promise.all([
+    getDictionary(locale as Locale),
+    getFlipbooks('publicerat'),
+  ])
 
   return (
     <div className="section-gap">
@@ -114,6 +119,7 @@ export default async function PubliceratPage({
               </div>
             </div>
           ))}
+          <FlipbookCards flipbooks={flipbooks} />
         </div>
       </div>
 

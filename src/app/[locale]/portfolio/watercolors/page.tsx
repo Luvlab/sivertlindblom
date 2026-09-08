@@ -6,6 +6,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { cacheTag, cacheLife } from 'next/cache'
 import WatercolorsGallery from './WatercolorsGallery'
 import type { LightboxImage } from '@/components/gallery/Lightbox'
+import { getFlipbooks } from '@/lib/data-server'
 
 export const metadata: Metadata = {
   title: 'Akvareller 1975–2012',
@@ -88,10 +89,11 @@ export default async function WatercolorsPage({
   params: Promise<{ locale: string }>
 }) {
   const { locale } = await params
-  const [dict, images, meta] = await Promise.all([
+  const [dict, images, meta, flipbooks] = await Promise.all([
     getDictionary(locale as Locale),
     getWatercolors(),
     getWatercolorsMeta(),
+    getFlipbooks('watercolors'),
   ])
-  return <WatercolorsGallery locale={locale} dict={dict} images={images} title={meta.title} description={meta.description} heroImages={meta.heroImages} />
+  return <WatercolorsGallery locale={locale} dict={dict} images={images} title={meta.title} description={meta.description} heroImages={meta.heroImages} flipbooks={flipbooks} />
 }

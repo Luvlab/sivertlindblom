@@ -12,6 +12,7 @@ const NAV_ITEMS = [
   { href: '/admin/public-works',   label: 'Offentliga arbeten', icon: '▦' },
   { href: '/admin/scenography',    label: 'Scenografi',         icon: '◳' },
   { href: '/admin/watercolors',    label: 'Akvareller',         icon: '◫' },
+  { href: '/admin/flipbooks',      label: 'Flipbooks',          icon: '📖' },
   { href: '/admin/references',     label: 'Referenser',         icon: '◧' },
   { href: '/admin/texts',          label: 'Texter',             icon: '≡' },
   { href: '/admin/biography',      label: 'Biografi',           icon: '◉' },

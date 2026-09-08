@@ -5,11 +5,13 @@ import { useState } from 'react'
 import Lightbox from '@/components/gallery/Lightbox'
 import type { LightboxImage } from '@/components/gallery/Lightbox'
 import ExhibitionsHeroSlideshow from '@/components/gallery/ExhibitionsHeroSlideshow'
+import PdfDownloads from '@/components/pdf/PdfDownloads'
+import type { Flipbook } from '@/lib/data-server'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-interface Props { locale: string; dict: any; images: LightboxImage[]; title?: string; description?: string; heroImages?: string[] }
+interface Props { locale: string; dict: any; images: LightboxImage[]; title?: string; description?: string; heroImages?: string[]; flipbooks?: Flipbook[] }
 
-export default function WatercolorsGallery({ locale, dict, images, title, description, heroImages }: Props) {
+export default function WatercolorsGallery({ locale, dict, images, title, description, heroImages, flipbooks = [] }: Props) {
   const [lightboxIdx, setLightboxIdx] = useState<number | null>(null)
 
   const wc = dict?.watercolors ?? {}
@@ -94,6 +96,13 @@ export default function WatercolorsGallery({ locale, dict, images, title, descri
           <div style={{ marginTop: '1rem', fontSize: 'var(--fs-xs)', color: 'var(--color-accent)', letterSpacing: '0.08em' }}>
             {images.length} {wc.gallery_count ?? 'verk'} — {wc.click_hint ?? 'klicka för bildspel'}
           </div>
+
+          {flipbooks.length > 0 && (
+            <PdfDownloads
+              pdfs={flipbooks.filter(fb => fb.pdf_url).map(fb => ({ label: fb.pdf_label || fb.title, url: fb.pdf_url as string }))}
+              heading="Katalog"
+            />
+          )}
         </div>
 
         <hr className="divider" />

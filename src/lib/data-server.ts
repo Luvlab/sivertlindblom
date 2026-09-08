@@ -1075,3 +1075,66 @@ export async function getBiographyEntries(): Promise<BiographyEntry[]> {
     .order('year_start', { ascending: false })
   return data ?? []
 }
+
+export interface Flipbook {
+  id: string
+  slug: string
+  title: string
+  subtitle: string | null
+  pages: string[]
+  pdf_url: string | null
+  pdf_label: string | null
+  location: string
+  sort_order: number
+  published: boolean
+}
+
+function dbRowToFlipbook(row: Record<string, unknown>): Flipbook {
+  return {
+    id: row.id as string,
+    slug: row.slug as string,
+    title: row.title as string,
+    subtitle: (row.subtitle as string) ?? null,
+    pages: (row.pages as string[]) ?? [],
+    pdf_url: (row.pdf_url as string) ?? null,
+    pdf_label: (row.pdf_label as string) ?? null,
+    location: row.location as string,
+    sort_order: (row.sort_order as number) ?? 0,
+    published: (row.published as boolean) ?? true,
+  }
+}
+
+/** All published flipbooks, optionally filtered to one page's location
+ *  (e.g. 'watercolors', 'ararat', 'publicerat'). */
+export async function getFlipbooks(location?: string): Promise<Flipbook[]> {
+  'use cache'
+  cacheTag('flipbooks')
+  cacheLife('days')
+  const supabase = createAdminClient()
+  if (!supabase) return []
+  let query = supabase
+    .from('flipbooks')
+    .select('*')
+    .eq('published', true)
+    .order('sort_order', { ascending: true })
+  if (location) query = query.eq('location', location)
+  const { data, error } = await query
+  if (error || !data) return []
+  return data.map(dbRowToFlipbook)
+}
+
+export async function getFlipbook(slug: string): Promise<Flipbook | null> {
+  'use cache'
+  cacheTag('flipbooks', `flipbook-${slug}`)
+  cacheLife('days')
+  const supabase = createAdminClient()
+  if (!supabase) return null
+  const { data, error } = await supabase
+    .from('flipbooks')
+    .select('*')
+    .eq('slug', slug)
+    .eq('published', true)
+    .single()
+  if (error || !data) return null
+  return dbRowToFlipbook(data)
+}
