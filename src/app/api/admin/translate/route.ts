@@ -1,7 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { cookies } from 'next/headers'
-import Anthropic from '@anthropic-ai/sdk'
 import { createAdminClient } from '@/lib/supabase/admin'
+
+const GEMINI_URL =
+  'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent'
 
 // Every non-Swedish locale the site actually serves (see src/i18n/config.ts) —
 // this must stay in sync with that file so translation coverage matches the
@@ -29,17 +31,16 @@ async function requireAdmin() {
   return jar.get('admin_session')?.value === 'authenticated'
 }
 
-async function translateWithClaude(
+async function translateWithGemini(
   fields: Record<string, string>,
   sourceLang: string,
   targetLocale: string
 ): Promise<Record<string, string>> {
-  const apiKey = process.env.ANTHROPIC_API_KEY
-  if (!apiKey || apiKey.includes('your_')) {
-    throw new Error('ANTHROPIC_API_KEY is not configured')
+  const apiKey = process.env.GEMINI_API_KEY
+  if (!apiKey || apiKey === 'your_gemini_api_key_here') {
+    throw new Error('GEMINI_API_KEY is not configured')
   }
 
-  const client = new Anthropic({ apiKey })
   const targetLang = LOCALE_NAMES[targetLocale] ?? targetLocale
 
   const fieldLines = Object.entries(fields)
@@ -47,26 +48,31 @@ async function translateWithClaude(
     .map(([k, v]) => `<field name="${k}">${v}</field>`)
     .join('\n')
 
-  const message = await client.messages.create({
-    model: 'claude-haiku-4-5-20251001',
-    max_tokens: 4096,
-    messages: [
-      {
-        role: 'user',
-        content: `You are a professional translator for an art museum website about Swedish sculptor Sivert Lindblom (born 1931). Translate the following fields from ${sourceLang} to ${targetLang}. Preserve formatting including line breaks and paragraph structure. Keep proper nouns (names, places, institutions) in their original form unless there is a well-established translation. Return ONLY the translated XML, no commentary.
+  const prompt = `You are a professional translator for an art museum website about Swedish sculptor Sivert Lindblom (born 1931). Translate the following fields from ${sourceLang} to ${targetLang}. Preserve formatting including line breaks and paragraph structure. Keep proper nouns (names, places, institutions) in their original form unless there is a well-established translation. Return ONLY the translated XML, no commentary.
 
 ${fieldLines}
 
-Respond with the same XML structure, replacing content with ${targetLang} translations.`,
-      },
-    ],
+Respond with the same XML structure, replacing content with ${targetLang} translations.`
+
+  const res = await fetch(`${GEMINI_URL}?key=${apiKey}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      contents: [{ role: 'user', parts: [{ text: prompt }] }],
+      generationConfig: { temperature: 0.2, maxOutputTokens: 8192 },
+    }),
   })
+  if (!res.ok) {
+    const errText = await res.text().catch(() => '')
+    throw new Error(`Gemini API error (${res.status}): ${errText.slice(0, 300)}`)
+  }
+  const json = await res.json() as { candidates?: Array<{ content?: { parts?: Array<{ text?: string }> } }> }
+  const responseText = json.candidates?.[0]?.content?.parts?.map((p) => p.text ?? '').join('') ?? ''
+  if (!responseText.trim()) throw new Error('Gemini returned an empty response')
 
-  const responseText = message.content[0].type === 'text' ? message.content[0].text : ''
   const result: Record<string, string> = {}
-
   for (const [key] of Object.entries(fields)) {
-    const match = responseText.match(new RegExp(`<field name="${key}">([\s\S]*?)<\/field>`))
+    const match = responseText.match(new RegExp(`<field name="${key}">([\\s\\S]*?)<\\/field>`))
     if (match) result[key] = match[1].trim()
   }
 
@@ -154,7 +160,7 @@ export async function POST(req: NextRequest) {
 
   let translated: Record<string, string>
   try {
-    translated = await translateWithClaude(fieldsToTranslate, sourceLang, locale)
+    translated = await translateWithGemini(fieldsToTranslate, sourceLang, locale)
   } catch (e) {
     return NextResponse.json({ error: e instanceof Error ? e.message : String(e) }, { status: 500 })
   }
