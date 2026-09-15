@@ -9,6 +9,7 @@ import TextImageSlideshow from '@/components/TextImageSlideshow'
 import SubpageManager, { type ManagedSubpage } from '@/components/admin/SubpageManager'
 import PdfListEditor from '@/components/admin/PdfListEditor'
 import MediaListEditor from '@/components/admin/MediaListEditor'
+import TranslateButton from '@/components/admin/TranslateButton'
 
 interface TextSubpage {
   slug: string
@@ -184,6 +185,19 @@ function EditTextPageInner() {
                 rows={18}
                 style={{ fontFamily: 'Georgia, serif', fontSize: '0.9rem', lineHeight: 1.7, minHeight: 400 }}
                 hint="Dubbelt radbrytning = nytt stycke. Enkelt radbrytning = ny rad. Markera text + 🔗 Länk för att infoga hyperlänk."
+              />
+            </div>
+
+            <div>
+              {label('Översättning')}
+              <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', margin: '0 0 0.6rem' }}>
+                Översätter titel, brödtext och författarbio till alla språk sajten visas på. Kör den här igen efter varje gång du ändrar texten ovan.
+              </p>
+              <TranslateButton
+                entityType="text"
+                entityId={form.slug}
+                disabled={dirty}
+                disabledReason="Spara ändringarna först — annars översätts den gamla texten."
               />
             </div>
           </div>

@@ -11,6 +11,7 @@ import ExhibitionLinksEditor from '@/components/admin/ExhibitionLinksEditor'
 import PdfListEditor from '@/components/admin/PdfListEditor'
 import MediaListEditor from '@/components/admin/MediaListEditor'
 import SubpageManager from '@/components/admin/SubpageManager'
+import TranslateButton from '@/components/admin/TranslateButton'
 import type { ExhibitionLink } from '@/lib/exhibitions-data'
 
 declare global {
@@ -283,6 +284,19 @@ function EditPublicWorkPageInner() {
               rows={6}
               placeholder="Längre beskrivning — visas på detaljsidan"
               hint="Markera text + 🔗 Länk för att infoga hyperlänk."
+            />
+          </div>
+
+          <div>
+            <FieldLabel>Översättning</FieldLabel>
+            <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', margin: '0 0 0.6rem' }}>
+              Översätter titel, kort beskrivning och brödtext till alla språk sajten visas på. Kör den här igen efter varje gång du ändrar texten ovan.
+            </p>
+            <TranslateButton
+              entityType="public_work"
+              entityId={form.slug}
+              disabled={dirty}
+              disabledReason="Spara ändringarna först — annars översätts den gamla texten."
             />
           </div>
 

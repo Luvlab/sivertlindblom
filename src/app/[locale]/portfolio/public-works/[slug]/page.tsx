@@ -7,6 +7,7 @@ import { locales } from '@/i18n/config'
 import type { Locale } from '@/i18n/config'
 import { getDictionary } from '@/i18n/getDictionary'
 import { getPublicWork, getPublicWorkSlugs, getPublicWorks, getMapPinForWork } from '@/lib/data-server'
+import { getTranslation } from '@/lib/translations'
 import GalleryGrid from '@/components/gallery/GalleryGrid'
 import type { LightboxImage } from '@/components/gallery/Lightbox'
 import SculptureMap from '@/components/SculptureMap'
@@ -24,12 +25,15 @@ export async function generateMetadata({
 }: {
   params: Promise<{ locale: string; slug: string }>
 }): Promise<Metadata> {
-  const { slug } = await params
-  const work = await getPublicWork(slug)
+  const { locale, slug } = await params
+  const [work, dbTranslation] = await Promise.all([
+    getPublicWork(slug),
+    locale === 'sv' ? Promise.resolve(null) : getTranslation('public_work', slug, locale),
+  ])
   if (!work) return {}
   return {
-    title: `${work.title} — Sivert Lindblom`,
-    description: work.description,
+    title: `${dbTranslation?.title ?? work.title} — Sivert Lindblom`,
+    description: dbTranslation?.description ?? work.description,
   }
 }
 
@@ -39,14 +43,21 @@ export default async function PublicWorkDetailPage({
   params: Promise<{ locale: string; slug: string }>
 }) {
   const { locale, slug } = await params
-  const dict = await getDictionary(locale as Locale)
-
-  const [work, allWorks, mapPin] = await Promise.all([
+  const isSwedish = locale === 'sv'
+  const [dict, work, allWorks, mapPin, dbTranslation] = await Promise.all([
+    getDictionary(locale as Locale),
     getPublicWork(slug),
     getPublicWorks(),
     getMapPinForWork(slug),
+    isSwedish ? Promise.resolve(null) : getTranslation('public_work', slug, locale),
   ])
   if (!work) notFound()
+
+  // Overlay machine/human translation for non-Swedish locales; fall back to
+  // the Swedish source for any field that hasn't been translated yet.
+  const displayTitle = dbTranslation?.title ?? work.title
+  const displayDescription = dbTranslation?.description ?? work.description
+  const displayBody = dbTranslation?.content ?? work.body
 
   // Prev / next within real public works only (exclude cross-listed exhibitions,
   // which navigate within the exhibitions section, not here).
@@ -59,7 +70,7 @@ export default async function PublicWorkDetailPage({
 
   const galleryImages: LightboxImage[] = work.images.map((img, i) => ({
     url: img.url,
-    alt: img.alt ?? `${work.title} — bild ${i + 1}`,
+    alt: img.alt ?? `${displayTitle} — bild ${i + 1}`,
     credit: work.photographerCredit || undefined,
   }))
 
@@ -81,7 +92,7 @@ export default async function PublicWorkDetailPage({
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={heroImage}
-            alt={work.title}
+            alt={displayTitle}
             style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 40%' }}
           />
           <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, transparent 25%, rgba(10,10,10,0.92) 100%)' }} />
@@ -98,7 +109,7 @@ export default async function PublicWorkDetailPage({
               {work.year} · {work.location}
             </p>
             <h1 style={{ fontFamily: 'Georgia, serif', fontWeight: 400, fontSize: 'clamp(1.6rem,3.5vw,2.8rem)', margin: 0, maxWidth: '26ch' }}>
-              {work.title}
+              {displayTitle}
             </h1>
             {work.temporary && (
               <span style={{ display: 'inline-block', marginTop: '0.75rem', fontSize: 'var(--fs-xs)', color: 'rgba(255,255,255,0.55)', border: '1px solid rgba(255,255,255,0.2)', borderRadius: 1, padding: '0.15rem 0.55rem', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
@@ -120,7 +131,7 @@ export default async function PublicWorkDetailPage({
             {work.year} · {work.location}
           </p>
           <h1 style={{ fontFamily: 'Georgia, serif', fontWeight: 400, fontSize: 'clamp(1.6rem,3.5vw,2.8rem)', margin: 0 }}>
-            {work.title}
+            {displayTitle}
           </h1>
           {work.temporary && (
             <span style={{ display: 'inline-block', marginTop: '0.5rem', fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', border: '1px solid var(--color-border)', borderRadius: 1, padding: '0.15rem 0.55rem', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
@@ -132,21 +143,21 @@ export default async function PublicWorkDetailPage({
 
       <div className="page-pad">
         {/* Description */}
-        {work.description && (
+        {displayDescription && (
           <div className="prose-cols" style={{
             color: 'var(--color-muted)',
             fontSize: 'var(--fs-base)',
             lineHeight: 1.85,
             marginBottom: '1.5rem',
           }}>
-            {renderParagraphs(work.description, { margin: 0, lineHeight: 1.85, marginBottom: '1.1em' })}
+            {renderParagraphs(displayDescription, { margin: 0, lineHeight: 1.85, marginBottom: '1.1em' })}
           </div>
         )}
 
         {/* Body text */}
-        {work.body && (
+        {displayBody && (
           <div style={{ maxWidth: '68ch', marginBottom: '1.5rem' }}>
-            {work.body.split('\n\n').filter(Boolean).map((para, i) => (
+            {displayBody.split('\n\n').filter(Boolean).map((para, i) => (
               <p key={i} style={{ fontSize: 'var(--fs-base)', lineHeight: 1.85, marginBottom: '1.1em', color: 'var(--color-muted)' }}>
                 {para.split('\n').map((line, j) => (
                   <span key={j}>{j > 0 && <br />}{renderInlineLinks(line)}</span>
@@ -232,7 +243,7 @@ export default async function PublicWorkDetailPage({
                     <div style={{ position: 'relative', paddingBottom: '56.25%', height: 0, overflow: 'hidden', borderRadius: 4, background: 'var(--color-bg-surface)', maxWidth: 880 }}>
                       <iframe
                         src={`https://www.youtube.com/embed/${vid}?rel=0`}
-                        title={v.title || work.title}
+                        title={v.title || displayTitle}
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                         allowFullScreen
                         style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', border: 0 }}

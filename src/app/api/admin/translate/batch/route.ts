@@ -6,17 +6,19 @@ async function requireAdmin() {
   return jar.get('admin_session')?.value === 'authenticated'
 }
 
-const LOCALES = ['en', 'fr', 'de', 'es', 'it', 'pt', 'ro', 'gsw']
+// Every non-Swedish locale the site serves — keep in sync with src/i18n/config.ts
+// and the LOCALE_NAMES map in ../route.ts.
+const LOCALES = ['en', 'de', 'fr', 'es', 'it', 'zh', 'ja', 'ar', 'pt', 'ru', 'nl', 'pl', 'ko', 'th', 'hu']
 
 // POST /api/admin/translate/batch
-// Body: { entity_type: 'text'|'biography_entry', entity_ids?: string[], locales?: string[] }
+// Body: { entity_type: 'text'|'biography_entry'|'exhibition'|'public_work', entity_ids?: string[], locales?: string[] }
 // Translates all (or specified) entities to all (or specified) locales one by one.
 // Returns a stream of progress messages via Server-Sent Events.
 export async function POST(req: NextRequest) {
   if (!await requireAdmin()) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
   const body = await req.json() as {
-    entity_type: 'text' | 'biography_entry'
+    entity_type: 'text' | 'biography_entry' | 'exhibition' | 'public_work'
     entity_ids?: string[]
     locales?: string[]
     skip_existing?: boolean
@@ -42,31 +44,24 @@ export async function POST(req: NextRequest) {
           })
           const existing: Array<{ entity_id: string; locale: string }> = await listRes.json()
 
-          if (body.entity_type === 'text') {
-            const textsRes = await fetch(`${baseUrl}/api/admin/texts`, {
-              headers: { cookie: req.headers.get('cookie') ?? '' },
-            })
-            const texts: Array<{ slug: string }> = await textsRes.json()
-            const existingKeys = new Set(existing.map(e => `${e.entity_id}::${e.locale}`))
-            entityIds = texts.map(t => t.slug)
-            if (skipExisting) {
-              // only ids that have at least one missing locale
-              entityIds = entityIds.filter(id =>
-                targetLocales.some(loc => !existingKeys.has(`${id}::${loc}`))
-              )
-            }
-          } else {
-            const bioRes = await fetch(`${baseUrl}/api/admin/biography`, {
-              headers: { cookie: req.headers.get('cookie') ?? '' },
-            })
-            const entries: Array<{ id: string }> = await bioRes.json()
-            const existingKeys = new Set(existing.map(e => `${e.entity_id}::${e.locale}`))
-            entityIds = entries.map(e => e.id)
-            if (skipExisting) {
-              entityIds = entityIds.filter(id =>
-                targetLocales.some(loc => !existingKeys.has(`${id}::${loc}`))
-              )
-            }
+          const listEndpoints: Record<typeof body.entity_type, { path: string; idField: string }> = {
+            text: { path: '/api/admin/texts', idField: 'slug' },
+            biography_entry: { path: '/api/admin/biography', idField: 'id' },
+            exhibition: { path: '/api/admin/exhibitions', idField: 'slug' },
+            public_work: { path: '/api/admin/public-works', idField: 'slug' },
+          }
+          const { path, idField } = listEndpoints[body.entity_type]
+          const listItemsRes = await fetch(`${baseUrl}${path}`, {
+            headers: { cookie: req.headers.get('cookie') ?? '' },
+          })
+          const items: Array<Record<string, string>> = await listItemsRes.json()
+          const existingKeys = new Set(existing.map(e => `${e.entity_id}::${e.locale}`))
+          entityIds = items.map(it => it[idField]).filter(Boolean)
+          if (skipExisting) {
+            // only ids that have at least one missing locale
+            entityIds = entityIds.filter(id =>
+              targetLocales.some(loc => !existingKeys.has(`${id}::${loc}`))
+            )
           }
         }
 

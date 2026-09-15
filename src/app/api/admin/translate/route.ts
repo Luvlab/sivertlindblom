@@ -3,15 +3,25 @@ import { cookies } from 'next/headers'
 import Anthropic from '@anthropic-ai/sdk'
 import { createAdminClient } from '@/lib/supabase/admin'
 
+// Every non-Swedish locale the site actually serves (see src/i18n/config.ts) —
+// this must stay in sync with that file so translation coverage matches the
+// language switcher exactly.
 const LOCALE_NAMES: Record<string, string> = {
   en: 'English',
-  fr: 'French',
   de: 'German',
+  fr: 'French',
   es: 'Spanish',
   it: 'Italian',
+  zh: 'Chinese (Simplified)',
+  ja: 'Japanese',
+  ar: 'Arabic',
   pt: 'Portuguese',
-  ro: 'Romanian',
-  gsw: 'Alemannic German (Swiss dialect)',
+  ru: 'Russian',
+  nl: 'Dutch',
+  pl: 'Polish',
+  ko: 'Korean',
+  th: 'Thai',
+  hu: 'Hungarian',
 }
 
 async function requireAdmin() {
@@ -70,7 +80,7 @@ export async function POST(req: NextRequest) {
   if (!supabase) return NextResponse.json({ error: 'DB not configured' }, { status: 500 })
 
   const body = await req.json() as {
-    entity_type: 'text' | 'biography_entry'
+    entity_type: 'text' | 'biography_entry' | 'exhibition' | 'public_work'
     entity_id: string
     locale: string
   }
@@ -102,7 +112,7 @@ export async function POST(req: NextRequest) {
     if (data.title) fieldsToTranslate.title = data.title
     if (data.body) fieldsToTranslate.content = data.body
     if (data.author_bio) fieldsToTranslate.author_bio = data.author_bio
-  } else {
+  } else if (entity_type === 'biography_entry') {
     const { data } = await supabase
       .from('biography_entries')
       .select('title, description')
@@ -112,6 +122,30 @@ export async function POST(req: NextRequest) {
     sourceLang = 'Swedish'
     if (data.title) fieldsToTranslate.title = data.title
     if (data.description) fieldsToTranslate.description = data.description
+  } else if (entity_type === 'exhibition') {
+    const { data } = await supabase
+      .from('works')
+      .select('title, description, body')
+      .eq('slug', entity_id)
+      .single()
+    if (!data) return NextResponse.json({ error: 'Exhibition not found' }, { status: 404 })
+    sourceLang = 'Swedish'
+    if (data.title) fieldsToTranslate.title = data.title
+    if (data.description) fieldsToTranslate.description = data.description
+    if (data.body) fieldsToTranslate.content = data.body
+  } else if (entity_type === 'public_work') {
+    const { data } = await supabase
+      .from('public_works')
+      .select('title, description, description_sv')
+      .eq('slug', entity_id)
+      .single()
+    if (!data) return NextResponse.json({ error: 'Public work not found' }, { status: 404 })
+    sourceLang = 'Swedish'
+    if (data.title) fieldsToTranslate.title = data.title
+    if (data.description) fieldsToTranslate.description = data.description
+    if (data.description_sv) fieldsToTranslate.content = data.description_sv
+  } else {
+    return NextResponse.json({ error: `Unknown entity_type: ${entity_type}` }, { status: 400 })
   }
 
   if (Object.keys(fieldsToTranslate).length === 0) {

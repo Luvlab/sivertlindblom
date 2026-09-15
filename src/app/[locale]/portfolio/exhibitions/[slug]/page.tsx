@@ -7,6 +7,7 @@ import type { Locale } from '@/i18n/config'
 import GalleryGrid from '@/components/gallery/GalleryGrid'
 import type { LightboxImage } from '@/components/gallery/Lightbox'
 import { getExhibition, getExhibitions, getExhibitionSlugs } from '@/lib/data-server'
+import { getTranslation } from '@/lib/translations'
 import { renderParagraphs } from '@/lib/render-text'
 import PdfDownloads from '@/components/pdf/PdfDownloads'
 import MediaPlayers from '@/components/MediaPlayers'
@@ -21,10 +22,13 @@ export async function generateMetadata({
 }: {
   params: Promise<{ locale: string; slug: string }>
 }): Promise<Metadata> {
-  const { slug } = await params
-  const ex = await getExhibition(slug)
+  const { locale, slug } = await params
+  const [ex, dbTranslation] = await Promise.all([
+    getExhibition(slug),
+    locale === 'sv' ? Promise.resolve(null) : getTranslation('exhibition', slug, locale),
+  ])
   if (!ex) return { title: 'Exhibition' }
-  return { title: `${ex.title} — Sivert Lindblom` }
+  return { title: `${dbTranslation?.title ?? ex.title} — Sivert Lindblom` }
 }
 
 export default async function ExhibitionDetailPage({
@@ -33,13 +37,20 @@ export default async function ExhibitionDetailPage({
   params: Promise<{ locale: string; slug: string }>
 }) {
   const { locale, slug } = await params
-  const dict = await getDictionary(locale as Locale)
-
-  const [ex, allExhibitions] = await Promise.all([
+  const isSwedish = locale === 'sv'
+  const [dict, ex, allExhibitions, dbTranslation] = await Promise.all([
+    getDictionary(locale as Locale),
     getExhibition(slug),
     getExhibitions(),
+    isSwedish ? Promise.resolve(null) : getTranslation('exhibition', slug, locale),
   ])
   if (!ex) notFound()
+
+  // Overlay machine/human translation for non-Swedish locales; fall back to
+  // the Swedish source for any field that hasn't been translated yet.
+  const displayTitle = dbTranslation?.title ?? ex.title
+  const displayDescription = dbTranslation?.description ?? ex.description
+  const displayBody = dbTranslation?.content ?? ex.body
 
   const idx = allExhibitions.findIndex((e) => e.slug === slug)
   const prev = idx > 0 ? allExhibitions[idx - 1] : null
@@ -48,7 +59,7 @@ export default async function ExhibitionDetailPage({
   const heroImage = ex.images[0]
   const galleryImages: LightboxImage[] = ex.images.map((url, i) => ({
     url,
-    alt: `${ex.title} — bild ${i + 1}`,
+    alt: `${displayTitle} — bild ${i + 1}`,
     credit: ex.photographerCredit || undefined,
   }))
 
@@ -60,7 +71,7 @@ export default async function ExhibitionDetailPage({
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={heroImage}
-            alt={ex.title}
+            alt={displayTitle}
             style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 40%' }}
           />
           <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, transparent 25%, rgba(10,10,10,0.92) 100%)' }} />
@@ -77,7 +88,7 @@ export default async function ExhibitionDetailPage({
               {ex.year} · {ex.location}
             </p>
             <h1 style={{ fontFamily: 'Georgia, serif', fontWeight: 400, fontSize: 'clamp(1.6rem,3.5vw,2.8rem)', margin: 0, maxWidth: '26ch' }}>
-              {ex.title}
+              {displayTitle}
             </h1>
           </div>
         </div>
@@ -94,33 +105,33 @@ export default async function ExhibitionDetailPage({
             {ex.year} · {ex.location}
           </p>
           <h1 style={{ fontFamily: 'Georgia, serif', fontWeight: 400, fontSize: 'clamp(1.6rem,3.5vw,2.8rem)', margin: 0 }}>
-            {ex.title}
+            {displayTitle}
           </h1>
         </div>
       )}
 
       <div className="page-pad">
         {/* Description */}
-        {ex.description && ex.description !== 'TEXT kommer' && (
+        {displayDescription && displayDescription !== 'TEXT kommer' && (
           <div className="prose-cols" style={{
             color: 'var(--color-text)',
             fontSize: 'var(--fs-base)',
             lineHeight: 1.85,
-            marginBottom: ex.body || (ex.links && ex.links.length > 0) ? '1.5rem' : '3.5rem',
+            marginBottom: displayBody || (ex.links && ex.links.length > 0) ? '1.5rem' : '3.5rem',
           }}>
-            {renderParagraphs(ex.description, { margin: 0, lineHeight: 1.85 })}
+            {renderParagraphs(displayDescription, { margin: 0, lineHeight: 1.85 })}
           </div>
         )}
 
         {/* Body text */}
-        {ex.body && (
+        {displayBody && (
           <div className="prose-cols" style={{
             color: 'var(--color-text)',
             fontSize: 'var(--fs-base)',
             lineHeight: 1.85,
             marginBottom: (ex.links && ex.links.length > 0) ? '1.5rem' : '3.5rem',
           }}>
-            {renderParagraphs(ex.body, { margin: 0, lineHeight: 1.85 })}
+            {renderParagraphs(displayBody, { margin: 0, lineHeight: 1.85 })}
           </div>
         )}
 

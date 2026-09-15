@@ -1,9 +1,11 @@
 import { cacheTag, cacheLife } from 'next/cache'
 import { createAdminClient } from './supabase/admin'
 
+export type TranslatableEntityType = 'text' | 'biography_entry' | 'exhibition' | 'public_work'
+
 export interface Translation {
   id: string
-  entity_type: 'text' | 'biography_entry'
+  entity_type: TranslatableEntityType
   entity_id: string
   locale: string
   title: string | null
@@ -17,7 +19,7 @@ export interface Translation {
 }
 
 export async function getTranslation(
-  entityType: 'text' | 'biography_entry',
+  entityType: TranslatableEntityType,
   entityId: string,
   locale: string
 ): Promise<Translation | null> {
@@ -37,7 +39,7 @@ export async function getTranslation(
 }
 
 export async function getTranslationsForEntity(
-  entityType: 'text' | 'biography_entry',
+  entityType: TranslatableEntityType,
   entityId: string
 ): Promise<Translation[]> {
   'use cache'

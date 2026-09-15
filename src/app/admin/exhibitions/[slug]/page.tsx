@@ -10,6 +10,7 @@ import ExhibitionLinksEditor from '@/components/admin/ExhibitionLinksEditor'
 import PdfListEditor from '@/components/admin/PdfListEditor'
 import MediaListEditor from '@/components/admin/MediaListEditor'
 import SubpageManager from '@/components/admin/SubpageManager'
+import TranslateButton from '@/components/admin/TranslateButton'
 
 interface Props {
   params: Promise<{ slug: string }>
@@ -164,6 +165,19 @@ function EditExhibitionPageInner() {
           onChange={v => update('body', v)}
           rows={8}
           hint="Dubbelt radbrytning = nytt stycke. Markera text + 🔗 för intern/extern länk."
+        />
+      </div>
+
+      <div>
+        <FieldLabel>Översättning</FieldLabel>
+        <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', margin: '0 0 0.6rem' }}>
+          Översätter titel, beskrivning och brödtext till alla språk sajten visas på. Kör den här igen efter varje gång du ändrar texten ovan — annars visas de gamla, oöversatta ändringarna på andra språk än svenska.
+        </p>
+        <TranslateButton
+          entityType="exhibition"
+          entityId={form.slug}
+          disabled={dirty}
+          disabledReason="Spara ändringarna först — annars översätts den gamla texten."
         />
       </div>
 

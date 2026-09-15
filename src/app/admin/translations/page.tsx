@@ -15,11 +15,19 @@ interface TranslationRow {
 
 interface TextItem { slug: string; title: string; author: string; lang: string }
 interface BioEntry { id: string; title: string; type: string }
+interface ExhibitionItem { slug: string; title: string; year?: number; location?: string }
+interface PublicWorkItem { slug: string; title: string; year?: string; location?: string }
 
-const LOCALES = ['en', 'fr', 'de', 'es', 'it', 'pt', 'ro', 'gsw']
+type EntityType = 'text' | 'biography_entry' | 'exhibition' | 'public_work'
+type Tab = 'texts' | 'biography' | 'exhibitions' | 'public_works'
+
+// Every non-Swedish locale the site serves — keep in sync with src/i18n/config.ts
+// and the LOCALE_NAMES map in api/admin/translate/route.ts.
+const LOCALES = ['en', 'de', 'fr', 'es', 'it', 'zh', 'ja', 'ar', 'pt', 'ru', 'nl', 'pl', 'ko', 'th', 'hu']
 const LOCALE_FLAGS: Record<string, string> = {
-  en: '🇬🇧', fr: '🇫🇷', de: '🇩🇪', es: '🇪🇸',
-  it: '🇮🇹', pt: '🇵🇹', ro: '🇷🇴', gsw: '🇨🇭',
+  en: '🇬🇧', de: '🇩🇪', fr: '🇫🇷', es: '🇪🇸', it: '🇮🇹',
+  zh: '🇨🇳', ja: '🇯🇵', ar: '🇸🇦', pt: '🇵🇹', ru: '🇷🇺',
+  nl: '🇳🇱', pl: '🇵🇱', ko: '🇰🇷', th: '🇹🇭', hu: '🇭🇺',
 }
 
 function StatusDot({ status }: { status: 'none' | 'machine' | 'reviewed' }) {
@@ -35,9 +43,11 @@ function StatusDot({ status }: { status: 'none' | 'machine' | 'reviewed' }) {
 export default function TranslationsPage() {
   const [texts, setTexts] = useState<TextItem[]>([])
   const [bioEntries, setBioEntries] = useState<BioEntry[]>([])
+  const [exhibitions, setExhibitions] = useState<ExhibitionItem[]>([])
+  const [publicWorks, setPublicWorks] = useState<PublicWorkItem[]>([])
   const [translations, setTranslations] = useState<TranslationRow[]>([])
   const [loading, setLoading] = useState(true)
-  const [tab, setTab] = useState<'texts' | 'biography'>('texts')
+  const [tab, setTab] = useState<Tab>('texts')
   const [batchRunning, setBatchRunning] = useState(false)
   const [batchLog, setBatchLog] = useState<string[]>([])
   const [batchDone, setBatchDone] = useState(0)
@@ -46,13 +56,17 @@ export default function TranslationsPage() {
 
   const load = useCallback(async () => {
     setLoading(true)
-    const [textsRes, bioRes, trRes] = await Promise.all([
+    const [textsRes, bioRes, exRes, pwRes, trRes] = await Promise.all([
       fetch('/api/admin/texts').then(r => r.json()),
       fetch('/api/admin/biography?type=all').then(r => r.json()),
+      fetch('/api/admin/exhibitions').then(r => r.json()),
+      fetch('/api/admin/public-works').then(r => r.json()),
       fetch('/api/admin/translations').then(r => r.json()),
     ])
     setTexts(Array.isArray(textsRes) ? textsRes : [])
     setBioEntries(Array.isArray(bioRes) ? bioRes : [])
+    setExhibitions(Array.isArray(exRes) ? exRes : [])
+    setPublicWorks(Array.isArray(pwRes) ? pwRes : [])
     setTranslations(Array.isArray(trRes) ? trRes : [])
     setLoading(false)
   }, [])
@@ -67,7 +81,7 @@ export default function TranslationsPage() {
     return t.machine_translated ? 'machine' : 'reviewed'
   }
 
-  async function translateOne(entityType: 'text' | 'biography_entry', entityId: string, locale: string) {
+  async function translateOne(entityType: EntityType, entityId: string, locale: string) {
     const key = `${entityType}::${entityId}::${locale}`
     setTranslating(prev => ({ ...prev, [key]: true }))
     try {
@@ -84,7 +98,7 @@ export default function TranslationsPage() {
     }
   }
 
-  async function runBatch(entityType: 'text' | 'biography_entry') {
+  async function runBatch(entityType: EntityType) {
     setBatchRunning(true)
     setBatchLog([])
     setBatchDone(0)
@@ -129,13 +143,29 @@ export default function TranslationsPage() {
     await load()
   }
 
-  const entityType = tab === 'texts' ? 'text' : 'biography_entry'
+const ENTITY_TYPE_BY_TAB: Record<Tab, EntityType> = {
+    texts: 'text',
+    biography: 'biography_entry',
+    exhibitions: 'exhibition',
+    public_works: 'public_work',
+  }
+  const TAB_LABELS: Record<Tab, string> = {
+    texts: 'Texter',
+    biography: 'Biografi',
+    exhibitions: 'Utställningar',
+    public_works: 'Offentliga arbeten',
+  }
+  const entityType = ENTITY_TYPE_BY_TAB[tab]
   const entities = tab === 'texts'
     ? texts.map(t => ({ id: t.slug, label: t.title, sub: t.author, lang: t.lang }))
-    : bioEntries.map(b => ({ id: b.id, label: b.title, sub: b.type, lang: 'sv' }))
+    : tab === 'biography'
+    ? bioEntries.map(b => ({ id: b.id, label: b.title, sub: b.type, lang: 'sv' }))
+    : tab === 'exhibitions'
+    ? exhibitions.map(e => ({ id: e.slug, label: e.title, sub: [e.year, e.location].filter(Boolean).join(' · '), lang: 'sv' }))
+    : publicWorks.map(w => ({ id: w.slug, label: w.title, sub: [w.year, w.location].filter(Boolean).join(' · '), lang: 'sv' }))
 
   const missingCount = entities.reduce((acc, e) =>
-    acc + LOCALES.filter(loc => getStatus(entityType, e.id, loc) === 'none' && (tab === 'biography' || e.lang !== loc)).length
+    acc + LOCALES.filter(loc => getStatus(entityType, e.id, loc) === 'none' && (tab === 'biography' || tab === 'exhibitions' || tab === 'public_works' || e.lang !== loc)).length
   , 0)
 
   return (
@@ -155,8 +185,8 @@ export default function TranslationsPage() {
       </div>
 
       {/* Tabs */}
-      <div style={{ display: 'flex', gap: 0, borderBottom: '1px solid var(--color-border)', marginBottom: '1.5rem' }}>
-        {(['texts', 'biography'] as const).map(t => (
+      <div style={{ display: 'flex', gap: 0, borderBottom: '1px solid var(--color-border)', marginBottom: '1.5rem', flexWrap: 'wrap' }}>
+        {(['texts', 'biography', 'exhibitions', 'public_works'] as const).map(t => (
           <button key={t} type="button" onClick={() => setTab(t)}
             style={{
               background: 'none', border: 'none', padding: '0.6rem 1.2rem', cursor: 'pointer',
@@ -164,7 +194,7 @@ export default function TranslationsPage() {
               borderBottom: tab === t ? '2px solid var(--color-accent)' : '2px solid transparent',
               marginBottom: -1,
             }}>
-            {t === 'texts' ? 'Texter' : 'Biografi'}
+            {TAB_LABELS[t]}
           </button>
         ))}
       </div>
@@ -172,8 +202,8 @@ export default function TranslationsPage() {
       {/* Batch translate */}
       <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', marginBottom: '1.5rem', flexWrap: 'wrap' }}>
         <button type="button" className="btn" disabled={batchRunning}
-          onClick={() => runBatch(entityType as 'text' | 'biography_entry')}>
-          {batchRunning ? `Översätter… (${batchDone}/${batchTotal})` : `Maskinöversätt alla ${tab === 'texts' ? 'texter' : 'biografi-poster'} (hoppa över befintliga)`}
+          onClick={() => runBatch(entityType)}>
+          {batchRunning ? `Översätter… (${batchDone}/${batchTotal})` : `Maskinöversätt alla ${TAB_LABELS[tab].toLowerCase()} (hoppa över befintliga)`}
         </button>
         {missingCount > 0 && !batchRunning && (
           <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)' }}>
@@ -233,7 +263,7 @@ export default function TranslationsPage() {
                         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
                           <StatusDot status={status} />
                           {status === 'none' ? (
-                            <button type="button" disabled={busy} onClick={() => translateOne(entityType as 'text' | 'biography_entry', e.id, loc)}
+                            <button type="button" disabled={busy} onClick={() => translateOne(entityType, e.id, loc)}
                               style={{ fontSize: '0.6rem', background: 'none', border: '1px solid var(--color-border)', borderRadius: 2, padding: '1px 4px', cursor: busy ? 'default' : 'pointer', color: 'var(--color-muted)' }}>
                               {busy ? '…' : 'AI'}
                             </button>
