@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { cookies } from 'next/headers'
+import { revalidateTag } from 'next/cache'
 import { createAdminClient } from '@/lib/supabase/admin'
 
 async function requireAdmin() {
@@ -70,6 +71,8 @@ export async function PUT(req: NextRequest) {
   })
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+
+  revalidateTag('translations', 'max')
 
   return NextResponse.json({ ok: true })
 }
