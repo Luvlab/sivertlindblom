@@ -85,10 +85,12 @@ export async function POST(req: NextRequest) {
                   locale,
                 }),
               })
-              const result = await res.json()
+              const rawText = await res.text()
+              let result: { error?: string } = {}
+              try { result = rawText ? JSON.parse(rawText) : {} } catch { /* non-JSON body handled below */ }
               done++
-              if (result.error) {
-                send({ type: 'error', entity_id: entityId, locale, error: result.error, done, total })
+              if (!res.ok || result.error) {
+                send({ type: 'error', entity_id: entityId, locale, error: result.error ?? `HTTP ${res.status}${rawText ? `: ${rawText.slice(0, 200)}` : ' (empty response)'}`, done, total })
               } else {
                 send({ type: 'done', entity_id: entityId, locale, done, total })
               }

@@ -152,7 +152,12 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'No content to translate' }, { status: 400 })
   }
 
-  const translated = await translateWithClaude(fieldsToTranslate, sourceLang, locale)
+  let translated: Record<string, string>
+  try {
+    translated = await translateWithClaude(fieldsToTranslate, sourceLang, locale)
+  } catch (e) {
+    return NextResponse.json({ error: e instanceof Error ? e.message : String(e) }, { status: 500 })
+  }
 
   const upsertData = {
     entity_type,
