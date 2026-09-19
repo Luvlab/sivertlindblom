@@ -35,22 +35,29 @@ export async function POST(req: NextRequest) {
       }
 
       try {
+        const baseUrl = req.nextUrl.origin
+
+        // Which (entity, locale) pairs already have a translation — fetched
+        // whenever skipExisting is on, regardless of whether entity_ids was
+        // passed explicitly, so a caller-supplied id list still benefits from
+        // the skip (previously this only ran during auto-discovery below).
+        let existingKeys = new Set<string>()
+        if (skipExisting && body.entity_type !== 'home') {
+          const listRes = await fetch(`${baseUrl}/api/admin/translations?entity_type=${body.entity_type}`, {
+            headers: { cookie: req.headers.get('cookie') ?? '' },
+          })
+          const existing: Array<{ entity_id: string; locale: string }> = await listRes.json()
+          existingKeys = new Set(existing.map(e => `${e.entity_id}::${e.locale}`))
+        }
+
         // Get entity IDs from DB if not specified
         let entityIds = body.entity_ids ?? []
-        let existingKeys = new Set<string>()
         if (entityIds.length === 0 && body.entity_type === 'home') {
           // Singleton — 'home' translations live in the settings table, not
           // the translations table, so there is no list endpoint to query.
           entityIds = ['home']
         }
         if (entityIds.length === 0) {
-          const baseUrl = req.nextUrl.origin
-          const listRes = await fetch(`${baseUrl}/api/admin/translations?entity_type=${body.entity_type}`, {
-            headers: { cookie: req.headers.get('cookie') ?? '' },
-          })
-          const existing: Array<{ entity_id: string; locale: string }> = await listRes.json()
-          existingKeys = new Set(existing.map(e => `${e.entity_id}::${e.locale}`))
-
           const listEndpoints: Record<Exclude<typeof body.entity_type, 'home'>, { path: string; idField: string }> = {
             text: { path: '/api/admin/texts', idField: 'slug' },
             biography_entry: { path: '/api/admin/biography', idField: 'id' },
