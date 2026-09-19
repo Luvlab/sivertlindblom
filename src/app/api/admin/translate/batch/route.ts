@@ -37,6 +37,7 @@ export async function POST(req: NextRequest) {
       try {
         // Get entity IDs from DB if not specified
         let entityIds = body.entity_ids ?? []
+        let existingKeys = new Set<string>()
         if (entityIds.length === 0 && body.entity_type === 'home') {
           // Singleton — 'home' translations live in the settings table, not
           // the translations table, so there is no list endpoint to query.
@@ -48,6 +49,7 @@ export async function POST(req: NextRequest) {
             headers: { cookie: req.headers.get('cookie') ?? '' },
           })
           const existing: Array<{ entity_id: string; locale: string }> = await listRes.json()
+          existingKeys = new Set(existing.map(e => `${e.entity_id}::${e.locale}`))
 
           const listEndpoints: Record<Exclude<typeof body.entity_type, 'home'>, { path: string; idField: string }> = {
             text: { path: '/api/admin/texts', idField: 'slug' },
@@ -60,7 +62,6 @@ export async function POST(req: NextRequest) {
             headers: { cookie: req.headers.get('cookie') ?? '' },
           })
           const items: Array<Record<string, string>> = await listItemsRes.json()
-          const existingKeys = new Set(existing.map(e => `${e.entity_id}::${e.locale}`))
           entityIds = items.map(it => it[idField]).filter(Boolean)
           if (skipExisting) {
             // only ids that have at least one missing locale
@@ -70,39 +71,50 @@ export async function POST(req: NextRequest) {
           }
         }
 
-        const total = entityIds.length * targetLocales.length
+        // Flatten to the exact (entity, locale) pairs that actually need work —
+        // filtering per-entity above isn't enough: a partially-translated entity
+        // (e.g. 13/15 locales done) would otherwise still re-attempt its already
+        // -done locales every round, making near-zero forward progress on large
+        // corpora since each round only fits a handful of calls before timing out.
+        const pairs: Array<{ entityId: string; locale: string }> = []
+        for (const entityId of entityIds) {
+          for (const locale of targetLocales) {
+            if (skipExisting && existingKeys.has(`${entityId}::${locale}`)) continue
+            pairs.push({ entityId, locale })
+          }
+        }
+
+        const total = pairs.length
         let done = 0
 
         send({ type: 'start', total })
 
-        for (const entityId of entityIds) {
-          for (const locale of targetLocales) {
-            try {
-              const res = await fetch(`${req.nextUrl.origin}/api/admin/translate`, {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                  cookie: req.headers.get('cookie') ?? '',
-                },
-                body: JSON.stringify({
-                  entity_type: body.entity_type,
-                  entity_id: entityId,
-                  locale,
-                }),
-              })
-              const rawText = await res.text()
-              let result: { error?: string } = {}
-              try { result = rawText ? JSON.parse(rawText) : {} } catch { /* non-JSON body handled below */ }
-              done++
-              if (!res.ok || result.error) {
-                send({ type: 'error', entity_id: entityId, locale, error: result.error ?? `HTTP ${res.status}${rawText ? `: ${rawText.slice(0, 200)}` : ' (empty response)'}`, done, total })
-              } else {
-                send({ type: 'done', entity_id: entityId, locale, done, total })
-              }
-            } catch (err) {
-              done++
-              send({ type: 'error', entity_id: entityId, locale, error: String(err), done, total })
+        for (const { entityId, locale } of pairs) {
+          try {
+            const res = await fetch(`${req.nextUrl.origin}/api/admin/translate`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                cookie: req.headers.get('cookie') ?? '',
+              },
+              body: JSON.stringify({
+                entity_type: body.entity_type,
+                entity_id: entityId,
+                locale,
+              }),
+            })
+            const rawText = await res.text()
+            let result: { error?: string } = {}
+            try { result = rawText ? JSON.parse(rawText) : {} } catch { /* non-JSON body handled below */ }
+            done++
+            if (!res.ok || result.error) {
+              send({ type: 'error', entity_id: entityId, locale, error: result.error ?? `HTTP ${res.status}${rawText ? `: ${rawText.slice(0, 200)}` : ' (empty response)'}`, done, total })
+            } else {
+              send({ type: 'done', entity_id: entityId, locale, done, total })
             }
+          } catch (err) {
+            done++
+            send({ type: 'error', entity_id: entityId, locale, error: String(err), done, total })
           }
         }
 
