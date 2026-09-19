@@ -92,8 +92,8 @@ export async function PUT(request: Request) {
     const { error } = await supabase.from('settings').upsert(upsertRows, { onConflict: 'key' })
     if (error) return NextResponse.json({ error: error.message }, { status: 500 })
 
-    revalidateTag('hero', 'max')
-    revalidateTag('home-content', 'max')
+    revalidateTag('hero', { expire: 0 })
+    revalidateTag('home-content', { expire: 0 })
     return NextResponse.json({ ok: true })
   } catch (e) {
     return NextResponse.json({ error: String(e) }, { status: 500 })

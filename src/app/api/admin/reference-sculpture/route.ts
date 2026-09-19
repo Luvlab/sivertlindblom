@@ -49,7 +49,7 @@ export async function PUT(request: Request) {
     )
     if (error) return NextResponse.json({ error: error.message }, { status: 500 })
 
-    revalidateTag('references-sculpture', 'max')
+    revalidateTag('references-sculpture', { expire: 0 })
     return NextResponse.json({ ok: true })
   } catch (e) {
     return NextResponse.json({ error: String(e) }, { status: 500 })

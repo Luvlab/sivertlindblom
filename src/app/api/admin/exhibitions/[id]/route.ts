@@ -195,7 +195,7 @@ export async function PUT(
           }
         }
 
-        revalidateTag('exhibitions', 'max')
+        revalidateTag('exhibitions', { expire: 0 })
         return NextResponse.json({ ...body, warnings })
       }
       if (error) {
@@ -209,7 +209,7 @@ export async function PUT(
     const updated = [...current]; updated[idx] = body
     const result = saveCmsData('exhibitions', updated)
     if (!result.ok) return NextResponse.json({ error: result.message }, { status: 500 })
-    revalidateTag('exhibitions', 'max')
+    revalidateTag('exhibitions', { expire: 0 })
     return NextResponse.json({ ...body, warnings })
   } catch (e) {
     return NextResponse.json({ error: String(e) }, { status: 500 })
@@ -230,7 +230,7 @@ export async function DELETE(
       // "Radera" never destroys data — the post can be republished later.
       const { error } = await supabase.from('works').update({ published: false }).eq('slug', id)
       if (!error) {
-        revalidateTag('exhibitions', 'max')
+        revalidateTag('exhibitions', { expire: 0 })
         return NextResponse.json({ ok: true, hidden: true })
       }
     }
@@ -240,7 +240,7 @@ export async function DELETE(
     if (updated.length === current.length) return NextResponse.json({ error: 'Not found' }, { status: 404 })
     const result = saveCmsData('exhibitions', updated)
     if (!result.ok) return NextResponse.json({ error: result.message }, { status: 500 })
-    revalidateTag('exhibitions', 'max')
+    revalidateTag('exhibitions', { expire: 0 })
     return NextResponse.json({ ok: true })
   } catch (e) {
     return NextResponse.json({ error: String(e) }, { status: 500 })

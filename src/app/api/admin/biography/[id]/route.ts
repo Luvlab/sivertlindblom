@@ -83,7 +83,7 @@ export async function PUT(
         .select()
         .single()
       if (!error && data) {
-        revalidateTag('biography', 'max')
+        revalidateTag('biography', { expire: 0 })
         return NextResponse.json(dbToBio(data as Record<string, unknown>))
       }
     }
@@ -94,7 +94,7 @@ export async function PUT(
     const updated = [...current]; updated[idx] = { ...body, id }
     const result = saveCmsData('biography', updated)
     if (!result.ok) return NextResponse.json({ error: result.message }, { status: 500 })
-    revalidateTag('biography', 'max')
+    revalidateTag('biography', { expire: 0 })
     return NextResponse.json(updated[idx])
   } catch (e) {
     return NextResponse.json({ error: String(e) }, { status: 500 })
@@ -113,7 +113,7 @@ export async function DELETE(
     if (supabase) {
       const { error } = await supabase.from('biography_entries').delete().eq('id', id)
       if (!error) {
-        revalidateTag('biography', 'max')
+        revalidateTag('biography', { expire: 0 })
         return NextResponse.json({ ok: true })
       }
     }
@@ -123,7 +123,7 @@ export async function DELETE(
     if (updated.length === current.length) return NextResponse.json({ error: 'Not found' }, { status: 404 })
     const result = saveCmsData('biography', updated)
     if (!result.ok) return NextResponse.json({ error: result.message }, { status: 500 })
-    revalidateTag('biography', 'max')
+    revalidateTag('biography', { expire: 0 })
     return NextResponse.json({ ok: true })
   } catch (e) {
     return NextResponse.json({ error: String(e) }, { status: 500 })

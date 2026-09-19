@@ -109,7 +109,7 @@ export async function POST(request: Request) {
             }))
           )
         }
-        revalidateTag('exhibitions', 'max')
+        revalidateTag('exhibitions', { expire: 0 })
         return NextResponse.json({ ...body, warnings }, { status: 201 })
       }
     }
@@ -119,7 +119,7 @@ export async function POST(request: Request) {
     const updated = [...current, body]
     const result = saveCmsData('exhibitions', updated)
     if (!result.ok) return NextResponse.json({ error: result.message }, { status: 500 })
-    revalidateTag('exhibitions', 'max')
+    revalidateTag('exhibitions', { expire: 0 })
     return NextResponse.json({ ...body, warnings }, { status: 201 })
   } catch (e) {
     return NextResponse.json({ error: String(e) }, { status: 500 })

@@ -93,7 +93,7 @@ export async function POST(request: Request) {
         .select()
         .single()
       if (!error && data) {
-        revalidateTag('biography', 'max')
+        revalidateTag('biography', { expire: 0 })
         return NextResponse.json(dbToBio(data as Record<string, unknown>), { status: 201 })
       }
     }
@@ -103,7 +103,7 @@ export async function POST(request: Request) {
     const updated = [...current, newItem]
     const result = saveCmsData('biography', updated)
     if (!result.ok) return NextResponse.json({ error: result.message }, { status: 500 })
-    revalidateTag('biography', 'max')
+    revalidateTag('biography', { expire: 0 })
     return NextResponse.json(newItem, { status: 201 })
   } catch (e) {
     return NextResponse.json({ error: String(e) }, { status: 500 })

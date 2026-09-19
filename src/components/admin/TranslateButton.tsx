@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 
-type EntityType = 'text' | 'biography_entry' | 'exhibition' | 'public_work'
+type EntityType = 'text' | 'biography_entry' | 'exhibition' | 'public_work' | 'home'
 
 interface Props {
   entityType: EntityType

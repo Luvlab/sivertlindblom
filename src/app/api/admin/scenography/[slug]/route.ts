@@ -101,7 +101,7 @@ export async function PUT(request: Request, { params }: Props) {
     }
 
     // If slug changed, redirect to new slug
-    revalidateTag('scenography', 'max')
+    revalidateTag('scenography', { expire: 0 })
     return NextResponse.json({ ...body, id: work.id })
   } catch (e) {
     return NextResponse.json({ error: String(e) }, { status: 500 })
@@ -118,6 +118,6 @@ export async function DELETE(_req: Request, { params }: Props) {
   const { error } = await supabase.from('scenography_works').delete().eq('slug', slug)
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
 
-  revalidateTag('scenography', 'max')
+  revalidateTag('scenography', { expire: 0 })
   return NextResponse.json({ ok: true })
 }

@@ -24,7 +24,7 @@ export async function POST(req: Request) {
   const busted: string[] = []
   for (const tag of tags) {
     if (KNOWN_TAGS.includes(tag as typeof KNOWN_TAGS[number])) {
-      revalidateTag(tag, 'max')
+      revalidateTag(tag, { expire: 0 })
       busted.push(tag)
     }
   }

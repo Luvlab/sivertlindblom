@@ -40,7 +40,7 @@ export async function PUT(request: Request) {
     const { error } = await supabase.from('settings').upsert(upserts, { onConflict: 'key' })
     if (error) return NextResponse.json({ error: error.message }, { status: 500 })
 
-    revalidateTag('portfolio-thumbs', 'max')
+    revalidateTag('portfolio-thumbs', { expire: 0 })
     return NextResponse.json({ ok: true })
   } catch (e) {
     return NextResponse.json({ error: String(e) }, { status: 500 })

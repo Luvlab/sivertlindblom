@@ -190,7 +190,7 @@ export async function PUT(
           }
         }
 
-        revalidateTag('public-works', 'max')
+        revalidateTag('public-works', { expire: 0 })
         return NextResponse.json(body)
       }
       if (error) return NextResponse.json({ error: error.message }, { status: 500 })
@@ -215,7 +215,7 @@ export async function DELETE(
       // "Radera" never destroys data — the post can be republished later.
       const { error } = await supabase.from('public_works').update({ published: false }).eq('slug', slug)
       if (!error) {
-        revalidateTag('public-works', 'max')
+        revalidateTag('public-works', { expire: 0 })
         return NextResponse.json({ ok: true, hidden: true })
       }
       return NextResponse.json({ error: error.message }, { status: 500 })

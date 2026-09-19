@@ -54,7 +54,7 @@ export async function PUT(
       .single()
     if (error) return NextResponse.json({ error: error.message }, { status: 500 })
 
-    revalidateTag('flipbooks', 'max')
+    revalidateTag('flipbooks', { expire: 0 })
     return NextResponse.json(data)
   } catch (e) {
     return NextResponse.json({ error: String(e) }, { status: 500 })
@@ -74,7 +74,7 @@ export async function DELETE(
     // "Radera" never destroys data — the post can be republished later.
     const { error } = await supabase.from('flipbooks').update({ published: false }).eq('slug', slug)
     if (error) return NextResponse.json({ error: error.message }, { status: 500 })
-    revalidateTag('flipbooks', 'max')
+    revalidateTag('flipbooks', { expire: 0 })
     return NextResponse.json({ ok: true, hidden: true })
   } catch (e) {
     return NextResponse.json({ error: String(e) }, { status: 500 })

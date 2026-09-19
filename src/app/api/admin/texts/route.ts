@@ -72,7 +72,7 @@ export async function POST(request: Request) {
         published: true,
       }, { onConflict: 'slug' })
       if (!error) {
-        revalidateTag('texts', 'max')
+        revalidateTag('texts', { expire: 0 })
         return NextResponse.json(body, { status: 201 })
       }
     }
@@ -81,7 +81,7 @@ export async function POST(request: Request) {
     const updated = [...current, body]
     const result = saveCmsData('texts', updated)
     if (!result.ok) return NextResponse.json({ error: result.message }, { status: 500 })
-    revalidateTag('texts', 'max')
+    revalidateTag('texts', { expire: 0 })
     return NextResponse.json(body, { status: 201 })
   } catch (e) {
     return NextResponse.json({ error: String(e) }, { status: 500 })

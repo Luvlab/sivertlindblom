@@ -39,8 +39,8 @@ export async function PUT(request: Request) {
     )
     if (error) return NextResponse.json({ error: error.message }, { status: 500 })
 
-    revalidateTag('bibliography', 'max')
-    revalidateTag('biography', 'max')
+    revalidateTag('bibliography', { expire: 0 })
+    revalidateTag('biography', { expire: 0 })
     return NextResponse.json({ ok: true })
   } catch (e) {
     return NextResponse.json({ error: String(e) }, { status: 500 })

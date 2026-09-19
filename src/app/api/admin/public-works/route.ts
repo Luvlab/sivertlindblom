@@ -95,13 +95,13 @@ export async function PUT(request: Request) {
           }
         }
       }
-      revalidateTag('public-works', 'max')
+      revalidateTag('public-works', { expire: 0 })
       return NextResponse.json(body)
     }
 
     const result = saveCmsData('public-works', body)
     if (!result.ok) return NextResponse.json({ error: result.message }, { status: 500 })
-    revalidateTag('public-works', 'max')
+    revalidateTag('public-works', { expire: 0 })
     return NextResponse.json(body)
   } catch (e) {
     return NextResponse.json({ error: String(e) }, { status: 500 })

@@ -48,9 +48,9 @@ export async function PUT(request: Request) {
       }))
       const { error } = await supabase.from('settings').upsert(upserts, { onConflict: 'key' })
       if (!error) {
-        revalidateTag('hero', 'max')
-        revalidateTag('watercolors', 'max')
-        revalidateTag('biography', 'max')
+        revalidateTag('hero', { expire: 0 })
+        revalidateTag('watercolors', { expire: 0 })
+        revalidateTag('biography', { expire: 0 })
         return NextResponse.json({ ok: true })
       }
     }

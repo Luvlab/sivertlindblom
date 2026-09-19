@@ -8,6 +8,7 @@ import type { FotografiSection } from '@/lib/reference-fotografi'
 import type { OgonblickSection } from '@/lib/reference-ogonblick'
 import type { GrafikSection } from '@/lib/reference-grafik'
 import type { SculptureProject } from '@/lib/sculpture-projects'
+import TranslateButton from '@/components/admin/TranslateButton'
 
 interface Slide {
   url: string
@@ -648,6 +649,19 @@ export default function AdminHome() {
               {savingContent ? 'Sparar…' : isContentDirty ? '● Spara innehåll' : 'Spara innehåll'}
             </button>
             {isContentDirty && <span style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-accent)' }}>Du har osparade ändringar</span>}
+          </div>
+
+          {/* Translation — namn, tagline, citat, källa, biografitext */}
+          <div style={{ marginTop: '1.5rem' }}>
+            <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', margin: '0 0 0.6rem', maxWidth: 560, lineHeight: 1.6 }}>
+              Översätter konstnärens namn, tagline, recensionscitatet och biografitexten till alla språk sajten visas på. Kör den här igen efter varje gång du ändrar texten ovan.
+            </p>
+            <TranslateButton
+              entityType="home"
+              entityId="home"
+              disabled={isContentDirty}
+              disabledReason="Spara innehållet först — annars översätts den gamla texten."
+            />
           </div>
         </>
       )}

@@ -27,6 +27,12 @@ const LOCALE_NAMES: Record<string, string> = {
   hu: 'Hungarian',
 }
 
+// Keep in sync with HOME_TRANSLATABLE_KEYS in src/lib/data-server.ts.
+const HOME_TRANSLATABLE_KEYS = [
+  'site_title', 'hero_tagline', 'about_short',
+  'home_press_quote', 'home_press_attribution', 'home_press_source', 'home_press_duration',
+] as const
+
 async function requireAdmin() {
   const jar = await cookies()
   return jar.get('admin_session')?.value === 'authenticated'
@@ -87,7 +93,7 @@ export async function POST(req: NextRequest) {
   if (!supabase) return NextResponse.json({ error: 'DB not configured' }, { status: 500 })
 
   const body = await req.json() as {
-    entity_type: 'text' | 'biography_entry' | 'exhibition' | 'public_work'
+    entity_type: 'text' | 'biography_entry' | 'exhibition' | 'public_work' | 'home'
     entity_id: string
     locale: string
   }
@@ -151,6 +157,14 @@ export async function POST(req: NextRequest) {
     if (data.title) fieldsToTranslate.title = data.title
     if (data.description) fieldsToTranslate.description = data.description
     if (data.description_sv) fieldsToTranslate.content = data.description_sv
+  } else if (entity_type === 'home') {
+    // Singleton homepage content, stored as key/value rows in 'settings' —
+    // not the 'translations' table. entity_id is unused (always 'home').
+    const { data } = await supabase.from('settings').select('key, value').in('key', [...HOME_TRANSLATABLE_KEYS])
+    const map: Record<string, string> = {}
+    for (const row of data ?? []) if (row.value) map[row.key] = row.value
+    sourceLang = 'Swedish'
+    for (const key of HOME_TRANSLATABLE_KEYS) if (map[key]) fieldsToTranslate[key] = map[key]
   } else {
     return NextResponse.json({ error: `Unknown entity_type: ${entity_type}` }, { status: 400 })
   }
@@ -164,6 +178,17 @@ export async function POST(req: NextRequest) {
     translated = await translateWithGemini(fieldsToTranslate, sourceLang, locale)
   } catch (e) {
     return NextResponse.json({ error: e instanceof Error ? e.message : String(e) }, { status: 500 })
+  }
+
+  if (entity_type === 'home') {
+    const rows = Object.entries(translated)
+      .filter(([, value]) => value)
+      .map(([key, value]) => ({ key: `${key}_${locale}`, value }))
+    if (rows.length === 0) return NextResponse.json({ error: 'Translation returned no content' }, { status: 500 })
+    const { error } = await supabase.from('settings').upsert(rows, { onConflict: 'key' })
+    if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+    revalidateTag('home-content', { expire: 0 })
+    return NextResponse.json({ ok: true, translated })
   }
 
   const upsertData = {
@@ -186,7 +211,7 @@ export async function POST(req: NextRequest) {
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
 
-  revalidateTag('translations', 'max')
+  revalidateTag('translations', { expire: 0 })
 
   return NextResponse.json({ ok: true, translated })
 }

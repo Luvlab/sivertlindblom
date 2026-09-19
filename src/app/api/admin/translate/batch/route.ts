@@ -18,7 +18,7 @@ export async function POST(req: NextRequest) {
   if (!await requireAdmin()) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
   const body = await req.json() as {
-    entity_type: 'text' | 'biography_entry' | 'exhibition' | 'public_work'
+    entity_type: 'text' | 'biography_entry' | 'exhibition' | 'public_work' | 'home'
     entity_ids?: string[]
     locales?: string[]
     skip_existing?: boolean
@@ -37,6 +37,11 @@ export async function POST(req: NextRequest) {
       try {
         // Get entity IDs from DB if not specified
         let entityIds = body.entity_ids ?? []
+        if (entityIds.length === 0 && body.entity_type === 'home') {
+          // Singleton — 'home' translations live in the settings table, not
+          // the translations table, so there is no list endpoint to query.
+          entityIds = ['home']
+        }
         if (entityIds.length === 0) {
           const baseUrl = req.nextUrl.origin
           const listRes = await fetch(`${baseUrl}/api/admin/translations?entity_type=${body.entity_type}`, {
@@ -44,13 +49,13 @@ export async function POST(req: NextRequest) {
           })
           const existing: Array<{ entity_id: string; locale: string }> = await listRes.json()
 
-          const listEndpoints: Record<typeof body.entity_type, { path: string; idField: string }> = {
+          const listEndpoints: Record<Exclude<typeof body.entity_type, 'home'>, { path: string; idField: string }> = {
             text: { path: '/api/admin/texts', idField: 'slug' },
             biography_entry: { path: '/api/admin/biography', idField: 'id' },
             exhibition: { path: '/api/admin/exhibitions', idField: 'slug' },
             public_work: { path: '/api/admin/public-works', idField: 'slug' },
           }
-          const { path, idField } = listEndpoints[body.entity_type]
+          const { path, idField } = listEndpoints[body.entity_type as Exclude<typeof body.entity_type, 'home'>]
           const listItemsRes = await fetch(`${baseUrl}${path}`, {
             headers: { cookie: req.headers.get('cookie') ?? '' },
           })

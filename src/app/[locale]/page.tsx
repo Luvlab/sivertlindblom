@@ -19,15 +19,10 @@ export default async function HomePage({
   const [dict, { slides: heroSlides, random: heroRandom }, home] = await Promise.all([
     getDictionary(locale as Locale),
     getHeroConfig(),
-    getHomeContent(),
+    getHomeContent(locale),
   ])
 
-  // About text: DB value applies to Swedish only (Jan edits in sv).
-  // Other locales always use their own locale file so no language gets Swedish text.
-  const localeAbout = (dict.home?.about_text as string | undefined) || ''
-  const aboutText = locale === 'sv'
-    ? (home.aboutText || localeAbout)
-    : localeAbout
+  const aboutText = home.aboutText
 
   return (
     <>

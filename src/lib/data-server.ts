@@ -1025,25 +1025,42 @@ const HOME_CONTENT_KEYS = [
   'home_contact_image',
 ] as const
 
-export async function getHomeContent(): Promise<HomeContent> {
+// Editorial homepage fields that get machine-translated (see /api/admin/translate,
+// entity_type 'home'). Translations are stored as extra settings rows keyed
+// `${baseKey}_${locale}` — no schema change needed, reuses the existing
+// key/value settings table.
+const HOME_TRANSLATABLE_KEYS = [
+  'site_title', 'hero_tagline', 'about_short',
+  'home_press_quote', 'home_press_attribution', 'home_press_source', 'home_press_duration',
+] as const
+
+export async function getHomeContent(locale?: string): Promise<HomeContent> {
   'use cache'
   cacheTag('home-content')
   cacheLife('hours')
   const supabase = createAdminClient()
   if (!supabase) return HOME_CONTENT_DEFAULTS
-  const { data } = await supabase.from('settings').select('key, value').in('key', [...HOME_CONTENT_KEYS])
+  const isSwedish = !locale || locale === 'sv'
+  const keysToFetch = isSwedish
+    ? [...HOME_CONTENT_KEYS]
+    : [...HOME_CONTENT_KEYS, ...HOME_TRANSLATABLE_KEYS.map(k => `${k}_${locale}`)]
+  const { data } = await supabase.from('settings').select('key, value').in('key', keysToFetch)
   const map: Record<string, string> = {}
   for (const row of data ?? []) if (row.value) map[row.key] = row.value
+  // Non-Swedish locales prefer their own translated row, then fall back to
+  // the Swedish source (same overlay pattern used for exhibitions/public works).
+  const pick = (key: string, fallback: string) =>
+    (!isSwedish && map[`${key}_${locale}`]) || map[key] || fallback
   return {
-    siteTitle: map['site_title'] || HOME_CONTENT_DEFAULTS.siteTitle,
-    tagline: map['hero_tagline'] || HOME_CONTENT_DEFAULTS.tagline,
-    pressQuote: map['home_press_quote'] || HOME_CONTENT_DEFAULTS.pressQuote,
-    pressAttribution: map['home_press_attribution'] || HOME_CONTENT_DEFAULTS.pressAttribution,
-    pressSource: map['home_press_source'] || HOME_CONTENT_DEFAULTS.pressSource,
-    pressDuration: map['home_press_duration'] || HOME_CONTENT_DEFAULTS.pressDuration,
+    siteTitle: pick('site_title', HOME_CONTENT_DEFAULTS.siteTitle),
+    tagline: pick('hero_tagline', HOME_CONTENT_DEFAULTS.tagline),
+    pressQuote: pick('home_press_quote', HOME_CONTENT_DEFAULTS.pressQuote),
+    pressAttribution: pick('home_press_attribution', HOME_CONTENT_DEFAULTS.pressAttribution),
+    pressSource: pick('home_press_source', HOME_CONTENT_DEFAULTS.pressSource),
+    pressDuration: pick('home_press_duration', HOME_CONTENT_DEFAULTS.pressDuration),
     audioUrl: map['home_audio_url'] || HOME_CONTENT_DEFAULTS.audioUrl,
     audioLink: map['home_audio_link'] || HOME_CONTENT_DEFAULTS.audioLink,
-    aboutText: map['about_short'] || HOME_CONTENT_DEFAULTS.aboutText,
+    aboutText: pick('about_short', HOME_CONTENT_DEFAULTS.aboutText),
     statNActive: map['home_stat_n_active'] || HOME_CONTENT_DEFAULTS.statNActive,
     statNPublic: map['home_stat_n_public'] || HOME_CONTENT_DEFAULTS.statNPublic,
     statNCountries: map['home_stat_n_countries'] || HOME_CONTENT_DEFAULTS.statNCountries,

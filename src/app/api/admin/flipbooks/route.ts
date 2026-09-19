@@ -59,7 +59,7 @@ export async function POST(request: Request) {
       .select('*')
       .single()
     if (error) return NextResponse.json({ error: error.message }, { status: 500 })
-    revalidateTag('flipbooks', 'max')
+    revalidateTag('flipbooks', { expire: 0 })
     return NextResponse.json(data)
   } catch (e) {
     return NextResponse.json({ error: String(e) }, { status: 500 })
