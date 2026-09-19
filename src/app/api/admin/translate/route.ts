@@ -113,46 +113,46 @@ export async function POST(req: NextRequest) {
   let fieldsToTranslate: Record<string, string> = {}
 
   if (entity_type === 'text') {
-    const { data } = await supabase
+    const { data, error: fetchError } = await supabase
       .from('texts')
-      .select('title, body, author_bio, language')
+      .select('title, content, author_bio, language')
       .eq('slug', entity_id)
       .single()
-    if (!data) return NextResponse.json({ error: 'Text not found' }, { status: 404 })
+    if (!data) return NextResponse.json({ error: fetchError ? `Text lookup failed: ${fetchError.message}` : 'Text not found' }, { status: fetchError ? 500 : 404 })
     if (data.language === locale) return NextResponse.json({ error: 'Cannot translate to source language' }, { status: 400 })
     const langMap: Record<string, string> = { sv: 'Swedish', en: 'English', fr: 'French', de: 'German', it: 'Italian', hu: 'Hungarian', nl: 'Dutch' }
     sourceLang = langMap[data.language] ?? data.language
     if (data.title) fieldsToTranslate.title = data.title
-    if (data.body) fieldsToTranslate.content = data.body
+    if (data.content) fieldsToTranslate.content = data.content
     if (data.author_bio) fieldsToTranslate.author_bio = data.author_bio
   } else if (entity_type === 'biography_entry') {
-    const { data } = await supabase
+    const { data, error: fetchError } = await supabase
       .from('biography_entries')
       .select('title, description')
       .eq('id', entity_id)
       .single()
-    if (!data) return NextResponse.json({ error: 'Biography entry not found' }, { status: 404 })
+    if (!data) return NextResponse.json({ error: fetchError ? `Biography entry lookup failed: ${fetchError.message}` : 'Biography entry not found' }, { status: fetchError ? 500 : 404 })
     sourceLang = 'Swedish'
     if (data.title) fieldsToTranslate.title = data.title
     if (data.description) fieldsToTranslate.description = data.description
   } else if (entity_type === 'exhibition') {
-    const { data } = await supabase
+    const { data, error: fetchError } = await supabase
       .from('works')
       .select('title, description, body')
       .eq('slug', entity_id)
       .single()
-    if (!data) return NextResponse.json({ error: 'Exhibition not found' }, { status: 404 })
+    if (!data) return NextResponse.json({ error: fetchError ? `Exhibition lookup failed: ${fetchError.message}` : 'Exhibition not found' }, { status: fetchError ? 500 : 404 })
     sourceLang = 'Swedish'
     if (data.title) fieldsToTranslate.title = data.title
     if (data.description) fieldsToTranslate.description = data.description
     if (data.body) fieldsToTranslate.content = data.body
   } else if (entity_type === 'public_work') {
-    const { data } = await supabase
+    const { data, error: fetchError } = await supabase
       .from('public_works')
       .select('title, description, description_sv')
       .eq('slug', entity_id)
       .single()
-    if (!data) return NextResponse.json({ error: 'Public work not found' }, { status: 404 })
+    if (!data) return NextResponse.json({ error: fetchError ? `Public work lookup failed: ${fetchError.message}` : 'Public work not found' }, { status: fetchError ? 500 : 404 })
     sourceLang = 'Swedish'
     if (data.title) fieldsToTranslate.title = data.title
     if (data.description) fieldsToTranslate.description = data.description
