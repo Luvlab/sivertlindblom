@@ -20,15 +20,28 @@ export async function GET(req: NextRequest) {
   const supabase = createAdminClient()
   if (!supabase) return NextResponse.json({ error: 'DB not configured' }, { status: 500 })
 
-  let query = supabase.from('translations').select('*')
-  if (entity_type) query = query.eq('entity_type', entity_type)
-  if (entity_id) query = query.eq('entity_id', entity_id)
-  if (locale) query = query.eq('locale', locale)
+  // PostgREST caps any single request at the project's configured max-rows
+  // (commonly 1000) regardless of an explicit .limit() — silently truncating
+  // past that. Once translations grow past that for one entity_type, callers
+  // that discover "already translated" pairs from this endpoint (the batch
+  // translate route's skip_existing logic) start losing sight of older rows,
+  // re-queuing work that's already done and never converging. Paginate with
+  // .range() to guarantee every matching row comes back regardless of count.
+  const PAGE_SIZE = 1000
+  const rows: unknown[] = []
+  for (let from = 0; ; from += PAGE_SIZE) {
+    let query = supabase.from('translations').select('*')
+    if (entity_type) query = query.eq('entity_type', entity_type)
+    if (entity_id) query = query.eq('entity_id', entity_id)
+    if (locale) query = query.eq('locale', locale)
 
-  const { data, error } = await query.order('updated_at', { ascending: false })
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+    const { data, error } = await query.order('updated_at', { ascending: false }).range(from, from + PAGE_SIZE - 1)
+    if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+    rows.push(...(data ?? []))
+    if (!data || data.length < PAGE_SIZE) break
+  }
 
-  return NextResponse.json(data ?? [])
+  return NextResponse.json(rows)
 }
 
 // PUT /api/admin/translations — upsert a translation (edit or mark reviewed)
