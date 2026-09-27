@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback, useRef } from 'react'
 import Link from 'next/link'
 import LinkTextarea from '@/components/admin/LinkTextarea'
 import { uploadImageFile } from '@/lib/upload-image'
+import TranslateButton from '@/components/admin/TranslateButton'
 
 const DEFAULT_PORTRAIT = 'https://ixlvwwllvpweltntbsou.supabase.co/storage/v1/object/public/images/wp/2015/01/Portratt-SivertMattias.jpg'
 
@@ -262,6 +263,12 @@ export default function AdminBiography() {
             placeholder="Skriv en kort presentation av Sivert Lindblom som visas längst upp på biografisidan…"
             style={{ flex: 1 }}
           />
+          <div style={{ flexShrink: 0, width: 200 }}>
+            <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', margin: '0 0 0.5rem' }}>
+              Översätter introduktionstexten till alla språk. Spara texten ovan innan du kör den här.
+            </p>
+            <TranslateButton entityType="biography" entityId="biography" />
+          </div>
           {/* Portrait preview + upload */}
           <div style={{ flexShrink: 0, width: 160, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.75rem' }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}

@@ -5,6 +5,7 @@ import { useRouter, useParams } from 'next/navigation'
 import Link from 'next/link'
 import LinkTextarea from '@/components/admin/LinkTextarea'
 import { uploadImageFile } from '@/lib/upload-image'
+import TranslateButton from '@/components/admin/TranslateButton'
 
 interface BioEntry {
   id: string
@@ -273,6 +274,20 @@ function EditBioPageInner() {
             onChange={v => set('description', v)}
             rows={4}
             hint="Markera text + 🔗 Länk för att infoga hyperlänk."
+          />
+        </div>
+
+        {/* Translation */}
+        <div>
+          {lbl('Översättning')}
+          <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', margin: '0 0 0.6rem' }}>
+            Översätter titel och beskrivning till alla språk sajten visas på. Kör den här igen efter varje gång du ändrar texten ovan.
+          </p>
+          <TranslateButton
+            entityType="biography_entry"
+            entityId={form.id}
+            disabled={dirty}
+            disabledReason="Spara ändringarna först — annars översätts den gamla texten."
           />
         </div>
 

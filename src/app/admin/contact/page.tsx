@@ -4,6 +4,7 @@ import { useState, useEffect, useMemo, useRef } from 'react'
 import Link from 'next/link'
 import type { PublicWork } from '@/lib/public-works'
 import { uploadImageFile } from '@/lib/upload-image'
+import TranslateButton from '@/components/admin/TranslateButton'
 
 interface ContactSettings {
   contact_email: string
@@ -410,6 +411,14 @@ export default function AdminContact() {
             onChange={e => setForm(f => ({ ...f, contact_intro: e.target.value }))}
             placeholder="En kort text som visas överst på kontaktsidan…"
           />
+        </div>
+
+        <div>
+          {lbl('Översättning')}
+          <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', margin: '0 0 0.6rem' }}>
+            Översätter introduktionstexten till alla språk sajten visas på. Spara ändringar ovan innan du kör den här.
+          </p>
+          <TranslateButton entityType="contact" entityId="contact" />
         </div>
 
         <div>

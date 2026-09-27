@@ -8,6 +8,7 @@
  */
 import { cacheTag, cacheLife } from 'next/cache'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { getTranslationsForType } from '@/lib/translations'
 import type { Exhibition, ExhibitionLink, ExhibitionSubpage } from '@/lib/exhibitions-data'
 import { exhibitions as STATIC_EXHIBITIONS } from '@/lib/exhibitions-data'
 import type { PublicWork, PublicWorkSubpage } from '@/lib/public-works'
@@ -69,7 +70,7 @@ import {
 
 // ─── References → Fotografier (editable inspiration gallery) ─────────────────
 
-export async function getFotografi(): Promise<FotografiSection> {
+export async function getFotografi(locale?: string): Promise<FotografiSection> {
   'use cache'
   cacheTag('references-fotografi')
   cacheLife('days')
@@ -78,7 +79,15 @@ export async function getFotografi(): Promise<FotografiSection> {
     if (supabase) {
       const { data } = await supabase.from('settings').select('key, value')
       const raw = (data ?? []).find((r) => (r as { key: string }).key === FOTOGRAFI_SETTINGS_KEY) as { value?: string } | undefined
-      return parseFotografi(raw?.value)
+      const section = parseFotografi(raw?.value)
+      // The intro paragraph is the only translated field here (images/captions
+      // stay Swedish) — stored as a flat settings row, not inside the JSON
+      // blob, so translating it doesn't risk the blob's own structure.
+      if (locale && locale !== 'sv') {
+        const introRow = (data ?? []).find((r) => (r as { key: string }).key === `${FOTOGRAFI_SETTINGS_KEY}_intro_${locale}`) as { value?: string } | undefined
+        if (introRow?.value) section.intro = introRow.value
+      }
+      return section
     }
   } catch {
     // fall through to defaults
@@ -1080,9 +1089,9 @@ export interface BiographyEntry {
   sort_order: number | null
 }
 
-export async function getBiographyEntries(): Promise<BiographyEntry[]> {
+export async function getBiographyEntries(locale: string = 'sv'): Promise<BiographyEntry[]> {
   'use cache'
-  cacheTag('biography')
+  cacheTag('biography', `biography-${locale}`)
   cacheLife('minutes')
   const supabase = createAdminClient()
   if (!supabase) return []
@@ -1090,7 +1099,18 @@ export async function getBiographyEntries(): Promise<BiographyEntry[]> {
     .from('biography_entries')
     .select('id, entry_type, year_start, year_end, title, description, location, sort_order')
     .order('year_start', { ascending: false })
-  return data ?? []
+  const entries = data ?? []
+  if (locale === 'sv' || entries.length === 0) return entries
+
+  // Overlay machine/human translations for non-Swedish locales, same
+  // fallback-to-Swedish pattern used everywhere else — one bulk query for
+  // all entries instead of 55 individual lookups.
+  const translations = await getTranslationsForType('biography_entry', locale)
+  const byId = new Map(translations.map((t) => [t.entity_id, t]))
+  return entries.map((entry) => {
+    const t = byId.get(entry.id)
+    return t ? { ...entry, title: t.title ?? entry.title, description: t.description ?? entry.description } : entry
+  })
 }
 
 export interface Flipbook {

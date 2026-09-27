@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import AdminForm from '@/components/admin/AdminForm'
 import ImageListEditor from '@/components/admin/ImageListEditor'
+import TranslateButton from '@/components/admin/TranslateButton'
 import type { SculptureProject } from '@/lib/sculpture-projects'
 
 function slugify(s: string): string {
@@ -153,6 +154,19 @@ export default function AdminSkulptur() {
 
                   <label style={labelStyle}>Brödtext</label>
                   <textarea value={p.body} onChange={e => update(i, { body: e.target.value })} rows={8} style={{ ...cell, resize: 'vertical', lineHeight: 1.6 }} />
+
+                  <label style={labelStyle}>Översättning</label>
+                  <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', margin: '0 0 0.6rem' }}>
+                    Översätter rubrik, kort text och brödtext till alla språk sajten visas på. Kör den här igen efter varje gång du ändrar texten ovan.
+                  </p>
+                  <div style={{ marginBottom: '1rem' }}>
+                    <TranslateButton
+                      entityType="sculpture_project"
+                      entityId={p.slug}
+                      disabled={dirty}
+                      disabledReason="Spara ändringarna först — annars översätts den gamla texten."
+                    />
+                  </div>
 
                   <label style={labelStyle}>Bilder ({urls.length}) — bildtext = alt-text</label>
                   <ImageListEditor

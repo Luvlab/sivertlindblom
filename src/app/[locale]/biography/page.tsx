@@ -35,22 +35,25 @@ const DEFAULT_PHOTOS: Array<{ url: string; caption: string; credit?: string }> =
 
 const DEFAULT_PORTRAIT_CREDIT = 'Foto: Mathias Johansson'
 
-async function getBiographySettings(): Promise<{
+async function getBiographySettings(locale: string = 'sv'): Promise<{
   intro: string
   portrait: string
   portraitCredit: string
   photos: Array<{ url: string; caption: string; credit?: string }>
 }> {
   'use cache'
-  cacheTag('biography')
+  cacheTag('biography', `biography-${locale}`)
   cacheLife('hours')
+  const isSwedish = locale === 'sv'
   try {
     const supabase = createAdminClient()
     if (supabase) {
+      const baseKeys = ['biography_intro', 'biography_portrait', 'biography_portrait_credit', 'biography_photos']
+      const keysToFetch = isSwedish ? baseKeys : [...baseKeys, `biography_intro_${locale}`]
       const { data } = await supabase
         .from('settings')
         .select('key, value')
-        .in('key', ['biography_intro', 'biography_portrait', 'biography_portrait_credit', 'biography_photos'])
+        .in('key', keysToFetch)
       if (data?.length) {
         const map: Record<string, string> = {}
         data.forEach(({ key, value }: { key: string; value: string }) => { map[key] = value })
@@ -58,8 +61,9 @@ async function getBiographySettings(): Promise<{
         if (map.biography_photos) {
           try { photos = JSON.parse(map.biography_photos) } catch { /* ignore */ }
         }
+        const translatedIntro = !isSwedish ? map[`biography_intro_${locale}`] : undefined
         return {
-          intro: map.biography_intro ?? FALLBACK_SETTINGS.biography_intro ?? '',
+          intro: translatedIntro ?? map.biography_intro ?? FALLBACK_SETTINGS.biography_intro ?? '',
           portrait: map.biography_portrait ?? DEFAULT_PORTRAIT,
           portraitCredit: map.biography_portrait_credit ?? DEFAULT_PORTRAIT_CREDIT,
           photos,
@@ -156,10 +160,10 @@ export default async function BiographyPage({
   const { locale } = await params
   const [dict, bioSettings, utmarkelser, bibliography, bioEntries] = await Promise.all([
     getDictionary(locale as Locale),
-    getBiographySettings(),
+    getBiographySettings(locale),
     getUtmarkelser(),
     getBibliography(),
-    getBiographyEntries(),
+    getBiographyEntries(locale),
   ])
   const publicCommissions  = bioEntries.filter(e => e.entry_type === 'public_commission')
   const groupExhibitions   = bioEntries.filter(e => e.entry_type === 'group_exhibition').sort((a, b) => a.year_start - b.year_start)

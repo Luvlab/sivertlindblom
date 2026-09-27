@@ -1,7 +1,7 @@
 import { cacheTag, cacheLife } from 'next/cache'
 import { createAdminClient } from './supabase/admin'
 
-export type TranslatableEntityType = 'text' | 'biography_entry' | 'exhibition' | 'public_work'
+export type TranslatableEntityType = 'text' | 'biography_entry' | 'exhibition' | 'public_work' | 'sculpture_project' | 'scenography'
 
 export interface Translation {
   id: string
@@ -52,6 +52,28 @@ export async function getTranslationsForEntity(
     .select('*')
     .eq('entity_type', entityType)
     .eq('entity_id', entityId)
+  return data ?? []
+}
+
+/**
+ * All translations for one entity_type in one locale, in a single query —
+ * for list pages that render many entities at once (e.g. biography) where
+ * calling getTranslation() per-entity would mean one DB round-trip each.
+ */
+export async function getTranslationsForType(
+  entityType: TranslatableEntityType,
+  locale: string
+): Promise<Translation[]> {
+  'use cache'
+  cacheTag('translations', `translations-${entityType}-${locale}`)
+  cacheLife('hours')
+  const supabase = createAdminClient()
+  if (!supabase) return []
+  const { data } = await supabase
+    .from('translations')
+    .select('*')
+    .eq('entity_type', entityType)
+    .eq('locale', locale)
   return data ?? []
 }
 

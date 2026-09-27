@@ -7,6 +7,7 @@ import type { Locale } from '@/i18n/config'
 import GalleryGrid from '@/components/gallery/GalleryGrid'
 import type { LightboxImage } from '@/components/gallery/Lightbox'
 import { getWorks, FALLBACK_WORKS } from '@/lib/scenography-data'
+import { getTranslation } from '@/lib/translations'
 import { renderParagraphs } from '@/lib/render-text'
 import PdfDownloads from '@/components/pdf/PdfDownloads'
 import MediaPlayers from '@/components/MediaPlayers'
@@ -22,11 +23,12 @@ export async function generateMetadata({
 }: {
   params: Promise<{ locale: string; slug: string }>
 }): Promise<Metadata> {
-  const { slug } = await params
+  const { locale, slug } = await params
   const works = await getWorks()
   const work = works.find((w) => w.slug === slug)
   if (!work) return { title: 'Scenografi' }
-  return { title: work.title }
+  const dbTranslation = locale === 'sv' ? null : await getTranslation('scenography', slug, locale)
+  return { title: dbTranslation?.title ?? work.title }
 }
 
 export default async function ScenographyDetailPage({
@@ -35,9 +37,11 @@ export default async function ScenographyDetailPage({
   params: Promise<{ locale: string; slug: string }>
 }) {
   const { locale, slug } = await params
-  const [dict, allWorks] = await Promise.all([
+  const isSwedish = locale === 'sv'
+  const [dict, allWorks, dbTranslation] = await Promise.all([
     getDictionary(locale as Locale),
     getWorks(),
+    isSwedish ? Promise.resolve(null) : getTranslation('scenography', slug, locale),
   ])
 
   const idx = allWorks.findIndex((w) => w.slug === slug)
@@ -47,10 +51,15 @@ export default async function ScenographyDetailPage({
   const prev = idx > 0 ? allWorks[idx - 1] : null
   const next = idx < allWorks.length - 1 ? allWorks[idx + 1] : null
 
+  // Overlay machine/human translation for non-Swedish locales; fall back to
+  // the Swedish source for any field that hasn't been translated yet.
+  const displayTitle = dbTranslation?.title ?? work.title
+  const displayDescription = dbTranslation?.description ?? work.description
+
   const heroImage = work.images[0]
   const galleryImages: LightboxImage[] = work.images.map((url, i) => ({
     url,
-    alt: `${work.title} — bild ${i + 1}`,
+    alt: `${displayTitle} — bild ${i + 1}`,
     credit: work.photographerCredit || undefined,
   }))
 
@@ -62,7 +71,7 @@ export default async function ScenographyDetailPage({
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={heroImage}
-            alt={work.title}
+            alt={displayTitle}
             style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 40%' }}
           />
           <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, transparent 25%, rgba(10,10,10,0.92) 100%)' }} />
@@ -71,7 +80,7 @@ export default async function ScenographyDetailPage({
               {work.year ?? ''}{work.year && work.type ? ' · ' : ''}{work.type}
             </p>
             <h1 style={{ fontFamily: 'Georgia, serif', fontWeight: 400, fontSize: 'clamp(1.8rem,3.5vw,3rem)', margin: 0, maxWidth: '26ch' }}>
-              {work.title}
+              {displayTitle}
             </h1>
           </div>
         </div>
@@ -82,7 +91,7 @@ export default async function ScenographyDetailPage({
               {work.year ?? ''}{work.year && work.type ? ' · ' : ''}{work.type}
             </p>
             <h1 style={{ fontFamily: 'Georgia, serif', fontWeight: 400, fontSize: 'clamp(1.8rem,3.5vw,3rem)', margin: 0 }}>
-              {work.title}
+              {displayTitle}
             </h1>
           </div>
         </div>
@@ -107,14 +116,14 @@ export default async function ScenographyDetailPage({
         {/* Title (when no hero) */}
         {!heroImage && (
           <h1 style={{ fontFamily: 'Georgia, serif', fontWeight: 400, fontSize: 'clamp(1.8rem,3vw,3rem)', margin: '0 0 0.4rem' }}>
-            {work.title}
+            {displayTitle}
           </h1>
         )}
 
         {/* Title shown below hero for context in page body */}
         {heroImage && (
           <h1 style={{ fontFamily: 'Georgia, serif', fontWeight: 400, fontSize: 'clamp(1.8rem,3vw,3rem)', margin: '0 0 0.4rem' }}>
-            {work.title}
+            {displayTitle}
           </h1>
         )}
 
@@ -126,7 +135,7 @@ export default async function ScenographyDetailPage({
         )}
 
         {/* Description */}
-        {work.description && (
+        {displayDescription && (
           <div style={{
             color: 'var(--color-muted)',
             fontSize: 'var(--fs-base)',
@@ -134,7 +143,7 @@ export default async function ScenographyDetailPage({
             maxWidth: '68ch',
             marginBottom: '3rem',
           }}>
-            {renderParagraphs(work.description, { margin: 0, lineHeight: 1.85 })}
+            {renderParagraphs(displayDescription, { margin: 0, lineHeight: 1.85 })}
           </div>
         )}
 
@@ -160,7 +169,7 @@ export default async function ScenographyDetailPage({
             <div style={{ position: 'relative', aspectRatio: '16/9', overflow: 'hidden', borderRadius: 4, background: '#111' }}>
               <iframe
                 src={`https://www.youtube.com/embed/${work.video_url}?rel=0`}
-                title={work.title}
+                title={displayTitle}
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
                 style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', border: 0 }}

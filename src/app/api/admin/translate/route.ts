@@ -33,6 +33,32 @@ const HOME_TRANSLATABLE_KEYS = [
   'home_press_quote', 'home_press_attribution', 'home_press_source', 'home_press_duration',
 ] as const
 
+// Other singleton, settings-table-backed sections that get the same
+// key/value translation treatment as 'home' (translations stored as extra
+// `${key}_${locale}` rows — no dedicated table for these entity types).
+const SETTINGS_SINGLETON_KEYS: Record<string, readonly string[]> = {
+  home: HOME_TRANSLATABLE_KEYS,
+  watercolors: ['watercolors_title', 'watercolors_description'],
+  contact: ['contact_intro'],
+  // reference_fotografi's source lives inside a JSON blob (not flat settings
+  // keys) so it gets its own fetch branch below — but the translated intro
+  // still writes out as a normal flat `${key}_${locale}` row like the others,
+  // so it's listed here purely to drive that shared write path + cache tag.
+  reference_fotografi: ['reference_fotografi_intro'],
+  biography: ['biography_intro'],
+}
+
+// Cache tag each singleton section's public page actually reads with
+// cacheTag(...) — not always the same string as the entity_type/settings
+// key prefix (e.g. the contact page tags itself 'settings', not 'contact').
+const SETTINGS_SINGLETON_CACHE_TAG: Record<string, string> = {
+  home: 'home-content',
+  watercolors: 'watercolors',
+  contact: 'settings',
+  reference_fotografi: 'references-fotografi',
+  biography: 'biography',
+}
+
 async function requireAdmin() {
   const jar = await cookies()
   return jar.get('admin_session')?.value === 'authenticated'
@@ -66,21 +92,42 @@ Respond with the same XML structure, replacing content with ${targetLang} transl
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       contents: [{ role: 'user', parts: [{ text: prompt }] }],
-      generationConfig: { temperature: 0.2, maxOutputTokens: 8192 },
+      // Long exhibition/text bodies (several thousand chars of source) plus
+      // XML wrapper overhead can exceed a small budget well before the model
+      // finishes — that previously showed up as a silently truncated
+      // response (title/description present, content cut off mid-field).
+      // Generous headroom here is cheap insurance against that.
+      generationConfig: { temperature: 0.2, maxOutputTokens: 32768 },
     }),
   })
   if (!res.ok) {
     const errText = await res.text().catch(() => '')
     throw new Error(`Gemini API error (${res.status}): ${errText.slice(0, 300)}`)
   }
-  const json = await res.json() as { candidates?: Array<{ content?: { parts?: Array<{ text?: string }> } }> }
-  const responseText = json.candidates?.[0]?.content?.parts?.map((p) => p.text ?? '').join('') ?? ''
+  const json = await res.json() as { candidates?: Array<{ content?: { parts?: Array<{ text?: string }> }; finishReason?: string }> }
+  const candidate = json.candidates?.[0]
+  const responseText = candidate?.content?.parts?.map((p) => p.text ?? '').join('') ?? ''
   if (!responseText.trim()) throw new Error('Gemini returned an empty response')
+  if (candidate?.finishReason === 'MAX_TOKENS') {
+    throw new Error('Gemini response was truncated (hit the output token limit) — translation incomplete, not saving')
+  }
 
   const result: Record<string, string> = {}
   for (const [key] of Object.entries(fields)) {
     const match = responseText.match(new RegExp(`<field name="${key}">([\\s\\S]*?)<\\/field>`))
     if (match) result[key] = match[1].trim()
+  }
+
+  // Every field we actually asked to translate must come back — a field
+  // silently missing from the response (regex found no closing tag, most
+  // likely from truncation the finishReason check above didn't catch, or a
+  // malformed response) previously got upserted as a null column, which
+  // then looked "done" to skip_existing forever. Fail loudly instead so the
+  // caller retries rather than saving a half-translated entity.
+  const requestedKeys = Object.entries(fields).filter(([, v]) => v?.trim()).map(([k]) => k)
+  const missingKeys = requestedKeys.filter((k) => !result[k])
+  if (missingKeys.length > 0) {
+    throw new Error(`Gemini response was missing field(s): ${missingKeys.join(', ')} — translation incomplete, not saving`)
   }
 
   return result
@@ -93,7 +140,7 @@ export async function POST(req: NextRequest) {
   if (!supabase) return NextResponse.json({ error: 'DB not configured' }, { status: 500 })
 
   const body = await req.json() as {
-    entity_type: 'text' | 'biography_entry' | 'exhibition' | 'public_work' | 'home'
+    entity_type: 'text' | 'biography_entry' | 'exhibition' | 'public_work' | 'home' | 'sculpture_project' | 'scenography' | 'watercolors' | 'contact' | 'reference_fotografi' | 'biography'
     entity_id: string
     locale: string
   }
@@ -157,14 +204,52 @@ export async function POST(req: NextRequest) {
     if (data.title) fieldsToTranslate.title = data.title
     if (data.description) fieldsToTranslate.description = data.description
     if (data.description_sv) fieldsToTranslate.content = data.description_sv
-  } else if (entity_type === 'home') {
-    // Singleton homepage content, stored as key/value rows in 'settings' —
-    // not the 'translations' table. entity_id is unused (always 'home').
-    const { data } = await supabase.from('settings').select('key, value').in('key', [...HOME_TRANSLATABLE_KEYS])
+  } else if (entity_type === 'sculpture_project') {
+    // Sculpture-series entries (Skulptur & Grafik references) live as a JSON
+    // array under one settings row, not their own table — read-only lookup
+    // here, translations still land in the normal 'translations' table.
+    const { data, error: fetchError } = await supabase.from('settings').select('value').eq('key', 'reference_sculpture').single()
+    if (!data) return NextResponse.json({ error: fetchError ? `Sculpture project lookup failed: ${fetchError.message}` : 'Sculpture project reference data not found' }, { status: fetchError ? 500 : 404 })
+    let projects: Array<{ slug: string; title?: string; description?: string; shortDesc?: string; body?: string }> = []
+    try { projects = JSON.parse(data.value)?.projects ?? [] } catch { /* fall through to not-found */ }
+    const project = projects.find((p) => p.slug === entity_id)
+    if (!project) return NextResponse.json({ error: 'Sculpture project not found' }, { status: 404 })
+    sourceLang = 'Swedish'
+    if (project.title) fieldsToTranslate.title = project.title
+    // `description` is frequently empty on these entries — `shortDesc` holds
+    // the real short blurb, so prefer it when present.
+    const shortText = project.shortDesc || project.description
+    if (shortText) fieldsToTranslate.description = shortText
+    if (project.body) fieldsToTranslate.content = project.body
+  } else if (entity_type === 'scenography') {
+    const { data, error: fetchError } = await supabase
+      .from('scenography_works')
+      .select('title, description')
+      .eq('slug', entity_id)
+      .single()
+    if (!data) return NextResponse.json({ error: fetchError ? `Scenography work lookup failed: ${fetchError.message}` : 'Scenography work not found' }, { status: fetchError ? 500 : 404 })
+    sourceLang = 'Swedish'
+    if (data.title) fieldsToTranslate.title = data.title
+    if (data.description) fieldsToTranslate.description = data.description
+  } else if (entity_type === 'reference_fotografi') {
+    // Source lives inside a JSON blob (settings key 'reference_fotografi'),
+    // not as its own flat row — only the intro paragraph is translated here.
+    const { data, error: fetchError } = await supabase.from('settings').select('value').eq('key', 'reference_fotografi').single()
+    if (!data) return NextResponse.json({ error: fetchError ? `Fotografi reference lookup failed: ${fetchError.message}` : 'Fotografi reference data not found' }, { status: fetchError ? 500 : 404 })
+    let intro = ''
+    try { intro = JSON.parse(data.value)?.intro ?? '' } catch { /* leave empty */ }
+    sourceLang = 'Swedish'
+    if (intro) fieldsToTranslate.reference_fotografi_intro = intro
+  } else if (entity_type in SETTINGS_SINGLETON_KEYS) {
+    // Singleton section content (home, watercolors, contact…), stored as
+    // key/value rows in 'settings' — not the 'translations' table. entity_id
+    // is unused (always matches the entity_type itself, e.g. 'watercolors').
+    const keys = SETTINGS_SINGLETON_KEYS[entity_type]
+    const { data } = await supabase.from('settings').select('key, value').in('key', [...keys])
     const map: Record<string, string> = {}
     for (const row of data ?? []) if (row.value) map[row.key] = row.value
     sourceLang = 'Swedish'
-    for (const key of HOME_TRANSLATABLE_KEYS) if (map[key]) fieldsToTranslate[key] = map[key]
+    for (const key of keys) if (map[key]) fieldsToTranslate[key] = map[key]
   } else {
     return NextResponse.json({ error: `Unknown entity_type: ${entity_type}` }, { status: 400 })
   }
@@ -180,14 +265,14 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: e instanceof Error ? e.message : String(e) }, { status: 500 })
   }
 
-  if (entity_type === 'home') {
+  if (entity_type in SETTINGS_SINGLETON_KEYS) {
     const rows = Object.entries(translated)
       .filter(([, value]) => value)
       .map(([key, value]) => ({ key: `${key}_${locale}`, value }))
     if (rows.length === 0) return NextResponse.json({ error: 'Translation returned no content' }, { status: 500 })
     const { error } = await supabase.from('settings').upsert(rows, { onConflict: 'key' })
     if (error) return NextResponse.json({ error: error.message }, { status: 500 })
-    revalidateTag('home-content', { expire: 0 })
+    revalidateTag(SETTINGS_SINGLETON_CACHE_TAG[entity_type] ?? entity_type, { expire: 0 })
     return NextResponse.json({ ok: true, translated })
   }
 

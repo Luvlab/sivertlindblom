@@ -6,6 +6,7 @@ import type { Locale } from '@/i18n/config'
 import { getDictionary } from '@/i18n/getDictionary'
 import { SCULPTURE_PROJECTS } from '@/lib/sculpture-projects'
 import { getSculptureProjects } from '@/lib/data-server'
+import { getTranslation } from '@/lib/translations'
 import GalleryGrid from '@/components/gallery/GalleryGrid'
 import type { LightboxImage } from '@/components/gallery/Lightbox'
 import { renderInlineLinks, renderParagraphs } from '@/lib/render-text'
@@ -21,12 +22,13 @@ export async function generateMetadata({
 }: {
   params: Promise<{ locale: string; slug: string }>
 }): Promise<Metadata> {
-  const { slug } = await params
+  const { locale, slug } = await params
   const project = SCULPTURE_PROJECTS.find((p) => p.slug === slug)
   if (!project) return {}
+  const dbTranslation = locale === 'sv' ? null : await getTranslation('sculpture_project', slug, locale)
   return {
-    title: project.title,
-    description: project.description,
+    title: dbTranslation?.title ?? project.title,
+    description: dbTranslation?.description ?? project.description,
   }
 }
 
@@ -36,14 +38,22 @@ export default async function SculptureSeriesPage({
   params: Promise<{ locale: string; slug: string }>
 }) {
   const { locale, slug } = await params
-  const [dict, projects] = await Promise.all([
+  const isSwedish = locale === 'sv'
+  const [dict, projects, dbTranslation] = await Promise.all([
     getDictionary(locale as Locale),
     getSculptureProjects(),
+    isSwedish ? Promise.resolve(null) : getTranslation('sculpture_project', slug, locale),
   ])
 
   const project = projects.find((p) => p.slug === slug)
     ?? SCULPTURE_PROJECTS.find((p) => p.slug === slug)
   if (!project) notFound()
+
+  // Overlay machine/human translation for non-Swedish locales; fall back to
+  // the Swedish source for any field that hasn't been translated yet.
+  const displayTitle = dbTranslation?.title ?? project.title
+  const displayDescription = dbTranslation?.description ?? project.description
+  const displayBody = dbTranslation?.content ?? project.body
 
   // The alt text on a sculpture image is usually the work's title ("Azteker;
   // bly 1978"), so it doubles as the caption shown under the image. But for
@@ -76,19 +86,19 @@ export default async function SculptureSeriesPage({
         )}
 
         <h1 style={{ fontFamily: 'Georgia, serif', fontWeight: 400, fontSize: 'clamp(1.8rem,4vw,3rem)', marginBottom: '1rem' }}>
-          {project.title}
+          {displayTitle}
         </h1>
 
         {/* Text: description + body + links (full width) */}
         <div style={{ maxWidth: '72ch' }}>
           <div className="prose-cols" style={{ color: 'var(--color-text)', fontSize: 'var(--fs-base)', marginBottom: '1.5rem' }}>
-            {renderParagraphs(project.description, { margin: 0, lineHeight: 1.75, marginBottom: '1.1em' })}
+            {renderParagraphs(displayDescription, { margin: 0, lineHeight: 1.75, marginBottom: '1.1em' })}
           </div>
 
           <hr className="divider" style={{ marginBottom: '1.5rem' }} />
 
           <div>
-            {project.body.split('\n\n').filter(Boolean).map((para, i) => (
+            {displayBody.split('\n\n').filter(Boolean).map((para, i) => (
               <p key={i} style={{ fontSize: 'var(--fs-base)', lineHeight: 1.75, marginBottom: '1.25em', color: 'var(--color-text)' }}>
                 {para.split('\n').map((line, j) => (
                   <span key={j}>{j > 0 && <br />}{renderInlineLinks(line)}</span>

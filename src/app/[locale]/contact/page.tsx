@@ -49,17 +49,38 @@ async function getContactHeroImage(): Promise<string> {
   return ALPS_IMAGE_FALLBACK
 }
 
+// The admin "Intro" field (contact_intro) previously saved to settings but
+// was never read by this page — it always showed the static dictionary's
+// contact.intro string instead, so admin edits had no visible effect. Now
+// wired up, with the dictionary string as the ultimate fallback and the
+// same `${key}_${locale}` translation-overlay pattern used elsewhere.
+async function getContactIntro(locale: string): Promise<string | undefined> {
+  'use cache'
+  cacheTag('settings')
+  cacheLife('hours')
+  const supabase = createAdminClient()
+  if (!supabase) return undefined
+  const isSwedish = locale === 'sv'
+  const keys = isSwedish ? ['contact_intro'] : ['contact_intro', `contact_intro_${locale}`]
+  const { data } = await supabase.from('settings').select('key, value').in('key', keys)
+  const map: Record<string, string> = {}
+  for (const row of data ?? []) if (row.value) map[row.key] = row.value
+  return (!isSwedish && map[`contact_intro_${locale}`]) || map.contact_intro || undefined
+}
+
 export default async function ContactPage({
   params,
 }: {
   params: Promise<{ locale: string }>
 }) {
   const { locale } = await params
-  const [dict, heroHeightVh, heroImage] = await Promise.all([
+  const [dict, heroHeightVh, heroImage, contactIntro] = await Promise.all([
     getDictionary(locale as Locale),
     getContactHeroHeight(),
     getContactHeroImage(),
+    getContactIntro(locale),
   ])
+  const displayIntro = contactIntro ?? dict.contact?.intro
 
   return (
     <div>
@@ -111,9 +132,9 @@ export default async function ContactPage({
 
         {/* Left column: Information + Errata */}
         <div className="contact-col">
-          {dict.contact?.intro && (
-            <p style={{ fontSize: 'var(--fs-base)', color: 'var(--color-muted)', maxWidth: '65ch', marginBottom: '3rem', lineHeight: 1.75 }}>
-              {dict.contact.intro}
+          {displayIntro && (
+            <p style={{ fontSize: 'var(--fs-base)', color: 'var(--color-muted)', maxWidth: '65ch', marginBottom: '3rem', lineHeight: 1.75, whiteSpace: 'pre-wrap' }}>
+              {displayIntro}
             </p>
           )}
 

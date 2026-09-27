@@ -4,6 +4,7 @@ import { useState, useEffect, useRef, useMemo } from 'react'
 import Lightbox from '@/components/gallery/Lightbox'
 import type { LightboxImage } from '@/components/gallery/Lightbox'
 import { uploadImageFile } from '@/lib/upload-image'
+import TranslateButton from '@/components/admin/TranslateButton'
 
 interface VaultImage {
   url: string
@@ -318,6 +319,14 @@ export default function AdminWatercolors() {
             <textarea className="input" rows={3} style={{ width: '100%', resize: 'vertical' }}
               value={sectionDesc} onChange={e => setSectionDesc(e.target.value)}
               placeholder="En serie axonometriska arkitektoniska visioner…" />
+          </div>
+
+          <div>
+            <label style={{ display: 'block', fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', marginBottom: '0.25rem' }}>Översättning</label>
+            <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', margin: '0 0 0.6rem' }}>
+              Översätter titel och ingress till alla språk sajten visas på. Spara ändringar ovan innan du kör den här.
+            </p>
+            <TranslateButton entityType="watercolors" entityId="watercolors" disabled={dirty} disabledReason="Spara ändringarna först — annars översätts den gamla texten." />
           </div>
           {/* ── Hero slideshow picker ── */}
           <div style={{ borderTop: '1px solid var(--color-border)', paddingTop: '1rem' }}>

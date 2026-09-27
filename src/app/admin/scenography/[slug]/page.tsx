@@ -8,6 +8,7 @@ import ImageListEditor from '@/components/admin/ImageListEditor'
 import LinkTextarea from '@/components/admin/LinkTextarea'
 import PdfListEditor from '@/components/admin/PdfListEditor'
 import MediaListEditor from '@/components/admin/MediaListEditor'
+import TranslateButton from '@/components/admin/TranslateButton'
 import Lightbox from '@/components/gallery/Lightbox'
 import type { LightboxImage } from '@/components/gallery/Lightbox'
 
@@ -149,6 +150,19 @@ function EditScenographyPageInner() {
                 onChange={v => update('description', v)}
                 rows={8}
                 placeholder="Längre beskrivning av verket…"
+              />
+            </div>
+
+            <div>
+              <FieldLabel>Översättning</FieldLabel>
+              <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', margin: '0 0 0.6rem' }}>
+                Översätter titel och beskrivning till alla språk sajten visas på. Kör den här igen efter varje gång du ändrar texten ovan.
+              </p>
+              <TranslateButton
+                entityType="scenography"
+                entityId={form.slug}
+                disabled={dirty}
+                disabledReason="Spara ändringarna först — annars översätts den gamla texten."
               />
             </div>
 

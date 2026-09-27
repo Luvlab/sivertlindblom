@@ -55,17 +55,20 @@ async function getWatercolors(): Promise<LightboxImage[]> {
   }
 }
 
-async function getWatercolorsMeta(): Promise<{ title?: string; description?: string; heroImages?: string[] }> {
+async function getWatercolorsMeta(locale?: string): Promise<{ title?: string; description?: string; heroImages?: string[] }> {
   'use cache'
   cacheTag('watercolors')
   cacheLife('hours')
   try {
     const supabase = createAdminClient()
     if (!supabase) return {}
+    const isSwedish = !locale || locale === 'sv'
+    const baseKeys = ['watercolors_title', 'watercolors_description', 'watercolors_hero_images']
+    const keysToFetch = isSwedish ? baseKeys : [...baseKeys, `watercolors_title_${locale}`, `watercolors_description_${locale}`]
     const { data, error } = await supabase
       .from('settings')
       .select('key, value')
-      .in('key', ['watercolors_title', 'watercolors_description', 'watercolors_hero_images'])
+      .in('key', keysToFetch)
     if (error || !data?.length) return {}
     const map: Record<string, string> = {}
     data.forEach(({ key, value }: { key: string; value: string }) => { map[key] = value })
@@ -74,8 +77,8 @@ async function getWatercolorsMeta(): Promise<{ title?: string; description?: str
       try { heroImages = JSON.parse(map.watercolors_hero_images) } catch { /* ignore */ }
     }
     return {
-      title: map.watercolors_title || undefined,
-      description: map.watercolors_description || undefined,
+      title: (!isSwedish && map[`watercolors_title_${locale}`]) || map.watercolors_title || undefined,
+      description: (!isSwedish && map[`watercolors_description_${locale}`]) || map.watercolors_description || undefined,
       heroImages,
     }
   } catch {
@@ -92,7 +95,7 @@ export default async function WatercolorsPage({
   const [dict, images, meta, flipbooks] = await Promise.all([
     getDictionary(locale as Locale),
     getWatercolors(),
-    getWatercolorsMeta(),
+    getWatercolorsMeta(locale),
     getFlipbooks('watercolors'),
   ])
   return <WatercolorsGallery locale={locale} dict={dict} images={images} title={meta.title} description={meta.description} heroImages={meta.heroImages} flipbooks={flipbooks} />

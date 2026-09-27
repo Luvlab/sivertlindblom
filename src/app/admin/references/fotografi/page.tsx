@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import AdminForm, { FieldLabel } from '@/components/admin/AdminForm'
 import ImageListEditor from '@/components/admin/ImageListEditor'
+import TranslateButton from '@/components/admin/TranslateButton'
 import type { FotografiSection } from '@/lib/reference-fotografi'
 
 export default function AdminFotografi() {
@@ -88,6 +89,14 @@ export default function AdminFotografi() {
           onChange={e => { setIntro(e.target.value); setDirty(true) }}
           placeholder="Förklarande text om bilderna…"
         />
+      </div>
+
+      <div>
+        <FieldLabel>Översättning</FieldLabel>
+        <p style={{ fontSize: 'var(--fs-xs)', color: 'var(--color-muted)', margin: '0 0 0.6rem' }}>
+          Översätter texten ovan till alla språk sajten visas på. Spara ändringar innan du kör den här.
+        </p>
+        <TranslateButton entityType="reference_fotografi" entityId="reference_fotografi" disabled={dirty} disabledReason="Spara ändringarna först — annars översätts den gamla texten." />
       </div>
 
       <div>

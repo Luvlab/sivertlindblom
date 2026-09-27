@@ -54,7 +54,11 @@ export default function LanguageSwitcher({ locale }: LanguageSwitcherProps) {
         : pathname
     const newPath = `/${newLocale}${pathWithoutLocale === '/' ? '' : pathWithoutLocale}`
     document.cookie = `NEXT_LOCALE=${newLocale};path=/;max-age=${60 * 60 * 24 * 365};samesite=lax`
-    router.push(newPath)
+    // usePathname() never includes the hash (Next's routing hooks don't
+    // track it), so a page like /references#grafik whose tab selection lives
+    // entirely in the hash (see TabsLayout) would silently reset to the
+    // default tab on locale switch. window.location.hash always has it.
+    router.push(newPath + window.location.hash)
   }
 
   return (

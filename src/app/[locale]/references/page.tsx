@@ -25,7 +25,7 @@ export default async function ReferencesPage({
 }) {
   const { locale } = await params
   const dict = await getDictionary(locale as Locale)
-  const fotografi = await getFotografi()
+  const fotografi = await getFotografi(locale)
   const grafik = await getGrafik()
   const films = await getFilms()
   const utmarkelser = await getUtmarkelser()
