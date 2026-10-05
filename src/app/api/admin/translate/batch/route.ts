@@ -102,7 +102,18 @@ export async function POST(req: NextRequest) {
 
         send({ type: 'start', total })
 
+        // Bail out well before Vercel's function time limit instead of being
+        // killed mid-stream — a long-running loop over many (entity, locale)
+        // pairs can otherwise get cut off with no explanation to the caller
+        // (this is exactly what surfaced to Jan as "some languages couldn't
+        // be translated" on content-heavy entries). The caller sees a normal
+        // 'complete' with done < total and, if it wants the rest, re-calls
+        // with skip_existing:true to pick up where this round left off.
+        const TIME_BUDGET_MS = 90_000
+        const startedAt = Date.now()
+
         for (const { entityId, locale } of pairs) {
+          if (Date.now() - startedAt > TIME_BUDGET_MS) break
           try {
             const res = await fetch(`${req.nextUrl.origin}/api/admin/translate`, {
               method: 'POST',

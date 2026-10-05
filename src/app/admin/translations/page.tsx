@@ -98,12 +98,11 @@ export default function TranslationsPage() {
     }
   }
 
-  async function runBatch(entityType: EntityType) {
-    setBatchRunning(true)
-    setBatchLog([])
-    setBatchDone(0)
-    setBatchTotal(0)
-
+  // One round covers everything the server fits inside its own time budget
+  // (see TIME_BUDGET_MS in the batch route) and then ends its stream
+  // normally with done < total — it never gets killed mid-request. Returns
+  // the round's total so the caller knows whether to run another round.
+  async function runBatchRound(entityType: EntityType): Promise<number> {
     const res = await fetch('/api/admin/translate/batch', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -112,8 +111,9 @@ export default function TranslationsPage() {
 
     const reader = res.body?.getReader()
     const decoder = new TextDecoder()
-    if (!reader) return
+    if (!reader) return 0
 
+    let roundTotal = 0
     while (true) {
       const { done, value } = await reader.read()
       if (done) break
@@ -125,20 +125,35 @@ export default function TranslationsPage() {
             type: string; total?: number; done?: number
             entity_id?: string; locale?: string; error?: string
           }
-          if (ev.type === 'start') { setBatchTotal(ev.total ?? 0) }
+          if (ev.type === 'start') { roundTotal = ev.total ?? 0; setBatchTotal(t => t + roundTotal) }
           else if (ev.type === 'done') {
-            setBatchDone(ev.done ?? 0)
+            setBatchDone(d => d + 1)
             setBatchLog(prev => [...prev.slice(-99), `✓ ${ev.entity_id} → ${ev.locale}`])
           } else if (ev.type === 'error') {
-            setBatchDone(ev.done ?? 0)
+            setBatchDone(d => d + 1)
             setBatchLog(prev => [...prev.slice(-99), `✗ ${ev.entity_id} → ${ev.locale}: ${ev.error}`])
-          } else if (ev.type === 'complete') {
-            setBatchLog(prev => [...prev, `Klar! ${ev.done}/${ev.total} behandlade.`])
           }
         } catch { /* ignore parse errors */ }
       }
     }
+    return roundTotal
+  }
 
+  async function runBatch(entityType: EntityType) {
+    setBatchRunning(true)
+    setBatchLog([])
+    setBatchDone(0)
+    setBatchTotal(0)
+
+    // Keep starting new rounds (skip_existing:true carries progress forward)
+    // until a round reports nothing left to do. A round cap is just a
+    // backstop against looping forever if something's genuinely stuck.
+    for (let round = 0; round < 200; round++) {
+      const roundTotal = await runBatchRound(entityType)
+      if (roundTotal === 0) break
+    }
+
+    setBatchLog(prev => [...prev, 'Klart!'])
     setBatchRunning(false)
     await load()
   }

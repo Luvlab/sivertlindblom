@@ -1,8 +1,11 @@
 'use client'
 
 import { useState } from 'react'
+import { locales } from '@/i18n/config'
 
 type EntityType = 'text' | 'biography_entry' | 'exhibition' | 'public_work' | 'home' | 'sculpture_project' | 'scenography' | 'watercolors' | 'contact' | 'reference_fotografi' | 'biography'
+
+const TARGET_LOCALES = locales.filter((l) => l !== 'sv')
 
 interface Props {
   entityType: EntityType
@@ -17,6 +20,13 @@ interface Props {
  * edit page. Re-translates unconditionally (skip_existing: false) since the
  * point is to pick up whatever was just written or changed — an existing
  * translation for this entity is expected to go stale on every save.
+ *
+ * One request per locale (not one request for all 15): a single long-lived
+ * request covering every locale can run past Vercel's function time limit
+ * for longer entries and get killed mid-stream, which is exactly the "some
+ * languages couldn't be translated" error Jan hit on long scenography texts.
+ * Looping client-side keeps each request to one Gemini call, well under any
+ * timeout, while still retrying individual locale failures a couple of times.
  */
 export default function TranslateButton({ entityType, entityId, disabled, disabledReason }: Props) {
   const [running, setRunning] = useState(false)
@@ -24,13 +34,7 @@ export default function TranslateButton({ entityType, entityId, disabled, disabl
   const [status, setStatus] = useState<'idle' | 'done' | 'error'>('idle')
   const [error, setError] = useState<string | null>(null)
 
-  async function run() {
-    if (!entityId || disabled) return
-    setRunning(true)
-    setStatus('idle')
-    setError(null)
-    setProgress({ done: 0, total: 0 })
-
+  async function translateLocale(locale: string): Promise<boolean> {
     try {
       const res = await fetch('/api/admin/translate/batch', {
         method: 'POST',
@@ -38,35 +42,52 @@ export default function TranslateButton({ entityType, entityId, disabled, disabl
         body: JSON.stringify({
           entity_type: entityType,
           entity_ids: [entityId],
+          locales: [locale],
           skip_existing: false,
         }),
       })
       const reader = res.body?.getReader()
       const decoder = new TextDecoder()
-      if (!reader) throw new Error('Inget svar från servern')
+      if (!reader) return false
 
-      let hadError = false
+      let ok = true
       while (true) {
         const { done, value } = await reader.read()
         if (done) break
         for (const line of decoder.decode(value).split('\n')) {
           if (!line.startsWith('data: ')) continue
           try {
-            const ev = JSON.parse(line.slice(6)) as { type: string; total?: number; done?: number; error?: string }
-            if (ev.type === 'start') setProgress({ done: 0, total: ev.total ?? 0 })
-            else if (ev.type === 'done') setProgress(p => ({ ...p, done: ev.done ?? p.done }))
-            else if (ev.type === 'error') { hadError = true; setProgress(p => ({ ...p, done: ev.done ?? p.done })) }
+            const ev = JSON.parse(line.slice(6)) as { type: string; error?: string }
+            if (ev.type === 'error') ok = false
           } catch { /* ignore parse errors */ }
         }
       }
-      setStatus(hadError ? 'error' : 'done')
-      if (hadError) setError('Vissa språk kunde inte översättas — försök igen om en stund.')
-    } catch (e) {
-      setStatus('error')
-      setError(String(e))
-    } finally {
-      setRunning(false)
+      return ok
+    } catch {
+      return false
     }
+  }
+
+  async function run() {
+    if (!entityId || disabled) return
+    setRunning(true)
+    setStatus('idle')
+    setError(null)
+    setProgress({ done: 0, total: TARGET_LOCALES.length })
+
+    let hadError = false
+    for (const locale of TARGET_LOCALES) {
+      // One retry per locale — a lone transient Gemini error shouldn't force
+      // Jan to re-run the whole thing for every other language again.
+      let ok = await translateLocale(locale)
+      if (!ok) ok = await translateLocale(locale)
+      if (!ok) hadError = true
+      setProgress((p) => ({ ...p, done: p.done + 1 }))
+    }
+
+    setStatus(hadError ? 'error' : 'done')
+    if (hadError) setError('Vissa språk kunde inte översättas — försök igen om en stund.')
+    setRunning(false)
   }
 
   return (
