@@ -50,7 +50,9 @@ const COUNTRY_LOCALE_MAP: Record<string, Locale> = {
   CR: 'es',
   PA: 'es',
   // Italian
-  IT: 'es', // Italian locale not in our set; map to 'es' — adjust if 'it' is added
+  IT: 'it',
+  SM: 'it',
+  VA: 'it',
   // Dutch
   NL: 'nl',
   // Polish
@@ -87,12 +89,15 @@ const COUNTRY_LOCALE_MAP: Record<string, Locale> = {
   SD: 'ar',
 }
 
-function getLocaleFromCountry(country: string | null | undefined): Locale {
-  if (!country) return defaultLocale
+/** Returns null when the country is unknown or has no confident locale mapping
+ *  — callers fall back to Accept-Language / defaultLocale in that case, rather
+ *  than this function silently guessing 'en' for every unmapped country. */
+function getLocaleFromCountry(country: string | null | undefined): Locale | null {
+  if (!country) return null
   const mapped = COUNTRY_LOCALE_MAP[country.toUpperCase()]
   // Only return if that locale is actually configured in our app
   if (mapped && (locales as readonly string[]).includes(mapped)) return mapped
-  return 'en' // fallback for all other countries
+  return null
 }
 
 export function middleware(request: NextRequest) {
@@ -124,19 +129,22 @@ export function middleware(request: NextRequest) {
   if (cookieLocale && (locales as readonly string[]).includes(cookieLocale)) {
     targetLocale = cookieLocale as Locale
   } else {
-    // 2. Accept-Language header (browser preference, secondary signal)
+    // 2. Vercel IP-geolocation header — where the visitor actually is wins first,
+    // since this is a site about a Swedish artist and a Swedish visitor should
+    // see Swedish by default even if their browser/OS is set to English.
+    const country = request.headers.get('x-vercel-ip-country')
+    const geoLocale = getLocaleFromCountry(country)
+
+    // 3. Accept-Language header (browser preference) — used when geo is absent
+    // (e.g. local dev, where Vercel's geo header isn't present) or doesn't map
+    // to one of our locales.
     const acceptLang = request.headers.get('accept-language')
     const acceptPrimary = acceptLang?.split(',')[0]?.split('-')[0]?.toLowerCase()
     const acceptMapped = acceptPrimary
       ? (locales as readonly string[]).find(l => l === acceptPrimary)
       : undefined
 
-    // 3. Vercel IP-geolocation header (geographic default)
-    const country = request.headers.get('x-vercel-ip-country')
-    const geoLocale = getLocaleFromCountry(country)
-
-    // Accept-Language wins over geo when both are present — geo is tertiary fallback
-    targetLocale = (acceptMapped as Locale | undefined) ?? geoLocale
+    targetLocale = geoLocale ?? (acceptMapped as Locale | undefined) ?? defaultLocale
   }
 
   // ── Redirect / → /{locale}[/rest] ──────────────────────────────────────
