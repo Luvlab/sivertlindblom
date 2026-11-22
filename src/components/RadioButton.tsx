@@ -14,8 +14,8 @@ import type { RadioTrack } from '@/lib/radio'
 const ARTIST = 'Aeon'
 const LABEL = "Breakin' Bread"
 const LABEL_URL = 'https://breakinbread.com/synchronization'
-/** How the tracks are labelled on Breakin' Bread. Shown, not hidden. */
-const AI_NOTE = '50 % AI (Suno)'
+/** How much of the music is AI, as Gordon gave it on 22 Nov 2026 (about 10 %). Shown, not hidden. */
+const AI_NOTE = '10 % AI (Suno)'
 const HOLD_MS = 550
 const CREDIT_MS = 4000
 const YELLOW = '#f2d230'
