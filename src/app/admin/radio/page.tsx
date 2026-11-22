@@ -72,7 +72,7 @@ export default function AdminRadio() {
     <div style={{ padding: 'clamp(1rem, 3vw, 3rem)', maxWidth: 820 }}>
       <h1 style={{ fontFamily: 'Georgia, serif', fontWeight: 400, fontSize: 'clamp(var(--fs-xl), 4vw, var(--fs-3xl))', marginBottom: '0.5rem' }}>Radio</h1>
       <p style={{ color: 'var(--color-muted)', fontSize: 'var(--fs-sm)', marginBottom: '2rem', lineHeight: 1.6 }}>
-        Bakgrundsmusiken bakom spelknappen nere till vänster på webbplatsen. Musiken är Aeons instrumentala filmmusik från Breakin&apos; Breads katalog. Välj vilka spår som ska spelas och i vilken ordning.
+        Bakgrundsmusiken bakom spelknappen nere till vänster på webbplatsen. Musiken är Aeon Manahans instrumentala filmmusik från Breakin&apos; Breads katalog. Välj vilka spår som ska spelas och i vilken ordning.
       </p>
 
       {error && <div role="alert" style={{ background: '#3a0010', border: '1px solid #c00', padding: '1rem', marginBottom: '1.5rem', fontSize: 'var(--fs-sm)', color: '#f88' }}>{error}</div>}

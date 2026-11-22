@@ -19,7 +19,7 @@ const DEFAULT_ON = ['YiG3ZPlpipEfTcpsygDW']
 
 /** Everything the admin can add: the sync catalogue first, then the rest of the library. */
 export const LIBRARY_TRACKS: LibraryTrack[] = [
-  ...(SYNC as { id: string; title: string; url: string }[]).map((t) => ({ id: t.id, title: t.title, url: t.url, artist: 'Aeon', source: 'sync' as const })),
+  ...(SYNC as { id: string; title: string; url: string }[]).map((t) => ({ id: t.id, title: t.title, url: t.url, artist: 'Aeon Manahan', source: 'sync' as const })),
   ...(LIBRARY as { id: string; title: string; artist: string; url: string }[]).map((t) => ({ ...t, source: 'bb' as const })),
 ]
 const BY_ID = new Map(LIBRARY_TRACKS.map((t) => [t.id, t]))
