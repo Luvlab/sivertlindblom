@@ -30,6 +30,8 @@ export default function RadioButton({ tracks, random = false, playLabel = 'Play'
   const creditTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const held = useRef(false)
   const failures = useRef(0)
+  const creditBoxRef = useRef<HTMLSpanElement>(null)
+  const creditTextRef = useRef<HTMLSpanElement>(null)
 
   const [index, setIndex] = useState<number | null>(null)
   const [playing, setPlaying] = useState(false)
@@ -37,12 +39,29 @@ export default function RadioButton({ tracks, random = false, playLabel = 'Play'
   const [menu, setMenu] = useState(false)
 
   const track = index === null ? null : tracks[index]
+  const creditText = track ? `${track.title} · ${ARTIST} · ${LABEL} · ${AI_NOTE}` : `Radio · ${ARTIST} · ${LABEL}`
 
   const showCredit = useCallback(() => {
     setCredit(true)
     if (creditTimer.current) clearTimeout(creditTimer.current)
     creditTimer.current = setTimeout(() => setCredit(false), CREDIT_MS)
   }, [])
+
+  // A credit line wider than the room scrolls by, slowly, then the usual timer fades it out after it has been read.
+  useEffect(() => {
+    if (!credit) return
+    const box = creditBoxRef.current, text = creditTextRef.current
+    if (!box || !text) return
+    const room = box.clientWidth - 22 // the pill's side padding
+    const overflow = text.scrollWidth - room
+    if (overflow <= 4 || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    const SPEED = 38 // px per second: slow enough to read
+    const delay = 900, duration = Math.round((overflow / SPEED) * 1000)
+    const anim = text.animate([{ transform: 'translateX(0)' }, { transform: `translateX(-${overflow}px)` }], { duration, delay, easing: 'linear', fill: 'forwards' })
+    if (creditTimer.current) clearTimeout(creditTimer.current)
+    creditTimer.current = setTimeout(() => setCredit(false), delay + duration + 1800)
+    return () => anim.cancel()
+  }, [credit, creditText])
 
   const playIndex = useCallback((i: number) => {
     const audio = audioRef.current
@@ -136,7 +155,6 @@ export default function RadioButton({ tracks, random = false, playLabel = 'Play'
 
   // Same corner offsets as the guide button (MuseumGuide: bottom 1.25rem, 54 px on a phone), so the two sit on one row.
   const corner = '1.25rem'
-  const creditText = track ? `${track.title} · ${ARTIST} · ${LABEL} · ${AI_NOTE}` : `Radio · ${ARTIST} · ${LABEL}`
 
   return (
     <>
@@ -208,15 +226,17 @@ export default function RadioButton({ tracks, random = false, playLabel = 'Play'
         </button>
 
         <span
+          ref={creditBoxRef}
           className="sl-radio-credit"
           aria-live="polite"
           style={{
             color: YELLOW, fontSize: 'var(--fs-2xs)', letterSpacing: '0.04em', lineHeight: 1.3,
             background: 'rgba(10,10,10,0.72)', borderRadius: 999, padding: credit ? '0.25rem 0.7rem' : 0,
-            opacity: credit ? 1 : 0, transition: 'opacity 0.4s', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', minWidth: 0,
+            opacity: credit ? 1 : 0, transition: 'opacity 0.4s', overflow: 'hidden', minWidth: 0,
           }}
         >
-          {credit ? creditText : ''}
+          {/* The whole line is shown: when it is wider than the room, it scrolls by (track and composer) before it fades out. */}
+          <span ref={creditTextRef} style={{ display: 'inline-block', whiteSpace: 'nowrap', willChange: 'transform' }}>{credit ? creditText : ''}</span>
         </span>
       </div>
 
