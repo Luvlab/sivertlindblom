@@ -39,7 +39,8 @@ export default function RadioButton({ tracks, random = false, playLabel = 'Play'
   const [menu, setMenu] = useState(false)
 
   const track = index === null ? null : tracks[index]
-  const creditText = track ? `${track.title} · ${ARTIST} · ${LABEL} · ${AI_NOTE}` : `Radio · ${ARTIST} · ${LABEL}`
+  // Just the track and the composer here; Breakin' Bread and the rest of the information are in the menu a long press opens.
+  const creditText = track ? `${track.title} · ${ARTIST}` : `Radio · ${ARTIST}`
 
   const showCredit = useCallback(() => {
     setCredit(true)
@@ -253,6 +254,12 @@ export default function RadioButton({ tracks, random = false, playLabel = 'Play'
             padding: '0.35rem', boxShadow: '0 10px 40px rgba(0,0,0,0.5)', backdropFilter: 'blur(8px)',
           }}
         >
+          {track && (
+            <p style={{ margin: 0, padding: '0.45rem 0.65rem 0.55rem', borderBottom: '1px solid var(--color-border)', marginBottom: '0.35rem', fontSize: 'var(--fs-xs)', color: YELLOW, lineHeight: 1.45 }}>
+              {playing ? 'Playing now' : 'Paused'}: <strong style={{ fontWeight: 600 }}>{track.title}</strong><br />
+              {ARTIST} · {AI_NOTE}
+            </p>
+          )}
           {tracks.map((t, i) => (
             <button
               key={t.id}
