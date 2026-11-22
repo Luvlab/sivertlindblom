@@ -117,7 +117,7 @@ export default function RadioButton({ tracks, random = false, playLabel = 'Play'
     items[to]?.focus()
   }
 
-  const corner = 'calc(1.25rem + env(safe-area-inset-bottom, 0px))'
+  const corner = 'calc(0.9rem + env(safe-area-inset-bottom, 0px))'
   const creditText = track ? `${track.title} · ${ARTIST} · ${LABEL} · ${AI_NOTE}` : `Radio · ${ARTIST} · ${LABEL}`
 
   return (
@@ -127,7 +127,7 @@ export default function RadioButton({ tracks, random = false, playLabel = 'Play'
         .sl-radio-menu-btn:focus-visible { position: static; width: auto; height: auto; clip-path: none; }
         .sl-radio-btn:focus-visible, .sl-radio-item:focus-visible { outline: 2px solid var(--color-text); outline-offset: 2px; }
         .sl-radio-play { width: 44px; height: 44px; }
-        @media (max-width: 640px) { .sl-radio-play { width: 54px; height: 54px; } }
+        @media (max-width: 640px) { .sl-radio-play { width: 44px; height: 44px; } }
         .sl-radio-item:hover { background: rgba(255,255,255,0.06); }
       `}</style>
 
@@ -145,7 +145,7 @@ export default function RadioButton({ tracks, random = false, playLabel = 'Play'
         }}
       />
 
-      <div style={{ position: 'fixed', left: '1.25rem', bottom: corner, zIndex: 900, display: 'flex', alignItems: 'center', gap: '0.6rem', maxWidth: 'calc(100vw - 6.5rem)', pointerEvents: 'none' }}>
+      <div style={{ position: 'fixed', left: '1rem', bottom: corner, zIndex: 900, display: 'flex', alignItems: 'center', gap: '0.6rem', maxWidth: 'calc(100vw - 6.5rem)', pointerEvents: 'none' }}>
         <button
           ref={buttonRef}
           type="button"
@@ -209,7 +209,7 @@ export default function RadioButton({ tracks, random = false, playLabel = 'Play'
           aria-label="Radio"
           onKeyDown={onMenuKey}
           style={{
-            position: 'fixed', left: '1.25rem', bottom: `calc(${corner} + 62px)`, zIndex: 901,
+            position: 'fixed', left: '1rem', bottom: `calc(${corner} + 52px)`, zIndex: 901,
             width: 'min(19rem, calc(100vw - 2.5rem))', maxHeight: 'min(60vh, 26rem)', overflowY: 'auto',
             background: 'rgba(10,10,10,0.94)', border: '1px solid var(--color-border)', borderRadius: 10,
             padding: '0.35rem', boxShadow: '0 10px 40px rgba(0,0,0,0.5)', backdropFilter: 'blur(8px)',

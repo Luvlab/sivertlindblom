@@ -65,6 +65,8 @@ export default async function HomePage({
             @media (max-width: 640px) {
               .home-hero-cta { font-size: var(--fs-xs) !important; padding: 0.5rem 0.85rem !important; }
               .home-hero-actions { gap: 0.6rem !important; padding-right: 4.5rem; }
+              /* Lifted clear of the radio play button in the lower left corner. */
+              .home-hero-actions { margin-bottom: 3.75rem; }
             }
           `}</style>
           <div className="home-hero-actions" style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', paddingBottom: '0.5rem' }}>
