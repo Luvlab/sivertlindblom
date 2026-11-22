@@ -6,6 +6,7 @@
 // The music is Aeon's slow cinematic instrumentals from the Breakin' Bread sync catalogue.
 // The playlist and the random switch are set in the admin, under Radio.
 // Nothing plays before the first tap.
+// Any other recording or film on the site pauses the radio.
 
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { Pause, Play } from 'lucide-react'
@@ -102,6 +103,21 @@ export default function RadioButton({ tracks, random = false, playLabel = 'Play'
     document.addEventListener('pointerdown', onDown)
     return () => { document.removeEventListener('keydown', onKey); document.removeEventListener('pointerdown', onDown) }
   }, [menu, index, closeMenu])
+
+  // The radio steps aside for any other sound on the site (Gordon 2026-11-22: "when you play a recording … the radio should stop").
+  // A recording or film on the page (audio/video) pauses it at once; a click into an embedded YouTube film does too,
+  // because the page cannot hear an embed play, only see the click land in it.
+  useEffect(() => {
+    const pauseRadio = () => { const a = audioRef.current; if (a && !a.paused) a.pause() }
+    const onPlay = (e: Event) => {
+      const el = e.target
+      if (el instanceof HTMLMediaElement && el !== audioRef.current) pauseRadio()
+    }
+    const onBlur = () => { setTimeout(() => { if (document.activeElement instanceof HTMLIFrameElement) pauseRadio() }, 0) }
+    document.addEventListener('play', onPlay, true)
+    window.addEventListener('blur', onBlur)
+    return () => { document.removeEventListener('play', onPlay, true); window.removeEventListener('blur', onBlur) }
+  }, [])
 
   useEffect(() => () => {
     if (holdTimer.current) clearTimeout(holdTimer.current)
