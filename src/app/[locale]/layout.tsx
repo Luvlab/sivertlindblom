@@ -16,6 +16,7 @@ import { SCULPTURE_PROJECTS } from '@/lib/sculpture-projects'
 import CopyrightYear from '@/components/CopyrightYear'
 import PwaProvider from '@/components/PwaProvider'
 import MuseumGuide from '@/components/guide/MuseumGuide'
+import RadioButton from '@/components/RadioButton'
 import '../globals.css'
 
 const inter = Inter({
@@ -172,6 +173,7 @@ export default async function LocaleLayout({
         <BackgroundPrefetch urls={prefetchUrls} />
         <PwaProvider />
         <MuseumGuide locale={validLocale} guideDict={dict.guide} />
+        <RadioButton playLabel={dict.common?.play} pauseLabel={dict.common?.pause} />
         <footer
           style={{
             borderTop: '1px solid var(--color-border)',
