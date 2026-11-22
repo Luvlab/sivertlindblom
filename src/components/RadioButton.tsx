@@ -12,7 +12,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { Pause, Play } from 'lucide-react'
 import type { RadioTrack } from '@/lib/radio'
 
-const ARTIST = 'Aeon Manahan'
+const ARTIST = 'Aeon "Step" Manahan'
 const LABEL = "Breakin' Bread"
 const LABEL_URL = 'https://breakinbread.com/synchronization'
 /** How much of the music is AI, as Gordon gave it on 22 Nov 2026 (about 10 %). Shown, not hidden. */
