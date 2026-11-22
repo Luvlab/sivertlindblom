@@ -2,7 +2,7 @@
 
 // The radio: one small play button in the lower left corner.
 // A tap plays or pauses. Holding the button opens the playlist.
-// The credit line is small and yellow, and hides a few seconds after the button was last touched.
+// The credit line is small and in the accent colour, and hides a few seconds after the button was last touched.
 // The music is Aeon's slow cinematic instrumentals from the Breakin' Bread sync catalogue.
 // The playlist and the random switch are set in the admin, under Radio.
 // Nothing plays before the first tap.
@@ -19,7 +19,8 @@ const LABEL_URL = 'https://breakinbread.com/synchronization'
 const AI_NOTE = '10 % AI (Suno)'
 const HOLD_MS = 550
 const CREDIT_MS = 4000
-const YELLOW = '#f2d230'
+// The site's own accent (the button colour), so the credit is not a second yellow (Gordon 2026-11-22).
+const YELLOW = 'var(--color-accent)'
 
 export default function RadioButton({ tracks, random = false, playLabel = 'Play', pauseLabel = 'Pause' }: { tracks: RadioTrack[]; random?: boolean; playLabel?: string; pauseLabel?: string }) {
   const audioRef = useRef<HTMLAudioElement>(null)
