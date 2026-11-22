@@ -8,6 +8,7 @@
  */
 import { cacheTag, cacheLife } from 'next/cache'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { RADIO_KEYS, radioConfig, radioForPlayer, type RadioTrack } from '@/lib/radio'
 import { getTranslationsForType } from '@/lib/translations'
 import type { Exhibition, ExhibitionLink, ExhibitionSubpage } from '@/lib/exhibitions-data'
 import { exhibitions as STATIC_EXHIBITIONS } from '@/lib/exhibitions-data'
@@ -1174,4 +1175,23 @@ export async function getFlipbook(slug: string): Promise<Flipbook | null> {
     .single()
   if (error || !data) return null
   return dbRowToFlipbook(data)
+}
+
+// ─── Radio (playlist and switches, edited in the admin) ──────────────────────
+
+export async function getRadio(): Promise<{ enabled: boolean; random: boolean; tracks: RadioTrack[] }> {
+  'use cache'
+  cacheTag('radio')
+  cacheLife('days')
+  const settings: Record<string, string> = {}
+  try {
+    const supabase = createAdminClient()
+    if (supabase) {
+      const { data } = await supabase.from('settings').select('key, value').in('key', Object.values(RADIO_KEYS))
+      ;(data ?? []).forEach((r) => { const row = r as { key: string; value: string | null }; settings[row.key] = row.value ?? '' })
+    }
+  } catch {
+    // fall through to the defaults
+  }
+  return radioForPlayer(radioConfig(settings))
 }

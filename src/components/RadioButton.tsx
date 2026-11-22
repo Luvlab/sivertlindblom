@@ -4,11 +4,12 @@
 // A tap plays or pauses. Holding the button opens the playlist.
 // The credit line is small and yellow, and hides a few seconds after the button was last touched.
 // The music is Aeon's slow cinematic instrumentals from the Breakin' Bread sync catalogue.
+// The playlist and the random switch are set in the admin, under Radio.
 // Nothing plays before the first tap.
 
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { Pause, Play } from 'lucide-react'
-import tracks from '@/lib/radio-tracks.json'
+import type { RadioTrack } from '@/lib/radio'
 
 const ARTIST = 'Aeon'
 const LABEL = "Breakin' Bread"
@@ -19,7 +20,7 @@ const HOLD_MS = 550
 const CREDIT_MS = 4000
 const YELLOW = '#f2d230'
 
-export default function RadioButton({ playLabel = 'Play', pauseLabel = 'Pause' }: { playLabel?: string; pauseLabel?: string }) {
+export default function RadioButton({ tracks, random = false, playLabel = 'Play', pauseLabel = 'Pause' }: { tracks: RadioTrack[]; random?: boolean; playLabel?: string; pauseLabel?: string }) {
   const audioRef = useRef<HTMLAudioElement>(null)
   const buttonRef = useRef<HTMLButtonElement>(null)
   const menuRef = useRef<HTMLDivElement>(null)
@@ -49,16 +50,24 @@ export default function RadioButton({ playLabel = 'Play', pauseLabel = 'Pause' }
     audio.src = tracks[n].url
     audio.play().catch(() => setPlaying(false))
     showCredit()
-  }, [showCredit])
+  }, [tracks, showCredit])
+
+  /** The track after this one: the next in the list, or any other one when the order is random. */
+  const nextIndex = useCallback((from: number | null) => {
+    if (!random || tracks.length < 2) return from === null ? 0 : from + 1
+    let n = Math.floor(Math.random() * (tracks.length - 1))
+    if (from !== null && n >= from) n += 1
+    return n
+  }, [random, tracks.length])
 
   const toggle = useCallback(() => {
     const audio = audioRef.current
     if (!audio) return
-    if (index === null) playIndex(Math.floor(Math.random() * tracks.length))
+    if (index === null) playIndex(nextIndex(null))
     else if (audio.paused) audio.play().catch(() => setPlaying(false))
     else audio.pause()
     showCredit()
-  }, [index, playIndex, showCredit])
+  }, [index, playIndex, nextIndex, showCredit])
 
   const openMenu = useCallback(() => {
     if (holdTimer.current) clearTimeout(holdTimer.current)
@@ -75,9 +84,9 @@ export default function RadioButton({ playLabel = 'Play', pauseLabel = 'Pause' }
   useEffect(() => {
     if (!track || typeof navigator === 'undefined' || !('mediaSession' in navigator)) return
     navigator.mediaSession.metadata = new MediaMetadata({ title: track.title, artist: ARTIST, album: LABEL })
-    navigator.mediaSession.setActionHandler('nexttrack', () => playIndex((index ?? 0) + 1))
+    navigator.mediaSession.setActionHandler('nexttrack', () => playIndex(nextIndex(index)))
     navigator.mediaSession.setActionHandler('previoustrack', () => playIndex((index ?? 0) - 1))
-  }, [track, index, playIndex])
+  }, [track, index, playIndex, nextIndex])
 
   // The open playlist: focus the current track, close on Escape or a touch outside.
   useEffect(() => {
@@ -116,7 +125,9 @@ export default function RadioButton({ playLabel = 'Play', pauseLabel = 'Pause' }
       <style>{`
         .sl-radio-menu-btn { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
         .sl-radio-menu-btn:focus-visible { position: static; width: auto; height: auto; clip-path: none; }
-        .sl-radio-btn:focus-visible, .sl-radio-item:focus-visible { outline: 2px solid ${YELLOW}; outline-offset: 2px; }
+        .sl-radio-btn:focus-visible, .sl-radio-item:focus-visible { outline: 2px solid var(--color-text); outline-offset: 2px; }
+        .sl-radio-play { width: 44px; height: 44px; }
+        @media (max-width: 640px) { .sl-radio-play { width: 54px; height: 54px; } }
         .sl-radio-item:hover { background: rgba(255,255,255,0.06); }
       `}</style>
 
@@ -126,7 +137,7 @@ export default function RadioButton({ playLabel = 'Play', pauseLabel = 'Pause' }
         preload="none"
         onPlay={() => { setPlaying(true); failures.current = 0 }}
         onPause={() => setPlaying(false)}
-        onEnded={() => playIndex((index ?? 0) + 1)}
+        onEnded={() => playIndex(nextIndex(index))}
         onError={() => {
           // A file that will not load: try the next one, but never loop for ever.
           if (index === null || ++failures.current > 3) { setPlaying(false); return }
@@ -138,7 +149,7 @@ export default function RadioButton({ playLabel = 'Play', pauseLabel = 'Pause' }
         <button
           ref={buttonRef}
           type="button"
-          className="sl-radio-btn"
+          className="sl-radio-btn sl-radio-play"
           aria-label={`Radio: ${playing ? pauseLabel : playLabel}`}
           aria-pressed={playing}
           onClick={() => { if (held.current) { held.current = false; return } toggle() }}
@@ -155,15 +166,16 @@ export default function RadioButton({ playLabel = 'Play', pauseLabel = 'Pause' }
           onFocus={showCredit}
           onKeyDown={(e) => { if (e.key === 'ArrowUp') { e.preventDefault(); openMenu() } }}
           style={{
-            pointerEvents: 'auto', flex: 'none', width: 40, height: 40, borderRadius: '50%',
+            // The same look as the guide button in the lower right corner.
+            pointerEvents: 'auto', flex: 'none', borderRadius: '50%',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
-            background: 'rgba(10,10,10,0.72)', color: playing ? YELLOW : 'var(--color-text)',
-            border: `1px solid ${playing ? YELLOW : 'rgba(245,245,240,0.35)'}`,
+            background: 'var(--color-accent)', color: '#0a0a0a', border: 'none',
+            boxShadow: '0 6px 24px rgba(0,0,0,0.28)',
             cursor: 'pointer', touchAction: 'manipulation', userSelect: 'none', WebkitUserSelect: 'none',
-            WebkitTouchCallout: 'none', backdropFilter: 'blur(6px)',
+            WebkitTouchCallout: 'none',
           }}
         >
-          {playing ? <Pause size={15} aria-hidden /> : <Play size={15} aria-hidden style={{ marginLeft: 2 }} />}
+          {playing ? <Pause size={18} fill="currentColor" aria-hidden /> : <Play size={18} fill="currentColor" aria-hidden style={{ marginLeft: 2 }} />}
         </button>
 
         <button
@@ -197,7 +209,7 @@ export default function RadioButton({ playLabel = 'Play', pauseLabel = 'Pause' }
           aria-label="Radio"
           onKeyDown={onMenuKey}
           style={{
-            position: 'fixed', left: '1.25rem', bottom: `calc(${corner} + 48px)`, zIndex: 901,
+            position: 'fixed', left: '1.25rem', bottom: `calc(${corner} + 62px)`, zIndex: 901,
             width: 'min(19rem, calc(100vw - 2.5rem))', maxHeight: 'min(60vh, 26rem)', overflowY: 'auto',
             background: 'rgba(10,10,10,0.94)', border: '1px solid var(--color-border)', borderRadius: 10,
             padding: '0.35rem', boxShadow: '0 10px 40px rgba(0,0,0,0.5)', backdropFilter: 'blur(8px)',
@@ -214,7 +226,7 @@ export default function RadioButton({ playLabel = 'Play', pauseLabel = 'Pause' }
               style={{
                 display: 'block', width: '100%', textAlign: 'start', background: 'none', border: 'none', borderRadius: 6,
                 padding: '0.5rem 0.65rem', fontSize: 'var(--fs-xs)', cursor: 'pointer',
-                color: i === index ? YELLOW : 'var(--color-text)',
+                color: i === index ? 'var(--color-accent)' : 'var(--color-text)',
               }}
             >
               {t.title}

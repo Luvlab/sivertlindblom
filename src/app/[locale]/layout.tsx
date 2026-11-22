@@ -11,7 +11,7 @@ import { getDictionary } from '@/i18n/getDictionary'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { FALLBACK_SETTINGS } from '@/lib/db'
 import type { SiteSettings } from '@/types'
-import { getExhibitionSlugs, getPublicWorkSlugs, getTextSlugs } from '@/lib/data-server'
+import { getExhibitionSlugs, getPublicWorkSlugs, getTextSlugs, getRadio } from '@/lib/data-server'
 import { SCULPTURE_PROJECTS } from '@/lib/sculpture-projects'
 import CopyrightYear from '@/components/CopyrightYear'
 import PwaProvider from '@/components/PwaProvider'
@@ -129,10 +129,11 @@ export default async function LocaleLayout({
 
   // Build prefetch URL list in page / content order.
   // Slug fetchers are cached (see data-server.ts) so this is essentially free.
-  const [exhibitionSlugs, publicWorkSlugs, textSlugs] = await Promise.all([
+  const [exhibitionSlugs, publicWorkSlugs, textSlugs, radio] = await Promise.all([
     getExhibitionSlugs(),
     getPublicWorkSlugs(),
     getTextSlugs(),
+    getRadio(),
   ])
   const l = validLocale
   const prefetchUrls = [
@@ -173,7 +174,9 @@ export default async function LocaleLayout({
         <BackgroundPrefetch urls={prefetchUrls} />
         <PwaProvider />
         <MuseumGuide locale={validLocale} guideDict={dict.guide} />
-        <RadioButton playLabel={dict.common?.play} pauseLabel={dict.common?.pause} />
+        {radio.enabled && radio.tracks.length > 0 && (
+          <RadioButton tracks={radio.tracks} random={radio.random} playLabel={dict.common?.play} pauseLabel={dict.common?.pause} />
+        )}
         <footer
           style={{
             borderTop: '1px solid var(--color-border)',
