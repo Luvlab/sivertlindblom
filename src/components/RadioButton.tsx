@@ -13,10 +13,6 @@ import { Pause, Play } from 'lucide-react'
 import type { RadioTrack } from '@/lib/radio'
 
 const ARTIST = 'Aeon "Step" Manahan'
-const LABEL = "Breakin' Bread"
-const LABEL_URL = 'https://breakinbread.com/synchronization'
-/** How much of the music is AI, as Gordon gave it on 22 Nov 2026 (about 10 %). Shown, not hidden. */
-const AI_NOTE = '10 % AI (Suno)'
 const HOLD_MS = 550
 const CREDIT_MS = 4000
 // The site's own accent (the button colour), so the credit is not a second yellow (Gordon 2026-11-22).
@@ -39,7 +35,7 @@ export default function RadioButton({ tracks, random = false, playLabel = 'Play'
   const [menu, setMenu] = useState(false)
 
   const track = index === null ? null : tracks[index]
-  // Just the track and the composer here; Breakin' Bread and the rest of the information are in the menu a long press opens.
+  // Just the track and the composer (Gordon 2026-11-22: no label and no AI percentage on this site).
   const creditText = track ? `${track.title} · ${ARTIST}` : `Radio · ${ARTIST}`
 
   const showCredit = useCallback(() => {
@@ -106,7 +102,7 @@ export default function RadioButton({ tracks, random = false, playLabel = 'Play'
   // Lock screen and headset controls, where the browser has them.
   useEffect(() => {
     if (!track || typeof navigator === 'undefined' || !('mediaSession' in navigator)) return
-    navigator.mediaSession.metadata = new MediaMetadata({ title: track.title, artist: ARTIST, album: LABEL })
+    navigator.mediaSession.metadata = new MediaMetadata({ title: track.title, artist: ARTIST })
     navigator.mediaSession.setActionHandler('nexttrack', () => playIndex(nextIndex(index)))
     navigator.mediaSession.setActionHandler('previoustrack', () => playIndex((index ?? 0) - 1))
   }, [track, index, playIndex, nextIndex])
@@ -258,7 +254,7 @@ export default function RadioButton({ tracks, random = false, playLabel = 'Play'
           {track && (
             <p style={{ margin: 0, padding: '0.45rem 0.65rem 0.55rem', borderBottom: '1px solid var(--color-border)', marginBottom: '0.35rem', fontSize: 'var(--fs-xs)', color: YELLOW, lineHeight: 1.45 }}>
               {playing ? 'Playing now' : 'Paused'}: <strong style={{ fontWeight: 600 }}>{track.title}</strong><br />
-              {ARTIST} · {AI_NOTE}
+              {ARTIST}
             </p>
           )}
           {tracks.map((t, i) => (
@@ -278,11 +274,6 @@ export default function RadioButton({ tracks, random = false, playLabel = 'Play'
               {t.title}
             </button>
           ))}
-          <p style={{ margin: 0, padding: '0.55rem 0.65rem 0.35rem', borderTop: '1px solid var(--color-border)', marginTop: '0.35rem', fontSize: 'var(--fs-2xs)', color: YELLOW, letterSpacing: '0.04em' }}>
-            {ARTIST} ·{' '}
-            <a href={LABEL_URL} target="_blank" rel="noopener noreferrer" style={{ color: YELLOW, textDecoration: 'underline', textUnderlineOffset: '2px' }}>{LABEL}</a>
-            {' '}· {AI_NOTE}
-          </p>
         </div>
       )}
     </>
