@@ -48,19 +48,20 @@ export default function RadioButton({ tracks, random = false, playLabel = 'Play'
     creditTimer.current = setTimeout(() => setCredit(false), CREDIT_MS)
   }, [])
 
-  // A credit line wider than the room scrolls by, slowly, then the usual timer fades it out after it has been read.
+  // The credit (track and composer) always scrolls across the whole width, right to left, when a track starts or the button is
+  // touched, and fades out once it has gone by (Gordon 2026-11-22: "scroll by when the track starts and fade away after").
   useEffect(() => {
     if (!credit) return
     const box = creditBoxRef.current, text = creditTextRef.current
     if (!box || !text) return
-    const room = box.clientWidth - 22 // the pill's side padding
-    const overflow = text.scrollWidth - room
-    if (overflow <= 4 || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
-    const SPEED = 38 // px per second: slow enough to read
-    const delay = 900, duration = Math.round((overflow / SPEED) * 1000)
-    const anim = text.animate([{ transform: 'translateX(0)' }, { transform: `translateX(-${overflow}px)` }], { duration, delay, easing: 'linear', fill: 'forwards' })
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return // stays put, then fades on the usual timer
+    const room = box.clientWidth
+    const SPEED = 45 // px per second
+    const distance = room + text.scrollWidth
+    const duration = Math.max(2500, Math.round((distance / SPEED) * 1000))
+    const anim = text.animate([{ transform: `translateX(${room}px)` }, { transform: `translateX(-${text.scrollWidth}px)` }], { duration, easing: 'linear', fill: 'both' })
     if (creditTimer.current) clearTimeout(creditTimer.current)
-    creditTimer.current = setTimeout(() => setCredit(false), delay + duration + 1800)
+    creditTimer.current = setTimeout(() => setCredit(false), duration + 300)
     return () => anim.cancel()
   }, [credit, creditText])
 
@@ -232,8 +233,8 @@ export default function RadioButton({ tracks, random = false, playLabel = 'Play'
           aria-live="polite"
           style={{
             color: YELLOW, fontSize: 'var(--fs-2xs)', letterSpacing: '0.04em', lineHeight: 1.3,
-            background: 'rgba(10,10,10,0.72)', borderRadius: 999, padding: credit ? '0.25rem 0.7rem' : 0,
-            opacity: credit ? 1 : 0, transition: 'opacity 0.4s', overflow: 'hidden', minWidth: 0,
+            background: 'rgba(10,10,10,0.72)', borderRadius: 999, padding: credit ? '0.25rem 0.2rem' : 0,
+            opacity: credit ? 1 : 0, transition: 'opacity 0.4s', overflow: 'hidden', minWidth: 0, flex: '1 1 auto',
           }}
         >
           {/* The whole line is shown: when it is wider than the room, it scrolls by (track and composer) before it fades out. */}

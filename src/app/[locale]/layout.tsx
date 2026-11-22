@@ -206,6 +206,15 @@ export default async function LocaleLayout({
               >
                 luvlab.io
               </a>
+              {' '}with{' '}
+              <a
+                href="https://claude.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ color: 'var(--color-muted)', textDecoration: 'underline', textDecorationColor: 'rgba(136,136,128,0.35)', textUnderlineOffset: '3px' }}
+              >
+                Claude
+              </a>
             </span>
           </span>
         </footer>
