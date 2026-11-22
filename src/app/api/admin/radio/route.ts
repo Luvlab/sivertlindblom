@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import { cookies } from 'next/headers'
 import { revalidateTag } from 'next/cache'
 import { createAdminClient } from '@/lib/supabase/admin'
-import { RADIO_KEYS, radioConfig } from '@/lib/radio'
+import { RADIO_KEYS, radioConfig, LIBRARY_TRACKS } from '@/lib/radio'
 
 async function checkAuth(): Promise<boolean> {
   const store = await cookies()
@@ -17,7 +17,7 @@ export async function GET() {
     const { data } = await supabase.from('settings').select('key, value').in('key', Object.values(RADIO_KEYS))
     ;(data ?? []).forEach((r) => { const row = r as { key: string; value: string | null }; settings[row.key] = row.value ?? '' })
   }
-  return NextResponse.json({ ...radioConfig(settings), stored: !!supabase })
+  return NextResponse.json({ ...radioConfig(settings), library: LIBRARY_TRACKS, stored: !!supabase })
 }
 
 export async function PUT(request: Request) {
